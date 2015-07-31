@@ -1,0 +1,149 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dreamspace.superman.UI.Main.CourseDetailInfoActivity">
+
+    <include layout="@layout/custom_toolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:paddingLeft="28dp"
+        android:paddingTop="15dp">
+
+        <RelativeLayout
+            android:layout_width="136dp"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/user_avater_iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/testhead" />
+
+            <TextView
+                android:id="@+id/username_tv"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_avater_iv"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="孙坚"
+                android:textColor="@color/grey_line"
+                android:textSize="14sp" />
+            <View
+                android:layout_width="0.1dp"
+                android:layout_height="90dp"
+                android:layout_toRightOf="@id/user_avater_iv"
+                android:layout_marginLeft="25dp"
+                android:background="@color/grey_line"></View>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="8dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:singleLine="false"
+                android:text="钢琴十级课程"
+                android:paddingBottom="2dp"
+                android:textColor="@color/near_black"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/select_tab_color"
+                android:text="15岁过钢琴十级的天才少年"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/homepage_like" />
+
+                <TextView
+                    android:id="@+id/want_meet_num_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="15人想见"
+                    android:textColor="@color/navi_color"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/homepage_collect" />
+
+                <TextView
+                    android:layout_toRightOf="@id/imageview"
+                    android:id="@+id/success_meet_num_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="30人已成功约见"
+                    android:textColor="@color/navi_color"
+                    android:textSize="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="60元/课时"
+                    android:textColor="@color/navi_color"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/grey_line"></View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <com.dreamspace.superman.UI.View.SlidingTabLayout
+            android:id="@+id/sliding_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bg">
+
+        </com.dreamspace.superman.UI.View.SlidingTabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/main_bg" />
+    </LinearLayout>
+</LinearLayout>

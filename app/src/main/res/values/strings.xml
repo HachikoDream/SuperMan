@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">校园达人</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+    <string name="nav_item_setclass">设置分类</string>
+    <string name="nav_item_mybalance">我的余额</string>
+    <string name="nav_item_myorder">我的订单</string>
+    <string name="nav_item_mycollect">我的收藏</string>
+    <string name="nav_item_tobesuperman">成为达人</string>
+    <string name="nav_footer_aboutus">关于我们</string>
+    <string name="nav_footer_settings">设置</string>
+    <string name="title_activity_login">登陆</string>
+    <string name="title_fragment_register">注册</string>
+    <string name="title_activity_register_info">个人基本信息</string>
+    <string name="title_activity_register_by_phone">手机绑定</string>
+    <string name="title_activity_reset_pwd">重置密码</string>
+    <string name="title_activity_course_detail_info">课程详情</string>
+    <string-array name="course_detail_info_list">
+      <item>课程介绍</item>
+      <item>达人简介</item>
+      <item>学员评论</item>
+    </string-array>
+</resources>

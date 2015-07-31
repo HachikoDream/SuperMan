@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/nav_setclass"
+            android:icon="@drawable/nav_selectclass"
+            android:title="@string/nav_item_setclass" />
+        <item
+            android:id="@+id/nav_mybalance"
+            android:icon="@drawable/nav_balance"
+            android:title="@string/nav_item_mybalance" />
+        <item
+            android:id="@+id/nav_myorder"
+            android:icon="@drawable/nav_order"
+            android:title="@string/nav_item_myorder" />
+
+        <item
+            android:id="@+id/nav_mycollect"
+            android:icon="@drawable/nav_collect"
+            android:title="@string/nav_item_mycollect" />
+        <item
+            android:id="@+id/nav_tobesuperman"
+            android:icon="@drawable/nav_tobesuper"
+            android:title="@string/nav_item_tobesuperman" />
+        <item
+            android:title=""
+            android:orderInCategory="200"/>
+    </group>
+</menu>

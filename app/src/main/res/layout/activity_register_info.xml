@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dreamspace.superman.UI.Register.RegisterInfoActivity">
+
+    <include layout="@layout/custom_toolbar"></include>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/login_pho" />
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/gender_man"
+            android:layout_width="62dp"
+            android:layout_height="24dp"
+            android:background="@drawable/gender_man_bg"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="男"
+            android:textColor="@color/color_genderbutton" />
+
+        <RadioButton
+            android:id="@+id/gerder_woman"
+            android:layout_width="62dp"
+            android:layout_height="24dp"
+            android:background="@drawable/gender_woman_bg"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:text="女"
+            android:textColor="@color/color_genderbutton" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="在此输入您的昵称" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textSize="13sp"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="在此输入您的真实姓名" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <Button
+        android:layout_marginTop="63dp"
+        android:layout_width="150dp"
+        android:layout_height="32dp"
+        android:background="@drawable/normal_button_bg"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:layout_gravity="center_horizontal"
+        android:text="下一步"
+        android:textColor="@android:color/white"/>
+</LinearLayout>

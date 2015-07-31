@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dreamspace.superman" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".UI.Main.MainActivity"
+            android:label="@string/app_name" >
+
+        </activity>
+        <activity
+            android:name=".UI.Login.LoginActivity"
+            android:label="@string/title_activity_login" >
+
+        </activity>
+        <activity
+            android:name=".UI.Register.RegisterInfoActivity"
+            android:label="@string/title_activity_register_info" >
+        </activity>
+        <activity
+            android:name=".UI.Register.RegisterByPhoneAct"
+            android:label="@string/title_activity_register_by_phone" >
+        </activity>
+        <activity
+            android:name=".UI.Register.ResetPwdActivity"
+            android:label="@string/title_activity_reset_pwd" >
+        </activity>
+        <activity
+            android:name=".UI.Main.CourseDetailInfoActivity"
+            android:label="@string/title_activity_course_detail_info" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
