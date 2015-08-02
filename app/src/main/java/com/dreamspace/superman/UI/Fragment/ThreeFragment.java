@@ -2,6 +2,7 @@ package com.dreamspace.superman.UI.Fragment;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -12,20 +13,18 @@ import com.dreamspace.superman.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ThreeFragment extends Fragment {
+public class ThreeFragment extends BaseListFragment {
 
-
+    private final static String TAG="健身";
     public ThreeFragment() {
         // Required empty public constructor
+        setTAG(TAG);
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_three, container, false);
+    public void initDatas() {
+        Log.i("ORDER_TEST", "setTAG in three");
+        setTAG(TAG);
     }
-
-
 }

@@ -32,8 +32,8 @@
                 android:textSize="13sp" />
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/username_ev"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
@@ -72,8 +72,8 @@
                 android:textSize="13sp" />
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/verification_ed"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
@@ -101,8 +101,8 @@
                 android:textSize="13sp" />
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/pwd_ed"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"

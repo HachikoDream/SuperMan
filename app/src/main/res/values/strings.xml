@@ -7,6 +7,7 @@
     <string name="drawer_close">close</string>
     <string name="nav_item_setclass">设置分类</string>
     <string name="nav_item_mybalance">我的余额</string>
+    <string name="nav_item_index">首  页</string>
     <string name="nav_item_myorder">我的订单</string>
     <string name="nav_item_mycollect">我的收藏</string>
     <string name="nav_item_tobesuperman">成为达人</string>
@@ -23,4 +24,7 @@
       <item>达人简介</item>
       <item>学员评论</item>
     </string-array>
+    <string name="title_activity_order">预约</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="title_activity_super_man_home">SuperManHomeActivity</string>
 </resources>

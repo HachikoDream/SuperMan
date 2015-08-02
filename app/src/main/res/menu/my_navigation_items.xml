@@ -3,25 +3,30 @@
 
     <group>
         <item
+            android:id="@+id/nav_index"
+            android:icon="@drawable/side_homepage"
+            android:title="@string/nav_item_index" />
+
+        <item
             android:id="@+id/nav_setclass"
-            android:icon="@drawable/nav_selectclass"
+            android:icon="@drawable/side_class"
             android:title="@string/nav_item_setclass" />
         <item
             android:id="@+id/nav_mybalance"
-            android:icon="@drawable/nav_balance"
+            android:icon="@drawable/side_account"
             android:title="@string/nav_item_mybalance" />
         <item
             android:id="@+id/nav_myorder"
-            android:icon="@drawable/nav_order"
+            android:icon="@drawable/side_order"
             android:title="@string/nav_item_myorder" />
 
         <item
             android:id="@+id/nav_mycollect"
-            android:icon="@drawable/nav_collect"
+            android:icon="@drawable/side_favor"
             android:title="@string/nav_item_mycollect" />
         <item
             android:id="@+id/nav_tobesuperman"
-            android:icon="@drawable/nav_tobesuper"
+            android:icon="@drawable/side_course"
             android:title="@string/nav_item_tobesuperman" />
         <item
             android:title=""

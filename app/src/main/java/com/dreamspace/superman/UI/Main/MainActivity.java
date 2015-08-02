@@ -115,6 +115,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             case R.id.nav_tobesuperman:
                 setFragmentTitle(R.string.nav_item_tobesuperman);
                 return true;
+            case R.id.nav_index:
+                setFragmentTitle(R.string.nav_item_index);
+                return true;
         }
         return false;
     }

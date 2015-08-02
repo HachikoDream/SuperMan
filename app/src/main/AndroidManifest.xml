@@ -10,33 +10,40 @@
         <activity
             android:name=".UI.Main.MainActivity"
             android:label="@string/app_name" >
-
         </activity>
         <activity
             android:name=".UI.Login.LoginActivity"
             android:label="@string/title_activity_login" >
-
         </activity>
         <activity
             android:name=".UI.Register.RegisterInfoActivity"
-            android:label="@string/title_activity_register_info" >
-        </activity>
+            android:label="@string/title_activity_register_info" />
         <activity
             android:name=".UI.Register.RegisterByPhoneAct"
-            android:label="@string/title_activity_register_by_phone" >
-        </activity>
+            android:label="@string/title_activity_register_by_phone" />
         <activity
             android:name=".UI.Register.ResetPwdActivity"
-            android:label="@string/title_activity_reset_pwd" >
-        </activity>
+            android:label="@string/title_activity_reset_pwd" />
         <activity
             android:name=".UI.Main.CourseDetailInfoActivity"
             android:label="@string/title_activity_course_detail_info" >
+        </activity>
+        <activity
+            android:name=".UI.Main.OrderActivity"
+            android:label="@string/title_activity_order" >
+        </activity>
+        <activity
+            android:name=".UI.Main.SettingsActivity"
+            android:label="@string/title_activity_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".UI.Person.SuperManHomeActivity"
+            android:label="@string/title_activity_super_man_home" >
         </activity>
     </application>
 

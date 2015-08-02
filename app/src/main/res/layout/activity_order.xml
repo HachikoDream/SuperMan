@@ -1,0 +1,67 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dreamspace.superman.UI.Main.OrderActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="106dp">
+
+        <include layout="@layout/custom_toolbar"></include>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/head_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                card_view:cardBackgroundColor="@color/near_white"
+                card_view:cardCornerRadius="4dp">
+
+                <include layout="@layout/view_in_order_card"></include>
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/page_tips"
+                android:text="预约前请和达人协调好时间、地点等信息"
+                android:textColor="@color/grey_line"
+                android:textSize="11sp" />
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/person_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                card_view:cardBackgroundColor="@color/near_white"
+                card_view:cardCornerRadius="4dp">
+
+                <include layout="@layout/view_in_edit_order_card"></include>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/normal_button_bg"
+            android:text="预约"
+            android:textColor="@color/near_white" />
+    </LinearLayout>
+
+</ScrollView>

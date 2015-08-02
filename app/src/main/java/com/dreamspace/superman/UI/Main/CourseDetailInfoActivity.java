@@ -8,7 +8,11 @@ import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
+import com.dreamspace.superman.UI.Fragment.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.CourseIntroductionFragment;
 import com.dreamspace.superman.UI.Fragment.OneFragment;
+import com.dreamspace.superman.UI.Fragment.StudentCommentListFragment;
+import com.dreamspace.superman.UI.Fragment.SupermanIntroductionFragment;
 import com.dreamspace.superman.UI.Fragment.ThreeFragment;
 import com.dreamspace.superman.UI.Fragment.TwoFragment;
 import com.dreamspace.superman.UI.View.AbsActivity;
@@ -21,8 +25,7 @@ public class CourseDetailInfoActivity extends AbsActivity {
     private SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
     private ViewPager mViewPager;
-    private String[] titleList;
-    private Fragment[] mFragments = {new OneFragment(), new TwoFragment(), new ThreeFragment()};
+    private BaseFragment[] mFragments = {new CourseIntroductionFragment(), new SupermanIntroductionFragment(), new StudentCommentListFragment()};
     private int color=0;
     private int normalColor=0;
 
@@ -39,7 +42,6 @@ public class CourseDetailInfoActivity extends AbsActivity {
 
     @Override
     protected void initDatas() {
-        titleList= getResources().getStringArray(R.array.course_detail_info_list);
         color = getResources().getColor(R.color.navi_color);
         normalColor=getResources().getColor(R.color.select_tab_color);
     }
@@ -48,7 +50,6 @@ public class CourseDetailInfoActivity extends AbsActivity {
     protected void initViews() {
         getSupportActionBar().setTitle(TITLE);
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_layout);
-//        mSlidingTabLayout.setCustomTabView(R.layout.custom_tab_view,R.id.tab_tv);
         mAdapter = new CommonFragmentAdapter(getSupportFragmentManager(), mFragments);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mAdapter);

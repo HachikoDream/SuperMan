@@ -21,7 +21,7 @@ public class IndexFragment extends Fragment {
     private ViewPager mViewPager;
     private SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
-    private Fragment[] mFragments = {new OneFragment(), new TwoFragment(), new ThreeFragment()};
+    private BaseFragment[] mFragments = {new OneFragment(), new TwoFragment(), new ThreeFragment()};
 
     public IndexFragment() {
         // Required empty public constructor

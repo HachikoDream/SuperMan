@@ -3,20 +3,22 @@ package com.dreamspace.superman.UI.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
+
+import com.dreamspace.superman.UI.Fragment.BaseFragment;
 
 /**
  * Created by Administrator on 2015/7/29 0029.
  */
 public class CommonFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private Fragment[] mFragments;
-    private String[] titleList;
-    public void setmFragments(Fragment[] mFragments) {
+    private BaseFragment[] mFragments;
+    public void setmFragments(BaseFragment[] mFragments) {
         this.mFragments = mFragments;
         this.notifyDataSetChanged();
     }
 
-    public CommonFragmentAdapter(FragmentManager fm, Fragment[] fragments) {
+    public CommonFragmentAdapter(FragmentManager fm, BaseFragment[] fragments) {
         super(fm);
         this.mFragments = fragments;
     }
@@ -39,6 +41,7 @@ public class CommonFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return String.format("item%d", position);
+        Log.i("ORDER_TEST","getpageTitle + "+position);
+        return this.mFragments[position].getTAG();
     }
 }

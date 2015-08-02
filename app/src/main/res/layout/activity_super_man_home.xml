@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dreamspace.superman.UI.Person.SuperManHomeActivity">
+
+    <include layout="@layout/custom_toolbar"></include>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_avater_iv"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/login_pho"/>
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_width="70dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_avater_iv"
+            android:text="孙坚"
+            />
+    </RelativeLayout>
+</LinearLayout>
