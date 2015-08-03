@@ -1,13 +1,12 @@
 package com.dreamspace.superman.UI.Register;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.View.AbsActivity;
+import com.dreamspace.superman.UI.Main.AbsActivity;
 
 public class RegisterByPhoneAct extends AbsActivity {
     private Toolbar mToolbar;

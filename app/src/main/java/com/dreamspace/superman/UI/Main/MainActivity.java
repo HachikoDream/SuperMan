@@ -3,7 +3,6 @@ package com.dreamspace.superman.UI.Main;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.IndexFragment;
-import com.dreamspace.superman.UI.View.AbsActivity;
 
 public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener {
 

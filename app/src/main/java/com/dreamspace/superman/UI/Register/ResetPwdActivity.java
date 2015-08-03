@@ -1,12 +1,11 @@
 package com.dreamspace.superman.UI.Register;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.View.AbsActivity;
+import com.dreamspace.superman.UI.Main.AbsActivity;
 
 public class ResetPwdActivity extends AbsActivity {
     private final static int ID=R.string.title_activity_reset_pwd;

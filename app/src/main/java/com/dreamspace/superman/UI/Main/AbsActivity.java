@@ -1,4 +1,4 @@
-package com.dreamspace.superman.UI.View;
+package com.dreamspace.superman.UI.Main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

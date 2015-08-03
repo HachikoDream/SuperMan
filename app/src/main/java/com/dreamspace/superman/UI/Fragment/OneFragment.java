@@ -32,26 +32,54 @@ public class OneFragment extends BaseListFragment {
 
     public OneFragment() {
         // Required empty public constructor
-        Log.i("ORDER_TEST","in One contruct");
         setTAG(TAG);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        Log.i("ORDER_TEST","on Attach");
-        super.onAttach(activity);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i("ORDER_TEST","on Create ");
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void initDatas() {
-        Log.i("ORDER_TEST","setTAG in one");
+        super.initDatas();
     }
 
+    @Override
+    public void onPullUp() {
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Log.i("onLoad", "on load complete");
+            }
+        }, 3000);
+    }
+
+    @Override
+    public void onPullDown() {
+        new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                },3000);
+    }
+
+    @Override
+    public void getInitData() {
+      refreshDate(getTestData());
+    }
+    public List<Course> getTestData() {
+        List<Course> mCourses = new ArrayList<>();
+        Course course;
+        for (int i = 0; i < 10; i++) {
+            course = new Course();
+            course.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
+            mCourses.add(course);
+        }
+        return mCourses;
+    }
 
 }

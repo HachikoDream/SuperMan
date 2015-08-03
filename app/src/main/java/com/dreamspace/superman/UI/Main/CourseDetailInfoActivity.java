@@ -1,6 +1,5 @@
 package com.dreamspace.superman.UI.Main;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,12 +9,8 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.CourseIntroductionFragment;
-import com.dreamspace.superman.UI.Fragment.OneFragment;
 import com.dreamspace.superman.UI.Fragment.StudentCommentListFragment;
 import com.dreamspace.superman.UI.Fragment.SupermanIntroductionFragment;
-import com.dreamspace.superman.UI.Fragment.ThreeFragment;
-import com.dreamspace.superman.UI.Fragment.TwoFragment;
-import com.dreamspace.superman.UI.View.AbsActivity;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
 

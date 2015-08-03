@@ -2,9 +2,7 @@ package com.dreamspace.superman.UI.Login;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +12,7 @@ import android.widget.RadioGroup;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.LoginFragment;
 import com.dreamspace.superman.UI.Fragment.RegisterFragment;
-import com.dreamspace.superman.UI.View.AbsActivity;
+import com.dreamspace.superman.UI.Main.AbsActivity;
 
 public class LoginActivity extends AbsActivity {
 

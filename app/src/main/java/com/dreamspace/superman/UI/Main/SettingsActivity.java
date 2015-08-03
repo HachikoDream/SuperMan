@@ -1,12 +1,10 @@
 package com.dreamspace.superman.UI.Main;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.View.AbsActivity;
 
 public class SettingsActivity extends AbsActivity {
 

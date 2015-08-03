@@ -15,47 +15,39 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/7/27 0027.
  */
-public class IndexAdapter extends BaseAdapter {
-    private List<Course> mCourseList;
-    private Context mContext;
+public class IndexAdapter extends BasisAdapter<Course, IndexAdapter.viewHolder> {
+
+    public IndexAdapter() {
+
+    }
 
     public IndexAdapter(List<Course> mCourseList, Context context) {
-        this.mCourseList = mCourseList;
-        mContext = context;
+        super(context, mCourseList, viewHolder.class);
     }
 
     @Override
-    public int getCount() {
-        return mCourseList.size();
+    protected void setDataIntoView(viewHolder holder, Course entity) {
+        holder.mTextView.setText(entity.getCourseName());
     }
 
     @Override
-    public Object getItem(int position) {
-        return mCourseList.get(position);
+    protected void initViewHolder(View convertView, viewHolder holder) {
+        holder = new viewHolder();
+        holder.mTextView = (TextView) convertView.findViewById(R.id.course_name_tv);
     }
 
     @Override
-    public long getItemId(int position) {
-        return 0;
+    public int getItemLayout() {
+        return R.layout.index_list_item;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        viewHolder holder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.index_list_item, parent, false);
-            holder = new viewHolder();
-            holder.mTextView = (TextView) convertView.findViewById(R.id.course_name_tv);
-            convertView.setTag(holder);
-        } else {
-            holder = (viewHolder) convertView.getTag();
+    public class viewHolder {
+        public viewHolder() {
+
         }
-        Course course = mCourseList.get(position);
-        holder.mTextView.setText(course.getCourseName());
-        return convertView;
-    }
 
-    private class viewHolder {
         public TextView mTextView;
     }
+
 }
+
