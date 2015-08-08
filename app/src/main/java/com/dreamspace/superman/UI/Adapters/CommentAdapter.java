@@ -17,50 +17,32 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by Administrator on 2015/8/1 0001.
  */
-public class CommentAdapter extends BaseAdapter {
-    private List<Comment> mCommentList;
-    private Context mContext;
+public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHolder> {
 
-    public CommentAdapter(List<Comment> mCommentList, Context mContext) {
-        this.mCommentList = mCommentList;
-        this.mContext = mContext;
+    public CommentAdapter(Context mContext, List<Comment> mEntities) {
+        super(mContext, mEntities, viewHolder.class);
     }
 
     @Override
-    public int getCount() {
-        return mCommentList.size();
+    protected void setDataIntoView(viewHolder holder, Comment entity) {
+        holder.contentTv.setText(entity.getComment());
     }
 
     @Override
-    public Object getItem(int position) {
-        return mCommentList.get(position);
+    protected void initViewHolder(View convertView, viewHolder holder) {
+        holder.contentTv= (TextView) convertView.findViewById(R.id.content_tv);
+        holder.userNameTv= (TextView) convertView.findViewById(R.id.username_tv);
+        holder.timeTv= (TextView) convertView.findViewById(R.id.time_tv);
+        holder.relatedCourseTv=(TextView)convertView.findViewById(R.id.course_name_tv);
+        holder.userAvaterIv=(CircleImageView)convertView.findViewById(R.id.profile_image);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public int getItemLayout() {
+        return R.layout.student_comment_list_item;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        viewHolder holder;
-        if(convertView==null){
-            convertView= LayoutInflater.from(mContext).inflate(R.layout.student_comment_list_item,parent,false);
-            holder=new viewHolder();
-            holder.contentTv= (TextView) convertView.findViewById(R.id.content_tv);
-            holder.userNameTv= (TextView) convertView.findViewById(R.id.username_tv);
-            holder.timeTv= (TextView) convertView.findViewById(R.id.time_tv);
-            holder.relatedCourseTv=(TextView)convertView.findViewById(R.id.course_name_tv);
-            holder.userAvaterIv=(CircleImageView)convertView.findViewById(R.id.profile_image);
-            convertView.setTag(holder);
-        }else{
-            holder= (viewHolder) convertView.getTag();
-        }
-         Comment comment=mCommentList.get(position);
-         holder.contentTv.setText(comment.getComment());
-        return convertView;
-    }
-    public class viewHolder{
+    public static class viewHolder{
         public TextView contentTv;
         public TextView userNameTv;
         public TextView timeTv;

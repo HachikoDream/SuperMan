@@ -1,18 +1,14 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.CommentAdapter;
-import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
 import com.dreamspace.superman.model.Comment;
 import com.dreamspace.superman.model.Course;
@@ -55,7 +51,7 @@ public class StudentCommentListFragment extends BaseFragment {
             }
         });
         moreListView= (LoadMoreListView)view.findViewById(R.id.load_more_lv);
-        mAdapter=new CommentAdapter(getTestData(),getActivity());
+        mAdapter=new CommentAdapter(getActivity(),getTestData());
         moreListView.setAdapter(mAdapter);
         moreListView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override

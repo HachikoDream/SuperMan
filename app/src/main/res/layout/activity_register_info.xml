@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Register.RegisterInfoActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Register.RegisterInfoActivity">
 
     <include layout="@layout/custom_toolbar"></include>
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="18dp"
         android:src="@drawable/login_pho" />
@@ -62,8 +62,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:textSize="14sp"
                 android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="在此输入您的昵称" />
+                android:hint="昵     称" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -77,9 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="在此输入您的真实姓名" />
+                android:hint="真  实  姓  名" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
     <Button

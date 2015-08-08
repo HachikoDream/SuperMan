@@ -1,13 +1,11 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.

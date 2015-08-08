@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
-import com.dreamspace.superman.UI.Fragment.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 
 /**
  * Created by Administrator on 2015/7/29 0029.

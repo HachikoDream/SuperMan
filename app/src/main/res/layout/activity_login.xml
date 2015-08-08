@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg"
-    tools:context="com.dreamspace.superman.UI.Login.LoginActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Login.LoginActivity">
 
     <include
         layout="@layout/custom_toolbar"
@@ -28,7 +28,7 @@
             android:checked="true"
             android:gravity="center"
             android:text="登陆"
-            android:textColor="@color/color_radiobutton" />
+            android:textColor="@color/color_login_radiobutton" />
 
         <RadioButton
             android:id="@+id/rgt_btn"
@@ -39,7 +39,7 @@
             android:checked="false"
             android:gravity="center"
             android:text="注册"
-            android:textColor="@color/color_radiobutton" />
+            android:textColor="@color/color_login_radiobutton" />
     </RadioGroup>
 
     <FrameLayout

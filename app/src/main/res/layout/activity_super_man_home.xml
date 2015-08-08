@@ -3,28 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Person.SuperManHomeActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Superman.SuperManHomeActivity">
 
     <include layout="@layout/custom_toolbar"></include>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="20dp">
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_avater_iv"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/login_pho"/>
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avater_iv"
             android:layout_width="70dp"
-            android:gravity="center"
-            android:textSize="16sp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/login_pho" />
+
+        <TextView
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_avater_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
             android:text="孙坚"
-            />
+            android:textSize="16sp" />
+
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="35dp"
+        android:background="@color/grey_line"></View>
+
+    <ListView
+        android:id="@+id/homepage_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/grey_line"
+        android:dividerHeight="0.5dp"></ListView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey_line"></View>
 </LinearLayout>

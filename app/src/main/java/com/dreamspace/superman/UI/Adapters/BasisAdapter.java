@@ -24,8 +24,7 @@ public abstract class BasisAdapter<T,K> extends BaseAdapter {
     private Context mContext;
     private Class<K> classType;
 
-    public BasisAdapter() {
-    }
+
 
     public void setmEntities(List<T> mEntities) {
         this.mEntities = mEntities;
@@ -60,6 +59,7 @@ public abstract class BasisAdapter<T,K> extends BaseAdapter {
             convertView= LayoutInflater.from(mContext).inflate(getItemLayout(),parent,false);
             try {
                 holder = classType.newInstance();
+                Log.i("INFO","Complete");
             } catch (InstantiationException e) {
                 Log.i("INFO","InstantiationException");
                 e.printStackTrace();

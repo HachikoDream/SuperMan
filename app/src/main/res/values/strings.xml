@@ -26,5 +26,10 @@
     </string-array>
     <string name="title_activity_order">预约</string>
     <string name="title_activity_settings">设置</string>
-    <string name="title_activity_super_man_home">SuperManHomeActivity</string>
+    <string name="title_activity_super_man_home">达人主页</string>
+    <string name="title_activity_order_list">我的订单</string>
+    <string name="title_activity_order_detail">订单详情</string>
+    <string name="title_activity_my_balance">我的余额</string>
+    <string name="title_activity_my_account">我的账户</string>
+    <string name="title_activity_bind_with_bank">绑定支付宝账户</string>
 </resources>

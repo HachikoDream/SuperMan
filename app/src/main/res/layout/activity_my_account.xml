@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dreamspace.superman.UI.Activity.Superman.MyAccountActivity">
+
+    <include layout="@layout/custom_toolbar"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/not_in_account_rbtn"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/rbtn_in_account_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="未到账金额"
+                android:textColor="@color/color_account_radiobutton"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/already_in_account_rbtn"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:background="@drawable/rbtn_in_account_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="已到账金额"
+                android:textColor="@color/color_account_radiobutton"
+                android:textSize="15sp" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_account"
+            android:gravity="center"
+            android:text="$2000"
+            android:textColor="@color/navi_color"
+            android:textSize="45sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@color/near_white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="7dp"
+            android:paddingLeft="19dp"
+            android:paddingRight="19dp"
+            android:paddingTop="7dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/daren_zhifubao" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="绑 定 支 付 宝 账 号" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/page_tips"
+            android:drawablePadding="10dp"
+            android:text="在您和学员确认完成课程教学后，学院的付款会在一周内转到您的支付宝账户上。"
+            android:textColor="@color/grey_line"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+</LinearLayout>

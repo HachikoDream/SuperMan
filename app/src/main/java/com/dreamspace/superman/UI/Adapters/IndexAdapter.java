@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class IndexAdapter extends BasisAdapter<Course, IndexAdapter.viewHolder> {
 
-    public IndexAdapter() {
 
+    public IndexAdapter(Context context){
+        super(context,null,viewHolder.class);
     }
-
     public IndexAdapter(List<Course> mCourseList, Context context) {
         super(context, mCourseList, viewHolder.class);
     }
@@ -32,7 +32,6 @@ public class IndexAdapter extends BasisAdapter<Course, IndexAdapter.viewHolder> 
 
     @Override
     protected void initViewHolder(View convertView, viewHolder holder) {
-        holder = new viewHolder();
         holder.mTextView = (TextView) convertView.findViewById(R.id.course_name_tv);
     }
 
@@ -41,10 +40,7 @@ public class IndexAdapter extends BasisAdapter<Course, IndexAdapter.viewHolder> 
         return R.layout.index_list_item;
     }
 
-    public class viewHolder {
-        public viewHolder() {
-
-        }
+    public static class viewHolder {
 
         public TextView mTextView;
     }

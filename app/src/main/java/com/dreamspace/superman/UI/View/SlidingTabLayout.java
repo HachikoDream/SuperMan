@@ -67,6 +67,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 	private boolean mTabStripPopulated = false;
     private int startColor;
 	private ViewPager mViewPager;
+	private Boolean fillTheWidth=true;
 	private SparseArray<String> mContentDescriptions = new SparseArray<String>();
 	private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
 
@@ -89,7 +90,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 		setHorizontalScrollBarEnabled(false);
 		// Make sure that the Tab Strips fills this View
 		setFillViewport(true);
-		startColor=getResources().getColor(R.color.near_white);
+		startColor=getResources().getColor(R.color.near_white);//内部字体默认为白色
 		mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
 
 		mTabStrip = new SlidingTabStrip(context);
@@ -128,6 +129,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
 	public void setCustomTabView(int layoutResId, int textViewId) {
 		mTabViewLayoutId = layoutResId;
 		mTabViewTextViewId = textViewId;
+	}
+	public void setFillTheWidth(boolean fillTheWidth){
+		this.fillTheWidth=fillTheWidth;
 	}
 	
 	public void setIconAdapter(TabIconAdapter adapter) {
@@ -182,8 +186,15 @@ public class SlidingTabLayout extends HorizontalScrollView {
 			textView.setTypeface(Typeface.DEFAULT);
 			textView.setAllCaps(true);
 			textView.setTextColor(getStartColor());
-			textView.setLayoutParams(new LinearLayout.LayoutParams(
-								  0, ViewGroup.LayoutParams.MATCH_PARENT,1));
+			if(fillTheWidth){
+				textView.setLayoutParams(new LinearLayout.LayoutParams(
+						0, ViewGroup.LayoutParams.MATCH_PARENT,1));
+			}else{
+				textView.setLayoutParams(new LinearLayout.LayoutParams(
+						ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+			}
+			;
 			
 			v = textView;
 		} else {
