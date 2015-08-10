@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.Course;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class IndexAdapter extends BasisAdapter<Course, IndexAdapter.viewHolder> 
 
 
     public IndexAdapter(Context context){
-        super(context,null,viewHolder.class);
+        super(context,new ArrayList<Course>(),viewHolder.class);
     }
     public IndexAdapter(List<Course> mCourseList, Context context) {
         super(context, mCourseList, viewHolder.class);

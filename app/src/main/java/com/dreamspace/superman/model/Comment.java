@@ -50,4 +50,15 @@ public class Comment {
     public String getUserName() {
         return userName;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "comment='" + comment + '\'' +
+                ", time='" + time + '\'' +
+                ", ImageUrL='" + ImageUrL + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }

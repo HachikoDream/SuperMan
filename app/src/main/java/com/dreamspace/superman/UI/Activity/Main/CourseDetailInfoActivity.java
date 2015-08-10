@@ -37,7 +37,7 @@ public class CourseDetailInfoActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
         color = getResources().getColor(R.color.navi_color);
         normalColor=getResources().getColor(R.color.select_tab_color);
     }

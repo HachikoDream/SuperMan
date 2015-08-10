@@ -22,7 +22,7 @@ public class RegisterInfoActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

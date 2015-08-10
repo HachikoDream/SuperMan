@@ -8,17 +8,12 @@ import android.view.MenuItem;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 
-public class MyAccountActivity extends AbsActivity {
+public class AddCourseActivity extends AbsActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     protected void setSelfContentView() {
-        setContentView(R.layout.activity_my_account);
+        setContentView(R.layout.activity_add_course);
     }
 
     @Override
@@ -30,5 +25,4 @@ public class MyAccountActivity extends AbsActivity {
     protected void initViews() {
 
     }
-
 }

@@ -5,7 +5,8 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.dreamspace.superman.UI.Fragment.Base.BaseIndexListFragment;
+import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.model.Course;
 
 import java.util.ArrayList;
@@ -14,12 +15,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TwoFragment extends BaseIndexListFragment {
+public class TwoFragment extends BaseListFragment<Course> {
 
     private final String TAG="IT技术";
 
     public TwoFragment() {
         // Required empty public constructor
+        super(IndexAdapter.class);
         setTAG(TAG);
     }
 

@@ -21,7 +21,7 @@ public class subscribeActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

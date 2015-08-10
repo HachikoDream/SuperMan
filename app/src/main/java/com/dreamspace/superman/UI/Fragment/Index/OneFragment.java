@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
-import com.dreamspace.superman.UI.Fragment.Base.BaseIndexListFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
 import com.dreamspace.superman.model.Course;
 
@@ -18,15 +18,12 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OneFragment extends BaseIndexListFragment {
-
-    private LoadMoreListView moreListView;
-    private IndexAdapter mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+public class OneFragment extends BaseListFragment<Course> {
     public static final String TAG = "精选";
 
     public OneFragment() {
         // Required empty public constructor
+        super(IndexAdapter.class);
         setTAG(TAG);
     }
 
@@ -48,6 +45,7 @@ public class OneFragment extends BaseIndexListFragment {
             @Override
             public void run() {
                 Log.i("onLoad", "on load complete");
+                onPullUpFinished();
             }
         }, 3000);
     }
@@ -57,9 +55,14 @@ public class OneFragment extends BaseIndexListFragment {
         new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
+                      onPullDownFinished();
                     }
                 },3000);
+    }
+
+    @Override
+    public void onItemPicked(Course mEntity, int position) {
+        Log.i("INFO",mEntity.toString());
     }
 
     @Override

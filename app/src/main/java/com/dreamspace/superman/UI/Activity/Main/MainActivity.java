@@ -33,7 +33,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

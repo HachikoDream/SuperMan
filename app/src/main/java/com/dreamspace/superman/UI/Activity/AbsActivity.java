@@ -3,6 +3,8 @@ package com.dreamspace.superman.UI.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
 
@@ -16,21 +18,37 @@ public abstract  class AbsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setSelfContentView();
         initToolBar();
-        initDatas();
+        prepareDatas();
         initViews();
     }
 
     protected abstract void setSelfContentView();
 
-    protected abstract  void initDatas() ;
+    protected abstract  void prepareDatas() ;
 
     protected abstract void initViews();
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if (id==android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initToolBar(){
         mToolBar=(Toolbar)findViewById(R.id.tl_custom);
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
 
 

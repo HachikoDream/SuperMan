@@ -15,7 +15,7 @@ public class OrderDetailActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
        getSupportActionBar().setTitle(TITLE);
     }
 

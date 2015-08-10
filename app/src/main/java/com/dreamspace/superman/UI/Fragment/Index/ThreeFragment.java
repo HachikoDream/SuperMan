@@ -2,10 +2,11 @@ package com.dreamspace.superman.UI.Fragment.Index;
 
 
 import android.os.Handler;
-import android.util.Log;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
-import com.dreamspace.superman.UI.Fragment.Base.BaseIndexListFragment;
+import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.model.Course;
 
 import java.util.ArrayList;
@@ -14,10 +15,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ThreeFragment extends BaseIndexListFragment {
+public class ThreeFragment extends BaseListFragment<Course> {
 
     private final static String TAG="健身";
     public ThreeFragment() {
+        super(IndexAdapter.class);
         // Required empty public constructor
         setTAG(TAG);
     }

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dreamspace.superman">
+    package="com.dreamspace.superman" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".UI.Activity.Main.MainActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name" >
+        </activity>
         <activity
             android:name=".UI.Activity.Login.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -33,29 +34,43 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".UI.Activity.Superman.SuperManHomeActivity"
-            android:label="@string/title_activity_super_man_home"></activity>
+            android:label="@string/title_activity_super_man_home" />
         <activity
             android:name=".UI.Activity.Person.OrderListActivity"
-            android:label="@string/title_activity_order_list" />
+            android:label="@string/title_activity_order_list" >
+        </activity>
         <activity
             android:name=".UI.Activity.Person.OrderDetailActivity"
             android:label="@string/title_activity_order_detail" />
         <activity
             android:name=".UI.Activity.Person.MyBalanceActivity"
-            android:label="@string/title_activity_my_balance"></activity>
+            android:label="@string/title_activity_my_balance" />
         <activity
             android:name=".UI.Activity.Superman.MyAccountActivity"
-            android:label="@string/title_activity_my_account">
-
+            android:label="@string/title_activity_my_account" >
         </activity>
         <activity
             android:name=".UI.Activity.Superman.BindWithBankActivity"
-            android:label="@string/title_activity_bind_with_bank">
+            android:label="@string/title_activity_bind_with_bank" >
+        </activity>
+        <activity
+            android:name=".UI.Activity.Person.ToBeSuperActivity"
+            android:label="@string/title_activity_to_be_super" >
+        </activity>
+        <activity
+            android:name=".UI.Activity.Superman.MyCourseListActivity"
+            android:label="@string/title_activity_my_course_list" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".UI.Activity.Superman.AddCourseActivity"
+            android:label="@string/title_activity_add_course" >
+
         </activity>
     </application>
 

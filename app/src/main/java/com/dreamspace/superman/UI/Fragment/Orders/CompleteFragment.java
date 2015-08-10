@@ -1,8 +1,7 @@
 package com.dreamspace.superman.UI.Fragment.Orders;
 
-import com.dreamspace.superman.UI.Fragment.Base.BaseIndexListFragment;
-import com.dreamspace.superman.UI.Fragment.Base.BaseOrderListFragment;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.UI.Adapters.OrderAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.model.Order;
 
 import java.util.ArrayList;
@@ -11,10 +10,11 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/8/3 0003.
  */
-public class CompleteFragment extends BaseOrderListFragment {
+public class CompleteFragment extends BaseListFragment<Order> {
     private final static String TAG="已完成";
 
     public CompleteFragment() {
+        super(OrderAdapter.class);
         setTAG(TAG);
     }
 

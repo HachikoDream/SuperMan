@@ -23,7 +23,7 @@ public class RegisterByPhoneAct extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

@@ -27,7 +27,7 @@ public class SuperManHomeActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
         for (int i=0;i<mTitles.length;i++){
             Map<String,Object> mMap=new HashMap<>();
             mMap.put("title",mTitles[i]);

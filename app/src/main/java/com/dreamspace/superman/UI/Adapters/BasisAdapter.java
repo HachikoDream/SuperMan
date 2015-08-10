@@ -42,7 +42,7 @@ public abstract class BasisAdapter<T,K> extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public T getItem(int position) {
         return mEntities.get(position);
     }
 

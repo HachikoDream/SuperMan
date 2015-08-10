@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -19,6 +20,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHolder> {
 
+    public CommentAdapter(Context mContext){
+        this(mContext,new ArrayList<Comment>());
+    }
     public CommentAdapter(Context mContext, List<Comment> mEntities) {
         super(mContext, mEntities, viewHolder.class);
     }

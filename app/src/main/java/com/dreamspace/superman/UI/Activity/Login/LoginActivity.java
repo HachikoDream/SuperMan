@@ -35,7 +35,7 @@ public class LoginActivity extends AbsActivity {
 
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

@@ -15,7 +15,7 @@ public class MyBalanceActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
      getSupportActionBar().setTitle(TITLE);
     }
 

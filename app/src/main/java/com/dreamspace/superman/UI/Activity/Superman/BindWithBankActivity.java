@@ -16,7 +16,7 @@ public class BindWithBankActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

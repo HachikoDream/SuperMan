@@ -21,7 +21,7 @@ public class ResetPwdActivity extends AbsActivity {
     }
 
     @Override
-    protected void initDatas() {
+    protected void prepareDatas() {
 
     }
 

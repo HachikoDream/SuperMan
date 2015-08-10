@@ -1,4 +1,4 @@
-package com.dreamspace.superman.UI.Activity.Superman;
+package com.dreamspace.superman.UI.Activity.Person;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,17 +8,11 @@ import android.view.MenuItem;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 
-public class MyAccountActivity extends AbsActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
+public class ToBeSuperActivity extends AbsActivity {
 
     @Override
     protected void setSelfContentView() {
-        setContentView(R.layout.activity_my_account);
+        setContentView(R.layout.activity_to_be_super);
     }
 
     @Override
@@ -30,5 +24,4 @@ public class MyAccountActivity extends AbsActivity {
     protected void initViews() {
 
     }
-
 }

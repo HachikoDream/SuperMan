@@ -32,4 +32,7 @@
     <string name="title_activity_my_balance">我的余额</string>
     <string name="title_activity_my_account">我的账户</string>
     <string name="title_activity_bind_with_bank">绑定支付宝账户</string>
+    <string name="title_activity_to_be_super">达人认证</string>
+    <string name="title_activity_my_course_list">我的课程</string>
+    <string name="title_activity_add_course">添加课程</string>
 </resources>
