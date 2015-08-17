@@ -35,4 +35,13 @@
     <string name="title_activity_to_be_super">达人认证</string>
     <string name="title_activity_my_course_list">我的课程</string>
     <string name="title_activity_add_course">添加课程</string>
+    <string name="title_activity_edit_course">编辑课程</string>
+    <string name="title_activity_choose_classify">选择分类</string>
+    <string name="title_activity_sm_order_detail_actvity">我的订单</string>
+    <string name="title_activity_collection">收藏</string>
+    <string name="title_activity_evaluate">评价课程</string>
+    <string name="title_activity_sm_introduce">达人主页</string>
+    <string name="search_hint">输入课程或达人姓名进行搜索</string>
+    <string name="title_activity_search_result">搜索结果</string>
+    <string name="title_activity_con_list">ConListActivity</string>
 </resources>

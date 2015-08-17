@@ -6,7 +6,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="12dp"
-    tools:context="com.dreamspace.superman.UI.Fragment.Index.OneFragment">
+    tools:context="com.dreamspace.superman.UI.Fragment.Index.HandpickFragment">
     <include
         layout="@layout/common_swipe_refresh_layout"></include>
 </LinearLayout>

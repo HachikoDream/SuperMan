@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg"
-    tools:context="com.dreamspace.superman.UI.Activity.Login.LoginActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Register.LoginActivity">
 
     <include
         layout="@layout/custom_toolbar"

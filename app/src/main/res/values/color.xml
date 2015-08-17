@@ -14,4 +14,5 @@
     <color name="grey_line">#999999</color>
     <color name="gender_man_bg">#579BDB</color>
     <color name="near_black">#222222</color>
+    <color name="delete_bg">#f93f25</color>
 </resources>

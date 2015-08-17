@@ -106,12 +106,24 @@
             android:background="@drawable/button_redside_white_bg"
             android:textColor="@color/navi_color"/>
         <ImageView
+            android:id="@+id/connect_sm_iv"
             android:paddingRight="5dp"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:src="@drawable/page_buy_contact"
             android:layout_toLeftOf="@id/connect_sm_btn"/>
-
+        <Button
+            android:id="@+id/order_phonenum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="联系达人"
+            android:padding="2dp"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_redside_white_bg"
+            android:textColor="@color/navi_color"/>
     </RelativeLayout>
 </LinearLayout>

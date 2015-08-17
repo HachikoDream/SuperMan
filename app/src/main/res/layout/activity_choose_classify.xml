@@ -1,0 +1,155 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="50dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="18sp"
+                android:textColor="@color/navi_color"
+                android:text="请选择您感兴趣的方向" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="7.5dp">
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/it"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/class_it_noma" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/ball"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/class_sports_nomal" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/body"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/class_gym_nomal" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp">
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/class_camera_nomal" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/educate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/class_edu_nomal" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/swim"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/class_swim_nomal" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp">
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/paint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/class_paint_nomal" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/music"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/class_music_nomal" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/dance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/class_dance_nomal" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="15dp">
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/others"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/class_others_nomal" />
+
+                    <com.dreamspace.superman.UI.View.SelectorImageView
+                        android:id="@+id/write"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/class_w_nomal" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/begin_read"
+                android:layout_width="150dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/navi_color"
+                android:background="@drawable/button_redside_nocorner_bg"
+                android:text="开始浏览" />
+        </LinearLayout>
+</ScrollView>

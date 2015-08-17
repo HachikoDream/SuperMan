@@ -1,17 +1,28 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.UI.Fragment.Index.IndexFragment;
+import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Drawer.ChooseClassifyFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 
 public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -19,12 +30,26 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
+    private IndexFragment mIndexFragment;
+    private ChooseClassifyFragment mChooseClassifyFragment;
+    private MyWalletFragment myWalletFragment;
+    private OrderListFragment mOrderListFragment;
+    private ToBeSuperFragment mToBeSuperFragment;
     private static  final int TITLE=R.string.app_name;
+    private int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 
     @Override
@@ -57,10 +82,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        IndexFragment indexFragment=new IndexFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,indexFragment).commit();
+        mIndexFragment=new IndexFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mIndexFragment).commit();
     }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -71,7 +95,17 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setSubmitButtonEnabled(true);
         return true;
     }
 
@@ -98,24 +132,51 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         mDrawerLayout.closeDrawer(mNavigationView);
+        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (menuItem.getItemId()){
             case R.id.nav_setclass:
+                setCurrentPage(R.id.nav_setclass);
+                if(mChooseClassifyFragment==null){
+                    mChooseClassifyFragment=new ChooseClassifyFragment();
+                }
+                fragmentManager.beginTransaction().replace(R.id.fragment_container,mChooseClassifyFragment).commit();
                 setFragmentTitle(R.string.nav_item_setclass);
                 return true;
             case R.id.nav_mybalance:
+                setCurrentPage(R.id.nav_mybalance);
+                if(myWalletFragment==null){
+                    myWalletFragment=new MyWalletFragment();
+                }
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, myWalletFragment).commit();
                 setFragmentTitle(R.string.nav_item_mybalance);
                 return true;
             case R.id.nav_myorder:
-                setFragmentTitle(R.string.nav_item_myorder);
+                if(getCurrentPage()!=R.id.nav_myorder){
+                    setCurrentPage(R.id.nav_myorder);
+                    mOrderListFragment=new OrderListFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, mOrderListFragment).commit();
+                    setFragmentTitle(R.string.nav_item_myorder);
+                }
                 return true;
             case R.id.nav_mycollect:
+                setCurrentPage(R.id.nav_mycollect);
                 setFragmentTitle(R.string.nav_item_mycollect);
                 return true;
             case R.id.nav_tobesuperman:
+                setCurrentPage(R.id.nav_tobesuperman);
+                if(mToBeSuperFragment==null){
+                    mToBeSuperFragment=new ToBeSuperFragment();
+                }
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, mToBeSuperFragment).commit();
                 setFragmentTitle(R.string.nav_item_tobesuperman);
                 return true;
             case R.id.nav_index:
-                setFragmentTitle(R.string.nav_item_index);
+                if(getCurrentPage()!=R.id.nav_index){
+                    setCurrentPage(R.id.nav_index);
+                    mIndexFragment=new IndexFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, mIndexFragment).commit();
+                    setFragmentTitle(R.string.nav_item_index);
+                }
                 return true;
         }
         return false;

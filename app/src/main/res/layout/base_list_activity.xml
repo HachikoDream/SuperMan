@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Fragment.Index.OneFragment">
+    tools:context="com.dreamspace.superman.UI.Fragment.Index.HandpickFragment">
     <include
         layout="@layout/custom_toolbar"></include>
     <LinearLayout

@@ -3,153 +3,146 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Activity.Person.ToBeSuperActivity">
+    tools:context="com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="80dp">
+        android:paddingBottom="80dp"
+        android:paddingLeft="63dp"
+        android:paddingRight="63dp"
+        android:paddingTop="13dp">
 
-        <include layout="@layout/custom_toolbar"></include>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/login_pho_mistake" />
 
-        <LinearLayout
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/gender_man"
+                android:layout_width="62dp"
+                android:layout_height="24dp"
+                android:background="@drawable/gender_man_bg"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="男"
+                android:textColor="@color/color_genderbutton" />
+
+            <RadioButton
+                android:id="@+id/gerder_woman"
+                android:layout_width="62dp"
+                android:layout_height="24dp"
+                android:background="@drawable/gender_woman_bg"
+                android:button="@null"
+                android:checked="false"
+                android:gravity="center"
+                android:text="女"
+                android:textColor="@color/color_genderbutton" />
+        </RadioGroup>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="63dp"
-            android:paddingRight="63dp"
-            android:paddingTop="13dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/login_pho_mistake" />
-
-            <RadioGroup
-                android:id="@+id/radiogroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/gender_man"
-                    android:layout_width="62dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/gender_man_bg"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="男"
-                    android:textColor="@color/color_genderbutton" />
-
-                <RadioButton
-                    android:id="@+id/gerder_woman"
-                    android:layout_width="62dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/gender_woman_bg"
-                    android:button="@null"
-                    android:checked="false"
-                    android:gravity="center"
-                    android:text="女"
-                    android:textColor="@color/color_genderbutton" />
-            </RadioGroup>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:hint="真实姓名"
-                    android:textSize="14sp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:inputType="number"
-                    android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:hint="联系电话"
-                    android:textSize="14sp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:hint="擅长技能"
-                    android:textSize="14sp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:hint="个性标签（例如：钢琴十级）"
-                    android:textSize="14sp" />
-            </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="97dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/near_white"
-                android:gravity="center"
-                android:hint="简要介绍所获荣誉"
-                android:padding="4dp"
-                android:textSize="12sp" />
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="真实姓名"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="97dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/near_white"
-                android:gravity="center"
-                android:hint="简要介绍个人情况"
-                android:padding="4dp"
-                android:textSize="12sp" />
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="联系电话"
+                android:inputType="number"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/mybtn"
-                android:layout_width="150dp"
-                android:layout_height="32dp"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="60dp"
-                android:background="@drawable/normal_button_bg"
-                android:gravity="center"
-                android:text="完成"
-                android:textColor="@android:color/white" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        </LinearLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="擅长技能"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="个性标签（例如：钢琴十级）"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/near_white"
+            android:gravity="center"
+            android:hint="简要介绍所获荣誉"
+            android:minHeight="97dp"
+            android:padding="4dp"
+            android:textSize="12sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/near_white"
+            android:gravity="center"
+            android:hint="简要介绍个人情况"
+            android:minHeight="97dp"
+            android:padding="4dp"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/mybtn"
+            android:layout_width="150dp"
+            android:layout_height="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/normal_button_bg"
+            android:gravity="center"
+            android:text="完成"
+            android:textColor="@android:color/white" />
+
     </LinearLayout>
 </ScrollView>

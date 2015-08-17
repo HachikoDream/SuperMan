@@ -82,5 +82,8 @@ public abstract class BasisAdapter<T,K> extends BaseAdapter {
     protected abstract void initViewHolder(View convertView,K holder);
 
     public abstract int getItemLayout();
-
+    public void removeItem(int position){
+      mEntities.remove(position);
+        notifyDataSetChanged();
+    }
 }

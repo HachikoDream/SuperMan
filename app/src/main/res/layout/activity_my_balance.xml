@@ -3,10 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Activity.Person.MyBalanceActivity">
-
-    <include
-        layout="@layout/custom_toolbar"></include>
+    tools:context="com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment">
 
     <TextView
         android:id="@+id/title"

@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dreamspace.superman.UI.Activity.Superman.EditCourseActivity">
+
+    <item
+        android:id="@+id/compelete_menu"
+        android:title="完成"
+        app:showAsAction="ifRoom"></item>
+</menu>
