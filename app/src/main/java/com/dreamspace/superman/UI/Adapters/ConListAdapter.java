@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.ConList;
 
 import java.util.ArrayList;
@@ -26,17 +27,22 @@ public class ConListAdapter extends BasisAdapter<ConList, ConListAdapter.viewHol
 
     @Override
     protected void setDataIntoView(viewHolder holder, ConList entity) {
-
+//        holder.timeTv.setText(entity.getTime());
+//        holder.nameTv.setText(entity.getName());
+        holder.latestContentTv.setText(entity.getLatestContent());
     }
 
     @Override
     protected void initViewHolder(View convertView, viewHolder holder) {
-
+        holder.avaterIv = (CircleImageView) convertView.findViewById(R.id.profile_image);
+        holder.latestContentTv = (TextView) convertView.findViewById(R.id.content_tv);
+        holder.nameTv= (TextView) convertView.findViewById(R.id.username_tv);
+        holder.timeTv= (TextView) convertView.findViewById(R.id.time_tv);
     }
 
     @Override
     public int getItemLayout() {
-        return 0;
+        return R.layout.view_con_list_item;
     }
 
     public static class viewHolder {

@@ -95,6 +95,7 @@
         <activity
             android:name=".UI.Activity.Main.ConListActivity"
             android:label="@string/title_activity_con_list" >
+
         </activity>
     </application>
 

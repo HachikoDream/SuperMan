@@ -14,7 +14,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
      <include
-         layout="@layout/common_swipemenu_refresh_layout"></include>
+         layout="@layout/common_swipe_refresh_layout"></include>
     </LinearLayout>
 
 </LinearLayout>

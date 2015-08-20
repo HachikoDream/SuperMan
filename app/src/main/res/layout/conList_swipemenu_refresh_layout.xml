@@ -9,9 +9,8 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="15dp"
-        android:background="@color/near_white"
-        android:divider="@color/main_bg">
+        android:dividerHeight="1dp"
+        android:divider="@color/grey_line">
 
     </com.baoyz.swipemenulistview.SwipeMenuListView>
 </android.support.v4.widget.SwipeRefreshLayout>

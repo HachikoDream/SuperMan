@@ -43,5 +43,5 @@
     <string name="title_activity_sm_introduce">达人主页</string>
     <string name="search_hint">输入课程或达人姓名进行搜索</string>
     <string name="title_activity_search_result">搜索结果</string>
-    <string name="title_activity_con_list">ConListActivity</string>
+    <string name="title_activity_con_list">消息</string>
 </resources>

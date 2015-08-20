@@ -10,11 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:orientation="vertical">
         <include
-            layout="@layout/common_swipemenu_refresh_layout"></include>
+            layout="@layout/conlist_swipemenu_refresh_layout"></include>
     </LinearLayout>
 
 </LinearLayout>

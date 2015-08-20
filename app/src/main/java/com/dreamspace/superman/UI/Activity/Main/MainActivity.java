@@ -2,6 +2,7 @@ package com.dreamspace.superman.UI.Activity.Main;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,9 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.Drawer.ChooseClassifyFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
@@ -35,6 +39,8 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private MyWalletFragment myWalletFragment;
     private OrderListFragment mOrderListFragment;
     private ToBeSuperFragment mToBeSuperFragment;
+    private RelativeLayout headerLayout;
+    private TextView mSettings;
     private static  final int TITLE=R.string.app_name;
     private int currentPage;
 
@@ -68,6 +74,20 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         mDrawerLayout=(DrawerLayout)findViewById(R.id.dl_left);
         mNavigationView=(NavigationView)findViewById(R.id.id_navigation);
         mNavigationView.setNavigationItemSelectedListener(this);
+        mSettings=(TextView)findViewById(R.id.footer_item_settings);
+        mSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+            }
+        });
+        headerLayout=(RelativeLayout)findViewById(R.id.header_layout);
+        headerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
         mDrawerToggle=new ActionBarDrawerToggle(this,mDrawerLayout,R.string.drawer_open,R.string.drawer_close){
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -120,7 +140,8 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_conversation) {
+            startActivity(new Intent(MainActivity.this,ConListActivity.class));
             return true;
         }
 
@@ -173,8 +194,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             case R.id.nav_index:
                 if(getCurrentPage()!=R.id.nav_index){
                     setCurrentPage(R.id.nav_index);
-                    mIndexFragment=new IndexFragment();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, mIndexFragment).commit();
+//                    if(mIndexFragment==null){
+                        mIndexFragment=new IndexFragment();
+//                    }
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, mIndexFragment).addToBackStack(null).commit();
                     setFragmentTitle(R.string.nav_item_index);
                 }
                 return true;

@@ -10,7 +10,9 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Adapters.ConListAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.model.ConList;
 import com.dreamspace.superman.model.Course;
 
 import java.util.ArrayList;
@@ -20,11 +22,11 @@ public class ConListActivity extends AbsActivity {
 
     private SwipeMenuListView mSwipeMenuListView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private IndexAdapter mAdapter;
+    private ConListAdapter mAdapter;
 
     @Override
     protected void setSelfContentView() {
-        setContentView(R.layout.activity_collection);
+        setContentView(R.layout.activity_con_list);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ConListActivity extends AbsActivity {
 
             }
         });
-        mAdapter=new IndexAdapter(this);
+        mAdapter=new ConListAdapter(this);
         mSwipeMenuListView=(SwipeMenuListView)findViewById(R.id.listview);
         mSwipeMenuListView.setAdapter(mAdapter);
         mSwipeMenuListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
@@ -63,6 +65,7 @@ public class ConListActivity extends AbsActivity {
                 return false;
             }
         });
+//        mSwipeMenuListView.
         getInitData();
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -84,22 +87,22 @@ public class ConListActivity extends AbsActivity {
 //        listView.smoothOpenMenu(position);
         mSwipeMenuListView.setMenuCreator(creator);
     }
-    public void refreshDate(List<Course> mEntities) {
+    public void refreshDate(List<ConList> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();
     }
     public void getInitData() {
         refreshDate(getTestData());
     }
-    public List<Course> getTestData() {
-        List<Course> mCourses = new ArrayList<>();
-        Course course;
+    public List<ConList> getTestData() {
+        List<ConList> mConLists = new ArrayList<>();
+        ConList mConList;
         for (int i = 0; i < 10; i++) {
-            course = new Course();
-            course.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
-            mCourses.add(course);
+            mConList = new ConList();
+            mConList.setLatestContent("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
+            mConLists.add(mConList);
         }
-        return mCourses;
+        return mConLists;
     }
 
 }
