@@ -7,53 +7,27 @@ import android.widget.Button;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.View.SelectorImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2015/8/13 0013.
  */
-public class ChooseClassifyFragment extends BaseFragment {
-    private SelectorImageView[] mSelectorImageViews = new SelectorImageView[11];
+public class ChooseClassifyFragment extends BaseLazyFragment {
+    @Bind({R.id.ball,R.id.it,R.id.body,R.id.educate,R.id.camera,R.id.swim,R.id.music,R.id.paint,R.id.dance,R.id.write,R.id.others})
+    SelectorImageView[] mSelectorImageViews = new SelectorImageView[11];
     private static String bfPackage = "com.dreamspace.superman.UI.Fragment.Index";
     private String[] mFragmentNames = {"BallFragment", "ITFragment", "GymFragment", "EducateFragment", "CameraFragment", "SwimFragment", "MusicFragment", "PaintFragment", "DanceFragment", "WriteFragment", "OthersFragment"};
     private List<String> mSelectedFNs=new ArrayList<>();
-    private Button mButton;
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_choose_classify;
-    }
+    @Bind(R.id.begin_read)
+    Button mButton;
 
-    @Override
-    public void initViews(View view) {
-        mButton= (Button) view.findViewById(R.id.begin_read);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Log.i("info", mSelectedFNs.toString());
-//                Intent intent=new Intent(ChooseClassifyActivity.this, IndexFragment.class);
-//                startActivity(intent);
-            }
-        });
-        mSelectorImageViews[0] = (SelectorImageView) view.findViewById(R.id.ball);
-        mSelectorImageViews[1] = (SelectorImageView) view.findViewById(R.id.it);
-        mSelectorImageViews[2] = (SelectorImageView) view.findViewById(R.id.body);
-        mSelectorImageViews[3] = (SelectorImageView) view.findViewById(R.id.educate);
-        mSelectorImageViews[4] = (SelectorImageView) view.findViewById(R.id.camera);
-        mSelectorImageViews[5] = (SelectorImageView) view.findViewById(R.id.swim);
-        mSelectorImageViews[6] = (SelectorImageView) view.findViewById(R.id.music);
-        mSelectorImageViews[7] = (SelectorImageView) view.findViewById(R.id.paint);
-        mSelectorImageViews[8] = (SelectorImageView) view.findViewById(R.id.dance);
-        mSelectorImageViews[9] = (SelectorImageView) view.findViewById(R.id.write);
-        mSelectorImageViews[10] = (SelectorImageView) view.findViewById(R.id.others);
-    }
-
-    @Override
-    public void initDatas() {
-
-    }
     public List<String> getSelectedNames() {
         return mSelectedFNs;
     }
@@ -65,4 +39,40 @@ public class ChooseClassifyFragment extends BaseFragment {
             }
         }
     }
+
+    @Override
+    protected void onFirstUserVisible() {
+
+    }
+
+    @Override
+    protected void onUserVisible() {
+
+    }
+
+    @Override
+    protected void onUserInvisible() {
+
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
+    protected void initViewsAndEvents() {
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+    }
+
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.activity_choose_classify;
+    }
+
 }

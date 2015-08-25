@@ -6,6 +6,7 @@ import android.view.View;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.CancelFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.CompleteFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.NoMeetFragment;
@@ -17,26 +18,38 @@ import com.dreamspace.superman.UI.View.SlidingTabStrip;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderListFragment extends BaseFragment {
+import butterknife.Bind;
 
-    private ViewPager mViewPager;
-    private SlidingTabLayout mSlidingTabLayout;
+public class OrderListFragment extends BaseLazyFragment {
+
+    @Bind(R.id.viewpager)
+     ViewPager mViewPager;
+    @Bind(R.id.sliding_layout)
+     SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
 
-
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_order_list;
+    protected void onFirstUserVisible() {
+
     }
 
     @Override
-    public void initViews(View view) {
-        mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_layout);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+    protected void onUserVisible() {
+
     }
 
     @Override
-    public void initDatas() {
+    protected void onUserInvisible() {
+
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
+    protected void initViewsAndEvents() {
         List<BaseFragment> mFragments = new ArrayList<>();
         mFragments.add(new SubscribeFragment());
         mFragments.add(new NopaymentFragment());
@@ -67,5 +80,10 @@ public class OrderListFragment extends BaseFragment {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
+    }
+
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.fragment_order_list;
     }
 }

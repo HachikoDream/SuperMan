@@ -22,12 +22,20 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Adapters.VPFragmentAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ChooseClassifyFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
+import com.dreamspace.superman.UI.View.XViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
 
 public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,16 +43,13 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
-    private IndexFragment mIndexFragment;
-    private ChooseClassifyFragment mChooseClassifyFragment;
-    private MyWalletFragment myWalletFragment;
-    private OrderListFragment mOrderListFragment;
-    private ToBeSuperFragment mToBeSuperFragment;
     private RelativeLayout headerLayout;
-    private CollectionFragment collectionFragment;
+    BaseLazyFragment fragments[] = {new IndexFragment(), new ChooseClassifyFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment()};
     private TextView mSettings;
-    private static  final int TITLE=R.string.app_name;
+    private static final int TITLE = R.string.app_name;
     private int currentPage;
+    @Bind(R.id.fragment_container)
+    XViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,28 +78,29 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
-        mDrawerLayout=(DrawerLayout)findViewById(R.id.dl_left);
-        mNavigationView=(NavigationView)findViewById(R.id.id_navigation);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
+        mNavigationView = (NavigationView) findViewById(R.id.id_navigation);
         mNavigationView.setNavigationItemSelectedListener(this);
-        mSettings=(TextView)findViewById(R.id.footer_item_settings);
+        mSettings = (TextView) findViewById(R.id.footer_item_settings);
         mSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             }
         });
-        headerLayout=(RelativeLayout)findViewById(R.id.header_layout);
+        headerLayout = (RelativeLayout) findViewById(R.id.header_layout);
         headerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
-        mDrawerToggle=new ActionBarDrawerToggle(this,mDrawerLayout,R.string.drawer_open,R.string.drawer_close){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu();
+                setTitle(getString(R.string.app_name));
             }
 
             @Override
@@ -104,8 +110,11 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mIndexFragment=new IndexFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mIndexFragment).commit();
+        if (null != fragments) {
+            mViewPager.setEnableScroll(false);
+            mViewPager.setOffscreenPageLimit(fragments.length / 2);
+            mViewPager.setAdapter(new VPFragmentAdapter(getSupportFragmentManager(), fragments));
+        }
     }
 
     @Override
@@ -143,70 +152,47 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_conversation) {
-            startActivity(new Intent(MainActivity.this,ConListActivity.class));
+            startActivity(new Intent(MainActivity.this, ConListActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-    private void setFragmentTitle(int id){
+
+    private void setFragmentTitle(int id) {
         getSupportActionBar().setTitle(getString(id));
     }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         mDrawerLayout.closeDrawer(mNavigationView);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
+            case R.id.nav_index:
+                mViewPager.setCurrentItem(0, false);
+                setFragmentTitle(R.string.nav_item_index);
+                return true;
             case R.id.nav_setclass:
-                setCurrentPage(R.id.nav_setclass);
-                if(mChooseClassifyFragment==null){
-                    mChooseClassifyFragment=new ChooseClassifyFragment();
-                }
-                fragmentManager.beginTransaction().replace(R.id.fragment_container,mChooseClassifyFragment).commit();
+                mViewPager.setCurrentItem(1, false);
                 setFragmentTitle(R.string.nav_item_setclass);
                 return true;
             case R.id.nav_mybalance:
-                setCurrentPage(R.id.nav_mybalance);
-                if(myWalletFragment==null){
-                    myWalletFragment=new MyWalletFragment();
-                }
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, myWalletFragment).commit();
+                mViewPager.setCurrentItem(2, false);
                 setFragmentTitle(R.string.nav_item_mybalance);
                 return true;
             case R.id.nav_myorder:
-                if(getCurrentPage()!=R.id.nav_myorder){
-                    setCurrentPage(R.id.nav_myorder);
-                    mOrderListFragment=new OrderListFragment();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, mOrderListFragment).commit();
-                    setFragmentTitle(R.string.nav_item_myorder);
-                }
+                mViewPager.setCurrentItem(3, false);
+                setFragmentTitle(R.string.nav_item_myorder);
                 return true;
             case R.id.nav_mycollect:
-                setCurrentPage(R.id.nav_mycollect);
-                if(collectionFragment==null){
-                    collectionFragment=new CollectionFragment();
-                }
-                fragmentManager.beginTransaction().replace(R.id.fragment_container,collectionFragment).commit();
+                mViewPager.setCurrentItem(4, false);
                 setFragmentTitle(R.string.nav_item_mycollect);
                 return true;
             case R.id.nav_tobesuperman:
-                setCurrentPage(R.id.nav_tobesuperman);
-                if(mToBeSuperFragment==null){
-                    mToBeSuperFragment=new ToBeSuperFragment();
-                }
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, mToBeSuperFragment).commit();
+                mViewPager.setCurrentItem(5, false);
                 setFragmentTitle(R.string.nav_item_tobesuperman);
                 return true;
-            case R.id.nav_index:
-                if(getCurrentPage()!=R.id.nav_index){
-                    setCurrentPage(R.id.nav_index);
-//                    if(mIndexFragment==null){
-                        mIndexFragment=new IndexFragment();
-//                    }
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, mIndexFragment).addToBackStack(null).commit();
-                    setFragmentTitle(R.string.nav_item_index);
-                }
-                return true;
+
         }
         return false;
     }

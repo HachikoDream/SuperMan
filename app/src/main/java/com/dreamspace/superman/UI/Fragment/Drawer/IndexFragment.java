@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.UI.Fragment.Index.BallFragment;
 import com.dreamspace.superman.UI.Fragment.Index.GymFragment;
@@ -24,13 +25,17 @@ import com.dreamspace.superman.model.Course;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IndexFragment extends Fragment {
+public class IndexFragment extends BaseLazyFragment {
 
-    private ViewPager mViewPager;
-    private SlidingTabLayout mSlidingTabLayout;
+    @Bind(R.id.viewpager)
+     ViewPager mViewPager;
+    @Bind(R.id.sliding_layout)
+     SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
     public IndexFragment() {
         // Required empty public constructor
@@ -38,20 +43,33 @@ public class IndexFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.i("TEST","on Create");
-        final View view = inflater.inflate(R.layout.fragment_index, container, false);
-        mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_layout);
+    protected void onFirstUserVisible() {
+
+    }
+
+    @Override
+    protected void onUserVisible() {
+
+    }
+
+    @Override
+    protected void onUserInvisible() {
+
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
+    protected void initViewsAndEvents() {
         List<BaseFragment> mFragments=new ArrayList<>();
         mFragments.add(new HandpickFragment());
         mFragments.add(new SwimFragment());
         mFragments.add(new GymFragment());
         mFragments.add(new BallFragment());
         mAdapter = new CommonFragmentAdapter(getChildFragmentManager(), mFragments);
-//        mAdapter = new CommonFragmentAdapter(getChildFragmentManager());
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
         mViewPager.setAdapter(mAdapter);
         mSlidingTabLayout.setFillTheWidth(false);
         mSlidingTabLayout.setViewPager(mViewPager);
@@ -74,25 +92,11 @@ public class IndexFragment extends Fragment {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
-        return view;
     }
 
-
-    private BaseListFragment<Course> getBaseListFt(String className){
-        try {
-            return (BaseListFragment<Course>) Class.forName(className).newInstance();
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private int getColor(int resID) {
-        return getResources().getColor(resID);
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.fragment_index;
     }
 
 

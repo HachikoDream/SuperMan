@@ -14,16 +14,21 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.Course;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionFragment extends BaseFragment {
+import butterknife.Bind;
 
-    private MenuLoadMoreListView mSwipeMenuListView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+public class CollectionFragment extends BaseLazyFragment {
+
+    @Bind(R.id.listview)
+    MenuLoadMoreListView mSwipeMenuListView;
+    @Bind(R.id.swiperefresh_id)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private IndexAdapter mAdapter;
 
 
@@ -50,14 +55,31 @@ public class CollectionFragment extends BaseFragment {
         return mCourses;
     }
 
+
+
+
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_collection;
+    protected void onFirstUserVisible() {
+
     }
 
     @Override
-    public void initViews(View view) {
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh_id);
+    protected void onUserVisible() {
+
+    }
+
+    @Override
+    protected void onUserInvisible() {
+
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
+    protected void initViewsAndEvents() {
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -68,7 +90,6 @@ public class CollectionFragment extends BaseFragment {
             }
         });
         mAdapter = new IndexAdapter(getActivity());
-        mSwipeMenuListView = (MenuLoadMoreListView) view.findViewById(R.id.listview);
         mSwipeMenuListView.setAdapter(mAdapter);
         mSwipeMenuListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         mSwipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -112,11 +133,11 @@ public class CollectionFragment extends BaseFragment {
                 }, 2000);
             }
         });
+
     }
 
     @Override
-    public void initDatas() {
-
+    protected int getContentViewLayoutID() {
+        return R.layout.fragment_collection;
     }
-
 }

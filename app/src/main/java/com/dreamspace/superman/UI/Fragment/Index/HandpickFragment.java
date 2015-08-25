@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyListFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
 import com.dreamspace.superman.model.Course;
@@ -22,21 +23,9 @@ public class HandpickFragment extends BaseListFragment<Course> {
     public static final String TAG = "精选";
 
     public HandpickFragment() {
-        // Required empty public constructor
         super(IndexAdapter.class);
-        setTAG(TAG);
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void initDatas() {
-        super.initDatas();
-    }
 
     @Override
     public void onPullUp() {
