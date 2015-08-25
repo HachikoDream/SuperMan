@@ -96,6 +96,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
+                android:inputType="textPassword"
                 android:hint="请输入不少于6个字符作为密码"
                 android:paddingLeft="50dp"
                 android:textSize="13sp" />

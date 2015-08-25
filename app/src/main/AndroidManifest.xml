@@ -72,9 +72,6 @@
             android:name=".UI.Activity.Superman.SmOrderDetailActvity"
             android:label="@string/title_activity_sm_order_detail_actvity" />
         <activity
-            android:name=".UI.Activity.Person.CollectionActivity"
-            android:label="@string/title_activity_collection" />
-        <activity
             android:name=".UI.Activity.Person.EvaluateActivity"
             android:label="@string/title_activity_evaluate" />
         <activity
@@ -98,5 +95,5 @@
 
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

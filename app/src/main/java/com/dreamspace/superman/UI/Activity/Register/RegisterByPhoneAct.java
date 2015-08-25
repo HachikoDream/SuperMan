@@ -1,16 +1,33 @@
 package com.dreamspace.superman.UI.Activity.Register;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 
-public class RegisterByPhoneAct extends AbsActivity {
+import butterknife.Bind;
+import butterknife.OnClick;
+// used to register when login with thirdplat
+public class RegisterByPhoneAct extends AbsActivity implements Handler.Callback {
+    @Bind(R.id.username_ev)
+    EditText usernameEt;
+    @Bind(R.id.verification_ed)
+    EditText verifyEt;
+    @Bind(R.id.send_vercode_btn)
+    Button sendBtn;
+    @Bind(R.id.mybtn)
+    Button registerBtn;
     private Toolbar mToolbar;
-    private final static int TITLE=R.string.title_activity_register_by_phone;
+    private final static int TITLE = R.string.title_activity_register_by_phone;
+    private String phoneNum;
+    private String code;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,34 +41,36 @@ public class RegisterByPhoneAct extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-
+        mHandler = new Handler(this);
     }
 
     @Override
     protected void initViews() {
-      getSupportActionBar().setTitle(getString(TITLE));
+        getSupportActionBar().setTitle(getString(TITLE));
+//      sendBtn.setOnClickListener(new on);
     }
 
+    @OnClick(R.id.send_vercode_btn)
+    void sendVerCode() {
+        phoneNum = usernameEt.getText().toString();
+        showWarningsIfInvalid();
+    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_register_by_phone, menu);
+    private boolean showWarningsIfInvalid() {
+        if (phoneNum.isEmpty()) {
+            Snackbar.make(usernameEt, "请先输入您的手机号", Snackbar.LENGTH_SHORT).show();
+            return false;
+        }
+        if (phoneNum.length() != 11) {
+            Snackbar.make(usernameEt, "请检查您的手机号是否正确", Snackbar.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public boolean handleMessage(Message msg) {
+        return false;
     }
 }

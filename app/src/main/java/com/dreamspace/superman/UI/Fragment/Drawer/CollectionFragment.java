@@ -1,15 +1,10 @@
-package com.dreamspace.superman.UI.Activity.Person;
+package com.dreamspace.superman.UI.Fragment.Drawer;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -17,37 +12,52 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.UI.Activity.BaseListAct;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.Course;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionActivity extends AbsActivity {
+public class CollectionFragment extends BaseFragment {
 
-    private SwipeMenuListView mSwipeMenuListView;
+    private MenuLoadMoreListView mSwipeMenuListView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private IndexAdapter mAdapter;
 
-    @Override
-    protected void setSelfContentView() {
-        setContentView(R.layout.activity_collection);
-    }
-
-    @Override
-    protected void prepareDatas() {
-
-    }
 
     public int dp2px(float dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpVal, getResources().getDisplayMetrics());
     }
 
+    public void refreshDate(List<Course> mEntities) {
+        mAdapter.setmEntities(mEntities);
+        mAdapter.notifyDataSetChanged();
+    }
+    public void getInitData() {
+        refreshDate(getTestData());
+    }
+    public List<Course> getTestData() {
+        List<Course> mCourses = new ArrayList<>();
+        Course course;
+        for (int i = 0; i < 10; i++) {
+            course = new Course();
+            course.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
+            mCourses.add(course);
+        }
+        return mCourses;
+    }
+
     @Override
-    protected void initViews() {
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh_id);
+    public int getLayoutId() {
+        return R.layout.fragment_collection;
+    }
+
+    @Override
+    public void initViews(View view) {
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh_id);
         mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -57,8 +67,8 @@ public class CollectionActivity extends AbsActivity {
 
             }
         });
-        mAdapter=new IndexAdapter(this);
-        mSwipeMenuListView=(SwipeMenuListView)findViewById(R.id.listview);
+        mAdapter = new IndexAdapter(getActivity());
+        mSwipeMenuListView = (MenuLoadMoreListView) view.findViewById(R.id.listview);
         mSwipeMenuListView.setAdapter(mAdapter);
         mSwipeMenuListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         mSwipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -78,7 +88,7 @@ public class CollectionActivity extends AbsActivity {
             public void create(SwipeMenu menu) {
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        CollectionActivity.this);
+                        getActivity());
                 // set item background
                 deleteItem.setBackground(R.color.delete_bg);
                 // set item width
@@ -89,25 +99,24 @@ public class CollectionActivity extends AbsActivity {
                 menu.addMenuItem(deleteItem);
             }
         };
-//        listView.smoothOpenMenu(position);
         mSwipeMenuListView.setMenuCreator(creator);
+        mSwipeMenuListView.setOnLoadMoreListener(new MenuLoadMoreListView.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        mSwipeMenuListView.setLoading(false);
+                    }
+                }, 2000);
+            }
+        });
     }
-    public void refreshDate(List<Course> mEntities) {
-        mAdapter.setmEntities(mEntities);
-        mAdapter.notifyDataSetChanged();
-    }
-    public void getInitData() {
-        refreshDate(getTestData());
-    }
-    public List<Course> getTestData() {
-        List<Course> mCourses = new ArrayList<>();
-        Course course;
-        for (int i = 0; i < 10; i++) {
-            course = new Course();
-            course.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
-            mCourses.add(course);
-        }
-        return mCourses;
+
+    @Override
+    public void initDatas() {
+
     }
 
 }

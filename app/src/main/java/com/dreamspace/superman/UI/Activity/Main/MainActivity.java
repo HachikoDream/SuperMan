@@ -23,6 +23,7 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.Drawer.ChooseClassifyFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
@@ -40,6 +41,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private OrderListFragment mOrderListFragment;
     private ToBeSuperFragment mToBeSuperFragment;
     private RelativeLayout headerLayout;
+    private CollectionFragment collectionFragment;
     private TextView mSettings;
     private static  final int TITLE=R.string.app_name;
     private int currentPage;
@@ -181,6 +183,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
                 return true;
             case R.id.nav_mycollect:
                 setCurrentPage(R.id.nav_mycollect);
+                if(collectionFragment==null){
+                    collectionFragment=new CollectionFragment();
+                }
+                fragmentManager.beginTransaction().replace(R.id.fragment_container,collectionFragment).commit();
                 setFragmentTitle(R.string.nav_item_mycollect);
                 return true;
             case R.id.nav_tobesuperman:

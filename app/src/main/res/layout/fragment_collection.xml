@@ -3,16 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="12dp"
     tools:context="com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment">
 
-    <include layout="@layout/custom_toolbar"></include>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <include
-            layout="@layout/conlist_swipemenu_refresh_layout"></include>
-    </LinearLayout>
+        <include layout="@layout/collection_swipemenu_refresh_layout"></include>
 
 </LinearLayout>

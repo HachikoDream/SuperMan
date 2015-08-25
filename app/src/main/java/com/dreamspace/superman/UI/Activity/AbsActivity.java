@@ -8,6 +8,8 @@ import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2015/7/25 0025.
  */
@@ -47,6 +49,7 @@ public abstract  class AbsActivity extends AppCompatActivity {
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
     }
 
 

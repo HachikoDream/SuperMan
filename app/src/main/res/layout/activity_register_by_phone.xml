@@ -23,6 +23,7 @@
             android:layout_weight="1">
 
             <EditText
+                android:inputType="number"
                 android:id="@+id/username_ev"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

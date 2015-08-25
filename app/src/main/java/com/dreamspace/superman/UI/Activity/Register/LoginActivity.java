@@ -62,6 +62,8 @@ public class LoginActivity extends AbsActivity {
     }
 
 
+
+
     private void onRadioClickListener(){
     switch (mRadioGroup.getCheckedRadioButtonId()){
         case R.id.login_btn:

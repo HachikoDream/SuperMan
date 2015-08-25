@@ -12,6 +12,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.ConListAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.ConList;
 import com.dreamspace.superman.model.Course;
 
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class ConListActivity extends AbsActivity {
 
-    private SwipeMenuListView mSwipeMenuListView;
+    private MenuLoadMoreListView mSwipeMenuListView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ConListAdapter mAdapter;
 
@@ -52,7 +53,7 @@ public class ConListActivity extends AbsActivity {
             }
         });
         mAdapter=new ConListAdapter(this);
-        mSwipeMenuListView=(SwipeMenuListView)findViewById(R.id.listview);
+        mSwipeMenuListView=(MenuLoadMoreListView)findViewById(R.id.listview);
         mSwipeMenuListView.setAdapter(mAdapter);
         mSwipeMenuListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         mSwipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -65,7 +66,6 @@ public class ConListActivity extends AbsActivity {
                 return false;
             }
         });
-//        mSwipeMenuListView.
         getInitData();
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -84,7 +84,6 @@ public class ConListActivity extends AbsActivity {
                 menu.addMenuItem(deleteItem);
             }
         };
-//        listView.smoothOpenMenu(position);
         mSwipeMenuListView.setMenuCreator(creator);
     }
     public void refreshDate(List<ConList> mEntities) {
