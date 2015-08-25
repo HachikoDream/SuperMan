@@ -26,10 +26,6 @@ public class CommonFragmentAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.mFragments = fragments;
     }
-    public CommonFragmentAdapter(FragmentManager fm) {
-        super(fm);
-        this.mFragments = new ArrayList<>();
-    }
 
     @Override
     public Fragment getItem(int position) {

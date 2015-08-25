@@ -1,6 +1,8 @@
 package com.dreamspace.superman.UI.Fragment.Orders.Person;
 
 import com.dreamspace.superman.UI.Adapters.OrderAdapter;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyListFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyOrderFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.model.Course;
 import com.dreamspace.superman.model.Order;
@@ -11,12 +13,12 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/8/3 0003.
  */
-public class SubscribeFragment extends BaseListFragment<Order> {
+public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
     private static final String TAG="预约";
 
     public SubscribeFragment() {
-        super(OrderAdapter.class);
-        setTAG(TAG);
+//        super(OrderAdapter.class);
+//        setTAG(TAG);
     }
 
     @Override
@@ -33,6 +35,12 @@ public class SubscribeFragment extends BaseListFragment<Order> {
     public void getInitData() {
         refreshDate(getTestDate());
     }
+
+    @Override
+    protected void onItemPicked(Order item, int position) {
+
+    }
+
     private List<Order> getTestDate(){
         List<Order> mOrders=new ArrayList<>();
         Order order;

@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HandpickFragment extends BaseListFragment<Course> {
-    public static final String TAG = "精选";
+public class HandpickFragment extends BaseLazyListFragment<Course> {
+    public static String TAG = "精选";
 
     public HandpickFragment() {
-        super(IndexAdapter.class);
+//        super(IndexAdapter.class);
     }
 
 
@@ -51,11 +51,12 @@ public class HandpickFragment extends BaseListFragment<Course> {
 
     @Override
     public void onItemPicked(Course mEntity, int position) {
-        Log.i("INFO",mEntity.toString());
+        Log.i("INFO", mEntity.toString());
     }
 
     @Override
     public void getInitData() {
+        Log.i("INFO","TAG IS :"+TAG);
       refreshDate(getTestData());
     }
     public List<Course> getTestData() {
@@ -67,6 +68,9 @@ public class HandpickFragment extends BaseListFragment<Course> {
             mCourses.add(course);
         }
         return mCourses;
+    }
+    public void onPageSelected(int position,String name){
+          TAG=name;
     }
 
 }

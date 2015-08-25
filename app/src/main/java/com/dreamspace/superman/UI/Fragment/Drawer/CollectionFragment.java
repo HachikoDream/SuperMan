@@ -98,7 +98,9 @@ public class CollectionFragment extends BaseLazyFragment {
 
                 Log.i("SWIP", "position:" + position);
                 // false : close the menu; true : not close the menu
-                mAdapter.removeItem(position);
+//                View view=mSwipeMenuListView.getChildAt(position);
+//                Log.i("INFO","position: "+position);
+//                mAdapter.removeItem(view,position);
                 return false;
             }
         });

@@ -67,7 +67,7 @@ public class CourseDetailInfoActivity extends AbsActivity {
             //覆盖滑动到指定Tab处的文字颜色
             @Override
             public int getSelectedTitleColor(int position) {
-                return color;
+                return normalColor;
             }
 
             @Override

@@ -18,16 +18,17 @@ import com.dreamspace.superman.R;
 /**
  * Created by Administrator on 2015/8/11 0011.
  */
-public class SelectorImageView extends ImageView {
+public class SelectorImageView extends ImageView implements View.OnClickListener {
     private Bitmap selectedBitmap;
-//    private Bitmap sourceBitmap;
+    //    private Bitmap sourceBitmap;
     private int width;
     private int height;
-    private boolean isSelected=false;
+    private boolean isSelected = false;
     private Rect mRect;
-    private float alpha=0.8f;
-    private static final String INFO="INFO";
+    private float alpha = 0.8f;
+    private static final String INFO = "INFO";
     private String name;
+
     public SelectorImageView(Context context) {
         this(context, null, 0);
     }
@@ -50,20 +51,21 @@ public class SelectorImageView extends ImageView {
         super(context, attrs, defStyleAttr);
 //        BitmapDrawable sourceBitmapDrawable= (BitmapDrawable) getDrawable();
 //        sourceBitmap=sourceBitmapDrawable.getBitmap();
-        BitmapDrawable bitmapDrawable=(BitmapDrawable)getResources().getDrawable(R.drawable.choose_class_rc);
-        selectedBitmap =bitmapDrawable.getBitmap();
-        width= selectedBitmap.getWidth();
-        height= selectedBitmap.getHeight();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.choose_class_rc);
+        selectedBitmap = bitmapDrawable.getBitmap();
+        width = selectedBitmap.getWidth();
+        height = selectedBitmap.getHeight();
+        setOnClickListener(this);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int sourceh=getMeasuredHeight();
-        int sourcew=getMeasuredWidth();
-        Log.i(INFO,"w: "+sourcew+" h:"+sourceh);
-        Log.i(INFO,"rcw: "+width+" rch:"+height);
-        mRect=new Rect(sourcew-width-20,sourceh-height-20,sourcew-20,sourceh-20);
+        int sourceh = getMeasuredHeight();
+        int sourcew = getMeasuredWidth();
+        Log.i(INFO, "w: " + sourcew + " h:" + sourceh);
+        Log.i(INFO, "rcw: " + width + " rch:" + height);
+        mRect = new Rect(sourcew - width - 20, sourceh - height - 20, sourcew - 20, sourceh - 20);
 
     }
 
@@ -75,53 +77,33 @@ public class SelectorImageView extends ImageView {
         return name;
     }
 
-    @Override
-    public void setOnClickListener(OnClickListener l) {
-        OnClickListener listener=new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(INFO,"onclick");
-                 reverseSelected();
-                setIsSelected(isSelected);
-
-            }
-        };
-        super.setOnClickListener(listener);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
-            case MotionEvent.ACTION_UP:
-                Log.i(INFO,"onTouch");
-                reverseSelected();
-                setIsSelected(isSelected);
-                break;
-        }
-        return true;
-    }
-
-    private void reverseSelected(){
-        isSelected=!isSelected;
+    private void reverseSelected() {
+        isSelected = !isSelected;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i(INFO,"ondraw in");
+        Log.i(INFO, "ondraw in");
         super.onDraw(canvas);
         setAlpha(1.0f);
-        if(isSelected){
-            Log.i(INFO,"on draw is selected in");
+        if (isSelected) {
+            Log.i(INFO, "on draw is selected in");
             setAlpha(alpha);
-            canvas.drawBitmap(selectedBitmap,null,mRect,null);
+            canvas.drawBitmap(selectedBitmap, null, mRect, null);
         }
     }
 
     private void validateView() {
-        if(Looper.getMainLooper()==Looper.myLooper()){
+        if (Looper.getMainLooper() == Looper.myLooper()) {
             invalidate();
-        }else{
+        } else {
             postInvalidate();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        reverseSelected();
+        setIsSelected(isSelected);
     }
 }

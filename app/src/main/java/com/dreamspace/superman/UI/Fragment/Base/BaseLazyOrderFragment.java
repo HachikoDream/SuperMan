@@ -1,6 +1,5 @@
 package com.dreamspace.superman.UI.Fragment.Base;
 
-import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -9,10 +8,10 @@ import android.widget.AdapterView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Adapters.OrderAdapter;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
+import com.dreamspace.superman.model.Order;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import butterknife.Bind;
@@ -20,17 +19,12 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2015/8/25 0025.
  */
-public abstract class BaseLazyListFragment<T> extends BaseLazyFragment {
+public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
     @Bind(R.id.load_more_lv)
     LoadMoreListView moreListView;
     private BasisAdapter mAdapter;
     @Bind(R.id.swiperefresh_id)
     SwipeRefreshLayout mSwipeRefreshLayout;
-//    private Class<?extends BasisAdapter> mAClass;
-
-//    public BaseLazyListFragment(Class<? extends BasisAdapter> mAClass) {
-//        this.mAClass = mAClass;
-//    }
 
     @Override
     protected void onFirstUserVisible() {
@@ -84,7 +78,7 @@ public abstract class BaseLazyListFragment<T> extends BaseLazyFragment {
 //        } catch (IllegalAccessException e) {
 //            e.printStackTrace();
 //        }
-        mAdapter=new IndexAdapter(getActivity());
+        mAdapter=new OrderAdapter(getActivity());
         moreListView.setAdapter(mAdapter);
         moreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -96,6 +90,10 @@ public abstract class BaseLazyListFragment<T> extends BaseLazyFragment {
 
     }
 
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.base_list_fragment;
+    }
     protected abstract void getInitData();
 
     protected abstract void onItemPicked(T item, int position);
@@ -103,20 +101,8 @@ public abstract class BaseLazyListFragment<T> extends BaseLazyFragment {
     protected abstract void onPullUp();
 
     protected abstract void onPullDown();
-
-    @Override
-    protected int getContentViewLayoutID() {
-        return R.layout.base_list_fragment;
-    }
-    public void onPullUpFinished(){
-        moreListView.setLoading(false);
-    }
-    public void onPullDownFinished(){
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
     public void refreshDate(List<T> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();
     }
-    
 }

@@ -8,7 +8,7 @@
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_bg">
+        android:background="@color/select_tab_color">
 
     </com.dreamspace.superman.UI.View.SlidingTabLayout>
 

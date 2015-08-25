@@ -4,13 +4,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment">
-   <com.dreamspace.superman.UI.View.SlidingTabLayout
-        android:id="@+id/sliding_layout"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:background="@color/select_tab_color">
+        android:orientation="horizontal">
 
-    </com.dreamspace.superman.UI.View.SlidingTabLayout>
+        <com.dreamspace.superman.UI.View.smartlayout.SmartTabLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sliding_layout"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@color/select_tab_color"
+            app:stl_indicatorInterpolation="smart"
+            app:stl_indicatorColor="@color/navi_color"
+            app:stl_indicatorThickness="3dp"
+            app:stl_indicatorCornerRadius="2dp"
+            app:stl_dividerColor="@android:color/transparent"
+            app:stl_dividerThickness="0dp"
+            app:stl_underlineColor="@android:color/transparent"
+            app:stl_defaultTabTextColor="@android:color/white"
+            app:stl_defaultTabTextSize="13sp"
+            app:stl_defaultTabTextHorizontalPadding="20dp"/>
+
+        <ImageView
+            android:id="@+id/choose_classify"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@color/select_tab_color"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:src="@drawable/select_classify_ig" />
+
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

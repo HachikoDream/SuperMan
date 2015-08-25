@@ -62,7 +62,7 @@ public class ConListActivity extends AbsActivity {
 
                 Log.i("SWIP", "position:" + position);
                 // false : close the menu; true : not close the menu
-                mAdapter.removeItem(position);
+//                mAdapter.removeItem(mSwipeMenuListView.getChildAt(position),position);
                 return false;
             }
         });

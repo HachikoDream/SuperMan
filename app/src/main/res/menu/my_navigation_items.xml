@@ -8,10 +8,6 @@
             android:title="@string/nav_item_index" />
 
         <item
-            android:id="@+id/nav_setclass"
-            android:icon="@drawable/side_class"
-            android:title="@string/nav_item_setclass" />
-        <item
             android:id="@+id/nav_mybalance"
             android:icon="@drawable/side_account"
             android:title="@string/nav_item_mybalance" />

@@ -3,12 +3,11 @@ package com.dreamspace.superman.UI.Activity.Main;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,19 +20,14 @@ import android.widget.TextView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
-import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Adapters.VPFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
-import com.dreamspace.superman.UI.Fragment.Drawer.ChooseClassifyFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 import com.dreamspace.superman.UI.View.XViewPager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 
@@ -44,7 +38,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
     private RelativeLayout headerLayout;
-    BaseLazyFragment fragments[] = {new IndexFragment(), new ChooseClassifyFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment()};
+    BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment()};
     private TextView mSettings;
     private static final int TITLE = R.string.app_name;
     private int currentPage;
@@ -112,7 +106,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         if (null != fragments) {
             mViewPager.setEnableScroll(false);
-            mViewPager.setOffscreenPageLimit(fragments.length / 2);
+            mViewPager.setOffscreenPageLimit(fragments.length);
             mViewPager.setAdapter(new VPFragmentAdapter(getSupportFragmentManager(), fragments));
         }
     }
@@ -172,24 +166,20 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
                 mViewPager.setCurrentItem(0, false);
                 setFragmentTitle(R.string.nav_item_index);
                 return true;
-            case R.id.nav_setclass:
-                mViewPager.setCurrentItem(1, false);
-                setFragmentTitle(R.string.nav_item_setclass);
-                return true;
             case R.id.nav_mybalance:
-                mViewPager.setCurrentItem(2, false);
+                mViewPager.setCurrentItem(1, false);
                 setFragmentTitle(R.string.nav_item_mybalance);
                 return true;
             case R.id.nav_myorder:
-                mViewPager.setCurrentItem(3, false);
+                mViewPager.setCurrentItem(2, false);
                 setFragmentTitle(R.string.nav_item_myorder);
                 return true;
             case R.id.nav_mycollect:
-                mViewPager.setCurrentItem(4, false);
+                mViewPager.setCurrentItem(3, false);
                 setFragmentTitle(R.string.nav_item_mycollect);
                 return true;
             case R.id.nav_tobesuperman:
-                mViewPager.setCurrentItem(5, false);
+                mViewPager.setCurrentItem(4, false);
                 setFragmentTitle(R.string.nav_item_tobesuperman);
                 return true;
 

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
+import com.dreamspace.superman.UI.Adapters.OrderContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.CancelFragment;
@@ -14,8 +15,10 @@ import com.dreamspace.superman.UI.Fragment.Orders.Person.NopaymentFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
+import com.dreamspace.superman.model.FragEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -26,7 +29,7 @@ public class OrderListFragment extends BaseLazyFragment {
      ViewPager mViewPager;
     @Bind(R.id.sliding_layout)
      SlidingTabLayout mSlidingTabLayout;
-    private CommonFragmentAdapter mAdapter;
+    private OrderContainerPagerAdapter mAdapter;
 
     @Override
     protected void onFirstUserVisible() {
@@ -50,17 +53,13 @@ public class OrderListFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        List<BaseFragment> mFragments = new ArrayList<>();
-        mFragments.add(new SubscribeFragment());
-        mFragments.add(new NopaymentFragment());
-        mFragments.add(new NoMeetFragment());
-        mFragments.add(new CompleteFragment());
-        mFragments.add(new CancelFragment());
-        mAdapter = new CommonFragmentAdapter(getChildFragmentManager(), mFragments);
+        List<String> mEntities = Arrays.asList(getResources().getStringArray(R.array.order_list_item));
+        mAdapter = new OrderContainerPagerAdapter(getChildFragmentManager(), mEntities);
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(mEntities.size());
         final int color = getResources().getColor(R.color.navi_color);
-        final int normalcolor = getResources().getColor(R.color.near_black);
-        mSlidingTabLayout.setStartColor(normalcolor);
+        final int startcolr=getResources().getColor(R.color.near_white);
+        mSlidingTabLayout.setStartColor(startcolr);
         mSlidingTabLayout.setFillTheWidth(false);
         mSlidingTabLayout.setViewPager(mViewPager);
         SlidingTabStrip.SimpleTabColorizer colorizer = new SlidingTabStrip.SimpleTabColorizer() {
@@ -71,12 +70,12 @@ public class OrderListFragment extends BaseLazyFragment {
 
             @Override
             public int getSelectedTitleColor(int position) {
-                return color;
+                return startcolr;
             }
 
             @Override
             public int getNormalTitleColor(int position) {
-                return normalcolor;
+                return startcolr;
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);

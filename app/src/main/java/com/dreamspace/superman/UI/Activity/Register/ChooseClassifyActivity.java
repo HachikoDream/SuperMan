@@ -5,20 +5,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.View.SelectorImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
 
 public class ChooseClassifyActivity extends AbsActivity {
-    private SelectorImageView[] mSelectorImageViews = new SelectorImageView[11];
-    private static String bfPackage = "com.dreamspace.superman.UI.Fragment.Index";
-    private String[] mFragmentNames = {"BallFragment", "ITFragment", "GymFragment", "EducateFragment", "CameraFragment", "SwimFragment", "MusicFragment", "PaintFragment", "DanceFragment", "WriteFragment", "OthersFragment"};
-    private List<String> mSelectedFNs=new ArrayList<>();
-    private Button mButton;
+    @Bind({R.id.ball, R.id.it, R.id.body, R.id.educate, R.id.camera, R.id.swim, R.id.music, R.id.paint, R.id.dance, R.id.write, R.id.others})
+    SelectorImageView[]
+            mSelectorImageViews = new SelectorImageView[11];
+    private String[] mFragmentNames = {"球类运动", "IT技术", "健身", "教育", "摄影", "游泳", "器乐", "绘画", "舞蹈", "写作", "其他"};
+    private List<String> mSelectedFNs = new ArrayList<>();
+    @Bind(R.id.begin_read)
+    Button mButton;
+    private static final String COME_FROM_INDEX = "INDEX";
+    private Map<String, SelectorImageView> maps = new HashMap<>();
+
     @Override
     protected void setSelfContentView() {
         setContentView(R.layout.activity_choose_classify);
@@ -26,31 +36,38 @@ public class ChooseClassifyActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-
+        for (int i = 0; i < mSelectorImageViews.length; i++) {
+            maps.put(mFragmentNames[i], mSelectorImageViews[i]);
+        }
     }
 
     @Override
     protected void initViews() {
-        mButton= (Button) findViewById(R.id.begin_read);
+        showSelectedItems();
+        final String source = this.getIntent().getStringExtra("SOURCE");
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info",mSelectedFNs.toString());
-                Intent intent=new Intent(ChooseClassifyActivity.this, IndexFragment.class);
-                startActivity(intent);
+                Log.i("INFO", "source: " + source);
+                fillSelectedIds();
+                PreferenceUtils.writeClassifyIntoSp(ChooseClassifyActivity.this.getApplicationContext(), mSelectedFNs);
+                if (source.equals(COME_FROM_INDEX)) {
+                    ChooseClassifyActivity.this.setResult(RESULT_OK);
+                    ChooseClassifyActivity.this.finish();
+                } else {
+                    finish();
+                }
             }
         });
-        mSelectorImageViews[0] = (SelectorImageView) findViewById(R.id.ball);
-        mSelectorImageViews[1] = (SelectorImageView) findViewById(R.id.it);
-        mSelectorImageViews[2] = (SelectorImageView) findViewById(R.id.body);
-        mSelectorImageViews[3] = (SelectorImageView) findViewById(R.id.educate);
-        mSelectorImageViews[4] = (SelectorImageView) findViewById(R.id.camera);
-        mSelectorImageViews[5] = (SelectorImageView) findViewById(R.id.swim);
-        mSelectorImageViews[6] = (SelectorImageView) findViewById(R.id.music);
-        mSelectorImageViews[7] = (SelectorImageView) findViewById(R.id.paint);
-        mSelectorImageViews[8] = (SelectorImageView) findViewById(R.id.dance);
-        mSelectorImageViews[9] = (SelectorImageView) findViewById(R.id.write);
-        mSelectorImageViews[10] = (SelectorImageView) findViewById(R.id.others);
+    }
+
+    private void showSelectedItems() {
+        List<String> mSeleted = PreferenceUtils.getClassifyItems(getApplicationContext());
+        for (String item : mSeleted) {
+            SelectorImageView view = maps.get(item);
+            if (view != null)
+                view.setIsSelected(true);
+        }
     }
 
     public List<String> getSelectedNames() {

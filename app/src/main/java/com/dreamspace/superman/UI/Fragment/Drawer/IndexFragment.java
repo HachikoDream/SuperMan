@@ -1,28 +1,24 @@
 package com.dreamspace.superman.UI.Fragment.Drawer;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Activity.Register.ChooseClassifyActivity;
+import com.dreamspace.superman.UI.Adapters.IndexContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
-import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
-import com.dreamspace.superman.UI.Fragment.Index.BallFragment;
-import com.dreamspace.superman.UI.Fragment.Index.GymFragment;
 import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
-import com.dreamspace.superman.UI.Fragment.Index.SwimFragment;
-import com.dreamspace.superman.UI.View.SlidingTabLayout;
-import com.dreamspace.superman.UI.View.SlidingTabStrip;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.UI.View.smartlayout.SmartTabLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,10 +29,15 @@ import butterknife.Bind;
 public class IndexFragment extends BaseLazyFragment {
 
     @Bind(R.id.viewpager)
-     ViewPager mViewPager;
+    ViewPager mViewPager;
     @Bind(R.id.sliding_layout)
-     SlidingTabLayout mSlidingTabLayout;
-    private CommonFragmentAdapter mAdapter;
+    SmartTabLayout mSlidingTabLayout;
+    @Bind(R.id.choose_classify)
+    ImageView mImageView;
+    private IndexContainerPagerAdapter mAdapter;
+    private static final int REQUEST_CHOOSE_CLASSIFY = 233;
+    private int tabHeight;
+
     public IndexFragment() {
         // Required empty public constructor
     }
@@ -64,34 +65,66 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        List<BaseFragment> mFragments=new ArrayList<>();
-        mFragments.add(new HandpickFragment());
-        mFragments.add(new SwimFragment());
-        mFragments.add(new GymFragment());
-        mFragments.add(new BallFragment());
-        mAdapter = new CommonFragmentAdapter(getChildFragmentManager(), mFragments);
+        final List<String> items = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
+        mAdapter = new IndexContainerPagerAdapter(getChildFragmentManager(), items);
         mViewPager.setAdapter(mAdapter);
-        mSlidingTabLayout.setFillTheWidth(false);
+        mViewPager.setOffscreenPageLimit(items.size());
         mSlidingTabLayout.setViewPager(mViewPager);
-        final int color = getResources().getColor(R.color.navi_color);
-        final int normalcolor=getResources().getColor(R.color.near_white);
-        SlidingTabStrip.SimpleTabColorizer colorizer = new SlidingTabStrip.SimpleTabColorizer() {
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public int getIndicatorColor(int position) {
-                return color;
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
-            public int getSelectedTitleColor(int position) {
-                return color;
+            public void onPageSelected(int position) {
+//                HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, position);
+//                fragment.onPageSelected(position, items.get(position));
             }
 
             @Override
-            public int getNormalTitleColor(int position) {
-                return normalcolor;
+            public void onPageScrollStateChanged(int state) {
+
             }
-        };
-        mSlidingTabLayout.setCustomTabColorizer(colorizer);
+        });
+
+//        ViewTreeObserver vto = mSlidingTabLayout.getViewTreeObserver();
+//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                mSlidingTabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);//removeOnGlobalLayoutListener
+//                tabHeight = mSlidingTabLayout.getHeight();
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, tabHeight);
+//                mImageView.setLayoutParams(params);
+//            }
+//        });
+//        final int color = getResources().getColor(R.color.navi_color);
+//        final int normalcolor = getResources().getColor(R.color.near_white);
+//        SlidingTabStrip.SimpleTabColorizer colorizer = new SlidingTabStrip.SimpleTabColorizer() {
+//            @Override
+//            public int getIndicatorColor(int position) {
+//                return color;
+//            }
+//
+//            @Override
+//            public int getSelectedTitleColor(int position) {
+//                return color;
+//            }
+//
+//            @Override
+//            public int getNormalTitleColor(int position) {
+//                return normalcolor;
+//            }
+//        };
+//        mSlidingTabLayout.setCustomTabColorizer(colorizer);
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString("SOURCE", "INDEX");
+                readyGoForResult(ChooseClassifyActivity.class, REQUEST_CHOOSE_CLASSIFY, b);
+            }
+        });
     }
 
     @Override
@@ -100,5 +133,12 @@ public class IndexFragment extends BaseLazyFragment {
     }
 
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //从sp获取数据 刷新viewpager项目
+        if (resultCode == Activity.RESULT_OK) {
+            mAdapter.setmCategoryList(PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()));
+            mSlidingTabLayout.setViewPager(mViewPager);
+        }
+    }
 }
