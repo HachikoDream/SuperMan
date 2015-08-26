@@ -1,4 +1,4 @@
-package com.dreamspace.superman.model;
+package com.dreamspace.superman.model.api;
 
 /**
  * Created by Administrator on 2015/8/20 0020.

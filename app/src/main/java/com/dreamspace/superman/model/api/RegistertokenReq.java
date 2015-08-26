@@ -1,9 +1,9 @@
-package com.dreamspace.superman.model;
+package com.dreamspace.superman.model.api;
 
 /**
  * Created by Administrator on 2015/8/24 0024.
  */
-public class RegisterReq {
+public class RegistertokenReq {
     private String phone;
     private String code;
     private String password;

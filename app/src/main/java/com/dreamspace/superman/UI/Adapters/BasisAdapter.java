@@ -85,9 +85,9 @@ public abstract class BasisAdapter<T, K> extends BaseAdapter {
 
     public abstract int getItemLayout();
 
-    public void removeItem(View view, final int position) {
-        Animation animation= AnimationUtils.loadAnimation(mContext,android.R.anim.slide_out_right);
-        view.startAnimation(animation);
+    public void removeItem(int position) {
+//        Animation animation= AnimationUtils.loadAnimation(mContext,android.R.anim.slide_out_right);
+//        view.startAnimation(animation);
         mEntities.remove(position);
         notifyDataSetChanged();
 

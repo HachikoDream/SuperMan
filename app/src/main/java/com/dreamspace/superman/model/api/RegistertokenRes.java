@@ -1,9 +1,9 @@
-package com.dreamspace.superman.model;
+package com.dreamspace.superman.model.api;
 
 /**
  * Created by Administrator on 2015/8/24 0024.
  */
-public class RegisterRes {
+public class RegistertokenRes {
     private String register_token;
 
     public String getRegister_token() {

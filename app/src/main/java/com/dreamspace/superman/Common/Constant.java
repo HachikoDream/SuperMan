@@ -7,5 +7,6 @@ import java.util.Map;
  */
 public class Constant {
     public static String BASE_URL="http://api2.hloli.me:9777/v1.0";
-//    public static Map<>
+    public static final String FEMALE="female";
+    public static final String MALE="male";
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dreamspace.superman" >
+    package="com.dreamspace.superman">
 
     <application
+        android:name=".UI.SmApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".UI.SmApplication"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".UI.Activity.Main.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +26,8 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".UI.Activity.Register.RegisterInfoActivity"
-            android:label="@string/title_activity_register_info" />
+            android:label="@string/title_activity_register_info" >
+        </activity>
         <activity
             android:name=".UI.Activity.Register.RegisterByPhoneAct"
             android:label="@string/title_activity_register_by_phone" />
@@ -77,11 +78,10 @@
             android:label="@string/title_activity_evaluate" />
         <activity
             android:name=".UI.Activity.Superman.SmIntroduceActivity"
-            android:label="@string/title_activity_sm_introduce" >
-        </activity>
+            android:label="@string/title_activity_sm_introduce"></activity>
         <activity
             android:name=".UI.Activity.Main.SearchResultActivity"
-            android:label="@string/title_activity_search_result" >
+            android:label="@string/title_activity_search_result">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -92,9 +92,22 @@
         </activity>
         <activity
             android:name=".UI.Activity.Main.ConListActivity"
-            android:label="@string/title_activity_con_list" >
+            android:label="@string/title_activity_con_list">
 
         </activity>
+        <activity
+            android:name="me.iwf.photopicker.PhotoPickerActivity"
+            android:theme="@style/PhotoAppTheme" />
+
+        <activity
+            android:name="me.iwf.photopicker.PhotoPagerActivity"
+            android:theme="@style/PhotoAppTheme" />
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 </manifest>

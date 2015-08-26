@@ -1,5 +1,9 @@
 package com.dreamspace.superman.Common;
 
+import com.dreamspace.superman.model.api.ErrorRes;
+
+import retrofit.RetrofitError;
+
 /**
  * Created by Administrator on 2015/8/25 0025.
  */
@@ -11,4 +15,9 @@ public class CommonUtils {
             return false;
         }
     }
+
+    public static ErrorRes getErrorInfo(RetrofitError error){
+        return (ErrorRes) error.getBodyAs(ErrorRes.class);
+    }
+
 }

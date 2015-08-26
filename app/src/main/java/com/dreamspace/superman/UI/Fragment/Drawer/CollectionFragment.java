@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -17,7 +18,6 @@ import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.Course;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +30,6 @@ public class CollectionFragment extends BaseLazyFragment {
     @Bind(R.id.swiperefresh_id)
     SwipeRefreshLayout mSwipeRefreshLayout;
     private IndexAdapter mAdapter;
-
-
     public int dp2px(float dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpVal, getResources().getDisplayMetrics());
@@ -100,7 +98,7 @@ public class CollectionFragment extends BaseLazyFragment {
                 // false : close the menu; true : not close the menu
 //                View view=mSwipeMenuListView.getChildAt(position);
 //                Log.i("INFO","position: "+position);
-//                mAdapter.removeItem(view,position);
+                mAdapter.removeItem(position);
                 return false;
             }
         });

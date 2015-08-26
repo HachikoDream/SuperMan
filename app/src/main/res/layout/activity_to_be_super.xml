@@ -41,7 +41,7 @@
                 android:textColor="@color/color_genderbutton" />
 
             <RadioButton
-                android:id="@+id/gerder_woman"
+                android:id="@+id/gender_woman"
                 android:layout_width="62dp"
                 android:layout_height="24dp"
                 android:background="@drawable/gender_woman_bg"

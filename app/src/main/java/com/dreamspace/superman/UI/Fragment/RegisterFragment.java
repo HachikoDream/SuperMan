@@ -1,37 +1,31 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.dreamspace.superman.API.GetService;
+import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.API.SupermanService;
+import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Register.RegisterInfoActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
-import com.dreamspace.superman.model.ErrorRes;
-import com.dreamspace.superman.model.RegisterReq;
-import com.dreamspace.superman.model.RegisterRes;
-import com.dreamspace.superman.model.SendVerifyReq;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.Objects;
+import com.dreamspace.superman.model.api.ErrorRes;
+import com.dreamspace.superman.model.api.RegistertokenReq;
+import com.dreamspace.superman.model.api.RegistertokenRes;
+import com.dreamspace.superman.model.api.SendVerifyReq;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.converter.ConversionException;
-import retrofit.converter.GsonConverter;
-import retrofit.mime.TypedInput;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,40 +68,47 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     @OnClick(R.id.send_vercode_btn)
     void sendVerifyCode() {
         if (isPhoneValid()) {
-            SendVerifyReq req = new SendVerifyReq();
-            req.setPhone(phoneNum);
-            mService.sendVerifyCode(req, new Callback<Response>() {
-                @Override
-                public void success(Response o, Response response) {
-                    sendVerifyBtn.setEnabled(false);
-                    mHandler.sendEmptyMessageDelayed(BEGIN_TIMER, 1000);
-                }
+            if (NetUtils.isNetworkConnected(getActivity())) {
+                SendVerifyReq req = new SendVerifyReq();
+                req.setPhone(phoneNum);
+                mService.sendVerifyCode(req, new Callback<Response>() {
+                    @Override
+                    public void success(Response o, Response response) {
+                        sendVerifyBtn.setEnabled(false);
+                        mHandler.sendEmptyMessage(BEGIN_TIMER);
+                    }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    showError();
-                }
-            });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        showInnerError(error);
+                    }
+                });
+            } else {
+                showNetWorkError();
+            }
+
         }
     }
 
     @OnClick(R.id.mybtn)
     void Register() {
         if (isRegisterValid()) {
-            final RegisterReq req = new RegisterReq();
+            final RegistertokenReq req = new RegistertokenReq();
             req.setPhone(phoneNum);
             req.setPassword(pwd);
             req.setCode(code);
-            mService.createRegisterToken(req, new Callback<RegisterRes>() {
+            mService.createRegisterToken(req, new Callback<RegistertokenRes>() {
                 @Override
-                public void success(RegisterRes s, Response response) {
-                    Log.i("INFO", response.getReason());
-                    Log.i("INFO", response.getStatus() + "");
-//                    ErrorRes res= (ErrorRes) getBodyAs(response.getBody(),new TypeToken<ErrorRes>(){
-//
-//                    }.getType());
-//                    Log.i("INFO",res.toString());
-
+                public void success(RegistertokenRes s, Response response) {
+                    if(response.getStatus()==200){
+                        register_token=s.getRegister_token();
+                        Bundle b=new Bundle();
+                        b.putString("token",register_token);
+                        readyGo(RegisterInfoActivity.class, b);
+                        killSelf();
+                    }else{
+                        showToast(response.getReason());
+                    }
                 }
 
                 @Override
@@ -119,24 +120,16 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
             });
         }
     }
-    private Object getBodyAs(TypedInput input,Type type){
-        GsonConverter converter=new GsonConverter(new Gson());
-        try {
-            return converter.fromBody(input,type);
-        } catch (ConversionException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private void killSelf(){
+        mHandler.removeMessages(BEGIN_TIMER);
+        getActivity().finish();
     }
 
-    private void showError() {
-        showMsgBySnapbar("请检查您的网络环境");
-    }
 
     private boolean isPhoneValid() {
         phoneNum = phoneNumEt.getText().toString();
         if (phoneNum.isEmpty()) {
-            showMsgBySnapbar("请先输入您的手机号");
+            showToast("请先输入您的手机号");
             return false;
         }
         return true;
@@ -145,43 +138,39 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     private boolean isRegisterValid() {
         code = verifyEt.getText().toString();
         pwd = pwdEt.getText().toString();
-        phoneNum=phoneNumEt.getText().toString();
-        if(phoneNum.isEmpty()){
-            showMsgBySnapbar("请先输入您的手机号");
+        phoneNum = phoneNumEt.getText().toString();
+        if (phoneNum.isEmpty()) {
+            showToast("请先输入您的手机号");
             phoneNumEt.requestFocus();
             return false;
         }
-        if(phoneNum.length()!=11){
-            showMsgBySnapbar("请检查您的手机号是否正确");
+        if (phoneNum.length() != 11) {
+            showToast("请检查您的手机号是否正确");
             phoneNumEt.requestFocus();
             return false;
         }
         if (code.isEmpty()) {
-            showMsgBySnapbar("请先输入您输入的验证码");
+            showToast("请先输入您输入的验证码");
             verifyEt.requestFocus();
             return false;
         }
         if (pwd.isEmpty()) {
-            showMsgBySnapbar("请先输入密码");
+            showToast("请先输入密码");
             pwdEt.requestFocus();
             return false;
         }
         if (pwd.length() <= 6) {
-            showMsgBySnapbar("请输入不少于6个长度的密码");
+            showToast("请输入不少于6个长度的密码");
             pwdEt.requestFocus();
             return false;
         }
         return true;
     }
 
-    private void showMsgBySnapbar(String msg) {
-        Snackbar.make(phoneNumEt, msg, Snackbar.LENGTH_SHORT).show();
-    }
-
     @Override
     public void initDatas() {
         mHandler = new Handler(this);
-        mService = GetService.getService(GetService.getRestClient());
+        mService = ApiManager.getService();
     }
 
 
@@ -190,13 +179,17 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
         if (msg.what == BEGIN_TIMER) {
             if (Timer == 0) {
-                sendVerifyBtn.setEnabled(true);
-                sendVerifyBtn.setText(text);
-                Timer = 60;
+                if(sendVerifyBtn!=null){
+                    sendVerifyBtn.setText(text);
+                    sendVerifyBtn.setEnabled(true);
+                    Timer = 60;
+                }
             } else {
-                sendVerifyBtn.setText(Timer + "秒");
-                Timer--;
-                mHandler.sendEmptyMessageDelayed(BEGIN_TIMER, 1000);
+                if(sendVerifyBtn!=null){
+                    sendVerifyBtn.setText(Timer + "秒");
+                    Timer--;
+                    mHandler.sendEmptyMessageDelayed(BEGIN_TIMER, 1000);
+                }
             }
         }
         return false;

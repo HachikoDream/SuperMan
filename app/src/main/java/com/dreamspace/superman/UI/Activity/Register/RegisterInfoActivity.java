@@ -1,20 +1,73 @@
 package com.dreamspace.superman.UI.Activity.Register;
 
-import android.os.Bundle;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
+import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.API.SupermanService;
+import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.NetUtils;
+import com.dreamspace.superman.Common.PreferenceUtils;
+import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Main.MainActivity;
+import com.dreamspace.superman.model.api.ErrorRes;
+import com.dreamspace.superman.model.api.QnRes;
+import com.dreamspace.superman.model.api.RegisterReq;
+import com.dreamspace.superman.model.api.RegisterRes;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
+import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.utils.PhotoPickerIntent;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class RegisterInfoActivity extends AbsActivity {
-   private Toolbar mToolbar;
-    private static final int TITLE=R.string.title_activity_register_info;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private static final int TITLE = R.string.title_activity_register_info;
+    @Bind(R.id.nickname_ev)
+    TextInputLayout nameInput;
+    @Bind(R.id.real_name_ev)
+    TextInputLayout realNameInput;
+    @Bind(R.id.next)
+    Button nextBtn;
+    private String register_token;
+    private String sex;
+    private String nickname;
+    private String name;
+    private boolean choose_avater = false;
+    @Bind(R.id.user_avater_iv)
+    CircleImageView mImageView;
+    private final static int REQUEST_CODE = 233;
+    private ProgressDialog pd;
+    private SupermanService mService;
+    private String photoPath;
+    @Bind(R.id.radiogroup)
+    RadioGroup mRadioGroup;
+    @Bind(R.id.gender_man)
+    RadioButton mMan;
+    @Bind(R.id.gender_woman)
+    RadioButton mWoman;
 
     @Override
     protected void setSelfContentView() {
@@ -23,34 +76,152 @@ public class RegisterInfoActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-
+        mService = ApiManager.getService();
+        register_token = this.getIntent().getStringExtra("token");
+        Log.i("INFO", "register-token  :" + register_token);
     }
+
+    @OnClick({R.id.gender_man, R.id.gender_woman})
+     void getGenderInfo() {
+        switch (mRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.gender_man:
+                sex = Constant.MALE;
+                break;
+            case R.id.gender_woman:
+                sex = Constant.FEMALE;
+                break;
+        }
+        Log.i("INFO", "genderInfo: " + sex);
+    }
+
 
     @Override
     protected void initViews() {
-     getSupportActionBar().setTitle(getString(TITLE));
+        getSupportActionBar().setTitle(getString(TITLE));
+        getGenderInfo();
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userName = nameInput.getEditText().getText().toString();
+                String realName = realNameInput.getEditText().getText().toString();
+                nameInput.setErrorEnabled(false);
+                realNameInput.setErrorEnabled(false);
+                if (!nameValid(userName)) {
+                    nameInput.setErrorEnabled(true);
+                    nameInput.setError("请输入您的用户名");
+                } else if (!realNameValid(realName)) {
+                    nameInput.setErrorEnabled(true);
+                    realNameInput.setError("请输入您的真实姓名");
+                } else if (!choose_avater) {
+                    showToast("请点击图片选择您的头像");
+                } else {
+                    nickname = userName;
+                    name = realName;
+                    nameInput.setErrorEnabled(false);
+                    realNameInput.setErrorEnabled(false);
+                    pd = ProgressDialog.show(RegisterInfoActivity.this, "", "正在提交数据，请稍后", true, false);
+                    getUploadToken();
+                }
+            }
+        });
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhotoPickerIntent intent = new PhotoPickerIntent(RegisterInfoActivity.this);
+                intent.setPhotoCount(1);
+                intent.setShowCamera(true);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
     }
 
+    //获得七牛（第三方服务）的上传资源的凭证
+    private void getUploadToken() {
+        if (NetUtils.isNetworkConnected(RegisterInfoActivity.this)) {
+            mService.createQiNiuToken(new Callback<QnRes>() {
+                @Override
+                public void success(QnRes qnRes, Response response) {
+                    if (qnRes != null) {
+                        uploadPhoto(qnRes);
+                    }
+                }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_register_info, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                @Override
+                public void failure(RetrofitError error) {
+                    showInnerError(error);
+                }
+            });
+        } else {
+            showNetWorkError();
         }
 
-        return super.onOptionsItemSelected(item);
+    }
+
+    //上传用户的头像到七牛服务器
+    private void uploadPhoto(QnRes res) {
+        UploadManager manager = UpLoadUtils.getInstance();
+        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                if (info.isOK()) {
+                    Log.i("INFO", "upload is Ok");
+                    RegisterReq req = new RegisterReq();
+                    req.setImage(key);
+                    req.setName(name);
+                    req.setNickname(nickname);
+                    req.setRegister_token(register_token);
+                    req.setSex(sex);
+                    register(req);
+
+                } else if (info.isNetworkBroken()) {
+                    showNetWorkError();
+                } else if (info.isServerError()) {
+                    showToast("服务暂时不可用，请稍后重试");
+                }
+            }
+        }, null);
+    }
+
+    //上传用户信息到业务服务器
+    private void register(RegisterReq req) {
+        Log.i("INFO","req: "+req);
+        mService.register(req, new Callback<RegisterRes>() {
+            @Override
+            public void success(RegisterRes registerRes, Response response) {
+                if (registerRes != null) {
+                    PreferenceUtils.putString(getApplicationContext(), "u_id", registerRes.getU_id());
+                    readyGo(MainActivity.class);
+                    finish();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showInnerError(error);
+            }
+        });
+    }
+
+    private boolean nameValid(String name) {
+        return !(name.isEmpty() || name == null);
+    }
+
+    private boolean realNameValid(String realName) {
+        return !(realName.isEmpty() || realName == null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            if (data != null) {
+                ArrayList<String> photos =
+                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                Log.i("INFO", "PHOTO:" + photos.get(0));
+                photoPath = photos.get(0);
+                Glide.with(this).load(photoPath).crossFade().into(mImageView);
+                choose_avater = true;
+            }
+        }
     }
 }

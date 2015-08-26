@@ -10,12 +10,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.dreamspace.superman.API.GetService;
+import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.API.SupermanService;
+import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.NetUtils;
+import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.model.ErrorRes;
-import com.dreamspace.superman.model.LoginReq;
+import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.model.api.ErrorRes;
+import com.dreamspace.superman.model.api.LoginReq;
+import com.dreamspace.superman.model.api.LoginRes;
 
+import butterknife.Bind;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -23,52 +29,83 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends BaseFragment {
+    @Bind(R.id.mybtn)
+    Button mButton;
+    @Bind(R.id.username_ev)
+    EditText phoneEt;
+    @Bind(R.id.pwd_ed)
+    EditText pwdEt;
 
-    private SupermanService smService;
-    private Button mButton;
-    private EditText phoneEt;
-    private EditText pwdEt;
     public LoginFragment() {
         // Required empty public constructor
     }
-    private void initRestClient() {
 
-        smService= GetService.getService(GetService.getRestClient());
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_login;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_login, container, false);
-        mButton= (Button) view.findViewById(R.id.mybtn);
-        phoneEt=(EditText)view.findViewById(R.id.username_ev);
-        pwdEt=(EditText)view.findViewById(R.id.pwd_ed);
-        initRestClient();
+    public void initViews(View view) {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginReq req=new LoginReq();
-                req.setPassword(pwdEt.getText().toString());
-                req.setPhone(phoneEt.getText().toString());
-                smService.createAccessToken(req, new Callback<String>() {
-                    @Override
-                    public void success(String s, Response response) {
-                        Log.i("INFO",s);
-                        Log.i("INFO",response.getReason());
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                      Log.i("INFO",error.getMessage());
-                      Log.i("INFO",error.getBodyAs(ErrorRes.class).toString());
-
-                    }
-                });
+                String phoneNum=phoneEt.getText().toString();
+                String pwd=pwdEt.getText().toString();
+                if(isValid(phoneNum,pwd)){
+                    LoginReq req=new LoginReq();
+                    req.setPassword(pwd);
+                    req.setPhone(phoneNum);
+                    login(req);
+                }
             }
         });
-        return view;
+    }
+    private void login(LoginReq req){
+        if(NetUtils.isNetworkConnected(getActivity())){
+            ApiManager.getService().createAccessToken(req, new Callback<LoginRes>() {
+                @Override
+                public void success(LoginRes loginRes, Response response) {
+                    PreferenceUtils.putString(LoginFragment.this.getActivity().getApplicationContext(),"access_token",loginRes.getAccess_token());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                   showInnerError(error);
+                }
+            });
+
+        }else{
+            showNetWorkError();
+        }
+
+    }
+    private boolean isValid(String phoneNum,String pwd){
+        if(CommonUtils.isEmpty(phoneNum)){
+            showToast("请输入您的手机号码");
+            phoneEt.requestFocus();
+            return false;
+        }
+        if(phoneNum.length()!=11){
+            showToast("请检查您的输入格式");
+            phoneEt.requestFocus();
+            return false;
+        }
+        if(CommonUtils.isEmpty(pwd)){
+            showToast("请输入您的密码");
+            return false;
+        }
+        if(pwd.length()<6){
+            showToast("密码长度不正确");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void initDatas() {
+
     }
 
 
