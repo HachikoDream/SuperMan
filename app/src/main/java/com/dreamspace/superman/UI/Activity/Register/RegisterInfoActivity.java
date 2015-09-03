@@ -23,6 +23,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.model.api.ErrorRes;
+import com.dreamspace.superman.model.api.LoginRes;
 import com.dreamspace.superman.model.api.QnRes;
 import com.dreamspace.superman.model.api.RegisterReq;
 import com.dreamspace.superman.model.api.RegisterRes;
@@ -185,11 +186,11 @@ public class RegisterInfoActivity extends AbsActivity {
     //上传用户信息到业务服务器
     private void register(RegisterReq req) {
         Log.i("INFO","req: "+req);
-        mService.register(req, new Callback<RegisterRes>() {
+        mService.register(req, new Callback<LoginRes>() {
             @Override
-            public void success(RegisterRes registerRes, Response response) {
-                if (registerRes != null) {
-                    PreferenceUtils.putString(getApplicationContext(), "u_id", registerRes.getU_id());
+            public void success(LoginRes res, Response response) {
+                if (res != null) {
+                    PreferenceUtils.putString(getApplicationContext(), "access_token", res.getAccess_token());
                     readyGo(MainActivity.class);
                     finish();
                 }

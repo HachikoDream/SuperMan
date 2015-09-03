@@ -1,10 +1,7 @@
 package com.dreamspace.superman.UI.Adapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dreamspace.superman.R;
@@ -29,7 +26,7 @@ public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHold
 
     @Override
     protected void setDataIntoView(viewHolder holder, Comment entity) {
-        holder.contentTv.setText(entity.getComment());
+        holder.contentTv.setText(entity.getContent());
     }
 
     @Override

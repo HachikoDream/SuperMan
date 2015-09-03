@@ -5,29 +5,29 @@ package com.dreamspace.superman.model;
  */
 public class Comment {
     private String time;
-    private String ImageUrL;
-    private String comment;
-    private String courseName;
-    private String userName;
+    private String Image;
+    private String content;
+    private String less_name;
+    private String nickname;
 
     public void setTime(String time) {
         this.time = time;
     }
 
-    public void setImageUrL(String imageUrL) {
-        ImageUrL = imageUrL;
+    public void setImage(String image) {
+        Image = image;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setLess_name(String less_name) {
+        this.less_name = less_name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getTime() {
@@ -35,30 +35,30 @@ public class Comment {
         return time;
     }
 
-    public String getImageUrL() {
-        return ImageUrL;
+    public String getImage() {
+        return Image;
     }
 
-    public String getComment() {
-        return comment;
+    public String getContent() {
+        return content;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getLess_name() {
+        return less_name;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNickname() {
+        return nickname;
     }
 
     @Override
     public String toString() {
         return "Comment{" +
-                "comment='" + comment + '\'' +
+                "content='" + content + '\'' +
                 ", time='" + time + '\'' +
-                ", ImageUrL='" + ImageUrL + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", userName='" + userName + '\'' +
+                ", Image='" + Image + '\'' +
+                ", less_name='" + less_name + '\'' +
+                ", userName='" + nickname + '\'' +
                 '}';
     }
 }

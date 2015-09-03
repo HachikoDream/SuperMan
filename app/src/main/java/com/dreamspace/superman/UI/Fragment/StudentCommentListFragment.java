@@ -78,7 +78,7 @@ public class StudentCommentListFragment extends BaseFragment {
         Course course;
         for (int i = 0; i < 10; i++) {
             Comment comment=new Comment();
-            comment.setComment("我非常喜欢这个人的讲课风格，花很少的价格学到了很多的东西，同时还交到了朋友");
+            comment.setContent("我非常喜欢这个人的讲课风格，花很少的价格学到了很多的东西，同时还交到了朋友");
             mComments.add(comment);
         }
         return mComments;

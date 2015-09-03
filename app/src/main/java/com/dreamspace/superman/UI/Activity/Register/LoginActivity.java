@@ -16,13 +16,14 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 
 public class LoginActivity extends AbsActivity {
 
-    Fragment loginFragment =new LoginFragment();
-    Fragment registerFragment=new RegisterFragment();
+    Fragment loginFragment = new LoginFragment();
+    Fragment registerFragment = new RegisterFragment();
     private RadioGroup mRadioGroup;
     private RadioButton loginButton;
     private RadioButton registerButton;
     private FragmentManager mFragmentManager;
-    private final static int TITLE=R.string.title_activity_login;
+    private final static int TITLE = R.string.title_activity_login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +43,10 @@ public class LoginActivity extends AbsActivity {
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
-        mFragmentManager=getSupportFragmentManager();
-        mRadioGroup=(RadioGroup)findViewById(R.id.radiogroup);
-        loginButton=(RadioButton)findViewById(R.id.login_btn);
-        registerButton=(RadioButton)findViewById(R.id.rgt_btn);
+        mFragmentManager = getSupportFragmentManager();
+        mRadioGroup = (RadioGroup) findViewById(R.id.radiogroup);
+        loginButton = (RadioButton) findViewById(R.id.login_btn);
+        registerButton = (RadioButton) findViewById(R.id.rgt_btn);
         onRadioClickListener();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,19 +63,17 @@ public class LoginActivity extends AbsActivity {
     }
 
 
-
-
-    private void onRadioClickListener(){
-    switch (mRadioGroup.getCheckedRadioButtonId()){
-        case R.id.login_btn:
-            getSupportActionBar().setTitle(getString(R.string.title_activity_login));
-            mFragmentManager.beginTransaction().replace(R.id.fragment_container,loginFragment).commit();
-            break;
-        case R.id.rgt_btn:
-            getSupportActionBar().setTitle(getString(R.string.title_fragment_register));
-            mFragmentManager.beginTransaction().replace(R.id.fragment_container,registerFragment).commit();
-            break;
-    }
+    private void onRadioClickListener() {
+        switch (mRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.login_btn:
+                getSupportActionBar().setTitle(getString(R.string.title_activity_login));
+                mFragmentManager.beginTransaction().replace(R.id.fragment_container, loginFragment).commit();
+                break;
+            case R.id.rgt_btn:
+                getSupportActionBar().setTitle(getString(R.string.title_fragment_register));
+                mFragmentManager.beginTransaction().replace(R.id.fragment_container, registerFragment).commit();
+                break;
+        }
     }
 
 }
