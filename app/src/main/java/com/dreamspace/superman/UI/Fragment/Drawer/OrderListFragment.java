@@ -4,20 +4,11 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Adapters.OrderContainerPagerAdapter;
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Person.CancelFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Person.CompleteFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Person.NoMeetFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Person.NopaymentFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
-import com.dreamspace.superman.model.FragEntity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

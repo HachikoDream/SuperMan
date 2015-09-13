@@ -1,17 +1,11 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.model.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +13,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SmCourseListFragment extends BaseListFragment<Course> {
+public class SmCourseListFragment extends BaseListFragment<Lesson> {
     public static final String TAG="全部课程";
     public SmCourseListFragment() {
         super(IndexAdapter.class);
@@ -42,14 +36,14 @@ public class SmCourseListFragment extends BaseListFragment<Course> {
         refreshDate(getTestData());
     }
 
-    public List<Course> getTestData() {
-        List<Course> mCourses = new ArrayList<>();
-        Course course;
+    public List<Lesson> getTestData() {
+        List<Lesson> mLessons = new ArrayList<>();
+        Lesson lesson;
         for (int i = 0; i < 10; i++) {
-            course = new Course();
-            course.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
-            mCourses.add(course);
+            lesson = new Lesson();
+            lesson.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
+            mLessons.add(lesson);
         }
-        return mCourses;
+        return mLessons;
     }
 }

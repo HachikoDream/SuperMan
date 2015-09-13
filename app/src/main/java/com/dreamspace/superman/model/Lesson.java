@@ -3,10 +3,10 @@ package com.dreamspace.superman.model;
 /**
  * Created by Administrator on 2015/7/27 0027.
  */
-public class Course {
+public class Lesson {
     @Override
     public String toString() {
-        return "Course{" +
+        return "Lesson{" +
                 "courseName='" + courseName + '\'' +
                 '}';
     }

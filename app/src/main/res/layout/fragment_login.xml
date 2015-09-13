@@ -22,7 +22,7 @@
             android:layout_weight="1">
 
             <EditText
-                android:id="@+id/username_ev"
+                android:id="@+id/phonenum_ev"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -34,7 +34,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/username_ev"
+                android:layout_alignLeft="@id/phonenum_ev"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/login_cell" />
@@ -59,6 +59,7 @@
                 android:background="@color/near_white"
                 android:hint="请输入您的密码"
                 android:paddingLeft="50dp"
+                android:inputType="textPassword"
                 android:textSize="13sp" />
 
             <ImageView

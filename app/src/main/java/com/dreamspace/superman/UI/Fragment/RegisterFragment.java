@@ -32,12 +32,10 @@ import retrofit.client.Response;
  */
 public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
-    @Bind(R.id.username_ev)
+    @Bind(R.id.phonenum_ev)
     EditText phoneNumEt;
     @Bind(R.id.verification_ed)
     EditText verifyEt;
-    @Bind(R.id.pwd_ed)
-    EditText pwdEt;
     @Bind(R.id.send_vercode_btn)
     Button sendVerifyBtn;
     @Bind(R.id.mybtn)
@@ -46,10 +44,9 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     private Handler mHandler;
     private SupermanService mService;
     private static final int BEGIN_TIMER = 233;
-    private int Timer = 60;
+    private  int Timer = 60;
     private String text = "发送验证码";
     private String code;
-    private String pwd;
     private String register_token;
 
     public RegisterFragment() {
@@ -95,7 +92,6 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
         if (isRegisterValid()) {
             final RegistertokenReq req = new RegistertokenReq();
             req.setPhone(phoneNum);
-            req.setPassword(pwd);
             req.setCode(code);
             mService.createRegisterToken(req, new Callback<RegistertokenRes>() {
                 @Override
@@ -104,6 +100,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
                         register_token=s.getRegister_token();
                         Bundle b=new Bundle();
                         b.putString("token",register_token);
+                        b.putString("phoneNum",phoneNum);
                         readyGo(RegisterInfoActivity.class, b);
                         killSelf();
                     }else{
@@ -137,7 +134,6 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
     private boolean isRegisterValid() {
         code = verifyEt.getText().toString();
-        pwd = pwdEt.getText().toString();
         phoneNum = phoneNumEt.getText().toString();
         if (phoneNum.isEmpty()) {
             showToast("请先输入您的手机号");
@@ -154,23 +150,13 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
             verifyEt.requestFocus();
             return false;
         }
-        if (pwd.isEmpty()) {
-            showToast("请先输入密码");
-            pwdEt.requestFocus();
-            return false;
-        }
-        if (pwd.length() <= 6) {
-            showToast("请输入不少于6个长度的密码");
-            pwdEt.requestFocus();
-            return false;
-        }
         return true;
     }
 
     @Override
     public void initDatas() {
         mHandler = new Handler(this);
-        mService = ApiManager.getService();
+        mService = ApiManager.getService(getActivity().getApplicationContext());
     }
 
 
@@ -192,6 +178,6 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
                 }
             }
         }
-        return false;
+        return true;
     }
 }

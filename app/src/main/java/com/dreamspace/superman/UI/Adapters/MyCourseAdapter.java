@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.model.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +15,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by Administrator on 2015/8/10 0010.
  */
-public class MyCourseAdapter extends BasisAdapter<Course,MyCourseAdapter.viewHolder> {
+public class MyCourseAdapter extends BasisAdapter<Lesson,MyCourseAdapter.viewHolder> {
 
     public MyCourseAdapter(Context mContext){
-        this(mContext,new ArrayList<Course>());
+        this(mContext,new ArrayList<Lesson>());
     }
-    public MyCourseAdapter(Context mContext, List<Course> mEntities) {
+    public MyCourseAdapter(Context mContext, List<Lesson> mEntities) {
         super(mContext, mEntities, viewHolder.class);
     }
 
     @Override
-    protected void setDataIntoView(viewHolder holder, Course entity) {
+    protected void setDataIntoView(viewHolder holder, Lesson entity) {
        holder.courseNameTv.setText(entity.getCourseName());
     }
 

@@ -1,7 +1,11 @@
 package com.dreamspace.superman.API;
 
-import com.dreamspace.superman.Common.Constant;
+import android.content.Context;
 
+import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.PreferenceUtils;
+
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
 /**
@@ -13,31 +17,43 @@ public final class ApiManager {
     static volatile RestAdapter restAdapter = null;
 
     private ApiManager() {
-
     }
 
-    public static RestAdapter getAdapter() {
+    public static RestAdapter getAdapter(final Context mContext) {
         if (restAdapter == null) {
             synchronized (ApiManager.class) {
                 if (restAdapter == null) {
-                    restAdapter = new RestAdapter.Builder().setEndpoint(Constant.BASE_URL).setLogLevel(RestAdapter.LogLevel.FULL)
+                    RequestInterceptor requestInterceptor = new RequestInterceptor() {
+                        @Override
+                        public void intercept(RequestFacade request) {
+                            request.addHeader(PreferenceUtils.Key.ACCESS, PreferenceUtils.getString(mContext, "access_token"));
+                        }
+                    };
+                    restAdapter = new RestAdapter.Builder().setEndpoint(Constant.BASE_URL).setLogLevel(RestAdapter.LogLevel.FULL).setRequestInterceptor(requestInterceptor)
                             .build();
                 }
             }
         }
         return restAdapter;
     }
-    public static void initRegionApi() {
+
+    public static void initRegionApi(Context mContext) {
         if (mService == null) {
             synchronized (ApiManager.class) {
                 if (mService == null) {
-                    mService = getAdapter().create(SupermanService.class);
+                    mService = getAdapter(mContext).create(SupermanService.class);
                 }
             }
         }
     }
-    public static SupermanService getService() {
-        initRegionApi();
+
+    public static SupermanService getService(Context mContext) {
+        initRegionApi(mContext);
         return mService;
+    }
+
+    public static void clear() {
+        mService = null;
+        restAdapter = null;
     }
 }

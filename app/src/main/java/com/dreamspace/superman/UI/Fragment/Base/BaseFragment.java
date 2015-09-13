@@ -20,7 +20,7 @@ import retrofit.RetrofitError;
 /**
  * Created by Administrator on 2015/8/1 0001.
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment{
 
 
     private String TAG="SUPER";
@@ -110,6 +110,10 @@ public abstract class BaseFragment extends Fragment {
 
     protected void showInnerError(RetrofitError error) {
         ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
-        showToast(res.getReason());
+        if(res!=null){
+            showToast(res.getReason());
+        }
     }
+
+
 }

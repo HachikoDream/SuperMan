@@ -24,7 +24,7 @@
 
             <EditText
                 android:inputType="number"
-                android:id="@+id/username_ev"
+                android:id="@+id/phonenum_ev"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -36,7 +36,7 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="20dp"
-                android:layout_alignLeft="@id/username_ev"
+                android:layout_alignLeft="@id/phonenum_ev"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/login_cell" />
@@ -45,7 +45,7 @@
                 android:id="@+id/send_vercode_btn"
                 android:layout_width="74dp"
                 android:layout_height="21dp"
-                android:layout_alignRight="@id/username_ev"
+                android:layout_alignRight="@id/phonenum_ev"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/red_circle_button_bg"

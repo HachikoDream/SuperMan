@@ -11,10 +11,8 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.ConListAdapter;
-import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.ConList;
-import com.dreamspace.superman.model.Course;
 
 import java.util.ArrayList;
 import java.util.List;

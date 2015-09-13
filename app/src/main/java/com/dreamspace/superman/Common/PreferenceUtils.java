@@ -21,7 +21,12 @@ public class PreferenceUtils {
     public static class Key {
         public static final String ACCOUNT = "ACCOUNT";
         public static final String AVATAR = "AVATAR";
-        private static final String CLASSIFY = "CLASSIFY";
+        public static final String REALNAME="REALNAME";
+        public static final String SEX="SEX";
+        public static final String CLASSIFY = "CLASSIFY";
+        public static final String ACCESS="access_token";
+        public static final String PHONE="PHONE";
+
     }
 
     public static final String DEFAULT_STRING = "";
@@ -35,6 +40,11 @@ public class PreferenceUtils {
         final SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return settings.getString(key, DEFAULT_STRING);
+    }
+    public static String getString(Context context, String key,String defaultvalue) {
+        final SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return settings.getString(key, defaultvalue);
     }
 
     public static void putString(Context context, final String key,

@@ -18,21 +18,19 @@ package com.dreamspace.superman.UI.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
-import com.dreamspace.superman.model.FragEntity;
 
 import java.util.List;
 
 /**
- * Author:  Tau.Chen
+ * Author:  Wells
  * Email:   1076559197@qq.com | tauchen1990@gmail.com
  * Date:    2015/4/2.
  * Description:
  */
-public class OrderContainerPagerAdapter extends FragmentPagerAdapter {
+public class OrderContainerPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<String> mCategoryList = null;
 

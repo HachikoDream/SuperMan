@@ -5,19 +5,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.model.Lesson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,22 +33,22 @@ public class CollectionFragment extends BaseLazyFragment {
                 dpVal, getResources().getDisplayMetrics());
     }
 
-    public void refreshDate(List<Course> mEntities) {
+    public void refreshDate(List<Lesson> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();
     }
     public void getInitData() {
         refreshDate(getTestData());
     }
-    public List<Course> getTestData() {
-        List<Course> mCourses = new ArrayList<>();
-        Course course;
+    public List<Lesson> getTestData() {
+        List<Lesson> mLessons = new ArrayList<>();
+        Lesson lesson;
         for (int i = 0; i < 10; i++) {
-            course = new Course();
-            course.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
-            mCourses.add(course);
+            lesson = new Lesson();
+            lesson.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
+            mLessons.add(lesson);
         }
-        return mCourses;
+        return mLessons;
     }
 
 

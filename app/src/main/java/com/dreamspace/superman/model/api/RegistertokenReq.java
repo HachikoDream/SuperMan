@@ -6,7 +6,6 @@ package com.dreamspace.superman.model.api;
 public class RegistertokenReq {
     private String phone;
     private String code;
-    private String password;
 
     public String getCode() {
         return code;
@@ -14,14 +13,6 @@ public class RegistertokenReq {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {

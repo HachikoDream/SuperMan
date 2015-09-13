@@ -25,7 +25,7 @@
             app:border_width="1dp" />
 
         <TextView
-            android:id="@+id/username_ev"
+            android:id="@+id/phonenum_ev"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"

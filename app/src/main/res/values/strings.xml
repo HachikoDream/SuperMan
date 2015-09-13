@@ -57,4 +57,6 @@
     <string name="common_no_network_msg">暂未连接上网络!\n请连接后点击屏幕重试~</string>
     <string name="network_error_tips">请检查您的网络环境</string>
     <string name="inner_error_tips">服务暂时不可用请稍后重试</string>
+    <string name="title_activity_modify_info">个人中心</string>
+    <string name="title_activity_input_pwd">InputPwdActivity</string>
 </resources>

@@ -14,7 +14,7 @@
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp">
        <EditText
-           android:id="@+id/username_ev"
+           android:id="@+id/phonenum_ev"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:textSize="14sp"

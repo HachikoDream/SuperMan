@@ -17,8 +17,9 @@ import retrofit.RetrofitError;
 /**
  * Created by Administrator on 2015/7/25 0025.
  */
-public abstract  class AbsActivity extends AppCompatActivity {
+public abstract class AbsActivity extends AppCompatActivity {
     private Toolbar mToolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,7 @@ public abstract  class AbsActivity extends AppCompatActivity {
 
     protected abstract void setSelfContentView();
 
-    protected abstract  void prepareDatas() ;
+    protected abstract void prepareDatas();
 
     protected abstract void initViews();
 
@@ -41,20 +42,21 @@ public abstract  class AbsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        if (id==android.R.id.home){
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void initToolBar(){
-        mToolBar=(Toolbar)findViewById(R.id.tl_custom);
+    private void initToolBar() {
+        mToolBar = (Toolbar) findViewById(R.id.tl_custom);
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
     }
+
     /**
      * startActivity
      *
@@ -141,11 +143,14 @@ public abstract  class AbsActivity extends AppCompatActivity {
             Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT).show();
         }
     }
-    protected void showNetWorkError(){
+
+    protected void showNetWorkError() {
         showToast(getResources().getString(R.string.network_error_tips));
     }
-    protected void showInnerError(RetrofitError error){
-        showToast(CommonUtils.getErrorInfo(error).getReason());
+
+    protected void showInnerError(RetrofitError error) {
+        if (error != null)
+            showToast(CommonUtils.getErrorInfo(error).getReason());
     }
 
     @Override

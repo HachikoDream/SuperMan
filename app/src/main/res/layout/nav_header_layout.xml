@@ -6,14 +6,15 @@
     android:padding="16dp">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/nav_header_useravater"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_centerVertical="true"
             android:src="@drawable/login_pho" />
 
         <TextView
+            android:id="@+id/username_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="登陆"

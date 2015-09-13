@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import com.bumptech.glide.Glide;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.API.SupermanService;
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
@@ -22,6 +23,7 @@ import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
+import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.ErrorRes;
 import com.dreamspace.superman.model.api.LoginRes;
 import com.dreamspace.superman.model.api.QnRes;
@@ -56,6 +58,8 @@ public class RegisterInfoActivity extends AbsActivity {
     private String sex;
     private String nickname;
     private String name;
+    private String password;
+    private String phoneNum;
     private boolean choose_avater = false;
     @Bind(R.id.user_avater_iv)
     CircleImageView mImageView;
@@ -69,6 +73,8 @@ public class RegisterInfoActivity extends AbsActivity {
     RadioButton mMan;
     @Bind(R.id.gender_woman)
     RadioButton mWoman;
+    @Bind(R.id.pwd_ed)
+    TextInputLayout pwdInput;
 
     @Override
     protected void setSelfContentView() {
@@ -77,9 +83,11 @@ public class RegisterInfoActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-        mService = ApiManager.getService();
+        mService = ApiManager.getService(getApplicationContext());
         register_token = this.getIntent().getStringExtra("token");
+        phoneNum=this.getIntent().getStringExtra("phoneNum");
         Log.i("INFO", "register-token  :" + register_token);
+        Log.i("INFO", "phoneNum  :" + phoneNum);
     }
 
     @OnClick({R.id.gender_man, R.id.gender_woman})
@@ -105,8 +113,15 @@ public class RegisterInfoActivity extends AbsActivity {
             public void onClick(View v) {
                 String userName = nameInput.getEditText().getText().toString();
                 String realName = realNameInput.getEditText().getText().toString();
+                String pwd=pwdInput.getEditText().getText().toString();
+                pwdInput.setErrorEnabled(false);
                 nameInput.setErrorEnabled(false);
                 realNameInput.setErrorEnabled(false);
+                String reason="none";
+                if(!pwdValid(pwd,reason)){
+                    pwdInput.setErrorEnabled(true);
+                    pwdInput.setError(reason);
+                }
                 if (!nameValid(userName)) {
                     nameInput.setErrorEnabled(true);
                     nameInput.setError("请输入您的用户名");
@@ -120,6 +135,7 @@ public class RegisterInfoActivity extends AbsActivity {
                     name = realName;
                     nameInput.setErrorEnabled(false);
                     realNameInput.setErrorEnabled(false);
+                    password=pwd;
                     pd = ProgressDialog.show(RegisterInfoActivity.this, "", "正在提交数据，请稍后", true, false);
                     getUploadToken();
                 }
@@ -149,10 +165,12 @@ public class RegisterInfoActivity extends AbsActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
+                    pd.dismiss();
                     showInnerError(error);
                 }
             });
         } else {
+            pd.dismiss();
             showNetWorkError();
         }
 
@@ -172,11 +190,14 @@ public class RegisterInfoActivity extends AbsActivity {
                     req.setNickname(nickname);
                     req.setRegister_token(register_token);
                     req.setSex(sex);
+                    req.setPassword(password);
                     register(req);
 
                 } else if (info.isNetworkBroken()) {
+                    pd.dismiss();
                     showNetWorkError();
                 } else if (info.isServerError()) {
+                    pd.dismiss();
                     showToast("服务暂时不可用，请稍后重试");
                 }
             }
@@ -190,23 +211,60 @@ public class RegisterInfoActivity extends AbsActivity {
             @Override
             public void success(LoginRes res, Response response) {
                 if (res != null) {
-                    PreferenceUtils.putString(getApplicationContext(), "access_token", res.getAccess_token());
-                    readyGo(MainActivity.class);
-                    finish();
+                    PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.ACCESS, res.getAccess_token());
+                    ApiManager.clear();
+                    getUserInfo();
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
+                pd.dismiss();
                 showInnerError(error);
             }
         });
+    }
+    //获取用户信息
+    private void getUserInfo(){
+        ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
+            @Override
+            public void success(UserInfo userInfo, Response response) {
+                saveUserInfo(userInfo);
+                pd.dismiss();
+                readyGo(MainActivity.class);
+                finish();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showInnerError(error);
+                pd.dismiss();
+            }
+        });
+    }
+
+    //保存用户信息到本地
+    private void saveUserInfo(UserInfo userInfo) {
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.ACCOUNT,userInfo.getNickname());
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.AVATAR,userInfo.getImage());
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.PHONE,phoneNum);
     }
 
     private boolean nameValid(String name) {
         return !(name.isEmpty() || name == null);
     }
-
+    private boolean pwdValid(String pwd,String reason){
+       if(CommonUtils.isEmpty(pwd)){
+           reason="请输入密码";
+           return false;
+       }else if(pwd.length()<6){
+           reason="密码长度不足";
+           return false;
+       }
+        return true;
+    }
     private boolean realNameValid(String realName) {
         return !(realName.isEmpty() || realName == null);
     }

@@ -78,8 +78,8 @@ public class IndexFragment extends BaseLazyFragment {
 
             @Override
             public void onPageSelected(int position) {
-//                HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, position);
-//                fragment.onPageSelected(position, items.get(position));
+                HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, position);
+                fragment.onPageSelected(position, items.get(position));
             }
 
             @Override

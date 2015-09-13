@@ -31,10 +31,13 @@ import android.view.ViewGroup;
 
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.VaryViewHelperController;
+import com.dreamspace.superman.R;
+import com.dreamspace.superman.model.api.ErrorRes;
 
 import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
+import retrofit.RetrofitError;
 
 /**
  * Author:  Tau.Chen
@@ -299,6 +302,14 @@ public abstract class BaseLazyFragment extends Fragment {
         if (null != msg && !CommonUtils.isEmpty(msg)) {
             Snackbar.make(((Activity) mContext).getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT).show();
         }
+    }
+    protected void showNetWorkError() {
+        showToast(getResources().getString(R.string.network_error_tips));
+    }
+
+    protected void showInnerError(RetrofitError error) {
+        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
+        showToast(res.getReason());
     }
 
     /**

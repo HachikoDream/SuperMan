@@ -1,5 +1,6 @@
 package com.dreamspace.superman.API;
 
+import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.CommentReq;
@@ -73,7 +74,7 @@ public interface SupermanService {
 
     //获取当前用户信息
     @GET("/user")
-    void getUserInfo(Callback<Response> cb);
+    void getUserInfo(Callback<UserInfo> cb);
 
     //获取用户当前账户余额
     @GET("/user/balance")

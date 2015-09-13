@@ -9,16 +9,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Person.ModifyInfoActivity;
 import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Adapters.VPFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
@@ -30,20 +37,28 @@ import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 import com.dreamspace.superman.UI.View.XViewPager;
 
 import butterknife.Bind;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Toolbar toolbar;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
+    @Bind(R.id.dl_left)
+    DrawerLayout mDrawerLayout;
+    @Bind(R.id.id_navigation)
+    NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
-    private RelativeLayout headerLayout;
+    @Bind(R.id.header_layout)
+    RelativeLayout headerLayout;
     BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment()};
-    private TextView mSettings;
+    @Bind(R.id.footer_item_settings)
+    TextView mSettings;
     private static final int TITLE = R.string.app_name;
     private int currentPage;
     @Bind(R.id.fragment_container)
     XViewPager mViewPager;
+    @Bind(R.id.nav_header_useravater)
+    CircleImageView mUserAvater;
+    @Bind(R.id.username_tv)
+    TextView mUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +87,22 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
-        mNavigationView = (NavigationView) findViewById(R.id.id_navigation);
+        checkIsLogin();
+//        Glide.with(this)
+//                .load(url)
+//                .placeholder(R.drawable.login_pho)
+//                .into(new SimpleTarget<GlideDrawable>() {
+//                    @Override
+//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//                        mUserAvater.setImageDrawable(resource);
+//                    }
+//                });
         mNavigationView.setNavigationItemSelectedListener(this);
-        mSettings = (TextView) findViewById(R.id.footer_item_settings);
+        Menu menu=mNavigationView.getMenu();
         mSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-            }
-        });
-        headerLayout = (RelativeLayout) findViewById(R.id.header_layout);
-        headerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -123,7 +139,6 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 //        getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
@@ -185,5 +200,31 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
         }
         return false;
+    }
+    private void checkIsLogin(){
+        if(!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.ACCOUNT))){
+            headerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  readyGo(ModifyInfoActivity.class);
+                }
+            });
+            mUserName.setText(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT));
+            String url = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.AVATAR);
+            Glide.with(this).load(url).crossFade().into(mUserAvater);
+        }else{
+            headerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkIsLogin();
     }
 }

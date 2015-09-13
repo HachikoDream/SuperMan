@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dreamspace.superman">
+    package="com.dreamspace.superman" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
 
     <application
         android:name=".UI.SmApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".UI.Activity.Main.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +43,7 @@
             android:label="@string/title_activity_register_info" >
         </activity>
         <activity
-            android:name=".UI.Activity.Register.RegisterByPhoneAct"
+            android:name=".UI.Activity.Register.VerifyByPhoneAct"
             android:label="@string/title_activity_register_by_phone" />
         <activity
             android:name=".UI.Activity.Register.ResetPwdActivity"
@@ -78,10 +92,10 @@
             android:label="@string/title_activity_evaluate" />
         <activity
             android:name=".UI.Activity.Superman.SmIntroduceActivity"
-            android:label="@string/title_activity_sm_introduce"></activity>
+            android:label="@string/title_activity_sm_introduce" />
         <activity
             android:name=".UI.Activity.Main.SearchResultActivity"
-            android:label="@string/title_activity_search_result">
+            android:label="@string/title_activity_search_result" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -92,22 +106,22 @@
         </activity>
         <activity
             android:name=".UI.Activity.Main.ConListActivity"
-            android:label="@string/title_activity_con_list">
-
+            android:label="@string/title_activity_con_list" >
         </activity>
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/PhotoAppTheme" />
-
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/PhotoAppTheme" />
+        <activity
+            android:name=".UI.Activity.Person.ModifyInfoActivity"
+            android:label="@string/title_activity_modify_info" >
+        </activity>
+        <activity
+            android:name=".UI.Activity.Person.InputPwdActivity"
+            android:label="@string/title_activity_input_pwd" >
+        </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

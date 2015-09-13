@@ -18,12 +18,11 @@ package com.dreamspace.superman.UI.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+/*
+   FragmentPagerAdapter: 把它所有持有的Fragment保存在内存里面
+ */
 import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
-import com.dreamspace.superman.model.FragEntity;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ import java.util.List;
  * Date:    2015/4/2.
  * Description:
  */
-public class IndexContainerPagerAdapter extends FragmentPagerAdapter {
+public class IndexContainerPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<String> mCategoryList = null;
 

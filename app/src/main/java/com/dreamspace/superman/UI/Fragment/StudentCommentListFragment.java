@@ -11,7 +11,7 @@ import com.dreamspace.superman.UI.Adapters.CommentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
 import com.dreamspace.superman.model.Comment;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.model.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class StudentCommentListFragment extends BaseFragment {
 
     public List<Comment> getTestData(){
         List<Comment> mComments=new ArrayList<>();
-        Course course;
+        Lesson lesson;
         for (int i = 0; i < 10; i++) {
             Comment comment=new Comment();
             comment.setContent("我非常喜欢这个人的讲课风格，花很少的价格学到了很多的东西，同时还交到了朋友");

@@ -24,28 +24,26 @@
             android:layout_height="50dp"
             android:layout_gravity="bottom"
             android:orientation="horizontal"
-            android:background="@color/background_material_light">
+            android:background="@color/navi_color">
 
             <TextView
                 android:id="@+id/footer_item_aboutus"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
                 android:gravity="left|center_vertical"
                 android:paddingLeft="?attr/listPreferredItemPaddingLeft"
                 android:text="@string/nav_footer_aboutus"
-                android:textAppearance="?attr/textAppearanceListItem" />
+                android:textColor="@color/near_white" />
             <TextView
                 android:id="@+id/footer_item_settings"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
                 android:gravity="right|center_vertical"
                 android:paddingRight="?attr/listPreferredItemPaddingLeft"
                 android:text="@string/nav_footer_settings"
-                android:textAppearance="?attr/textAppearanceListItem" />
+                android:textColor="@color/near_white" />
         </LinearLayout>
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

@@ -22,7 +22,7 @@
             android:layout_weight="1">
 
             <EditText
-                android:id="@+id/username_ev"
+                android:id="@+id/phonenum_ev"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -34,14 +34,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/username_ev"
+                android:layout_alignLeft="@id/phonenum_ev"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/login_cell" />
             <Button
                 android:id="@+id/send_vercode_btn"
                 android:textSize="13sp"
-                android:layout_alignRight="@id/username_ev"
+                android:layout_alignRight="@id/phonenum_ev"
                 android:layout_marginRight="10dp"
                 android:textColor="@color/navi_color"
                 android:layout_width="74dp"
@@ -81,35 +81,6 @@
 
 
         </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/grey_line"></View>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <EditText
-                android:id="@+id/pwd_ed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:background="@color/near_white"
-                android:inputType="textPassword"
-                android:hint="请输入不少于6个字符作为密码"
-                android:paddingLeft="50dp"
-                android:textSize="13sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/pwd_ed"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/login_password" />
-        </RelativeLayout>
-
 
     </LinearLayout>
 

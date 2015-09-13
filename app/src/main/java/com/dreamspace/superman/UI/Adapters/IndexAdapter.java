@@ -1,14 +1,11 @@
 package com.dreamspace.superman.UI.Adapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.model.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +13,18 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/7/27 0027.
  */
-public class IndexAdapter extends BasisAdapter<Course, IndexAdapter.viewHolder> {
+public class IndexAdapter extends BasisAdapter<Lesson, IndexAdapter.viewHolder> {
 
 
     public IndexAdapter(Context context){
-        super(context,new ArrayList<Course>(),viewHolder.class);
+        super(context,new ArrayList<Lesson>(),viewHolder.class);
     }
-    public IndexAdapter(List<Course> mCourseList, Context context) {
-        super(context, mCourseList, viewHolder.class);
+    public IndexAdapter(List<Lesson> mLessonList, Context context) {
+        super(context, mLessonList, viewHolder.class);
     }
 
     @Override
-    protected void setDataIntoView(viewHolder holder, Course entity) {
+    protected void setDataIntoView(viewHolder holder, Lesson entity) {
         holder.mTextView.setText(entity.getCourseName());
     }
 

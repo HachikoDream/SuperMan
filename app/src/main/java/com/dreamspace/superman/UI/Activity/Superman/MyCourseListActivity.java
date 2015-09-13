@@ -1,20 +1,18 @@
 package com.dreamspace.superman.UI.Activity.Superman;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.BaseListAct;
 import com.dreamspace.superman.UI.Adapters.MyCourseAdapter;
-import com.dreamspace.superman.model.Course;
+import com.dreamspace.superman.model.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCourseListActivity extends BaseListAct<Course> {
+public class MyCourseListActivity extends BaseListAct<Lesson> {
 
 
     public MyCourseListActivity() {
@@ -59,14 +57,14 @@ public class MyCourseListActivity extends BaseListAct<Course> {
     public void getInitData() {
      refreshDate(getTestData());
     }
-    public List<Course> getTestData() {
-        List<Course> mCourses = new ArrayList<>();
-        Course course;
+    public List<Lesson> getTestData() {
+        List<Lesson> mLessons = new ArrayList<>();
+        Lesson lesson;
         for (int i = 0; i < 10; i++) {
-            course = new Course();
-            course.setCourseName("创业初期搞定技术低成本推出产品" + i);
-            mCourses.add(course);
+            lesson = new Lesson();
+            lesson.setCourseName("创业初期搞定技术低成本推出产品" + i);
+            mLessons.add(lesson);
         }
-        return mCourses;
+        return mLessons;
     }
 }
