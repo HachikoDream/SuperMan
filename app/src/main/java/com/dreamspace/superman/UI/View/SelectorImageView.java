@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.model.Catalog;
 
 
 /**
@@ -27,7 +28,7 @@ public class SelectorImageView extends ImageView implements View.OnClickListener
     private Rect mRect;
     private float alpha = 0.8f;
     private static final String INFO = "INFO";
-    private String name;
+    private Catalog mCatalog;
 
     public SelectorImageView(Context context) {
         this(context, null, 0);
@@ -69,12 +70,12 @@ public class SelectorImageView extends ImageView implements View.OnClickListener
 
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Catalog getmCatalog() {
+        return mCatalog;
     }
 
-    public String getName() {
-        return name;
+    public void setmCatalog(Catalog mCatalog) {
+        this.mCatalog = mCatalog;
     }
 
     private void reverseSelected() {

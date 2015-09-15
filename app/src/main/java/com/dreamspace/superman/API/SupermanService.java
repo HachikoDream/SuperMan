@@ -1,5 +1,6 @@
 package com.dreamspace.superman.API;
 
+import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.CollectReq;
@@ -79,7 +80,9 @@ public interface SupermanService {
     //获取用户当前账户余额
     @GET("/user/balance")
     void getUserBalance(Callback<BalanceRes> cb);
-
+    //获取指定分类下的课程
+    @GET("/catalog/{cata_id}/lessons")
+    void getCoursesByCatalog(@Path("cata_id")String cata_id,@Query("page") int page,Callback<SmLessonList> cb);
     //用户收藏课程
     @POST("/user/collection")
     void collectLesson(@Body CollectReq req,Callback<Response> cb);

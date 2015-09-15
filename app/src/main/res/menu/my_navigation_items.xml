@@ -25,6 +25,10 @@
             android:icon="@drawable/side_course"
             android:title="@string/nav_item_tobesuperman" />
         <item
+            android:id="@+id/nav_superhome"
+            android:icon="@drawable/side_class"
+            android:title="@string/nav_item_superhome"/>
+        <item
             android:title=""
             android:orderInCategory="200"/>
     </group>

@@ -6,14 +6,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.dreamspace.superman.API.ApiManager;
-import com.dreamspace.superman.UI.Fragment.Base.BaseLazyListFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyCourseFragment;
 import com.dreamspace.superman.model.Lesson;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HandpickFragment extends BaseLazyListFragment<Lesson> {
-    public static String TAG = "精选";
+public class HandpickFragment extends BaseLazyCourseFragment<Lesson> {
+    public static String TAG;
 
     public HandpickFragment() {
 //        super(IndexAdapter.class);
@@ -50,7 +50,7 @@ public class HandpickFragment extends BaseLazyListFragment<Lesson> {
     @Override
     public void getInitData() {
         Log.i("INFO", "TAG IS :" + TAG);
-//        refreshDate(loadingInitData());
+        loadingInitData();
     }
 
     public void loadingInitData() {

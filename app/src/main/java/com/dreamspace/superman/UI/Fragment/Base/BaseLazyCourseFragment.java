@@ -20,17 +20,13 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2015/8/25 0025.
  */
-public abstract class BaseLazyListFragment<T> extends BaseLazyFragment {
+public abstract class BaseLazyCourseFragment<T> extends BaseLazyFragment {
     @Bind(R.id.load_more_lv)
     LoadMoreListView moreListView;
     private BasisAdapter mAdapter;
     @Bind(R.id.swiperefresh_id)
     SwipeRefreshLayout mSwipeRefreshLayout;
-//    private Class<?extends BasisAdapter> mAClass;
 
-//    public BaseLazyListFragment(Class<? extends BasisAdapter> mAClass) {
-//        this.mAClass = mAClass;
-//    }
 
     @Override
     protected void onFirstUserVisible() {

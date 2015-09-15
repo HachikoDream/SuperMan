@@ -58,9 +58,6 @@
             android:name=".UI.Activity.Main.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".UI.Activity.Superman.SuperManHomeActivity"
-            android:label="@string/title_activity_super_man_home" />
-        <activity
             android:name=".UI.Activity.Person.OrderDetailActivity"
             android:label="@string/title_activity_order_detail" />
         <activity

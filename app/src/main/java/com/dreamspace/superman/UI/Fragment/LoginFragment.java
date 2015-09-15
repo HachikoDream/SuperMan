@@ -50,10 +50,10 @@ public class LoginFragment extends BaseFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phoneNum=phoneEt.getText().toString();
-                String pwd=pwdEt.getText().toString();
-                if(isValid(phoneNum,pwd)){
-                    LoginReq req=new LoginReq();
+                String phoneNum = phoneEt.getText().toString();
+                String pwd = pwdEt.getText().toString();
+                if (isValid(phoneNum, pwd)) {
+                    LoginReq req = new LoginReq();
                     req.setPassword(pwd);
                     req.setPhone(phoneNum);
                     login(req);
@@ -61,14 +61,15 @@ public class LoginFragment extends BaseFragment {
             }
         });
     }
+
     //登陆操作
-    private void login(LoginReq req){
-        pd=ProgressDialog.show(getActivity(),"","正在登陆",true,false);
-        if(NetUtils.isNetworkConnected(getActivity())){
+    private void login(LoginReq req) {
+        pd = ProgressDialog.show(getActivity(), "", "正在登陆", true, false);
+        if (NetUtils.isNetworkConnected(getActivity())) {
             ApiManager.getService(getActivity().getApplicationContext()).createAccessToken(req, new Callback<LoginRes>() {
                 @Override
                 public void success(LoginRes loginRes, Response response) {
-                    PreferenceUtils.putString(LoginFragment.this.getActivity().getApplicationContext(), PreferenceUtils.Key.ACCESS,loginRes.getAccess_token());
+                    PreferenceUtils.putString(LoginFragment.this.getActivity().getApplicationContext(), PreferenceUtils.Key.ACCESS, loginRes.getAccess_token());
                     ApiManager.clear();
                     getUserInfo();
                 }
@@ -80,58 +81,63 @@ public class LoginFragment extends BaseFragment {
                 }
             });
 
-        }else{
+        } else {
             pd.dismiss();
             showNetWorkError();
         }
 
     }
-    //获取用户信息
-    private void getUserInfo(){
-       ApiManager.getService(getActivity().getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
-           @Override
-           public void success(UserInfo userInfo, Response response) {
-               if (userInfo != null) {
-                   Log.i("INFO", userInfo.toString());
-                   saveUserInfo(userInfo);
-                   pd.dismiss();
-                   readyGo(MainActivity.class);
-                   getActivity().finish();
-               }
-           }
 
-           @Override
-           public void failure(RetrofitError error) {
-               pd.dismiss();
-               showInnerError(error);
-           }
-       });
+    //获取用户信息
+    private void getUserInfo() {
+        ApiManager.getService(getActivity().getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
+            @Override
+            public void success(UserInfo userInfo, Response response) {
+                if (userInfo != null) {
+                    Log.i("INFO", userInfo.toString());
+                    saveUserInfo(userInfo);
+                    pd.dismiss();
+                    readyGo(MainActivity.class);
+                    getActivity().finish();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                pd.dismiss();
+                showInnerError(error);
+            }
+        });
     }
+
     //保存用户信息到本地
     private void saveUserInfo(UserInfo userInfo) {
-      PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.ACCOUNT,userInfo.getNickname());
-      PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.AVATAR,userInfo.getImage());
-      PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
-      PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.SEX,userInfo.getSex());
-        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.PHONE,phoneEt.getText().toString());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.ACCOUNT, userInfo.getNickname());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR, userInfo.getImage());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME, userInfo.getName());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.PHONE, phoneEt.getText().toString());
+        if(CommonUtils.isEmpty(userInfo.getMas_id())){
+            PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
+        }
     }
 
-    private boolean isValid(String phoneNum,String pwd){
-        if(CommonUtils.isEmpty(phoneNum)){
+    private boolean isValid(String phoneNum, String pwd) {
+        if (CommonUtils.isEmpty(phoneNum)) {
             showToast("请输入您的手机号码");
             phoneEt.requestFocus();
             return false;
         }
-        if(phoneNum.length()!=11){
+        if (phoneNum.length() != 11) {
             showToast("请检查您的输入格式");
             phoneEt.requestFocus();
             return false;
         }
-        if(CommonUtils.isEmpty(pwd)){
+        if (CommonUtils.isEmpty(pwd)) {
             showToast("请输入您的密码");
             return false;
         }
-        if(pwd.length()<6){
+        if (pwd.length() < 6) {
             showToast("密码长度不正确");
             return false;
         }

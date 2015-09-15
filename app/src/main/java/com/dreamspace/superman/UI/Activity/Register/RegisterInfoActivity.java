@@ -250,6 +250,9 @@ public class RegisterInfoActivity extends AbsActivity {
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.PHONE,phoneNum);
+        if(CommonUtils.isEmpty(userInfo.getMas_id())){
+            PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
+        }
     }
 
     private boolean nameValid(String name) {

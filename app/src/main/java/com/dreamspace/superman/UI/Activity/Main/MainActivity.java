@@ -33,6 +33,7 @@ import com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.SuperManHomeFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 import com.dreamspace.superman.UI.View.XViewPager;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private ActionBarDrawerToggle mDrawerToggle;
     @Bind(R.id.header_layout)
     RelativeLayout headerLayout;
-    BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment()};
+    BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment(), new SuperManHomeFragment()};
     @Bind(R.id.footer_item_settings)
     TextView mSettings;
     private static final int TITLE = R.string.app_name;
@@ -59,6 +60,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     CircleImageView mUserAvater;
     @Bind(R.id.username_tv)
     TextView mUserName;
+    Menu slideMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +90,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
         checkIsLogin();
-//        Glide.with(this)
-//                .load(url)
-//                .placeholder(R.drawable.login_pho)
-//                .into(new SimpleTarget<GlideDrawable>() {
-//                    @Override
-//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//                        mUserAvater.setImageDrawable(resource);
-//                    }
-//                });
         mNavigationView.setNavigationItemSelectedListener(this);
-        Menu menu=mNavigationView.getMenu();
+        slideMenu = mNavigationView.getMenu();
+        checkIsSuperMan();
         mSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +119,18 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             mViewPager.setOffscreenPageLimit(fragments.length);
             mViewPager.setAdapter(new VPFragmentAdapter(getSupportFragmentManager(), fragments));
         }
+    }
+
+    private void checkIsSuperMan() {
+        String mas_id = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAS_ID);
+        MenuItem shItem = slideMenu.findItem(R.id.nav_superhome);
+        MenuItem tobeItem = slideMenu.findItem(R.id.nav_tobesuperman);
+        shItem.setVisible(false);
+        tobeItem.setVisible(false);
+        if (!CommonUtils.isEmpty(mas_id)) {
+            shItem.setVisible(true);
+        } else
+            tobeItem.setVisible(true);
     }
 
     @Override
@@ -182,44 +188,73 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
                 setFragmentTitle(R.string.nav_item_index);
                 return true;
             case R.id.nav_mybalance:
-                mViewPager.setCurrentItem(1, false);
-                setFragmentTitle(R.string.nav_item_mybalance);
+                if(isLogin()){
+                    mViewPager.setCurrentItem(1, false);
+                    setFragmentTitle(R.string.nav_item_mybalance);
+                }
                 return true;
             case R.id.nav_myorder:
-                mViewPager.setCurrentItem(2, false);
-                setFragmentTitle(R.string.nav_item_myorder);
+                if(isLogin()){
+                    mViewPager.setCurrentItem(2, false);
+                    setFragmentTitle(R.string.nav_item_myorder);
+                }
                 return true;
             case R.id.nav_mycollect:
-                mViewPager.setCurrentItem(3, false);
-                setFragmentTitle(R.string.nav_item_mycollect);
+                if(isLogin()){
+                    mViewPager.setCurrentItem(3, false);
+                    setFragmentTitle(R.string.nav_item_mycollect);
+                }
                 return true;
             case R.id.nav_tobesuperman:
-                mViewPager.setCurrentItem(4, false);
-                setFragmentTitle(R.string.nav_item_tobesuperman);
+                if(isLogin()){
+                    mViewPager.setCurrentItem(4, false);
+                    setFragmentTitle(R.string.nav_item_tobesuperman);
+                }
                 return true;
-
+            case R.id.nav_superhome:
+                mViewPager.setCurrentItem(5, false);
+                setFragmentTitle(R.string.nav_item_superhome);
+                return true;
         }
         return false;
     }
-    private void checkIsLogin(){
-        if(!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.ACCOUNT))){
+
+    private void checkIsLogin() {
+        if (!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
             headerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  readyGo(ModifyInfoActivity.class);
+                    readyGo(ModifyInfoActivity.class);
                 }
             });
             mUserName.setText(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT));
             String url = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.AVATAR);
-            Glide.with(this).load(url).crossFade().into(mUserAvater);
-        }else{
+//            Glide.with(this).load(url).crossFade().into(mUserAvater);
+            Glide.with(this)
+                    .load(url)
+                    .placeholder(R.drawable.login_pho)
+                    .into(new SimpleTarget<GlideDrawable>() {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            mUserAvater.setImageDrawable(resource);
+                        }
+                    });
+        } else {
             headerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    readyGo(LoginActivity.class);
                 }
             });
         }
+    }
+
+    private boolean isLogin() {
+        boolean result=!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT));
+        if(!result){
+          readyGo(LoginActivity.class);
+        }
+        return result;
     }
 
     @Override
