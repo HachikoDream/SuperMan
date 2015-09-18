@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import com.dreamspace.superman.model.Catalog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -118,17 +120,32 @@ public class PreferenceUtils {
         editor.commit();
     }
 
-    public static List<String> getClassifyItems(Context context) {
+    public static List<Catalog> getClassifyItems(Context context) {
         String content = getDefaultSp(context).getString(Key.CLASSIFY, "EMPTY");
         Gson gson = new Gson();
-        return gson.fromJson(content, new TypeToken<List<String>>() {
+        return gson.fromJson(content, new TypeToken<List<Catalog>>() {
         }.getType());
     }
 
-    public static void writeClassifyIntoSp(Context context, List<String> items) {
+    public static void writeClassifyIntoSp(Context context, List<Catalog> items) {
         Gson gson = new Gson();
-        items.add(0, "精选");
+        Catalog catalog=new Catalog();
+        catalog.setId(1);
+        catalog.setIcon("TEST");
+        catalog.setName("精选");
+        items.add(0, catalog);
         String content = gson.toJson(items);
+        putString(context, Key.CLASSIFY, content);
+    }
+    public static void writeClassifyIntoSpForFirst(Context context) {
+        Gson gson = new Gson();
+        Catalog catalog=new Catalog();
+        catalog.setId(1);
+        catalog.setIcon("TEST");
+        catalog.setName("精选");
+        List<Catalog> mCata=new ArrayList<>();
+        mCata.add(catalog);
+        String content = gson.toJson(mCata);
         putString(context, Key.CLASSIFY, content);
     }
 

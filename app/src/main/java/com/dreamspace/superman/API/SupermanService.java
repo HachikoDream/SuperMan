@@ -82,7 +82,7 @@ public interface SupermanService {
     void getUserBalance(Callback<BalanceRes> cb);
     //获取指定分类下的课程
     @GET("/catalog/{cata_id}/lessons")
-    void getCoursesByCatalog(@Path("cata_id")String cata_id,@Query("page") int page,Callback<SmLessonList> cb);
+    void getCoursesByCatalog(@Path("cata_id") int cataId,@Query("page") int page, Callback<SmLessonList> cb);
     //用户收藏课程
     @POST("/user/collection")
     void collectLesson(@Body CollectReq req,Callback<Response> cb);

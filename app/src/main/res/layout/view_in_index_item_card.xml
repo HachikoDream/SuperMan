@@ -20,19 +20,18 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/testhead"
+            android:src="@drawable/login_pho"
             app:border_color="@color/navi_color"
-            app:border_width="1dp" />
+            app:border_width="0dp" />
 
         <TextView
-            android:id="@+id/phonenum_ev"
+            android:id="@+id/smname_tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:singleLine="true"
-            android:text="孙坚"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -54,17 +53,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="技术盲如何在创业初期搞定技术，低成本推出产品"
             android:textColor="@color/near_black"
             android:textSize="16sp" />
 
 
         <TextView
+            android:id="@+id/desc_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:singleLine="true"
-            android:text="15岁过钢琴十级的天才少年"
             android:textColor="@color/select_tab_color" />
         <RelativeLayout
             android:layout_width="match_parent"
@@ -93,7 +91,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="15人想见"
+                        android:textColor="@color/navi_color"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="人想见"
                         android:textColor="@color/navi_color"
                         android:textSize="10sp" />
                 </LinearLayout>
@@ -115,19 +119,43 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
-                        android:text="30人已成功约见"
+                        android:textColor="@color/navi_color"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:text="人已成功约见"
                         android:textColor="@color/navi_color"
                         android:textSize="10sp" />
                 </LinearLayout>
 
             </LinearLayout>
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/navi_color"
+                android:orientation="horizontal"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:text="￥30/课时"/>
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/navi_color"
+                    android:text="￥"/>
+
+                <TextView
+                    android:id="@+id/price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/navi_color" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/navi_color"
+                    android:text="/课时"/>
+
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

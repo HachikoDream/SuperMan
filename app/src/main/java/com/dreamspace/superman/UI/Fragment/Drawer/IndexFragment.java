@@ -18,6 +18,7 @@ import com.dreamspace.superman.UI.Adapters.IndexContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
 import com.dreamspace.superman.UI.View.smartlayout.SmartTabLayout;
+import com.dreamspace.superman.model.Catalog;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        final List<String> items = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
+        final List<Catalog> items = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
         mAdapter = new IndexContainerPagerAdapter(getChildFragmentManager(), items);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(items.size());

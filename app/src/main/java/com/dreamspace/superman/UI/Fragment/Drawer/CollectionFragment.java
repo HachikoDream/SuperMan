@@ -15,6 +15,7 @@ import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.Lesson;
+import com.dreamspace.superman.model.api.LessonInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,19 +34,19 @@ public class CollectionFragment extends BaseLazyFragment {
                 dpVal, getResources().getDisplayMetrics());
     }
 
-    public void refreshDate(List<Lesson> mEntities) {
+    public void refreshDate(List<LessonInfo> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();
     }
     public void getInitData() {
         refreshDate(getTestData());
     }
-    public List<Lesson> getTestData() {
-        List<Lesson> mLessons = new ArrayList<>();
-        Lesson lesson;
+    public List<LessonInfo> getTestData() {
+        List<LessonInfo> mLessons = new ArrayList<>();
+        LessonInfo lesson;
         for (int i = 0; i < 10; i++) {
-            lesson = new Lesson();
-            lesson.setCourseName("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
+            lesson = new LessonInfo();
+            lesson.setLess_name("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
             mLessons.add(lesson);
         }
         return mLessons;

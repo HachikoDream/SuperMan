@@ -99,4 +99,8 @@ public abstract class BasisAdapter<T, K> extends BaseAdapter {
 //            }
 //        },2000);
     }
+
+    public Context getmContext() {
+        return mContext;
+    }
 }

@@ -4,24 +4,18 @@ package com.dreamspace.superman.model.api;
  * Created by Wells on 2015/9/3.
  */
 public class LessonInfo {
-    private String less_id;
+    private String id;
     private String name;
     private String image;
-    private String[] tags;
     private String less_name;
     private int collection_count;
     private int success_count;
     private int price;
-    private int state;
+    private String state;
     private String keeptime;
+    private String mast_id;
+    private String description;
 
-    public String getLess_id() {
-        return less_id;
-    }
-
-    public void setLess_id(String less_id) {
-        this.less_id = less_id;
-    }
 
     public String getName() {
         return name;
@@ -39,13 +33,6 @@ public class LessonInfo {
         this.image = image;
     }
 
-    public String[] getTags() {
-        return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
 
     public String getLess_name() {
         return less_name;
@@ -79,13 +66,6 @@ public class LessonInfo {
         this.price = price;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 
     public String getKeeptime() {
         return keeptime;
@@ -93,5 +73,37 @@ public class LessonInfo {
 
     public void setKeeptime(String keeptime) {
         this.keeptime = keeptime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getMast_id() {
+        return mast_id;
+    }
+
+    public void setMast_id(String mast_id) {
+        this.mast_id = mast_id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
    FragmentPagerAdapter: 把它所有持有的Fragment保存在内存里面
  */
 import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
+import com.dreamspace.superman.model.Catalog;
 
 import java.util.List;
 
@@ -34,9 +35,9 @@ import java.util.List;
  */
 public class IndexContainerPagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<String> mCategoryList = null;
+    private List<Catalog> mCategoryList = null;
 
-    public IndexContainerPagerAdapter(FragmentManager fm, List<String> categoryList) {
+    public IndexContainerPagerAdapter(FragmentManager fm, List<Catalog> categoryList) {
         super(fm);
         mCategoryList = categoryList;
     }
@@ -53,14 +54,14 @@ public class IndexContainerPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return null != mCategoryList ? mCategoryList.get(position) : null;
+        return null != mCategoryList ? mCategoryList.get(position).getName() : null;
     }
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
 
     }
-    public void setmCategoryList(List<String> mCategoryList) {
+    public void setmCategoryList(List<Catalog> mCategoryList) {
         this.mCategoryList = mCategoryList;
         this.notifyDataSetChanged();
     }

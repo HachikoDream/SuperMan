@@ -10,6 +10,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.View.SelectorImageView;
+import com.dreamspace.superman.model.Catalog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +24,12 @@ public class ChooseClassifyActivity extends AbsActivity {
     SelectorImageView[]
             mSelectorImageViews = new SelectorImageView[11];
     private String[] mFragmentNames = {"球类运动", "IT技术", "健身", "教育", "摄影", "游泳", "器乐", "绘画", "舞蹈", "写作", "其他"};
-    private List<String> mSelectedFNs = new ArrayList<>();
+    private List<Catalog> mSelectedFNs = new ArrayList<>();
+    private List<Catalog> mCatalogs=new ArrayList<>();
     @Bind(R.id.begin_read)
     Button mButton;
     private static final String COME_FROM_INDEX = "INDEX";
-    private Map<String, SelectorImageView> maps = new HashMap<>();
+    private Map<Catalog, SelectorImageView> maps = new HashMap<>();
 
     @Override
     protected void setSelfContentView() {
@@ -36,8 +38,16 @@ public class ChooseClassifyActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
+        Catalog catalog;
+        for (int i=0;i<mFragmentNames.length;i++){
+            catalog=new Catalog();
+            catalog.setIcon("TEST");
+            catalog.setId(i+1);
+            catalog.setName(mFragmentNames[i]);
+            mCatalogs.add(catalog);
+        }
         for (int i = 0; i < mSelectorImageViews.length; i++) {
-            maps.put(mFragmentNames[i], mSelectorImageViews[i]);
+            maps.put(mCatalogs.get(i), mSelectorImageViews[i]);
         }
     }
 
@@ -62,22 +72,22 @@ public class ChooseClassifyActivity extends AbsActivity {
     }
 
     private void showSelectedItems() {
-        List<String> mSeleted = PreferenceUtils.getClassifyItems(getApplicationContext());
-        for (String item : mSeleted) {
+        List<Catalog> mSeleted = PreferenceUtils.getClassifyItems(getApplicationContext());
+        for (Catalog item : mSeleted) {
             SelectorImageView view = maps.get(item);
             if (view != null)
                 view.setIsSelected(true);
         }
     }
 
-    public List<String> getSelectedNames() {
+    public List<Catalog> getSelectedNames() {
         return mSelectedFNs;
     }
 
     public void fillSelectedIds() {
         for (int i = 0; i < mSelectorImageViews.length; i++) {
             if (mSelectorImageViews[i].isSelected()) {
-                mSelectedFNs.add(mFragmentNames[i]);
+                mSelectedFNs.add(mCatalogs.get(i));
             }
         }
     }
