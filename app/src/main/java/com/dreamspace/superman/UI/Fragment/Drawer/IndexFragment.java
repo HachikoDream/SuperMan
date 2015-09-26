@@ -38,6 +38,7 @@ public class IndexFragment extends BaseLazyFragment {
     private IndexContainerPagerAdapter mAdapter;
     private static final int REQUEST_CHOOSE_CLASSIFY = 233;
     private int tabHeight;
+    private  List<Catalog> items;
 
     public IndexFragment() {
         // Required empty public constructor
@@ -66,7 +67,7 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        final List<Catalog> items = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
+        setItems(PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()));
         mAdapter = new IndexContainerPagerAdapter(getChildFragmentManager(), items);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(items.size());
@@ -89,35 +90,6 @@ public class IndexFragment extends BaseLazyFragment {
             }
         });
 
-//        ViewTreeObserver vto = mSlidingTabLayout.getViewTreeObserver();
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                mSlidingTabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);//removeOnGlobalLayoutListener
-//                tabHeight = mSlidingTabLayout.getHeight();
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, tabHeight);
-//                mImageView.setLayoutParams(params);
-//            }
-//        });
-//        final int color = getResources().getColor(R.color.navi_color);
-//        final int normalcolor = getResources().getColor(R.color.near_white);
-//        SlidingTabStrip.SimpleTabColorizer colorizer = new SlidingTabStrip.SimpleTabColorizer() {
-//            @Override
-//            public int getIndicatorColor(int position) {
-//                return color;
-//            }
-//
-//            @Override
-//            public int getSelectedTitleColor(int position) {
-//                return color;
-//            }
-//
-//            @Override
-//            public int getNormalTitleColor(int position) {
-//                return normalcolor;
-//            }
-//        };
-//        mSlidingTabLayout.setCustomTabColorizer(colorizer);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +98,10 @@ public class IndexFragment extends BaseLazyFragment {
                 readyGoForResult(ChooseClassifyActivity.class, REQUEST_CHOOSE_CLASSIFY, b);
             }
         });
+    }
+
+    public void setItems(List<Catalog> items) {
+        this.items = items;
     }
 
     @Override
@@ -138,7 +114,9 @@ public class IndexFragment extends BaseLazyFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //从sp获取数据 刷新viewpager项目
         if (resultCode == Activity.RESULT_OK) {
-            mAdapter.setmCategoryList(PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()));
+            List<Catalog> mCatalogs=PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
+            setItems(mCatalogs);
+            mAdapter.setmCategoryList(mCatalogs);
             mSlidingTabLayout.setViewPager(mViewPager);
         }
     }

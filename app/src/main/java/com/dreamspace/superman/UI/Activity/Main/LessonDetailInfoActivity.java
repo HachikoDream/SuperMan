@@ -4,28 +4,54 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.UI.Fragment.CourseIntroductionFragment;
 import com.dreamspace.superman.UI.Fragment.StudentCommentListFragment;
 import com.dreamspace.superman.UI.Fragment.SupermanIntroductionFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
+import com.dreamspace.superman.model.api.LessonInfo;
+import com.google.gson.Gson;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseDetailInfoActivity extends AbsActivity {
+import butterknife.Bind;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class LessonDetailInfoActivity extends AbsActivity {
 
     private static final int TITLE = R.string.title_activity_course_detail_info;
-    private SlidingTabLayout mSlidingTabLayout;
+    @Bind(R.id.sliding_layout)
+    SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
-    private ViewPager mViewPager;
-    private List<BaseFragment> mFragments =new ArrayList<>();
+    @Bind(R.id.viewpager)
+    ViewPager mViewPager;
+    @Bind(R.id.user_avater_iv)
+    CircleImageView userIv;
+    @Bind(R.id.username_tv)
+    TextView userNameTv;
+    @Bind(R.id.course_name_tv)
+    TextView lessonnameTv;
+    @Bind(R.id.sm_tag_tv)
+    TextView tagTv;
+    @Bind(R.id.want_meet_num_tv)
+    TextView meet_num_tv;
+    @Bind(R.id.success_meet_num_tv)
+    TextView success_num_tv;
+    @Bind(R.id.price_tv)
+    TextView priceTv;
+    private List<BaseLazyFragment> mFragments =new ArrayList<>();
     private int color=0;
     private int normalColor=0;
 
@@ -52,9 +78,7 @@ public class CourseDetailInfoActivity extends AbsActivity {
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(TITLE);
-        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_layout);
         mAdapter = new CommonFragmentAdapter(getSupportFragmentManager(), mFragments);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mAdapter);
         mSlidingTabLayout.setStartColor(normalColor);
         mSlidingTabLayout.setViewPager(mViewPager);
@@ -76,27 +100,19 @@ public class CourseDetailInfoActivity extends AbsActivity {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
+        String content=this.getIntent().getStringExtra("LESSON_INFO");
+        Gson gson=new Gson();
+        showLessonInfo(gson.fromJson(content, LessonInfo.class));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_course_detail_info, menu);
-        return true;
+    private void showLessonInfo(LessonInfo lessonInfo) {
+        Tools.showImageWithGlide(this,userIv,lessonInfo.getImage());
+        lessonnameTv.setText(lessonInfo.getLess_name());
+        meet_num_tv.setText(String.valueOf(lessonInfo.getCollection_count()));
+        success_num_tv.setText(String.valueOf(lessonInfo.getSuccess_count()));
+        priceTv.setText(String.valueOf(lessonInfo.getPrice()));
+        userNameTv.setText(lessonInfo.getName());
+        tagTv.setText(lessonInfo.getDescription());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

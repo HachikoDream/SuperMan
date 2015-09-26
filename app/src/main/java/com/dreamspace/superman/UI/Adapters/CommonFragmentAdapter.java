@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 
 import java.util.ArrayList;
@@ -16,13 +17,13 @@ import java.util.List;
  */
 public class CommonFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private List<BaseFragment> mFragments;
-    public void setmFragments(List<BaseFragment> mFragments) {
+    private List<BaseLazyFragment> mFragments;
+    public void setmFragments(List<BaseLazyFragment> mFragments) {
         this.mFragments = mFragments;
         this.notifyDataSetChanged();
     }
 
-    public CommonFragmentAdapter(FragmentManager fm, List<BaseFragment> fragments) {
+    public CommonFragmentAdapter(FragmentManager fm, List<BaseLazyFragment> fragments) {
         super(fm);
         this.mFragments = fragments;
     }

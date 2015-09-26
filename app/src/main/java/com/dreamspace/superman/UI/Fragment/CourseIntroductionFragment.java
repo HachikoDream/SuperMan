@@ -6,11 +6,14 @@ import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
+
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CourseIntroductionFragment extends BaseFragment {
+public class CourseIntroductionFragment extends BaseLazyFragment {
 
     private final static String TAG="课程介绍";
 
@@ -20,18 +23,33 @@ public class CourseIntroductionFragment extends BaseFragment {
 
     }
 
+    @Override
+    protected void onFirstUserVisible() {
+        toggleShowLoading(true,getString(R.string.common_loading_message));
+    }
 
     @Override
-    public int getLayoutId() {
+    protected void onUserVisible() {
+
+    }
+
+    @Override
+    protected void onUserInvisible() {
+
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return ButterKnife.findById(getActivity(),R.id.card_view);
+    }
+
+    @Override
+    protected void initViewsAndEvents() {
+
+    }
+
+    @Override
+    protected int getContentViewLayoutID() {
         return R.layout.fragment_course_introduction;
-    }
-
-    @Override
-    public void initViews(View view) {
-
-    }
-
-    @Override
-    public void initDatas() {
     }
 }

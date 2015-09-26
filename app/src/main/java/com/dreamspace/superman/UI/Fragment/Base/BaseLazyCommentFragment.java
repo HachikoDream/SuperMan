@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.BasisAdapter;
+import com.dreamspace.superman.UI.Adapters.CommentAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
 
@@ -20,7 +21,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2015/8/25 0025.
  */
-public abstract class BaseLazyCourseFragment<T> extends BaseLazyFragment {
+public abstract class BaseLazyCommentFragment<T> extends BaseLazyFragment {
     @Bind(R.id.load_more_lv)
     LoadMoreListView moreListView;
     private BasisAdapter mAdapter;
@@ -69,7 +70,7 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLazyFragment {
         initDatas();
     }
     public void initDatas() {
-        mAdapter=new IndexAdapter(getActivity());
+        mAdapter=new CommentAdapter(getActivity());
         moreListView.setAdapter(mAdapter);
         moreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,8 +111,8 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLazyFragment {
         }
         mAdapter.notifyDataSetChanged();
     }
-   public boolean isRefreshing(){
-       return mSwipeRefreshLayout.isRefreshing();
-   }
-    
+    public boolean isRefreshing(){
+        return mSwipeRefreshLayout.isRefreshing();
+    }
+
 }

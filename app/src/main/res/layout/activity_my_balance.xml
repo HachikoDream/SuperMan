@@ -16,18 +16,24 @@
         android:padding="3dp"
         android:text="我的余额"
         android:textColor="@color/navi_color" />
-
-    <TextView
-        android:id="@+id/my_balance_tv"
+    <LinearLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/title"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bg_account"
-        android:gravity="center"
-        android:text="￥2000"
-        android:textColor="@color/navi_color"
-        android:textSize="45sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/my_balance_tv"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_account"
+            android:gravity="center"
+            android:text="￥2000"
+            android:textColor="@color/navi_color"
+            android:textSize="45sp" />
+
+    </LinearLayout>
 </LinearLayout>

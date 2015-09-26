@@ -42,7 +42,7 @@ public class ChooseClassifyActivity extends AbsActivity {
         for (int i=0;i<mFragmentNames.length;i++){
             catalog=new Catalog();
             catalog.setIcon("TEST");
-            catalog.setId(i+1);
+            catalog.setId(i+2);
             catalog.setName(mFragmentNames[i]);
             mCatalogs.add(catalog);
         }

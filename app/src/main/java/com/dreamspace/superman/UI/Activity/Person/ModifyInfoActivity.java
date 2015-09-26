@@ -17,6 +17,7 @@ import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -88,10 +89,7 @@ public class ModifyInfoActivity extends AbsActivity {
     }
 
     private void setContentFromLocal() {
-        Glide.with(this)
-                .load(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.AVATAR))
-                .crossFade()
-                .into(avaterIv);
+        Tools.showImageWithGlide(this,avaterIv,PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.AVATAR));
         phoneTv.setText(fuzzyString(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.PHONE)));
         userNameTv.setText(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT));
         realNameTv.setText(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.REALNAME));
@@ -308,7 +306,7 @@ public class ModifyInfoActivity extends AbsActivity {
             public void success(UserInfo userInfo, Response response) {
                 dismissDialog();
                 showToast("头像修改成功");
-                Glide.with(ModifyInfoActivity.this).load(photoPath).crossFade().into(avaterIv);
+                Tools.showImageWithGlide(ModifyInfoActivity.this, avaterIv, photoPath);
                 saveUserInfo(userInfo);
             }
 

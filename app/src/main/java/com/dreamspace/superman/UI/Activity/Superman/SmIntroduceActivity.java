@@ -10,6 +10,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.CourseIntroductionFragment;
 import com.dreamspace.superman.UI.Fragment.SmCourseListFragment;
 import com.dreamspace.superman.UI.Fragment.StudentCommentListFragment;
@@ -25,7 +26,7 @@ public class SmIntroduceActivity extends AbsActivity {
     private SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
     private ViewPager mViewPager;
-    private List<BaseFragment> mFragments = new ArrayList<>();
+    private List<BaseLazyFragment> mFragments = new ArrayList<>();
     private int color = 0;
     private int normalColor = 0;
 

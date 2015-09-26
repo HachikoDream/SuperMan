@@ -31,4 +31,25 @@ public class Catalog {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Catalog catalog = (Catalog) o;
+
+        if (id != catalog.id) return false;
+        if (!name.equals(catalog.name)) return false;
+        return icon.equals(catalog.icon);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + icon.hashCode();
+        return result;
+    }
 }

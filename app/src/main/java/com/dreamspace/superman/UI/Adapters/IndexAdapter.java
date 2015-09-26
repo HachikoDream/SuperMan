@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.api.LessonInfo;
 
@@ -37,15 +38,7 @@ public class IndexAdapter extends BasisAdapter<LessonInfo, IndexAdapter.viewHold
         holder.successCountTv.setText(String.valueOf(entity.getSuccess_count()));
         holder.priceTv.setText(String.valueOf(entity.getPrice()));
         holder.descTv.setText(entity.getDescription());
-        Glide.with(getmContext())
-                .load(entity.getImage())
-                .placeholder(R.drawable.login_pho)
-                .into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        holder.avaterIv.setImageDrawable(resource);
-                    }
-                });
+        Tools.showImageWithGlide(getmContext(),holder.avaterIv,entity.getImage());
     }
 
     @Override

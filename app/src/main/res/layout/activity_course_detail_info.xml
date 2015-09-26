@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Activity.Main.CourseDetailInfoActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity">
 
     <include layout="@layout/custom_toolbar"></include>
 
@@ -36,11 +36,12 @@
                 android:text="孙坚"
                 android:textColor="@color/grey_line"
                 android:textSize="14sp" />
+
             <View
                 android:layout_width="0.1dp"
                 android:layout_height="90dp"
-                android:layout_toRightOf="@id/user_avater_iv"
                 android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/user_avater_iv"
                 android:background="@color/grey_line"></View>
         </RelativeLayout>
 
@@ -53,24 +54,29 @@
             android:paddingTop="10dp">
 
             <TextView
+                android:id="@+id/course_name_tv"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:paddingBottom="2dp"
                 android:singleLine="false"
                 android:text="钢琴十级课程"
-                android:paddingBottom="2dp"
                 android:textColor="@color/near_black"
                 android:textSize="16sp" />
+
             <TextView
+                android:id="@+id/sm_tag_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:textColor="@color/select_tab_color"
-                android:text="15岁过钢琴十级的天才少年"/>
+                android:text="15岁过钢琴十级的天才少年"
+                android:textColor="@color/select_tab_color" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingTop="5dp">
+
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -82,41 +88,76 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
-                    android:text="15人想见"
                     android:textColor="@color/navi_color"
                     android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="人想见"
+                    android:textColor="@color/navi_color"
+                    android:textSize="10sp" />
+
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                >
+                android:layout_marginTop="3dp">
 
                 <ImageView
-                    android:layout_centerVertical="true"
                     android:id="@+id/imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/homepage_deal" />
 
-                <TextView
-                    android:layout_centerVertical="true"
+                <LinearLayout
+                    android:id="@+id/success_meet_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/imageview"
-                    android:id="@+id/success_meet_num_tv"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/success_meet_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="2dp"
+                        android:text="30"
+                        android:textColor="@color/navi_color"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:padding="2dp"
+                        android:text="人已成功约见"
+                        android:textColor="@color/navi_color"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:text="30人已成功约见"
-                    android:textColor="@color/navi_color"
-                    android:textSize="10sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="60元/课时"
-                    android:textColor="@color/navi_color"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="end"/>
+                    android:layout_alignParentRight="true">
+                    <TextView
+                        android:id="@+id/price_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="60"
+                        android:textColor="@color/navi_color" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="元/课时"
+                        android:textColor="@color/navi_color" />
+
+                </LinearLayout>
             </RelativeLayout>
 
 
@@ -128,11 +169,13 @@
         android:layout_height="0.1dp"
         android:layout_marginTop="0dp"
         android:background="@color/grey_line"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <com.dreamspace.superman.UI.View.SlidingTabLayout
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
@@ -148,27 +191,29 @@
             android:layout_weight="1"
             android:background="@color/main_bg" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/talk_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/button_redside_nocorner_bg"
             android:text="咨询"
-            android:textColor="@color/navi_color"
-            android:background="@drawable/button_redside_nocorner_bg"/>
+            android:textColor="@color/navi_color" />
 
         <Button
             android:id="@+id/order_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
+            android:background="@drawable/button_withno_corner_bg"
             android:text="预约"
-            android:textColor="@color/near_white"
-            android:background="@drawable/button_withno_corner_bg"/>
+            android:textColor="@color/near_white" />
     </LinearLayout>
 </LinearLayout>

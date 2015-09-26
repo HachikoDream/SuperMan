@@ -23,6 +23,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Person.ModifyInfoActivity;
@@ -229,16 +230,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             });
             mUserName.setText(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT));
             String url = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.AVATAR);
-//            Glide.with(this).load(url).crossFade().into(mUserAvater);
-            Glide.with(this)
-                    .load(url)
-                    .placeholder(R.drawable.login_pho)
-                    .into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            mUserAvater.setImageDrawable(resource);
-                        }
-                    });
+            Tools.showImageWithGlide(this,mUserAvater,url);
         } else {
             headerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -15,6 +15,7 @@ import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.ErrorRes;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -75,7 +76,7 @@ public class MyWalletFragment extends BaseLazyFragment {
 
     @Override
     protected View getLoadingTargetView() {
-        return balanceTv;
+        return ButterKnife.findById(getActivity(),R.id.content_container);
     }
 
     @Override

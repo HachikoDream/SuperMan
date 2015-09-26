@@ -1,17 +1,22 @@
 package com.dreamspace.superman.UI.Fragment.Index;
 
 
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
+import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyCourseFragment;
 import com.dreamspace.superman.model.Catalog;
-import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
+import com.google.gson.Gson;
+
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -22,7 +27,8 @@ import retrofit.client.Response;
  */
 public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     public Catalog selfCatalog;
-    public int page=0;
+    public int page=1;
+    public final int INIT_PAGE=1;
     public HandpickFragment() {
 
     }
@@ -30,64 +36,106 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
 
     @Override
     public void onPullUp() {
-        new Handler().postDelayed(new Runnable() {
+       loadingDataByPage(++page, new OnRefreshListener() {
+           @Override
+           public void onFinish(List<LessonInfo> lessons) {
+               if(lessons.size()==0){
+                   showToast(getString(R.string.common_nomore_data));
+               }else{
+                   refreshDate(lessons,BaseLazyCourseFragment.ADD);
+               }
+               onPullUpFinished();
+           }
 
-            @Override
-            public void run() {
-                Log.i("onLoad", "on load complete");
-                onPullUpFinished();
-            }
-        }, 3000);
+           @Override
+           public void onError() {
+               onPullUpFinished();
+           }
+       });
     }
 
     @Override
     public void onPullDown() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onPullDownFinished();
-            }
-        }, 3000);
+      loadingDataByPage(INIT_PAGE, new OnRefreshListener() {
+          @Override
+          public void onFinish(List<LessonInfo> lessons) {
+              refreshDate(lessons,BaseLazyCourseFragment.LOAD);
+              onPullDownFinished();
+          }
+
+          @Override
+          public void onError() {
+             onPullDownFinished();
+          }
+      });
     }
 
 
     @Override
     public void getInitData() {
-        Log.i("INFO","get init data");
-//        Log.i("INFO", "TAG IS :" + selfCatalog.getName());
         if(selfCatalog==null){
             selfCatalog=new Catalog();
             selfCatalog.setIcon("TEST");
             selfCatalog.setName("精选");
             selfCatalog.setId(1);
         }
-        loadingInitData();
+        loadingDataWhenInit();
+    }
+    private void loadingDataWhenInit(){
+        toggleShowLoading(true,getString(R.string.common_loading_message));
+        loadingDataByPage(INIT_PAGE, new OnRefreshListener() {
+            @Override
+            public void onFinish(List<LessonInfo> lessons) {
+                toggleShowLoading(false,null);
+                refreshDate(lessons,BaseLazyCourseFragment.LOAD);
+            }
+
+            @Override
+            public void onError() {
+                toggleShowError(true, getString(R.string.common_empty_msg), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadingDataWhenInit();
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
     protected void onItemPicked(LessonInfo item, int position) {
+        Bundle bundle=new Bundle();
+        Gson gson=new Gson();
+        bundle.putString("LESSON_INFO", gson.toJson(item));
+        readyGo(LessonDetailInfoActivity.class,bundle);
 
     }
 
-    public void loadingInitData() {
+    public void loadingDataByPage(int page, final OnRefreshListener onRefreshListener) {
+
         if(NetUtils.isNetworkConnected(getActivity().getApplicationContext())){
-            ApiManager.getService(getActivity().getApplicationContext()).getCoursesByCatalog(selfCatalog.getId(),1, new Callback<SmLessonList>() {
+            ApiManager.getService(getActivity().getApplicationContext()).getCoursesByCatalog(selfCatalog.getId(),page, new Callback<SmLessonList>() {
                 @Override
                 public void success(SmLessonList smLessonList, Response response) {
                     if(smLessonList!=null){
-                          refreshDate(smLessonList.getLessons());
+                        onRefreshListener.onFinish(smLessonList.getLessons());
+//                          refreshDate(smLessonList.getLessons());
                     }else{
                         showToast(response.getReason());
+                        onRefreshListener.onError();
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
+                    onRefreshListener.onError();
                     showInnerError(error);
                 }
             });
 
         }else{
+            onRefreshListener.onError();
             showNetWorkError();
         }
 
@@ -97,5 +145,8 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
         Log.i("INFO","On page selected");
         selfCatalog = catalog;
     }
-
+   public interface OnRefreshListener{
+       void onFinish(List<LessonInfo> lessons);
+       void onError();
+   }
 }

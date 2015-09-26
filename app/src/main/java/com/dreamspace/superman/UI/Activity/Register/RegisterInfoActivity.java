@@ -19,6 +19,7 @@ import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -281,7 +282,7 @@ public class RegisterInfoActivity extends AbsActivity {
                         data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
                 Log.i("INFO", "PHOTO:" + photos.get(0));
                 photoPath = photos.get(0);
-                Glide.with(this).load(photoPath).crossFade().into(mImageView);
+                Tools.showImageWithGlide(this,mImageView,photoPath);
                 choose_avater = true;
             }
         }

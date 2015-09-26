@@ -49,7 +49,7 @@
             android:name=".UI.Activity.Register.ResetPwdActivity"
             android:label="@string/title_activity_reset_pwd" />
         <activity
-            android:name=".UI.Activity.Main.CourseDetailInfoActivity"
+            android:name=".UI.Activity.Main.LessonDetailInfoActivity"
             android:label="@string/title_activity_course_detail_info" />
         <activity
             android:name=".UI.Activity.Main.subscribeActivity"

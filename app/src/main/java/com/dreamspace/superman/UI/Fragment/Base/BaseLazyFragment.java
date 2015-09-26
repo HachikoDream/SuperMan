@@ -83,7 +83,15 @@ public abstract class BaseLazyFragment extends Fragment {
         super.onCreate(savedInstanceState);
         TAG_LOG = this.getClass().getSimpleName();
     }
+    private String TAG="SUPER";
+    public void setTAG(String TAG) {
+        this.TAG = TAG;
+    }
 
+    public String getTAG() {
+
+        return TAG;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getContentViewLayoutID() != 0) {

@@ -10,7 +10,6 @@ import java.util.List;
  * Created by Administrator on 2015/8/3 0003.
  */
 public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
-    private static final String TAG="预约";
 
     public SubscribeFragment() {
 
