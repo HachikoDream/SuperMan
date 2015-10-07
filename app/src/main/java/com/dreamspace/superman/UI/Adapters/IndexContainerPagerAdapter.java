@@ -18,6 +18,7 @@ package com.dreamspace.superman.UI.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 /*
    FragmentPagerAdapter: 把它所有持有的Fragment保存在内存里面

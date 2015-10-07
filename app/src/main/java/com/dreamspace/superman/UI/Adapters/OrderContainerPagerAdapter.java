@@ -18,6 +18,7 @@ package com.dreamspace.superman.UI.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
@@ -30,7 +31,7 @@ import java.util.List;
  * Date:    2015/4/2.
  * Description:
  */
-public class OrderContainerPagerAdapter extends FragmentStatePagerAdapter {
+public class OrderContainerPagerAdapter extends FragmentPagerAdapter {
 
     private List<String> mCategoryList = null;
 

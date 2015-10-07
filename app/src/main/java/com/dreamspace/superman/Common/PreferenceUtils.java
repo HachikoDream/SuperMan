@@ -29,6 +29,7 @@ public class PreferenceUtils {
         public static final String ACCESS="access_token";
         public static final String PHONE="PHONE";
         public static final String MAS_ID="MAS_ID";
+        public static final String QINIU_SOURCE="QINIU_CODE";
     }
 
     public static final String DEFAULT_STRING = "";

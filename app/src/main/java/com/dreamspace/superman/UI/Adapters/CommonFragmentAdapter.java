@@ -17,13 +17,13 @@ import java.util.List;
  */
 public class CommonFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private List<BaseLazyFragment> mFragments;
+    private List<? extends BaseLazyFragment> mFragments;
     public void setmFragments(List<BaseLazyFragment> mFragments) {
         this.mFragments = mFragments;
         this.notifyDataSetChanged();
     }
 
-    public CommonFragmentAdapter(FragmentManager fm, List<BaseLazyFragment> fragments) {
+    public CommonFragmentAdapter(FragmentManager fm, List<? extends BaseLazyFragment> fragments) {
         super(fm);
         this.mFragments = fragments;
     }

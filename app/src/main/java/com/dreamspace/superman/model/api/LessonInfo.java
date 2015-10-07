@@ -2,9 +2,23 @@ package com.dreamspace.superman.model.api;
 
 /**
  * Created by Wells on 2015/9/3.
+ * {
+ * "mast_id": 2,
+ * "name": "duzhixia",
+ * "keeptime": "2",
+ * "tags": "tag1,tag2,tag3,tag4,tag5",
+ * "state": "on",
+ * "image": "http://7xl53f.com1.z0.glb.clouddn.com/5607bc8090c49013abc2234b?imageView2/1/w/138/h/138/q/100",
+ * "description": "jieshao",
+ * "id": 2,
+ * "less_name": "mycourse1",
+ * "collection_count": 0,
+ * "success_count": 0,
+ * "price": 666
+ * }
  */
 public class LessonInfo {
-    private String id;
+    private int id;
     private String name;
     private String image;
     private String less_name;
@@ -15,7 +29,24 @@ public class LessonInfo {
     private String keeptime;
     private String mast_id;
     private String description;
+    private String tags;
+    private boolean is_collected;
 
+    public boolean is_collected() {
+        return is_collected;
+    }
+
+    public void setIs_collected(boolean is_collected) {
+        this.is_collected = is_collected;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
 
     public String getName() {
         return name;
@@ -75,11 +106,11 @@ public class LessonInfo {
         this.keeptime = keeptime;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

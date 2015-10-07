@@ -25,6 +25,7 @@
                 android:text="课程介绍"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/id_course_desc"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -319,6 +319,15 @@ public abstract class BaseLazyFragment extends Fragment {
         ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
         showToast(res.getReason());
     }
+    protected String getInnerErrorInfo(RetrofitError error){
+        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
+        if(res!=null){
+            return  res.getReason();
+        }else {
+            return getString(R.string.common_error_msg);
+        }
+
+    }
 
     /**
      * toggle show loading

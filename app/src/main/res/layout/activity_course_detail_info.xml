@@ -23,7 +23,7 @@
                 android:id="@+id/user_avater_iv"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/testhead" />
+                android:src="@drawable/login_pho_mistake" />
 
             <TextView
                 android:id="@+id/username_tv"
@@ -33,7 +33,6 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="孙坚"
                 android:textColor="@color/grey_line"
                 android:textSize="14sp" />
 
@@ -59,7 +58,7 @@
                 android:layout_height="35dp"
                 android:paddingBottom="2dp"
                 android:singleLine="false"
-                android:text="钢琴十级课程"
+                android:text="@string/common_loading_message"
                 android:textColor="@color/near_black"
                 android:textSize="16sp" />
 
@@ -68,7 +67,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="15岁过钢琴十级的天才少年"
                 android:textColor="@color/select_tab_color" />
 
             <LinearLayout
@@ -148,7 +146,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="60"
                         android:textColor="@color/navi_color" />
                     <TextView
                         android:layout_width="wrap_content"

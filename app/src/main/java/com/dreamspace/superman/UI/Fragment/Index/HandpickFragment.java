@@ -11,6 +11,7 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyCourseFragment;
+import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.model.Catalog;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
@@ -27,8 +28,10 @@ import retrofit.client.Response;
  */
 public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     public Catalog selfCatalog;
-    public int page=1;
-    public final int INIT_PAGE=1;
+    public int page = 1;
+    public final int INIT_PAGE = 1;
+    private boolean onFirst=false;
+
     public HandpickFragment() {
 
     }
@@ -36,58 +39,70 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
 
     @Override
     public void onPullUp() {
-       loadingDataByPage(++page, new OnRefreshListener() {
-           @Override
-           public void onFinish(List<LessonInfo> lessons) {
-               if(lessons.size()==0){
-                   showToast(getString(R.string.common_nomore_data));
-               }else{
-                   refreshDate(lessons,BaseLazyCourseFragment.ADD);
-               }
-               onPullUpFinished();
-           }
+        loadingDataByPage(++page, new OnRefreshListener<LessonInfo>() {
+            @Override
+            public void onFinish(List<LessonInfo> lessons) {
+                if (lessons.size() == 0) {
+                    showToast(getString(R.string.common_nomore_data));
+                } else {
+                    refreshDate(lessons, BaseLazyCourseFragment.ADD);
+                }
+                onPullUpFinished();
+            }
 
-           @Override
-           public void onError() {
-               onPullUpFinished();
-           }
-       });
+            @Override
+            public void onError() {
+                onPullUpFinished();
+            }
+        });
     }
 
     @Override
     public void onPullDown() {
-      loadingDataByPage(INIT_PAGE, new OnRefreshListener() {
-          @Override
-          public void onFinish(List<LessonInfo> lessons) {
-              refreshDate(lessons,BaseLazyCourseFragment.LOAD);
-              onPullDownFinished();
-          }
+        loadingDataByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
+            @Override
+            public void onFinish(List<LessonInfo> lessons) {
+                page = 1;
+                refreshDate(lessons, BaseLazyCourseFragment.LOAD);
+                onPullDownFinished();
+            }
 
-          @Override
-          public void onError() {
-             onPullDownFinished();
-          }
-      });
+            @Override
+            public void onError() {
+                page = 1;
+                onPullDownFinished();
+            }
+        });
     }
 
 
     @Override
     public void getInitData() {
-        if(selfCatalog==null){
-            selfCatalog=new Catalog();
-            selfCatalog.setIcon("TEST");
-            selfCatalog.setName("精选");
-            selfCatalog.setId(1);
+        Log.i("HP", "On First");
+        onFirst=true;
+        if (selfCatalog != null) {
+            loadingDataWhenInit();
         }
-        loadingDataWhenInit();
+
     }
-    private void loadingDataWhenInit(){
-        toggleShowLoading(true,getString(R.string.common_loading_message));
-        loadingDataByPage(INIT_PAGE, new OnRefreshListener() {
+
+    private void loadingDataWhenInit() {
+        toggleShowLoading(true, getString(R.string.common_loading_message));
+        loadingDataByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
             @Override
             public void onFinish(List<LessonInfo> lessons) {
-                toggleShowLoading(false,null);
-                refreshDate(lessons,BaseLazyCourseFragment.LOAD);
+                toggleShowLoading(false, null);
+                if(lessons.size()==0){
+                    toggleShowEmpty(true, getString(R.string.common_empty_catalog_msg), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            loadingDataWhenInit();
+                        }
+                    });
+                }else{
+                    refreshDate(lessons, BaseLazyCourseFragment.LOAD);
+                }
+
             }
 
             @Override
@@ -105,23 +120,21 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
 
     @Override
     protected void onItemPicked(LessonInfo item, int position) {
-        Bundle bundle=new Bundle();
-        Gson gson=new Gson();
-        bundle.putString("LESSON_INFO", gson.toJson(item));
-        readyGo(LessonDetailInfoActivity.class,bundle);
+        Bundle bundle = new Bundle();
+        bundle.putInt("LESSON_INFO", item.getId());
+        readyGo(LessonDetailInfoActivity.class, bundle);
 
     }
 
     public void loadingDataByPage(int page, final OnRefreshListener onRefreshListener) {
 
-        if(NetUtils.isNetworkConnected(getActivity().getApplicationContext())){
-            ApiManager.getService(getActivity().getApplicationContext()).getCoursesByCatalog(selfCatalog.getId(),page, new Callback<SmLessonList>() {
+        if (NetUtils.isNetworkConnected(getActivity().getApplicationContext())) {
+            ApiManager.getService(getActivity().getApplicationContext()).getCoursesByCatalog(selfCatalog.getId(), page, new Callback<SmLessonList>() {
                 @Override
                 public void success(SmLessonList smLessonList, Response response) {
-                    if(smLessonList!=null){
+                    if (smLessonList != null) {
                         onRefreshListener.onFinish(smLessonList.getLessons());
-//                          refreshDate(smLessonList.getLessons());
-                    }else{
+                    } else {
                         showToast(response.getReason());
                         onRefreshListener.onError();
                     }
@@ -134,7 +147,7 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
                 }
             });
 
-        }else{
+        } else {
             onRefreshListener.onError();
             showNetWorkError();
         }
@@ -142,11 +155,10 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     }
 
     public void onPageSelected(int position, Catalog catalog) {
-        Log.i("INFO","On page selected");
         selfCatalog = catalog;
+        if(onFirst){
+            loadingDataWhenInit();
+        }
     }
-   public interface OnRefreshListener{
-       void onFinish(List<LessonInfo> lessons);
-       void onError();
-   }
+
 }

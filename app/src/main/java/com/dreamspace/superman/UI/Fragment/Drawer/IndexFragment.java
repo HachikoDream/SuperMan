@@ -89,7 +89,8 @@ public class IndexFragment extends BaseLazyFragment {
 
             }
         });
-
+        HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+        fragment.onPageSelected(0,items.get(0));
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

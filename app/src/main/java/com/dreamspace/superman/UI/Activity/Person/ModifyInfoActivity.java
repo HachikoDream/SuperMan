@@ -274,11 +274,12 @@ public class ModifyInfoActivity extends AbsActivity {
         UploadManager manager = UpLoadUtils.getInstance();
         manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
-            public void complete(String key, ResponseInfo info, JSONObject response) {
+            public void complete(final String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
                     modifyInfo(AVATER, key, new FinishUpdate() {
                         @Override
                         public void onFinish() {
+                            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE,key);
                             getUserInfo();
                         }
 

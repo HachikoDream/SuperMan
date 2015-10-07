@@ -1,9 +1,11 @@
 package com.dreamspace.superman.API;
 
 import com.dreamspace.superman.model.Lesson;
+import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.CollectReq;
+import com.dreamspace.superman.model.api.CommentList;
 import com.dreamspace.superman.model.api.CommentReq;
 import com.dreamspace.superman.model.api.CommentRes;
 import com.dreamspace.superman.model.api.LessonInfo;
@@ -28,6 +30,7 @@ import com.dreamspace.superman.model.api.RegisterReq;
 import com.dreamspace.superman.model.api.RegistertokenReq;
 import com.dreamspace.superman.model.api.RegistertokenRes;
 import com.dreamspace.superman.model.api.SendVerifyReq;
+import com.dreamspace.superman.model.api.toBeSmReq;
 
 import java.util.List;
 
@@ -88,7 +91,7 @@ public interface SupermanService {
     void collectLesson(@Body CollectReq req,Callback<Response> cb);
     //获取用户收藏的全部课程
     @GET("/user/collections")
-    void getAllCollections(@Query("page") int req,Callback<Response> cb);
+    void getAllCollections(@Query("page") int page,Callback<SmLessonList> cb);
     //用户删除收藏
     @DELETE("/user/collection/{less_id}")
     void deleteCollectionById(@Path("less_id") int less_id,Callback<Response> cb);
@@ -96,8 +99,8 @@ public interface SupermanService {
     //获取分类
     //管理员可以删除这个分类
     //一般用户成为达人
-//    @POST("/master")
-//    void applytoSuperMan(@Body ApplyReq req,new Callback<>)
+    @POST("/master")
+    void applytoSuperMan(@Body toBeSmReq req,Callback<TempRes> cb);
     //达人绑定支付宝账号
     //获取本账号达人信息
     @GET("/master")
@@ -119,7 +122,7 @@ public interface SupermanService {
     void searchLessons(@Query("key_word") String key_word,Callback<SmLessonList> cb);
     //获取课程详情 ???可省略
     @GET("/lesson/{les_id}")
-    void getLessonDetail(@Path("les_id") String les_id,Callback<LessonInfo> cb);
+    void getLessonDetail(@Path("les_id") int les_id,Callback<LessonInfo> cb);
     //删除课程
     @DELETE("/lesson/{les_id}")
     void deleteLesson(@Path("les_id") String les_id,Callback<Response> cb);
@@ -129,7 +132,7 @@ public interface SupermanService {
 
     //获取课程评论
     @GET("/lesson/{les_id}/comments")
-    void getCommentsById(@Path("les_id") int les_id,@Query("page")int page);
+    void getCommentsById(@Path("les_id") int les_id,@Query("page")int page,Callback<CommentList> cb);
     //用户预约订单
     @POST("/user/order")
     void subscribeOrder(@Body SubscribeReq req,Callback<SubscribeRes> cb);

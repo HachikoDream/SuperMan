@@ -55,10 +55,13 @@
     <string name="common_loading_message">正在加载中...</string>
     <string name="common_nomore_data">没有更多数据咯~</string>
     <string name="common_empty_msg">抱歉,暂未获取到数据!\n请点击屏幕重试~</string>
+    <string name="common_empty_catalog_msg">该分类下暂无商品</string>
     <string name="common_error_msg">抱歉,系统出错了!\n请点击屏幕重试~</string>
     <string name="common_no_network_msg">暂未连接上网络!\n请连接后点击屏幕重试~</string>
     <string name="network_error_tips">请检查您的网络环境</string>
     <string name="inner_error_tips">服务暂时不可用请稍后重试</string>
     <string name="title_activity_modify_info">个人中心</string>
+    <string name="collect_success">收藏成功</string>
+    <string name="collect_quit_success">成功取消收藏</string>
     <string name="title_activity_input_pwd">InputPwdActivity</string>
 </resources>

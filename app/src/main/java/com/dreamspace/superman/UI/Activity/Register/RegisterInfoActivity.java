@@ -206,13 +206,14 @@ public class RegisterInfoActivity extends AbsActivity {
     }
 
     //上传用户信息到业务服务器
-    private void register(RegisterReq req) {
+    private void register(final RegisterReq req) {
         Log.i("INFO","req: "+req);
         mService.register(req, new Callback<LoginRes>() {
             @Override
             public void success(LoginRes res, Response response) {
                 if (res != null) {
                     PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.ACCESS, res.getAccess_token());
+                    PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.QINIU_SOURCE,req.getImage());
                     ApiManager.clear();
                     getUserInfo();
                 }

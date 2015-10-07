@@ -21,7 +21,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2015/8/25 0025.
  */
-public abstract class BaseLazyCommentFragment<T> extends BaseLazyFragment {
+public abstract class BaseLazyCommentFragment<T> extends BaseLessonFragment {
     @Bind(R.id.load_more_lv)
     LoadMoreListView moreListView;
     private BasisAdapter mAdapter;

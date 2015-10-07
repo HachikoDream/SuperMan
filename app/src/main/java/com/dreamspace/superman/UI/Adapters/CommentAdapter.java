@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.Comment;
 
@@ -27,6 +28,10 @@ public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHold
     @Override
     protected void setDataIntoView(viewHolder holder, Comment entity) {
         holder.contentTv.setText(entity.getContent());
+        holder.timeTv.setText(entity.getTime());
+        Tools.showImageWithGlide(getmContext(),holder.userAvaterIv,entity.getImage());
+        holder.userNameTv.setText(entity.getNickname());
+        //TODO lack the name of the lesson
     }
 
     @Override
@@ -34,7 +39,6 @@ public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHold
         holder.contentTv= (TextView) convertView.findViewById(R.id.content_tv);
         holder.userNameTv= (TextView) convertView.findViewById(R.id.username_tv);
         holder.timeTv= (TextView) convertView.findViewById(R.id.time_tv);
-        holder.relatedCourseTv=(TextView)convertView.findViewById(R.id.course_name_tv);
         holder.userAvaterIv=(CircleImageView)convertView.findViewById(R.id.profile_image);
     }
 
@@ -47,7 +51,6 @@ public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHold
         public TextView contentTv;
         public TextView userNameTv;
         public TextView timeTv;
-        public TextView relatedCourseTv;
         public CircleImageView userAvaterIv;
     }
 }

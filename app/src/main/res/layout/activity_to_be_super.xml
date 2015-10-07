@@ -15,9 +15,10 @@
         android:paddingRight="63dp"
         android:paddingTop="13dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avater_iv"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/login_pho_mistake" />
 
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <RadioButton
@@ -53,36 +55,7 @@
         </RadioGroup>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="真实姓名"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="联系电话"
-                android:inputType="number"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
+            android:id="@+id/skils_ev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -97,6 +70,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/tags_ev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -111,6 +85,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <EditText
+            android:id="@+id/honour_ev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -122,6 +97,7 @@
             android:textSize="12sp" />
 
         <EditText
+            android:id="@+id/introduction_ev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
