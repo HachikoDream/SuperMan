@@ -55,7 +55,7 @@ public class MyCourseListActivity extends BaseListAct<Lesson> {
 
     @Override
     public void getInitData() {
-     refreshDate(getTestData());
+     refreshDate(getTestData(),BaseListAct.LOAD);
     }
     public List<Lesson> getTestData() {
         List<Lesson> mLessons = new ArrayList<>();

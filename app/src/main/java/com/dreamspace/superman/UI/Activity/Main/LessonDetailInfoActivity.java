@@ -202,6 +202,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
                 if (mLessonInfo != null) {
                     boolean result = mLessonInfo.is_collected();
                     if(result){
+                        ///todo add a dialog for ensure
                         DeleteCollectionsById(less_id,item);
                     }else{
                         CollectLessonById(less_id,item);

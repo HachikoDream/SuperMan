@@ -24,7 +24,8 @@ public abstract class BaseListAct<T> extends AbsActivity {
     private BasisAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Class<? extends BasisAdapter> mAClass;
-
+    public final static int LOAD=233;
+    public final static int ADD=234;
     public BaseListAct(Class mAClass) {
        this.mAClass=mAClass;
     }
@@ -106,8 +107,12 @@ public abstract class BaseListAct<T> extends AbsActivity {
 
     public abstract void getInitData();
 
-    public void refreshDate(List<T> mEntities) {
-        mAdapter.setmEntities(mEntities);
+    public void refreshDate(List<T> mEntities,int mode) {
+        if(mode==LOAD){
+            mAdapter.setmEntities(mEntities);
+        }else {
+            mAdapter.addEntities(mEntities);
+        }
         mAdapter.notifyDataSetChanged();
     }
 }

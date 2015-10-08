@@ -1,5 +1,6 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,35 +9,149 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.BaseListAct;
+import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
+import com.dreamspace.superman.model.api.LessonInfo;
+import com.dreamspace.superman.model.api.SmLessonList;
 
-public class SearchResultActivity extends AbsActivity {
+import java.util.List;
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//    }
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-    @Override
-    protected void setSelfContentView() {
-        setContentView(R.layout.activity_search_result);
+public class SearchResultActivity extends BaseListAct<LessonInfo> {
+
+    private String query_content;
+    private final int INIT_PAGE=1;
+    private ProgressDialog pd;
+    private int page;
+    public SearchResultActivity() {
+        super(IndexAdapter.class);
     }
+    private void showPd(){
+        if(pd==null){
+            pd=ProgressDialog.show(this,"","正在获取数据，请稍后",true,false);
+        }else {
+            pd.show();
+        }
 
+    }
+    private void dismissPd(){
+        if(pd!=null){
+            pd.dismiss();
+        }
+    }
     @Override
     protected void prepareDatas() {
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i("INFO",query);
-//            doMySearch(query);
+            query_content= intent.getStringExtra(SearchManager.QUERY);
         }
     }
 
     @Override
-    protected void initViews() {
+    public void onPullUp() {
+      loadSearchResultByPage(++page, new OnRefreshListener<LessonInfo>() {
+          @Override
+          public void onFinish(List<LessonInfo> mEntities) {
+              onPullUpFinished();
+              if(mEntities.size()==0){
+                  showToast("没有更多数据");
+              }else{
+                  refreshDate(mEntities,BaseListAct.ADD);
+              }
+          }
 
+          @Override
+          public void onError() {
+            onPullUpFinished();
+          }
+      });
     }
 
+    @Override
+    public void onPullDown() {
+       page=1;
+        loadSearchResultByPage(page, new OnRefreshListener<LessonInfo>() {
+            @Override
+            public void onFinish(List<LessonInfo> mEntities) {
+                refreshDate(mEntities,BaseListAct.LOAD);
+                onPullDownFinished();
+            }
+
+            @Override
+            public void onError() {
+                onPullDownFinished();
+            }
+        });
+    }
+
+    @Override
+    public void getInitData() {
+        //TODO add loading view
+        showPd();
+        loadSearchResultByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
+            @Override
+            public void onFinish(List<LessonInfo> mEntities) {
+                dismissPd();
+                if(mEntities.size()==0){
+                    //TODO add empty view
+                    showToast("暂无相关商品信息");
+                }else {
+                    refreshDate(mEntities,BaseListAct.LOAD);
+                }
+            }
+
+            @Override
+            public void onError() {
+                 dismissPd();
+            }
+        });
+    }
+
+    /**
+     * get info online by the query_string
+     */
+    private void loadSearchResultByPage(int page, final OnRefreshListener<LessonInfo> listener) {
+
+        if(NetUtils.isNetworkConnected(this)){
+            ApiManager.getService(getApplicationContext()).searchLessons(query_content,INIT_PAGE,new Callback<SmLessonList>() {
+                @Override
+                public void success(SmLessonList smLessonList, Response response) {
+                    if(smLessonList!=null){
+                          listener.onFinish(smLessonList.getLessons());
+//                        if(smLessonList.getLessons().size()!=0){
+//                            //TODO modify less_name,image attribute name
+//                          refreshDate(smLessonList.getLessons(),BaseListAct.LOAD);
+//                        }else {
+//                            //TODO replace with empty view
+//                            showToast("暂时没有找到您查找的商品");
+//                        }
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    listener.onError();
+                    showInnerError(error);
+                }
+
+            });
+        }else {
+            //TODO replace with error view rather than toast
+            showNetWorkError();
+            listener.onError();
+        }
+    }
+
+    @Override
+    public void onItemPicked(LessonInfo mEntity, int position) {
+
+    }
 }

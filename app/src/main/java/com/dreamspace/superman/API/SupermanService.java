@@ -119,7 +119,7 @@ public interface SupermanService {
     void modifyLessonInfo(@Path("les_id")String les_id,@Body ModifyLessonReq req,Callback<Response> cb);
     //用名称模糊查找课程
     @GET("/lessons")
-    void searchLessons(@Query("key_word") String key_word,Callback<SmLessonList> cb);
+    void searchLessons(@Query("key_word") String key_word,@Query("page")int page,Callback<SmLessonList> cb);
     //获取课程详情 ???可省略
     @GET("/lesson/{les_id}")
     void getLessonDetail(@Path("les_id") int les_id,Callback<LessonInfo> cb);
