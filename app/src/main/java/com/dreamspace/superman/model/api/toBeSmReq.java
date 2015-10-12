@@ -3,15 +3,25 @@ package com.dreamspace.superman.model.api;
 /**
  * Created by Wells on 2015/9/29.
  */
-public class toBeSmReq {
+public class ToBeSmReq {
     private String image;
     private String sex;
     private String name;
     private String phone;
-    private String cata_id;
+    private String cata_name;
     private String tags;
     private String glory;
     private String resume;
+
+    public String[] getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(String[] certificates) {
+        this.certificates = certificates;
+    }
+
+    private String[] certificates;
 
     public String getImage() {
         return image;
@@ -45,12 +55,12 @@ public class toBeSmReq {
         this.phone = phone;
     }
 
-    public String getCata_id() {
-        return cata_id;
+    public String getCata_name() {
+        return cata_name;
     }
 
-    public void setCata_id(String cata_id) {
-        this.cata_id = cata_id;
+    public void setCata_name(String cata_name) {
+        this.cata_name = cata_name;
     }
 
     public String getTags() {

@@ -64,4 +64,5 @@
     <string name="collect_success">收藏成功</string>
     <string name="collect_quit_success">成功取消收藏</string>
     <string name="title_activity_input_pwd">InputPwdActivity</string>
+    <string name="to_be_superman_hint">您上传的证书仅供平台审核身份使用，不会泄漏给他人</string>
 </resources>

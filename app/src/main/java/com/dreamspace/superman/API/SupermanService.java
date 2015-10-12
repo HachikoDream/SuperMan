@@ -1,6 +1,5 @@
 package com.dreamspace.superman.API;
 
-import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.BalanceRes;
@@ -13,9 +12,7 @@ import com.dreamspace.superman.model.api.ModifyLessonReq;
 import com.dreamspace.superman.model.api.ModifyReq;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
-import com.dreamspace.superman.model.api.PageReq;
 import com.dreamspace.superman.model.api.PublishReq;
-import com.dreamspace.superman.model.api.SearchReq;
 import com.dreamspace.superman.model.api.SmIdRes;
 import com.dreamspace.superman.model.api.SmInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
@@ -30,9 +27,7 @@ import com.dreamspace.superman.model.api.RegisterReq;
 import com.dreamspace.superman.model.api.RegistertokenReq;
 import com.dreamspace.superman.model.api.RegistertokenRes;
 import com.dreamspace.superman.model.api.SendVerifyReq;
-import com.dreamspace.superman.model.api.toBeSmReq;
-
-import java.util.List;
+import com.dreamspace.superman.model.api.ToBeSmReq;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -100,7 +95,7 @@ public interface SupermanService {
     //管理员可以删除这个分类
     //一般用户成为达人
     @POST("/master")
-    void applytoSuperMan(@Body toBeSmReq req,Callback<TempRes> cb);
+    void applytoSuperMan(@Body ToBeSmReq req,Callback<TempRes> cb);
     //达人绑定支付宝账号
     //获取本账号达人信息
     @GET("/master")

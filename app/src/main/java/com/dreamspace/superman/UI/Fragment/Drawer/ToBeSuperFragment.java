@@ -1,25 +1,45 @@
 package com.dreamspace.superman.UI.Fragment.Drawer;
 
-import android.os.Bundle;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
+import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
+import com.dreamspace.superman.model.TempRes;
+import com.dreamspace.superman.model.api.QnRes;
+import com.dreamspace.superman.model.api.ToBeSmReq;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.utils.PhotoPickerIntent;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ToBeSuperFragment extends BaseLazyFragment {
     @Bind(R.id.mybtn)
@@ -40,6 +60,8 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     EditText honourEv;
     @Bind(R.id.introduction_ev)
     EditText introductionEv;
+    @Bind(R.id.glory_image)
+    ImageView gloryIv;
     private String gender;//性别，从本地数据中读取
     private String avater_code;//七牛的原始code，从本地数据中读取
     private String avater_url;
@@ -49,6 +71,11 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private String skills;//技能
     private String phone;//电话，从本地数据中读取
     private String introduction;//介绍
+    private final static int REQUEST_CODE = 233;
+    private ProgressDialog pd;
+    private String photoPath;//荣誉证书照片的本地路径
+    private boolean choose_glory_iv = false;//用于表明用户是否选择了荣誉证书的照片进行上传
+    //TODO 在进入时需检测用户是否已经提交了请求，正在等待审核
 
     @Override
     protected void onFirstUserVisible() {
@@ -59,15 +86,33 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     }
 
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(getActivity(), "", getString(R.string.common_loading_message), true, false);
+        } else {
+            if (!pd.isShowing()) {
+                pd.show();
+            }
+        }
+    }
+
+    private void dismissPd() {
+        if (pd != null) {
+            if (pd.isShowing()) {
+                pd.dismiss();
+            }
+        }
+    }
+
     @Override
     protected void onUserVisible() {
 
     }
 
     private void showGender() {
-        if(gender.equals(Constant.FEMALE)){
+        if (gender.equals(Constant.FEMALE)) {
             genderWoman.setSelected(true);
-        }else{
+        } else {
             genderMan.setSelected(true);
         }
     }
@@ -85,24 +130,139 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     @Override
     protected void initViewsAndEvents() {
         loadFromLocal();
+        gloryIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
+                intent.setPhotoCount(1);
+                intent.setShowCamera(true);
+                startActivityForResult(intent, REQUEST_CODE);
+
+            }
+        });
     }
 
+    //获得七牛（第三方服务）的上传资源的凭证
+    private void getUploadToken() {
+        if (NetUtils.isNetworkConnected(getActivity())) {
+            ApiManager.getService(getActivity().getApplicationContext()).createQiNiuToken(new Callback<QnRes>() {
+                @Override
+                public void success(QnRes qnRes, Response response) {
+                    if (qnRes != null) {
+                        uploadPhoto(qnRes);
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    dismissPd();
+                    showInnerError(error);
+                }
+            });
+        } else {
+            dismissPd();
+            showNetWorkError();
+        }
+
+    }
+
+    //上传用户的证书信息到七牛服务器
+    private void uploadPhoto(QnRes res) {
+        UploadManager manager = UpLoadUtils.getInstance();
+        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
+            @Override
+            public void complete(String key, ResponseInfo info, JSONObject response) {
+                if (info.isOK()) {
+                    Log.i("INFO", "upload is Ok");
+                    toBeSm(key);
+
+                } else if (info.isNetworkBroken()) {
+                    dismissPd();
+                    showNetWorkError();
+                } else if (info.isServerError()) {
+                    dismissPd();
+                    showToast("服务暂时不可用，请稍后重试");
+                }
+            }
+        }, null);
+    }
+
+    //点击确定按钮后的处理函数
+    private void tryToBeSm() {
+        if (choose_glory_iv) {
+            //选择了证书图片，需要先进行七牛的图片上传服务，再调用API
+            showPd();
+            getUploadToken();
+        } else {
+            //直接调用API
+            showPd();
+            if (NetUtils.isNetworkConnected(getActivity())) {
+                toBeSm(null);
+            } else {
+                showNetWorkError();
+                dismissPd();
+            }
+
+        }
+    }
+
+    //上传相关数据，申请成为达人
+    private void toBeSm(String certificate_code) {
+        ToBeSmReq req = new ToBeSmReq();
+        req.setGlory(honour);
+        req.setImage(avater_code);
+        req.setName(realName);
+        req.setPhone(phone);
+        req.setResume(introduction);
+        req.setSex(gender);
+        req.setTags(tags);
+        req.setCata_name(skills);
+        if (certificate_code != null) {
+            String[] certificates = {certificate_code};
+            req.setCertificates(certificates);
+        }
+        ApiManager.getService(getActivity().getApplicationContext()).applytoSuperMan(req, new Callback<TempRes>() {
+            @Override
+            public void success(TempRes tempRes, Response response) {
+                if (tempRes != null) {
+                    /**todo:
+                     * 1.取消toast对id的显示
+                     * 2.在本地缓存标志位表示已经进行过申请操作，避免后续的重复申请
+                     * 3.显示一个提示对话框
+                     * 4.导航到主页面
+                     */
+                    showToast(tempRes.getMast_id());
+                    dismissPd();
+
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showInnerError(error);
+                dismissPd();
+            }
+        });
+    }
+
+    //从本地加载用户相关的数据
     private void loadFromLocal() {
         gender = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.SEX);
         avater_code = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE);
         phone = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.PHONE);
         realName = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME);
-        avater_url=PreferenceUtils.getString(getActivity().getApplicationContext(),PreferenceUtils.Key.AVATAR);
+        avater_url = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR);
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValid()){
-
+                if (isValid()) {
+                    tryToBeSm();
                 }
             }
         });
     }
 
+    //在进行网络操作之前检查用户输入的数据是否合法
     private boolean isValid() {
         skills = skilsEv.getEditText().getText().toString();
         tags = tagsEv.getEditText().getText().toString();
@@ -142,5 +302,21 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            if (data != null) {
+                ArrayList<String> photos =
+                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                Log.i("INFO", "PHOTO:" + photos.get(0));
+                photoPath = photos.get(0);
+                Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
+                choose_glory_iv = true;
+            }
+        }
     }
 }

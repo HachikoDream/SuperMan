@@ -107,6 +107,33 @@
             android:minHeight="97dp"
             android:padding="4dp"
             android:textSize="12sp" />
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_line"></View>
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="您上传的证书仅供平台审核身份使用，不会泄漏给他人"
+             android:textSize="12sp"
+             android:layout_marginTop="5dp"
+             android:drawableLeft="@drawable/page_tips"
+             android:drawablePadding="2dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="技能荣誉证书"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="17dp"
+            android:textSize="12sp"/>
+        <ImageView
+            android:id="@+id/glory_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/page_add"/>
 
         <Button
             android:id="@+id/mybtn"
