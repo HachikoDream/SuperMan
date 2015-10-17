@@ -15,4 +15,11 @@ public class Constant {
         public static final int MODIFY_PWD=1;
         public static final int MODIFY_PHOME=2;
     }
+    public static final class USER_APPLY_STATE{
+        //todo 需要检测一下每一个的正确性
+        public static final String NOT_APPLY="not apply";
+        public static final String NORMAL="normal";
+        public static final String PENDING="pending";
+        public static final String STOP="Stop";
+    }
 }

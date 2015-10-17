@@ -2,6 +2,7 @@ package com.dreamspace.superman.API;
 
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.UserInfo;
+import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.CommentList;
@@ -103,6 +104,9 @@ public interface SupermanService {
     //获取达人信息
     @GET("/master/{mas_id}")
     void getSmDetailInfo(@Path("mas_id") String mas_id,Callback<SmInfo> cb);
+    //获取达人申请信息
+    @GET("/user/master_apply_info")
+    void getUserApplyInfo(Callback<ApplyInfoRes> cb);
     //获取达人发布的课程信息
     @GET("/master/{mas_id}/lessons")
     void getLessonsbyMid(@Path("mas_id")int mas_id,@Query("page") int page,Callback<SmLessonList> cb);

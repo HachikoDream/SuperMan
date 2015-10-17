@@ -8,10 +8,11 @@ public class ToBeSmReq {
     private String sex;
     private String name;
     private String phone;
-    private String cata_name;
+    private String want_cata;
     private String tags;
     private String glory;
     private String resume;
+    private String[] certificates;
 
     public String[] getCertificates() {
         return certificates;
@@ -21,7 +22,6 @@ public class ToBeSmReq {
         this.certificates = certificates;
     }
 
-    private String[] certificates;
 
     public String getImage() {
         return image;
@@ -55,12 +55,12 @@ public class ToBeSmReq {
         this.phone = phone;
     }
 
-    public String getCata_name() {
-        return cata_name;
+    public String getWant_cata() {
+        return want_cata;
     }
 
-    public void setCata_name(String cata_name) {
-        this.cata_name = cata_name;
+    public void setWant_cata(String want_cata) {
+        this.want_cata = want_cata;
     }
 
     public String getTags() {

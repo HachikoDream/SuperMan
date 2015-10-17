@@ -317,6 +317,9 @@ public abstract class BaseLazyFragment extends Fragment {
 
     protected void showInnerError(RetrofitError error) {
         ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
+        if(res!=null){
+
+        }
         showToast(res.getReason());
     }
     protected String getInnerErrorInfo(RetrofitError error){

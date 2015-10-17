@@ -65,4 +65,6 @@
     <string name="collect_quit_success">成功取消收藏</string>
     <string name="title_activity_input_pwd">InputPwdActivity</string>
     <string name="to_be_superman_hint">您上传的证书仅供平台审核身份使用，不会泄漏给他人</string>
+    <string name="to_be_superman_refuse">您暂时没有权利进行此操作</string>
+    <string name="to_be_superman_pending">您已经提交申请，系统正在审核.</string>
 </resources>

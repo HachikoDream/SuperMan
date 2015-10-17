@@ -22,6 +22,7 @@ import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.model.TempRes;
+import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.QnRes;
 import com.dreamspace.superman.model.api.ToBeSmReq;
 import com.qiniu.android.http.ResponseInfo;
@@ -79,10 +80,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     @Override
     protected void onFirstUserVisible() {
-        genderMan.setEnabled(false);
-        genderWoman.setEnabled(false);
-        Tools.showImageWithGlide(getActivity(), userIv, avater_url);
-        showGender();
+        getUserInfoForApply(true);
 
     }
 
@@ -106,7 +104,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     @Override
     protected void onUserVisible() {
-
+        getUserInfoForApply(false);
     }
 
     private void showGender() {
@@ -124,7 +122,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return ButterKnife.findById(getActivity(), R.id.content_view);
     }
 
     @Override
@@ -140,6 +138,64 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
             }
         });
+
+    }
+
+    //检测用户的申请状态
+    private void getUserInfoForApply(final boolean isFirst) {
+        toggleShowLoading(true, getString(R.string.common_loading_message));
+        if (NetUtils.isNetworkConnected(getActivity())) {
+            ApiManager.getService(getActivity().getApplicationContext()).getUserApplyInfo(new Callback<ApplyInfoRes>() {
+                @Override
+                public void success(ApplyInfoRes applyInfoRes, Response response) {
+                    toggleShowLoading(false, null);
+                    if (applyInfoRes != null) {
+                        String state = applyInfoRes.getState();
+                        if (state.equals(Constant.USER_APPLY_STATE.STOP)) {
+                            toggleShowError(true, getString(R.string.to_be_superman_refuse), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getUserInfoForApply(false);
+                                }
+                            });
+                        } else if (state.equals(Constant.USER_APPLY_STATE.PENDING)) {
+                            toggleShowError(true, getString(R.string.to_be_superman_pending), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getUserInfoForApply(false);
+                                }
+                            });
+
+                        } else {
+                            if (isFirst) {
+                                genderMan.setEnabled(false);
+                                genderWoman.setEnabled(false);
+                                Tools.showImageWithGlide(getActivity(), userIv, avater_url);
+                                showGender();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    toggleShowError(true, getInnerErrorInfo(error), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getUserInfoForApply(false);
+                        }
+                    });
+                }
+            });
+        } else {
+            toggleNetworkError(true, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getUserInfoForApply(false);
+                }
+            });
+        }
+
     }
 
     //获得七牛（第三方服务）的上传资源的凭证
@@ -216,9 +272,12 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         req.setResume(introduction);
         req.setSex(gender);
         req.setTags(tags);
-        req.setCata_name(skills);
+        req.setWant_cata(skills);
         if (certificate_code != null) {
             String[] certificates = {certificate_code};
+            req.setCertificates(certificates);
+        } else {
+            String[] certificates = {};
             req.setCertificates(certificates);
         }
         ApiManager.getService(getActivity().getApplicationContext()).applytoSuperMan(req, new Callback<TempRes>() {
