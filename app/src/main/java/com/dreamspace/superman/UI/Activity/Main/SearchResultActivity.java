@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
@@ -53,6 +54,11 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query_content= intent.getStringExtra(SearchManager.QUERY);
         }
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     @Override

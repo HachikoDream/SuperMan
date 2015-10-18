@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -96,6 +97,11 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     @OnClick(R.id.send_vercode_btn)

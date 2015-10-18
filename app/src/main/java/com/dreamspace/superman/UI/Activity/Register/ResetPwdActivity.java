@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Activity.Register;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -29,6 +30,11 @@ public class ResetPwdActivity extends AbsActivity {
     protected void initViews() {
 
        getSupportActionBar().setTitle(getString(ID));
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     @Override

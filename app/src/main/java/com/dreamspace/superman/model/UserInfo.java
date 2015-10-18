@@ -11,6 +11,15 @@ public class UserInfo {
     private String image;
     private String phone;
     private String mas_id;
+    private String mast_state;
+
+    public String getMast_state() {
+        return mast_state;
+    }
+
+    public void setMast_state(String mast_state) {
+        this.mast_state = mast_state;
+    }
 
     public String getMas_id() {
         return mas_id;

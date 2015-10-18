@@ -119,6 +119,8 @@ public class IndexFragment extends BaseLazyFragment {
             setItems(mCatalogs);
             mAdapter.setmCategoryList(mCatalogs);
             mSlidingTabLayout.setViewPager(mViewPager);
+            HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+            fragment.onPageSelected(0, items.get(0));
         }
     }
 }

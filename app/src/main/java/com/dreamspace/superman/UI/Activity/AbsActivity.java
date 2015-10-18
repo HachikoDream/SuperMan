@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.VaryViewHelperController;
 import com.dreamspace.superman.R;
 
 import butterknife.ButterKnife;
@@ -19,6 +21,7 @@ import retrofit.RetrofitError;
  */
 public abstract class AbsActivity extends AppCompatActivity {
     private Toolbar mToolBar;
+    private VaryViewHelperController mVaryViewHelperController=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,10 @@ public abstract class AbsActivity extends AppCompatActivity {
         initToolBar();
         prepareDatas();
         initViews();
+        if (null != getLoadingTargetView()) {
+            mVaryViewHelperController = new VaryViewHelperController(getLoadingTargetView());
+        }
+
     }
 
     protected abstract void setSelfContentView();
@@ -34,6 +41,7 @@ public abstract class AbsActivity extends AppCompatActivity {
     protected abstract void prepareDatas();
 
     protected abstract void initViews();
+    protected abstract View getLoadingTargetView();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -151,6 +159,74 @@ public abstract class AbsActivity extends AppCompatActivity {
     protected void showInnerError(RetrofitError error) {
         if (error != null)
             showToast(CommonUtils.getErrorInfo(error).getReason());
+    }
+
+    /**
+     * toggle show loading
+     *
+     * @param toggle
+     */
+    protected void toggleShowLoading(boolean toggle, String msg) {
+        if (null == mVaryViewHelperController) {
+            throw new IllegalArgumentException("You must return a right target view for loading");
+        }
+
+        if (toggle) {
+            mVaryViewHelperController.showLoading(msg);
+        } else {
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    /**
+     * toggle show empty
+     *
+     * @param toggle
+     */
+    protected void toggleShowEmpty(boolean toggle, String msg, View.OnClickListener onClickListener) {
+        if (null == mVaryViewHelperController) {
+            throw new IllegalArgumentException("You must return a right target view for loading");
+        }
+
+        if (toggle) {
+            mVaryViewHelperController.showEmpty(msg, onClickListener);
+        } else {
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    /**
+     * toggle show error
+     *
+     * @param toggle
+     */
+    protected void toggleShowError(boolean toggle, String msg, View.OnClickListener onClickListener) {
+        if (null == mVaryViewHelperController) {
+            throw new IllegalArgumentException("You must return a right target view for loading");
+        }
+
+        if (toggle) {
+            mVaryViewHelperController.showError(msg, onClickListener);
+        } else {
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    /**
+     * toggle show network error
+     *
+     * @param toggle
+     */
+    protected void toggleNetworkError(boolean toggle, View.OnClickListener onClickListener) {
+        if (null == mVaryViewHelperController) {
+            throw new IllegalArgumentException("You must return a right target view for loading");
+        }
+
+        if (toggle) {
+            mVaryViewHelperController.showNetworkError(onClickListener);
+        } else {
+            mVaryViewHelperController.restore();
+        }
     }
 
     @Override

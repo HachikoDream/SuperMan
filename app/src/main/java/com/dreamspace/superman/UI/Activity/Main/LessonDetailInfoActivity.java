@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
@@ -115,6 +116,11 @@ public class LessonDetailInfoActivity extends AbsActivity {
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
         loadLessonInfo();
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     private void dimissPd() {

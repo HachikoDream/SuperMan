@@ -109,7 +109,7 @@ public interface SupermanService {
     void getUserApplyInfo(Callback<ApplyInfoRes> cb);
     //获取达人发布的课程信息
     @GET("/master/{mas_id}/lessons")
-    void getLessonsbyMid(@Path("mas_id")int mas_id,@Query("page") int page,Callback<SmLessonList> cb);
+    void getLessonsbyMid(@Path("mas_id")String mas_id,@Query("page") int page,Callback<SmLessonList> cb);
     //由达人发布
     @POST("/lesson")
     void publishLessonBySm(@Body PublishReq req,Callback<PublishRes> cb);

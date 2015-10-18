@@ -4,85 +4,127 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.dreamspace.superman.UI.Activity.Superman.AddCourseActivity">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="80dp"
-    android:orientation="vertical">
-    <include layout="@layout/custom_toolbar"></include>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="42dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="56dp"
-        android:paddingRight="56dp">
+        android:paddingBottom="80dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/coursename_ev"
+        <include layout="@layout/custom_toolbar"></include>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginTop="42dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="56dp"
+            android:paddingRight="56dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/coursename_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/apptheme_edit_text_holo_light"
+                    android:hint="课程名称"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/coursetime_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/apptheme_edit_text_holo_light"
+                    android:hint="课程时长(单位：小时)"
+                    android:inputType="numberDecimal"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/price_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/apptheme_edit_text_holo_light"
+                    android:hint="课程价格(单位：元/课时)"
+                    android:inputType="numberDecimal"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
 
             <EditText
+                android:id="@+id/desc_ev"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="课程名称"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@color/near_white"
+                android:gravity="center"
+                android:hint="简要介绍下课程内容"
+                android:minHeight="190dp"
+                android:padding="4dp"
+                android:textSize="12sp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/coursetime_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/mybtn"
+                android:layout_width="150dp"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/normal_button_bg"
+                android:gravity="center"
+                android:text="完成"
+                android:textColor="@android:color/white" />
 
-            <EditText
+            <RelativeLayout
+                android:id="@+id/modify_layout"
+                android:visibility="gone"
+                android:layout_marginTop="60dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="课程时长(单位：小时)"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/price_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/modify_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="32dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/normal_button_bg"
+                    android:text="修改"
+                    android:textColor="@android:color/white" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="numberDecimal"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="课程价格(单位：元/课时)"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+                <Button
+                    android:id="@+id/delete_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@id/modify_btn"
+                    android:background="@drawable/normal_button_bg"
+                    android:text="删除"
+                    android:textColor="@android:color/white" />
 
-        <EditText
-            android:id="@+id/desc_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@color/near_white"
-            android:gravity="center"
-            android:hint="简要介绍下课程内容"
-            android:minHeight="190dp"
-            android:padding="4dp"
-            android:textSize="12sp" />
-        <Button
-            android:id="@+id/mybtn"
-            android:layout_width="150dp"
-            android:layout_height="32dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/normal_button_bg"
-            android:gravity="center"
-            android:text="完成"
-            android:textColor="@android:color/white" />
+                <Button
+                    android:id="@+id/pause_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/modify_btn"
+                    android:background="@drawable/normal_button_bg"
+                    android:text="暂停"
+                    android:textColor="@android:color/white" />
 
+            </RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
 </ScrollView>

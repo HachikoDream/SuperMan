@@ -154,6 +154,11 @@ public class RegisterInfoActivity extends AbsActivity {
         });
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(RegisterInfoActivity.this)) {
@@ -253,7 +258,8 @@ public class RegisterInfoActivity extends AbsActivity {
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.PHONE,phoneNum);
-        if(CommonUtils.isEmpty(userInfo.getMas_id())){
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAST_STATE,userInfo.getMast_state());
+        if(!CommonUtils.isEmpty(userInfo.getMas_id())){
             PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
         }
     }

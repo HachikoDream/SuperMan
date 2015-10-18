@@ -117,7 +117,8 @@ public class LoginFragment extends BaseFragment {
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME, userInfo.getName());
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.PHONE, phoneEt.getText().toString());
-        if(CommonUtils.isEmpty(userInfo.getMas_id())){
+        PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAST_STATE,userInfo.getMast_state());
+        if(!CommonUtils.isEmpty(userInfo.getMas_id())){
             PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
         }
     }

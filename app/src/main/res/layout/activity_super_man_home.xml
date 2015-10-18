@@ -5,8 +5,6 @@
     android:orientation="vertical"
     tools:context="com.dreamspace.superman.UI.Activity.Superman.SuperManHomeActivity">
 
-    <include layout="@layout/custom_toolbar"></include>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,13 +18,14 @@
             android:src="@drawable/login_pho" />
 
         <TextView
+            android:id="@+id/username_tv"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_avater_iv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:gravity="center"
-            android:text="孙坚"
+            android:text="欢迎"
             android:textSize="16sp" />
 
     </RelativeLayout>

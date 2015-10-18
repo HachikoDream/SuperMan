@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Activity.Main;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -84,6 +85,12 @@ public class ConListActivity extends AbsActivity {
         };
         mSwipeMenuListView.setMenuCreator(creator);
     }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     public void refreshDate(List<ConList> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();

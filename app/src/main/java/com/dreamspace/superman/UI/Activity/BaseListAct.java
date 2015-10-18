@@ -22,7 +22,7 @@ import java.util.List;
 public abstract class BaseListAct<T> extends AbsActivity {
     private LoadMoreListView moreListView;
     private BasisAdapter mAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     private Class<? extends BasisAdapter> mAClass;
     public final static int LOAD=233;
     public final static int ADD=234;

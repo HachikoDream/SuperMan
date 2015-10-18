@@ -71,6 +71,11 @@ public class ChooseClassifyActivity extends AbsActivity {
         });
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void showSelectedItems() {
         List<Catalog> mSeleted = PreferenceUtils.getClassifyItems(getApplicationContext());
         for (Catalog item : mSeleted) {

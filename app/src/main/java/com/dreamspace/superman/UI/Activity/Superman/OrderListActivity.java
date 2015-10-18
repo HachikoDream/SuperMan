@@ -1,6 +1,7 @@
 package com.dreamspace.superman.UI.Activity.Superman;
 
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -63,6 +64,11 @@ public class OrderListActivity extends AbsActivity {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
 }

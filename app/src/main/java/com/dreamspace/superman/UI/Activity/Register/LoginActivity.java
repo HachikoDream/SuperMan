@@ -62,6 +62,11 @@ public class LoginActivity extends AbsActivity {
         });
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
 
     private void onRadioClickListener() {
         switch (mRadioGroup.getCheckedRadioButtonId()) {

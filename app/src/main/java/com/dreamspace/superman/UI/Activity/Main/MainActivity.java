@@ -22,6 +22,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
@@ -122,16 +123,23 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         }
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    //检测用户是否属于达人用户
     private void checkIsSuperMan() {
-        String mas_id = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAS_ID);
+        String mast_state = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAST_STATE);
         MenuItem shItem = slideMenu.findItem(R.id.nav_superhome);
         MenuItem tobeItem = slideMenu.findItem(R.id.nav_tobesuperman);
         shItem.setVisible(false);
         tobeItem.setVisible(false);
-        if (!CommonUtils.isEmpty(mas_id)) {
+        if (!CommonUtils.isEmpty(mast_state)&&mast_state.equals(Constant.USER_APPLY_STATE.NORMAL)) {
             shItem.setVisible(true);
-        } else
+        } else{
             tobeItem.setVisible(true);
+        }
     }
 
     @Override
@@ -251,7 +259,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
     @Override
     protected void onResume() {
+        //todo change the way
         super.onResume();
         checkIsLogin();
+        checkIsSuperMan();
     }
 }

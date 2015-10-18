@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Activity.Main;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -28,6 +29,11 @@ public class subscribeActivity extends AbsActivity {
     @Override
     protected void initViews() {
 
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     @Override

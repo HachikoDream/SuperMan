@@ -232,6 +232,11 @@ public class ModifyInfoActivity extends AbsActivity {
         });
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void GotoModifyPage(int source) {
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.COME_SOURCE.SOURCE, source);

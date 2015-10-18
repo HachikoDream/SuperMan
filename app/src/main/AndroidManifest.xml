@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dreamspace.superman" >
+    package="com.dreamspace.superman">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,17 +21,15 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".UI.Activity.Main.MainActivity"
-            android:label="@string/app_name" >
-<!--
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
--->
 
             <meta-data
                 android:name="android.app.default_searchable"
@@ -42,8 +40,7 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".UI.Activity.Register.RegisterInfoActivity"
-            android:label="@string/title_activity_register_info" >
-        </activity>
+            android:label="@string/title_activity_register_info"></activity>
         <activity
             android:name=".UI.Activity.Register.VerifyByPhoneAct"
             android:label="@string/title_activity_register_by_phone" />
@@ -73,13 +70,7 @@
             android:label="@string/title_activity_my_course_list" />
         <activity
             android:name=".UI.Activity.Superman.AddCourseActivity"
-            android:label="@string/title_activity_add_course" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="@string/title_activity_add_course"></activity>
         <activity
             android:name=".UI.Activity.Superman.EditCourseActivity"
             android:label="@string/title_activity_edit_course" />
@@ -100,7 +91,7 @@
             android:label="@string/title_activity_sm_introduce" />
         <activity
             android:name=".UI.Activity.Main.SearchResultActivity"
-            android:label="@string/title_activity_search_result" >
+            android:label="@string/title_activity_search_result">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -111,8 +102,7 @@
         </activity>
         <activity
             android:name=".UI.Activity.Main.ConListActivity"
-            android:label="@string/title_activity_con_list" >
-        </activity>
+            android:label="@string/title_activity_con_list"></activity>
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/PhotoAppTheme" />
@@ -121,12 +111,10 @@
             android:theme="@style/PhotoAppTheme" />
         <activity
             android:name=".UI.Activity.Person.ModifyInfoActivity"
-            android:label="@string/title_activity_modify_info" >
-        </activity>
+            android:label="@string/title_activity_modify_info"></activity>
         <activity
             android:name=".UI.Activity.Person.InputPwdActivity"
-            android:label="@string/title_activity_input_pwd" >
-        </activity>
+            android:label="@string/title_activity_input_pwd"></activity>
     </application>
 
 </manifest>
