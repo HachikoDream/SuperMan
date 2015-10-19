@@ -44,7 +44,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     private Handler mHandler;
     private SupermanService mService;
     private static final int BEGIN_TIMER = 233;
-    private  int Timer = 60;
+    private int Timer = 60;
     private String text = "发送验证码";
     private String code;
     private String register_token;
@@ -60,10 +60,18 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
     @Override
     public void initViews(View view) {
+        sendVerifyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendVerifyCode();
+            }
+        });
     }
 
-    @OnClick(R.id.send_vercode_btn)
-    void sendVerifyCode() {
+
+    //todo check bug
+    public void sendVerifyCode() {
+
         if (isPhoneValid()) {
             if (NetUtils.isNetworkConnected(getActivity())) {
                 SendVerifyReq req = new SendVerifyReq();
@@ -96,14 +104,14 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
             mService.createRegisterToken(req, new Callback<RegistertokenRes>() {
                 @Override
                 public void success(RegistertokenRes s, Response response) {
-                    if(response.getStatus()==200){
-                        register_token=s.getRegister_token();
-                        Bundle b=new Bundle();
-                        b.putString("token",register_token);
-                        b.putString("phoneNum",phoneNum);
+                    if (response.getStatus() == 200) {
+                        register_token = s.getRegister_token();
+                        Bundle b = new Bundle();
+                        b.putString("token", register_token);
+                        b.putString("phoneNum", phoneNum);
                         readyGo(RegisterInfoActivity.class, b);
                         killSelf();
-                    }else{
+                    } else {
                         showToast(response.getReason());
                     }
                 }
@@ -117,7 +125,8 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
             });
         }
     }
-    private void killSelf(){
+
+    private void killSelf() {
         mHandler.removeMessages(BEGIN_TIMER);
         getActivity().finish();
     }
@@ -165,13 +174,13 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
         if (msg.what == BEGIN_TIMER) {
             if (Timer == 0) {
-                if(sendVerifyBtn!=null){
+                if (sendVerifyBtn != null) {
                     sendVerifyBtn.setText(text);
                     sendVerifyBtn.setEnabled(true);
                     Timer = 60;
                 }
             } else {
-                if(sendVerifyBtn!=null){
+                if (sendVerifyBtn != null) {
                     sendVerifyBtn.setText(Timer + "秒");
                     Timer--;
                     mHandler.sendEmptyMessageDelayed(BEGIN_TIMER, 1000);

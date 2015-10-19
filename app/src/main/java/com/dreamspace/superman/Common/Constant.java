@@ -22,4 +22,8 @@ public class Constant {
         public static final String PENDING="pending";
         public static final String STOP="Stop";
     }
+    public static final class LESSON_STATE{
+        public static final String ON="on";
+        public static final String OFF="off";
+    }
 }

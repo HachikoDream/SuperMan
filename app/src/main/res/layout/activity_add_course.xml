@@ -89,7 +89,6 @@
 
             <RelativeLayout
                 android:id="@+id/modify_layout"
-                android:visibility="gone"
                 android:layout_marginTop="60dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

@@ -12,6 +12,7 @@ import android.view.View;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.VaryViewHelperController;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.model.api.ErrorRes;
 
 import butterknife.ButterKnife;
 import retrofit.RetrofitError;
@@ -159,6 +160,15 @@ public abstract class AbsActivity extends AppCompatActivity {
     protected void showInnerError(RetrofitError error) {
         if (error != null)
             showToast(CommonUtils.getErrorInfo(error).getReason());
+    }
+    protected String getInnerErrorInfo(RetrofitError error){
+        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
+        if(res!=null){
+            return  res.getReason();
+        }else {
+            return getString(R.string.common_error_msg);
+        }
+
     }
 
     /**

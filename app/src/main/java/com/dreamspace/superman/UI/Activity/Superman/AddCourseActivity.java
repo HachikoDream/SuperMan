@@ -1,22 +1,26 @@
 package com.dreamspace.superman.UI.Activity.Superman;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.model.api.LessonInfo;
+import com.dreamspace.superman.model.api.ModifyLessonReq;
+import com.dreamspace.superman.model.api.ModifyReq;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.PublishRes;
-
-import java.text.NumberFormat;
-import java.text.ParseException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,11 +45,21 @@ public class AddCourseActivity extends AbsActivity {
     String keep_time;
     int price;
     String description;
+    @Bind(R.id.modify_btn)
+    Button modifyBtn;
+    @Bind(R.id.delete_btn)
+    Button deleteBtn;
+    @Bind(R.id.pause_btn)
+    Button pauseBtn;
+    @Bind(R.id.modify_layout)
+    RelativeLayout modifyLayout;
     private ProgressDialog pd;
-    public static final String COME_SOURCE="comesource";
-    public static final int FROM_ADD=231;
-    public static final int FROM_MODIFY=232;
-    private String source;
+    public static final String COME_SOURCE = "comesource";
+    public static final String COME_INFO = "comeinfo";
+    public static final int FROM_ADD = 231;
+    public static final int FROM_MODIFY = 232;
+    private int source;//判断来源
+    private int lesson_id;//修改和删除时候使用
 
     @Override
     protected void setSelfContentView() {
@@ -54,13 +68,27 @@ public class AddCourseActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-       //todo 判断从哪里来的请求
-        source=getIntent().getStringExtra(COME_SOURCE);
-        if (source.equals(FROM_ADD)){
+        source = getIntent().getIntExtra(COME_SOURCE,-1);
+        if (source==FROM_ADD) {
+            mybtn.setVisibility(View.VISIBLE);
+            modifyLayout.setVisibility(View.GONE);
 
-        }else if(source.equals(FROM_MODIFY)){
-            //todo 获取课程信息,展示出来
+        } else if (source==FROM_MODIFY) {
+            mybtn.setVisibility(View.GONE);
+            modifyLayout.setVisibility(View.VISIBLE);
+            LessonInfo lessonInfo = getIntent().getParcelableExtra(COME_INFO);
+            lesson_id = lessonInfo.getId();
+            showExistLessonInfo(lessonInfo);
         }
+    }
+
+
+    private void showExistLessonInfo(LessonInfo lessonInfo) {
+        coursenameEv.getEditText().setText(lessonInfo.getName());
+        coursetimeEv.getEditText().setText(lessonInfo.getKeeptime());
+        //todo change the price
+        priceEv.getEditText().setText(lessonInfo.getPrice());
+        descEv.setText(lessonInfo.getDescription());
     }
 
     private void showPd() {
@@ -86,7 +114,7 @@ public class AddCourseActivity extends AbsActivity {
             public void onClick(View v) {
                 getValue();
                 if (isValid()) {
-                    PublishReq req=new PublishReq();
+                    PublishReq req = new PublishReq();
                     req.setDescription(description);
                     req.setKeeptime(keep_time);
                     req.setName(course_name);
@@ -95,6 +123,141 @@ public class AddCourseActivity extends AbsActivity {
                 }
             }
         });
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWarningDialog("该操作不可恢复，您确定要删除该课程吗？",new OnFinishListener() {
+
+                    public void onFinish() {
+                        deleteLessonById(lesson_id);
+                    }
+
+                });
+            }
+        });
+        modifyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getValue();
+                if (isValid()) {
+                    ModifyLessonReq req = new ModifyLessonReq();
+                    req.setDescription(description);
+                    req.setPrice(price);
+                    req.setKeeptime(keep_time);
+                    req.setName(course_name);
+                    req.setDescription(description);
+                    ModifyLessonInfoById(lesson_id, req);
+                }
+            }
+        });
+        pauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWarningDialog("下架之后，您可以在我的课程-已下架中找到该课程，之后您可以选择重新上架该课程，是否进行此操作？", new OnFinishListener() {
+                    @Override
+                    public void onFinish() {
+                        ModifyLessonReq req=new ModifyLessonReq();
+                        req.setState(Constant.LESSON_STATE.OFF);
+                        ModifyLessonInfoById(lesson_id, req);
+                    }
+                });
+            }
+        });
+    }
+
+    private void ModifyLessonInfoById(int lesson_id, ModifyLessonReq req) {
+
+        showPd();
+        if (NetUtils.isNetworkConnected(this)){
+            ApiManager.getService(getApplicationContext()).modifyLessonInfo(lesson_id, req, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    if(response!=null){
+                       showInfoDialog("课程信息已更新", new OnFinishListener() {
+                           @Override
+                           public void onFinish() {
+                               setResult(RESULT_OK);
+                               finish();
+                           }
+                       });
+                    }
+
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    showInfoDialog(getInnerErrorInfo(error), null);
+                }
+            });
+        }else {
+            showNetWorkError();
+        }
+    }
+
+    private void deleteLessonById(int lesson_id) {
+        showPd();
+        if (NetUtils.isNetworkConnected(this)) {
+            ApiManager.getService(getApplicationContext()).deleteLesson(lesson_id, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    if (response != null) {
+                        dismissPd();
+                        showInfoDialog("您已成功删除该课程",new OnFinishListener(){
+
+                            @Override
+                            public void onFinish() {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                  showInnerError(error);
+                }
+            });
+        } else {
+            showNetWorkError();
+        }
+    }
+
+    private void showInfoDialog(String s, final OnFinishListener onFinishListener) {
+        AlertDialog dialog=new AlertDialog.Builder(this)
+                .setTitle("")
+                .setMessage(s)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (onFinishListener != null) {
+                            onFinishListener.onFinish();
+                        }
+
+                    }
+                })
+                .show();
+    }
+
+    private void showWarningDialog(String info,final OnFinishListener onFinishListener) {
+        AlertDialog builder = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage(info)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        onFinishListener.onFinish();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+        builder.setCanceledOnTouchOutside(true);
     }
 
     @Override
@@ -175,4 +338,16 @@ public class AddCourseActivity extends AbsActivity {
         priceEv.setErrorEnabled(false);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    private interface OnFinishListener {
+        public void onFinish();
+//        public void cancel();
+
+    }
 }

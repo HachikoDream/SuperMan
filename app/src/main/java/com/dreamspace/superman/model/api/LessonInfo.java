@@ -1,5 +1,8 @@
 package com.dreamspace.superman.model.api;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Wells on 2015/9/3.
  * {
@@ -17,7 +20,7 @@ package com.dreamspace.superman.model.api;
  * "price": 666
  * }
  */
-public class LessonInfo {
+public class LessonInfo implements Parcelable{
     private int id;
     private String name;
     private String image;
@@ -31,6 +34,69 @@ public class LessonInfo {
     private String description;
     private String tags;
     private boolean is_collected;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeInt(id);
+        dest.writeInt(collection_count);
+        dest.writeInt(success_count);
+        dest.writeInt(price);
+        dest.writeString(image);
+        dest.writeString(less_name);
+        dest.writeString(state);
+        dest.writeString(keeptime);
+        dest.writeString(mast_id);
+        dest.writeString(description);
+        dest.writeString(tags);
+        dest.writeByte((byte)(is_collected?1:0));
+
+    }
+    protected LessonInfo(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        image = in.readString();
+        less_name = in.readString();
+        collection_count = in.readInt();
+        success_count = in.readInt();
+        price = in.readInt();
+        state = in.readString();
+        keeptime = in.readString();
+        mast_id = in.readString();
+        description = in.readString();
+        tags = in.readString();
+        is_collected = in.readByte() != 0;
+    }
+
+    public static final Creator<LessonInfo> CREATOR = new Creator<LessonInfo>() {
+        @Override
+        public LessonInfo createFromParcel(Parcel in) {
+            return new LessonInfo(in);
+        }
+
+        @Override
+        public LessonInfo[] newArray(int size) {
+            return new LessonInfo[size];
+        }
+    };
+    /**
+     * Created by Wells on 2015/9/3.
+     * {
+     * "mast_id": 2,
+     * "name": "duzhixia",
+     * "keeptime": "2",
+     * "tags": "tag1,tag2,tag3,tag4,tag5",
+     * "state": "on",
+     * "image": "http://7xl53f.com1.z0.glb.clouddn.com/5607bc8090c49013abc2234b?imageView2/1/w/138/h/138/q/100",
+     * "description": "jieshao",
+     * "id": 2,
+     * "less_name": "mycourse1",
+     * "collection_count": 0,
+     * "success_count": 0,
+     * "price": 666
+     * }
+     */
+
+
 
     public boolean is_collected() {
         return is_collected;
@@ -137,4 +203,11 @@ public class LessonInfo {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
 }

@@ -151,7 +151,8 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
     public void onItemPicked(LessonInfo mEntity, int position) {
         Bundle b=new Bundle();
         b.putInt(AddCourseActivity.COME_SOURCE,AddCourseActivity.FROM_MODIFY);
-        readyGoForResult(AddCourseActivity.class,REQUEST_CODE,b);
+        b.putParcelable(AddCourseActivity.COME_INFO,mEntity);
+        readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
     }
 
     @Override

@@ -115,7 +115,7 @@ public interface SupermanService {
     void publishLessonBySm(@Body PublishReq req,Callback<PublishRes> cb);
     //修改课程
     @PUT("/lesson/{les_id}")
-    void modifyLessonInfo(@Path("les_id")String les_id,@Body ModifyLessonReq req,Callback<Response> cb);
+    void modifyLessonInfo(@Path("les_id") int les_id,@Body ModifyLessonReq req,Callback<Response> cb);
     //用名称模糊查找课程
     @GET("/lessons")
     void searchLessons(@Query("key_word") String key_word,@Query("page")int page,Callback<SmLessonList> cb);
@@ -124,7 +124,7 @@ public interface SupermanService {
     void getLessonDetail(@Path("les_id") int les_id,Callback<LessonInfo> cb);
     //删除课程
     @DELETE("/lesson/{les_id}")
-    void deleteLesson(@Path("les_id") String les_id,Callback<Response> cb);
+    void deleteLesson(@Path("les_id") int les_id,Callback<Response> cb);
     //对课程评论
     @POST("/lesson/{les_id}/comment")
     void comment(@Path("les_id")String les_id,@Body CommentReq req,Callback<CommentRes> cb);
