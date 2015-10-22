@@ -36,13 +36,13 @@ public class LessonInfo implements Parcelable{
     private boolean is_collected;
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
         dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(image);
+        dest.writeString(less_name);
         dest.writeInt(collection_count);
         dest.writeInt(success_count);
         dest.writeInt(price);
-        dest.writeString(image);
-        dest.writeString(less_name);
         dest.writeString(state);
         dest.writeString(keeptime);
         dest.writeString(mast_id);

@@ -199,7 +199,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        //todo 需判断用户是否登录,若没登录需跳到登录界面,回来之后需要刷新界面,刷新其是否收藏了这个课程
         int id = item.getItemId();
         if (id == R.id.item_collect) {
             if (less_id == -1) {

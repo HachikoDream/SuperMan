@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.dreamspace.superman.API.ApiManager;
@@ -18,12 +19,10 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.ModifyLessonReq;
-import com.dreamspace.superman.model.api.ModifyReq;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.PublishRes;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -53,6 +52,7 @@ public class AddCourseActivity extends AbsActivity {
     Button pauseBtn;
     @Bind(R.id.modify_layout)
     RelativeLayout modifyLayout;
+    private LinearLayout contentView;
     private ProgressDialog pd;
     public static final String COME_SOURCE = "comesource";
     public static final String COME_INFO = "comeinfo";
@@ -67,6 +67,12 @@ public class AddCourseActivity extends AbsActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLessonDetailInfo(lesson_id);
+    }
+
+    @Override
     protected void prepareDatas() {
         source = getIntent().getIntExtra(COME_SOURCE,-1);
         if (source==FROM_ADD) {
@@ -76,18 +82,55 @@ public class AddCourseActivity extends AbsActivity {
         } else if (source==FROM_MODIFY) {
             mybtn.setVisibility(View.GONE);
             modifyLayout.setVisibility(View.VISIBLE);
-            LessonInfo lessonInfo = getIntent().getParcelableExtra(COME_INFO);
-            lesson_id = lessonInfo.getId();
-            showExistLessonInfo(lessonInfo);
+            lesson_id = getIntent().getIntExtra(COME_INFO,-1);
+        }
+    }
+
+    private void getLessonDetailInfo(final int lesson_id) {
+       toggleShowLoading(true,null);
+        if(NetUtils.isNetworkConnected(this)){
+           ApiManager.getService(getApplicationContext()).getLessonDetail(lesson_id, new Callback<LessonInfo>() {
+               @Override
+               public void success(LessonInfo lessonInfo, Response response) {
+                   if(lessonInfo!=null){
+                       toggleShowLoading(false,null);
+                       showExistLessonInfo(lessonInfo);
+                   }else {
+                       toggleShowError(true, getString(R.string.common_error_msg), new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               getLessonDetailInfo(lesson_id);
+                           }
+                       });
+                   }
+               }
+
+               @Override
+               public void failure(RetrofitError error) {
+                     toggleShowError(true, getInnerErrorInfo(error), new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             getLessonDetailInfo(lesson_id);
+                         }
+                     });
+               }
+           });
+        }else {
+            toggleNetworkError(true, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getLessonDetailInfo(lesson_id);
+                }
+            });
         }
     }
 
 
     private void showExistLessonInfo(LessonInfo lessonInfo) {
-        coursenameEv.getEditText().setText(lessonInfo.getName());
+        coursenameEv.getEditText().setText(lessonInfo.getLess_name());
         coursetimeEv.getEditText().setText(lessonInfo.getKeeptime());
         //todo change the price
-        priceEv.getEditText().setText(lessonInfo.getPrice());
+        priceEv.getEditText().setText(lessonInfo.getPrice()+"");
         descEv.setText(lessonInfo.getDescription());
     }
 
@@ -109,6 +152,7 @@ public class AddCourseActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
+        contentView= (LinearLayout) findViewById(R.id.content_view);
         mybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +200,7 @@ public class AddCourseActivity extends AbsActivity {
                 showWarningDialog("下架之后，您可以在我的课程-已下架中找到该课程，之后您可以选择重新上架该课程，是否进行此操作？", new OnFinishListener() {
                     @Override
                     public void onFinish() {
-                        ModifyLessonReq req=new ModifyLessonReq();
+                        ModifyLessonReq req = new ModifyLessonReq();
                         req.setState(Constant.LESSON_STATE.OFF);
                         ModifyLessonInfoById(lesson_id, req);
                     }
@@ -172,14 +216,14 @@ public class AddCourseActivity extends AbsActivity {
             ApiManager.getService(getApplicationContext()).modifyLessonInfo(lesson_id, req, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
-                    if(response!=null){
-                       showInfoDialog("课程信息已更新", new OnFinishListener() {
-                           @Override
-                           public void onFinish() {
-                               setResult(RESULT_OK);
-                               finish();
-                           }
-                       });
+                    if (response != null) {
+                        showInfoDialog("课程信息已更新", new OnFinishListener() {
+                            @Override
+                            public void onFinish() {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        });
                     }
 
                 }
@@ -262,7 +306,7 @@ public class AddCourseActivity extends AbsActivity {
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return contentView;
     }
 
     private void AddCourse(PublishReq req) {
@@ -338,12 +382,6 @@ public class AddCourseActivity extends AbsActivity {
         priceEv.setErrorEnabled(false);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     private interface OnFinishListener {
         public void onFinish();

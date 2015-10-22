@@ -27,7 +27,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MyCourseListActivity extends BaseListAct<LessonInfo> {
-
+    //todo add stop course list
     private static final int REQUEST_CODE = 235;
     private ProgressDialog pd;
     private int page = 1;
@@ -93,7 +93,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
         getDataByPage(page, new OnRefreshListener<LessonInfo>() {
             @Override
             public void onFinish(List<LessonInfo> mEntities) {
-                refreshDate(mEntities, BaseListAct.ADD);
+                refreshDate(mEntities, BaseListAct.LOAD);
                 onPullDownFinished();
             }
 
@@ -151,7 +151,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
     public void onItemPicked(LessonInfo mEntity, int position) {
         Bundle b=new Bundle();
         b.putInt(AddCourseActivity.COME_SOURCE,AddCourseActivity.FROM_MODIFY);
-        b.putParcelable(AddCourseActivity.COME_INFO,mEntity);
+        b.putInt(AddCourseActivity.COME_INFO,mEntity.getId());
         readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
     }
 

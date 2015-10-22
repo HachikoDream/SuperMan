@@ -31,7 +31,6 @@ public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHold
         holder.timeTv.setText(entity.getTime());
         Tools.showImageWithGlide(getmContext(),holder.userAvaterIv,entity.getImage());
         holder.userNameTv.setText(entity.getNickname());
-        //TODO lack the name of the lesson
     }
 
     @Override

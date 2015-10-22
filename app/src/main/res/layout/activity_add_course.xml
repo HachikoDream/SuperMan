@@ -14,6 +14,7 @@
         <include layout="@layout/custom_toolbar"></include>
 
         <LinearLayout
+            android:id="@+id/content_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="42dp"
@@ -89,9 +90,9 @@
 
             <RelativeLayout
                 android:id="@+id/modify_layout"
-                android:layout_marginTop="60dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp">
 
                 <Button
                     android:id="@+id/modify_btn"

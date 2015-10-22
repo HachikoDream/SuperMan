@@ -158,6 +158,8 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void onItemPicked(LessonInfo mEntity, int position) {
-
+        Bundle b=new Bundle();
+        b.putInt("LESSON_INFO",mEntity.getId());
+        readyGo(LessonDetailInfoActivity.class,b);
     }
 }
