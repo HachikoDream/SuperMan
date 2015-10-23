@@ -10,10 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
+import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLessonFragment;
 import com.dreamspace.superman.UI.Fragment.CourseIntroductionFragment;
@@ -61,6 +64,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
     private LessonInfo mLessonInfo;
     private int less_id;
     private ProgressDialog pd;
+    private boolean isFirstIn=true;
 
     public LessonInfo getmLessonInfo() {
         return mLessonInfo;
@@ -174,10 +178,13 @@ public class LessonDetailInfoActivity extends AbsActivity {
         lessonnameTv.setText(lessonInfo.getLess_name());
         meet_num_tv.setText(String.valueOf(lessonInfo.getCollection_count()));
         success_num_tv.setText(String.valueOf(lessonInfo.getSuccess_count()));
-        //TODO change the price
-        priceTv.setText(String.valueOf(lessonInfo.getPrice()));
+//        priceTv.setText(String.valueOf(lessonInfo.getPrice()));
+        priceTv.setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         userNameTv.setText(lessonInfo.getName());
         tagTv.setText(lessonInfo.getTags());
+        if(!isFirstIn){
+            invalidateOptionsMenu();
+        }
     }
 
     @Override
@@ -199,22 +206,28 @@ public class LessonDetailInfoActivity extends AbsActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //todo 需判断用户是否登录,若没登录需跳到登录界面,回来之后需要刷新界面,刷新其是否收藏了这个课程
         int id = item.getItemId();
         if (id == R.id.item_collect) {
-            if (less_id == -1) {
-                showToast("请您稍后再次尝试");
-            } else {
-                if (mLessonInfo != null) {
-                    boolean result = mLessonInfo.is_collected();
-                    if(result){
-                        ///todo add a dialog for ensure
-                        DeleteCollectionsById(less_id,item);
-                    }else{
-                        CollectLessonById(less_id,item);
+            if(!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT))){
+                //用户已经登录
+                if (less_id == -1) {
+                    showToast("请您稍后再次尝试");
+                } else {
+                    if (mLessonInfo != null) {
+                        boolean result = mLessonInfo.is_collected();
+                        if(result){
+                            ///todo add a dialog for ensure
+                            DeleteCollectionsById(less_id,item);
+                        }else{
+                            CollectLessonById(less_id,item);
+                        }
                     }
+
                 }
 
+            }else {
+              //用户未登录，跳转到登录界面
+                readyGo(LoginActivity.class);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -268,5 +281,17 @@ public class LessonDetailInfoActivity extends AbsActivity {
             dimissPd();
             showNetWorkError();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isFirstIn){
+            isFirstIn=false;
+        }else{
+            //用于登录后的刷新操作
+            loadLessonInfo();
+        }
+
     }
 }

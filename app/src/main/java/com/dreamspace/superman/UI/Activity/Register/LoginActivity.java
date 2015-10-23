@@ -24,10 +24,6 @@ public class LoginActivity extends AbsActivity {
     private FragmentManager mFragmentManager;
     private final static int TITLE = R.string.title_activity_login;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected void setSelfContentView() {

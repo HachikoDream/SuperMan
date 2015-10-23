@@ -97,7 +97,7 @@ public class LoginFragment extends BaseFragment {
                     Log.i("INFO", userInfo.toString());
                     saveUserInfo(userInfo);
                     pd.dismiss();
-                    readyGo(MainActivity.class);
+//                    readyGo(MainActivity.class);
                     getActivity().finish();
                 }
             }

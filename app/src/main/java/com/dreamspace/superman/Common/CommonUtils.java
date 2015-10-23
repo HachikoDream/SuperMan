@@ -34,5 +34,23 @@ public class CommonUtils {
         }
         return price;
     }
+    public static String getStringFromPrice(int price){
+        String dot=".";
+        StringBuilder sb=new StringBuilder();
+        String priceContent=String.valueOf(price);
+        if(priceContent.length()>=3){
+            String tail=priceContent.substring(priceContent.length()-2,priceContent.length());
+            String start=priceContent.substring(0,priceContent.length()-2);
+            if(tail.equals("00")){
+                return start;
+            }else {
+                return sb.append(start).append(dot).append(tail).toString();
+            }
+        }else {
+            float priceF=(float)price/100;
+            return String.valueOf(priceF);
+        }
+
+    }
 
 }

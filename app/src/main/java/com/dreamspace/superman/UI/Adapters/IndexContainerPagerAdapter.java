@@ -34,7 +34,7 @@ import java.util.List;
  * Date:    2015/4/2.
  * Description:
  */
-public class IndexContainerPagerAdapter extends FragmentStatePagerAdapter {
+public class IndexContainerPagerAdapter extends FragmentPagerAdapter {
 
     private List<Catalog> mCategoryList = null;
 

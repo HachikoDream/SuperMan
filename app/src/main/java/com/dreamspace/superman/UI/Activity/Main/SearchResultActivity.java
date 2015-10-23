@@ -58,7 +58,7 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return mSwipeRefreshLayout;
     }
 
     @Override
@@ -100,23 +100,21 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void getInitData() {
-        //TODO add loading view
-        showPd();
+        toggleShowLoading(true,null);
         loadSearchResultByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
             @Override
             public void onFinish(List<LessonInfo> mEntities) {
-                dismissPd();
                 if(mEntities.size()==0){
-                    //TODO add empty view
-                    showToast("暂无相关商品信息");
+                    toggleShowEmpty(true,"暂无相关课程",null);
                 }else {
+                    toggleShowLoading(false,null);
                     refreshDate(mEntities,BaseListAct.LOAD);
                 }
             }
 
             @Override
             public void onError() {
-                 dismissPd();
+                 toggleShowError(true,getString(R.string.common_error_msg),null);
             }
         });
     }
@@ -132,13 +130,6 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
                 public void success(SmLessonList smLessonList, Response response) {
                     if(smLessonList!=null){
                           listener.onFinish(smLessonList.getLessons());
-//                        if(smLessonList.getLessons().size()!=0){
-//                            //TODO modify less_name,image attribute name
-//                          refreshDate(smLessonList.getLessons(),BaseListAct.LOAD);
-//                        }else {
-//                            //TODO replace with empty view
-//                            showToast("暂时没有找到您查找的商品");
-//                        }
                     }
                 }
 
@@ -150,7 +141,6 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
             });
         }else {
-            //TODO replace with error view rather than toast
             showNetWorkError();
             listener.onError();
         }

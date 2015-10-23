@@ -239,7 +239,7 @@ public class RegisterInfoActivity extends AbsActivity {
             public void success(UserInfo userInfo, Response response) {
                 saveUserInfo(userInfo);
                 pd.dismiss();
-                readyGo(MainActivity.class);
+//                readyGo(MainActivity.class);
                 finish();
             }
 

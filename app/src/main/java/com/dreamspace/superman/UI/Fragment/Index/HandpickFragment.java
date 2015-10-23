@@ -26,6 +26,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
+//todo 首次登陆进入时存在问题
 public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     public Catalog selfCatalog;
     public int page = 1;
@@ -78,7 +79,7 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
 
     @Override
     public void getInitData() {
-        Log.i("HP", "On First");
+        Log.i("HP", "On First "+this.toString());
         onFirst=true;
         if (selfCatalog != null) {
             loadingDataWhenInit();
@@ -155,6 +156,7 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     }
 
     public void onPageSelected(int position, Catalog catalog) {
+        Log.i("HP", "On PageSelected  "+this.toString());
         selfCatalog = catalog;
         if(onFirst){
             loadingDataWhenInit();
