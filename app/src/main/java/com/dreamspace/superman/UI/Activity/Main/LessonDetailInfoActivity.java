@@ -1,6 +1,8 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -216,8 +218,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
                     if (mLessonInfo != null) {
                         boolean result = mLessonInfo.is_collected();
                         if(result){
-                            ///todo add a dialog for ensure
-                            DeleteCollectionsById(less_id,item);
+                            showWaringDialog(less_id,item);
                         }else{
                             CollectLessonById(less_id,item);
                         }
@@ -232,7 +233,25 @@ public class LessonDetailInfoActivity extends AbsActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    private void showWaringDialog(final int id, final MenuItem item){
+        AlertDialog dialog=new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("确定从收藏列表中移除该课程?")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        DeleteCollectionsById(id,item);
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
     private void DeleteCollectionsById(int id, final MenuItem item) {
         showProgressDialog();
         if (NetUtils.isNetworkConnected(this)){

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.Lesson;
@@ -30,8 +31,7 @@ public class MyCourseAdapter extends BasisAdapter<LessonInfo,MyCourseAdapter.vie
     protected void setDataIntoView(viewHolder holder, LessonInfo entity) {
         Tools.showImageWithGlide(getmContext(),holder.avaterIv,entity.getImage());
         holder.courseNameTv.setText(entity.getLess_name());
-        //todo:改变price
-        holder.priceTv.setText(entity.getPrice()+"");
+        holder.priceTv.setText(CommonUtils.getStringFromPrice(entity.getPrice()));
         holder.timeTv.setText(entity.getKeeptime());
     }
 

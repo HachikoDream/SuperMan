@@ -1,15 +1,20 @@
 package com.dreamspace.superman.UI.Activity.Superman;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 
+import butterknife.Bind;
+
 public class MyAccountActivity extends AbsActivity {
+
+    @Bind(R.id.bind_layout)
+    LinearLayout bindLayout;
+    private static final int REQUEST_CODE=256;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,12 @@ public class MyAccountActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-
+      bindLayout.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              readyGoForResult(BindWithBankActivity.class,REQUEST_CODE);
+          }
+      });
     }
 
     @Override
@@ -37,4 +47,11 @@ public class MyAccountActivity extends AbsActivity {
         return null;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE&&resultCode==RESULT_OK){
+            //todo 获得绑定的信息 刷新界面
+        }
+    }
 }

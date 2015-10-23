@@ -140,6 +140,7 @@ public class PreferenceUtils {
         putString(context, Key.CLASSIFY, content);
     }
     public static void writeClassifyIntoSpForFirst(Context context) {
+        //// TODO: 2015/10/24 换为序列化的方式
         Gson gson = new Gson();
         Catalog catalog=new Catalog();
         catalog.setId(1);

@@ -1,6 +1,7 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,7 +49,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     private String text = "发送验证码";
     private String code;
     private String register_token;
-
+    private ProgressDialog pd;
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -57,13 +58,32 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     public int getLayoutId() {
         return R.layout.fragment_register;
     }
-
+    private void showPd(){
+        if(pd==null){
+            pd=ProgressDialog.show(getActivity(),"","正在提交注册请求",true,false);
+        }else {
+            if(!pd.isShowing()){
+                pd.show();
+            }
+        }
+    }
+    private void dismissPd(){
+        if(pd!=null&&pd.isShowing()){
+            pd.dismiss();
+        }
+    }
     @Override
     public void initViews(View view) {
         sendVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendVerifyCode();
+            }
+        });
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Register();
             }
         });
     }
@@ -95,34 +115,39 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
         }
     }
 
-    @OnClick(R.id.mybtn)
-    void Register() {
+    private void Register() {
         if (isRegisterValid()) {
+            showPd();
             final RegistertokenReq req = new RegistertokenReq();
             req.setPhone(phoneNum);
             req.setCode(code);
-            mService.createRegisterToken(req, new Callback<RegistertokenRes>() {
-                @Override
-                public void success(RegistertokenRes s, Response response) {
-                    if (response.getStatus() == 200) {
-                        register_token = s.getRegister_token();
-                        Bundle b = new Bundle();
-                        b.putString("token", register_token);
-                        b.putString("phoneNum", phoneNum);
-                        readyGo(RegisterInfoActivity.class, b);
-                        killSelf();
-                    } else {
-                        showToast(response.getReason());
+            if(NetUtils.isNetworkConnected(getActivity())){
+                mService.createRegisterToken(req, new Callback<RegistertokenRes>() {
+                    @Override
+                    public void success(RegistertokenRes s, Response response) {
+                        if (response.getStatus() == 200) {
+                            dismissPd();
+                            register_token = s.getRegister_token();
+                            Bundle b = new Bundle();
+                            b.putString("token", register_token);
+                            b.putString("phoneNum", phoneNum);
+                            readyGo(RegisterInfoActivity.class, b);
+                            killSelf();
+                        } else {
+                            dismissPd();
+                            showToast(response.getReason());
+                        }
                     }
-                }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    ErrorRes res = (ErrorRes) error.getBodyAs(ErrorRes.class);
-                    Log.i("INFO", error.getMessage());
-                    Log.i("INFO", res.toString());
-                }
-            });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        dismissPd();
+                        showInnerError(error);
+                    }
+                });
+            }else{
+                showNetWorkError();
+            }
         }
     }
 

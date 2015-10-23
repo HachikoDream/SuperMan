@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmIntroduceActivity extends AbsActivity {
-
+    //// TODO: 2015/10/24 编写后台通信代码
     private SlidingTabLayout mSlidingTabLayout;
     private CommonFragmentAdapter mAdapter;
     private ViewPager mViewPager;

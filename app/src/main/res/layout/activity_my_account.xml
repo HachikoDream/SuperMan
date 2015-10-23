@@ -56,10 +56,11 @@
             android:textSize="45sp" />
 
         <LinearLayout
+            android:id="@+id/bind_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:background="@color/near_white"
+            android:background="@drawable/layout_item_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="7dp"

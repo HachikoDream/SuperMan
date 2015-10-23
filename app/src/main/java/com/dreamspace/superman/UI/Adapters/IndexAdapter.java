@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.api.LessonInfo;
@@ -32,7 +33,7 @@ public class IndexAdapter extends BasisAdapter<LessonInfo, IndexAdapter.viewHold
         holder.smNameTv.setText(entity.getName());
         holder.wantCountTv.setText(String.valueOf(entity.getCollection_count()));
         holder.successCountTv.setText(String.valueOf(entity.getSuccess_count()));
-        holder.priceTv.setText(String.valueOf(entity.getPrice()));
+        holder.priceTv.setText(CommonUtils.getStringFromPrice(entity.getPrice()));
         holder.descTv.setText(entity.getTags());
         Tools.showImageWithGlide(getmContext(),holder.avaterIv,entity.getImage());
     }

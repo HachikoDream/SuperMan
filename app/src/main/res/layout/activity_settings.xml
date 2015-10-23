@@ -15,23 +15,26 @@
         android:paddingTop="21dp"
         android:orientation="vertical">
          <TextView
+             android:id="@+id/check_update_tv"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:background="@drawable/settings_bg"
+             android:background="@drawable/layout_item_bg"
              android:text="检查更新"
              android:textColor="@color/near_black"
              android:textSize="15sp"
              android:padding="15dp"/>
         <TextView
+            android:id="@+id/find_bugs_tv"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/settings_bg"
+            android:background="@drawable/layout_item_bg"
             android:text="问题反馈"
             android:textColor="@color/near_black"
             android:textSize="15sp"
             android:padding="15dp"/>
         <Button
+            android:id="@+id/exit_btn"
             android:layout_width="150dp"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"

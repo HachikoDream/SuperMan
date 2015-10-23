@@ -63,6 +63,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Bind(R.id.username_tv)
     TextView mUserName;
     Menu slideMenu;
+    private boolean isFirst=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,6 +241,8 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             String url = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.AVATAR);
             Tools.showImageWithGlide(this,mUserAvater,url);
         } else {
+            mUserName.setText("登录");
+            mUserAvater.setImageResource(R.drawable.login_pho);
             headerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -259,9 +262,14 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
     @Override
     protected void onResume() {
-        //todo change the way
+        //todo change the way 用onActivityResult代替
         super.onResume();
-        checkIsLogin();
-        checkIsSuperMan();
+        if(isFirst){
+            isFirst=false;
+        }else {
+            checkIsLogin();
+            checkIsSuperMan();
+        }
+
     }
 }

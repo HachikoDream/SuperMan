@@ -129,8 +129,7 @@ public class AddCourseActivity extends AbsActivity {
     private void showExistLessonInfo(LessonInfo lessonInfo) {
         coursenameEv.getEditText().setText(lessonInfo.getLess_name());
         coursetimeEv.getEditText().setText(lessonInfo.getKeeptime());
-        //todo change the price
-        priceEv.getEditText().setText(lessonInfo.getPrice()+"");
+        priceEv.getEditText().setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         descEv.setText(lessonInfo.getDescription());
     }
 

@@ -4,6 +4,7 @@ import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.BalanceRes;
+import com.dreamspace.superman.model.api.BindReq;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.CommentList;
 import com.dreamspace.superman.model.api.CommentReq;
@@ -91,13 +92,12 @@ public interface SupermanService {
     //用户删除收藏
     @DELETE("/user/collection/{less_id}")
     void deleteCollectionById(@Path("less_id") int less_id,Callback<Response> cb);
-    //管理员更新一个分类信息
-    //获取分类
-    //管理员可以删除这个分类
     //一般用户成为达人
     @POST("/master")
     void applytoSuperMan(@Body ToBeSmReq req,Callback<TempRes> cb);
     //达人绑定支付宝账号
+    @POST("/master/payaccount")
+    void bindWithBankAccount(@Body BindReq req,Callback<Response> cb);
     //获取本账号达人信息
     @GET("/master")
     void getSmId(Callback<SmIdRes> cb);
