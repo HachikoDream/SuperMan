@@ -27,12 +27,12 @@
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
-                android:src="@drawable/testhead" />
+                android:src="@drawable/login_pho" />
             <TextView
                 android:id="@+id/username_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="孙坚"
+                android:text="加载中"
                 android:singleLine="true"
                 android:padding="2dp"
                 android:layout_centerHorizontal="true"

@@ -4,59 +4,58 @@ package com.dreamspace.superman.model;
  * Created by Administrator on 2015/8/3 0003.
  */
 public class Order {
+    private int id;
     private String time;
-    private String coursename;
-    private String status;
-    private int type;
-    private String supermanname;
-    private float price;
+    private int state;
+    private int less_price;
+    private String less_name;
+    private String name;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTime() {
+        return time;
+    }
 
     public void setTime(String time) {
         this.time = time;
     }
 
-    public void setCoursename(String coursename) {
-        this.coursename = coursename;
+    public int getState() {
+        return state;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setState(int state) {
+        this.state = state;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public int getLess_price() {
+        return less_price;
     }
 
-    public void setSupermanname(String supermanname) {
-        this.supermanname = supermanname;
+    public void setLess_price(int less_price) {
+        this.less_price = less_price;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public String getLess_name() {
+        return less_name;
     }
 
-    public String getTime() {
-
-        return time;
+    public void setLess_name(String less_name) {
+        this.less_name = less_name;
     }
 
-    public String getCoursename() {
-        return coursename;
+    public String getName() {
+        return name;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public String getSupermanname() {
-        return supermanname;
-    }
-
-    public float getPrice() {
-        return price;
+    public void setName(String name) {
+        this.name = name;
     }
 }

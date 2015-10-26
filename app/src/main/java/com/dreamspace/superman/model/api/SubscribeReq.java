@@ -4,18 +4,18 @@ package com.dreamspace.superman.model.api;
  * Created by Wells on 2015/9/3.
  */
 public class SubscribeReq {
-    private String less_id;
+    private int less_id;
     private String name;
     private String phone;
     private String time;
     private String site;
     private String remark;
 
-    public String getLess_id() {
+    public int getLess_id() {
         return less_id;
     }
 
-    public void setLess_id(String less_id) {
+    public void setLess_id(int less_id) {
         this.less_id = less_id;
     }
 

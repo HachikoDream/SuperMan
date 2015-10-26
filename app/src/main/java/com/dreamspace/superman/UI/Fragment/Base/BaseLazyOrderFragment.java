@@ -25,6 +25,8 @@ public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
     private BasisAdapter mAdapter;
     @Bind(R.id.swiperefresh_id)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    public final static int LOAD=233;
+    public final static int ADD=234;
 
     @Override
     protected void onFirstUserVisible() {
@@ -40,10 +42,16 @@ public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
     protected void onUserInvisible() {
 
     }
+    public void onPullUpFinished(){
+        moreListView.setLoading(false);
+    }
+    public void onPullDownFinished(){
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return mSwipeRefreshLayout;
     }
 
     @Override
@@ -66,18 +74,6 @@ public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
         initDatas();
     }
     public void initDatas() {
-//        try {
-//            Constructor c=mAClass.getConstructor(Context.class);
-//            mAdapter= (BasisAdapter) c.newInstance(getActivity());
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        } catch (java.lang.InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
         mAdapter=new OrderAdapter(getActivity());
         moreListView.setAdapter(mAdapter);
         moreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,8 +97,15 @@ public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
     protected abstract void onPullUp();
 
     protected abstract void onPullDown();
-    public void refreshDate(List<T> mEntities) {
-        mAdapter.setmEntities(mEntities);
+    public void refreshDate(List<T> mEntities,int type) {
+        switch (type){
+            case LOAD:
+                mAdapter.setmEntities(mEntities);
+                break;
+            case ADD:
+                mAdapter.addEntities(mEntities);
+                break;
+        }
         mAdapter.notifyDataSetChanged();
     }
 }

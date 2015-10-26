@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Activity.Main.subscribeActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Main.SubscribeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,6 +55,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/suscribe_btn"
             android:layout_width="150dp"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"

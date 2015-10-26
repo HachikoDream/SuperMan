@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="110dp"
     android:orientation="horizontal"
     android:paddingBottom="5dp"
     android:paddingLeft="18dp"
@@ -20,9 +20,9 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/testhead"
+            android:src="@drawable/login_pho"
             app:border_color="@color/navi_color"
-            app:border_width="1dp" />
+            app:border_width="0dp" />
 
     </LinearLayout>
 
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="技术盲如何在创业初期搞定技术，低成本推出产品"
+            android:text="请稍后"
             android:textColor="@color/near_black"
             android:textSize="16sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:singleLine="true"
-                android:text="孙坚"
+                android:text="please wait"
                 android:textColor="@color/select_tab_color" />
 
             <TextView
@@ -67,16 +67,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/username_tv"
-                android:padding="4dp"
-                android:text="约1.5小时" />
+                android:padding="4dp" />
 
             <TextView
+                android:id="@+id/price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/username_tv"
                 android:padding="4dp"
-                android:text="￥30/课时"
                 android:textColor="@color/navi_color" />
         </RelativeLayout>
     </LinearLayout>

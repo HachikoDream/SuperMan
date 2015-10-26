@@ -163,4 +163,8 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
         }
     }
 
+    @Override
+    public void getLessonInfo(LessonInfo mLessonInfo) {
+
+    }
 }

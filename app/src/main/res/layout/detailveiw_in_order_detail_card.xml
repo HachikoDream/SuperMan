@@ -2,171 +2,193 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp"
+    android:orientation="vertical"
     android:paddingBottom="15dp"
-    android:paddingRight="10dp"
     android:paddingLeft="10dp"
-    android:orientation="vertical">
+    android:paddingRight="10dp"
+    android:paddingTop="15dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="订 单 号  ："/>
+        android:paddingTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订 单 号  ：" />
+
         <TextView
             android:id="@+id/order_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="356265655645"
-            android:singleLine="true"/>
+            android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="订单时间  : "/>
+            android:text="订单时间  : " />
+
         <TextView
             android:id="@+id/order_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2015-03-09 10:20"
-            android:singleLine="true"
-            />
+            android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="订单金额  : "/>
+        android:paddingTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单金额  : " />
+
         <TextView
             android:id="@+id/order_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="60"
-            android:singleLine="true"
-            />
+            android:singleLine="true" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" 元"/>
+            android:text=" 元" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="课程名称："/>
+            android:text="课程名称：" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/order_coursename"
-            android:text="钢琴十级教程"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <View
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@color/grey_line"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="预约姓名："/>
+            android:text="预约姓名：" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/order_studentname"
-            android:text="李度洋"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="预约手机："/>
+            android:text="预约手机：" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/order_phonenum"
-            android:text="15651630827"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="课程时间："/>
+            android:text="课程时间：" />
+
         <TextView
+            android:id="@+id/course_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_time" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="课程地点："/>
+            android:text="课程地点：" />
+
         <TextView
+            android:id="@+id/course_address"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/course_address" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:orientation="horizontal"
         android:paddingBottom="5dp"
-        android:orientation="horizontal">
+        android:paddingTop="5dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="备       注 ："/>
+            android:text="备       注 ：" />
+
         <TextView
+            android:id="@+id/course_remark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/course_remark" />
+            android:text="暂无相关信息" />
 
     </LinearLayout>
 

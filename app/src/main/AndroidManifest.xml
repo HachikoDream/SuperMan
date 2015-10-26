@@ -51,7 +51,7 @@
             android:name=".UI.Activity.Main.LessonDetailInfoActivity"
             android:label="@string/title_activity_course_detail_info" />
         <activity
-            android:name=".UI.Activity.Main.subscribeActivity"
+            android:name=".UI.Activity.Main.SubscribeActivity"
             android:label="@string/title_activity_order" />
         <activity
             android:name=".UI.Activity.Main.SettingsActivity"

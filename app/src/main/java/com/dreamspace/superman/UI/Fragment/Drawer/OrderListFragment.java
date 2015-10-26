@@ -3,11 +3,15 @@ package com.dreamspace.superman.UI.Fragment.Drawer;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.OrderContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
+import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
+import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
+import com.dreamspace.superman.model.OrderClassify;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,10 +48,10 @@ public class OrderListFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        List<String> mEntities = Arrays.asList(getResources().getStringArray(R.array.order_list_item));
+        final OrderClassify[] mEntities = Constant.ORDER_CLASSIFY.orderClassifys;
         mAdapter = new OrderContainerPagerAdapter(getChildFragmentManager(), mEntities);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(mEntities.size());
+        mViewPager.setOffscreenPageLimit(mEntities.length);
         final int color = getResources().getColor(R.color.navi_color);
         final int startcolr=getResources().getColor(R.color.near_white);
         mSlidingTabLayout.setStartColor(startcolr);
@@ -70,6 +74,26 @@ public class OrderListFragment extends BaseLazyFragment {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                SubscribeFragment fragment = (SubscribeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, position);
+                fragment.onPageSelected(position, mEntities[position]);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        SubscribeFragment fragment = (SubscribeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+        fragment.onPageSelected(0, mEntities[0]);
     }
 
     @Override

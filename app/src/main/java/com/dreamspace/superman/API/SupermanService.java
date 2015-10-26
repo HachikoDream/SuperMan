@@ -1,5 +1,7 @@
 package com.dreamspace.superman.API;
 
+import com.dreamspace.superman.UI.Activity.Superman.OrderListActivity;
+import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
@@ -14,6 +16,7 @@ import com.dreamspace.superman.model.api.ModifyLessonReq;
 import com.dreamspace.superman.model.api.ModifyReq;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
+import com.dreamspace.superman.model.api.OrderlistRes;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.SmIdRes;
 import com.dreamspace.superman.model.api.SmInfo;
@@ -140,10 +143,17 @@ public interface SupermanService {
     void operateOrderBySm(@Body OperatorReq req,Callback<Response> cb);
     //达人获取定订单详情
     @GET("/master/order/{ord_id}")
-    void getOrderDetail(@Path("ord_id") String ord_id,Callback<OrderDetailRes> cb);
+    void getSmOrderDetail(@Path("ord_id") String ord_id,Callback<OrderDetailRes> cb);
     //达人获取订单列表
+    @GET("/master/orders")
+    void getSmOrderListById(@Query("state")int state,@Query("page") int page, Callback<OrderlistRes> cb);
    //用户获取订单详情
+    @GET("/user/order/{ord_id}")
+    void getOrderDetailById(@Path("ord_id") int ord_id,Callback<OrderDetailRes> cb);
+
     //用户获取订单列表
+    @GET("/user/orders")
+    void getOrderListById(@Query("state") int state,@Query("page") int page,Callback<OrderlistRes> cb);
    //达人方取消订单
     //用户方取消订单
     //获取当前版本

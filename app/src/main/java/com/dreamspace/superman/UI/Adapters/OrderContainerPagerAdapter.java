@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
+import com.dreamspace.superman.model.OrderClassify;
 
 import java.util.List;
 
@@ -33,9 +34,9 @@ import java.util.List;
  */
 public class OrderContainerPagerAdapter extends FragmentPagerAdapter {
 
-    private List<String> mCategoryList = null;
+    private OrderClassify[] mCategoryList = null;
 
-    public OrderContainerPagerAdapter(FragmentManager fm, List<String> categoryList) {
+    public OrderContainerPagerAdapter(FragmentManager fm, OrderClassify[] categoryList) {
         super(fm);
         mCategoryList = categoryList;
     }
@@ -47,12 +48,12 @@ public class OrderContainerPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return null != mCategoryList ? mCategoryList.size() : 0;
+        return null != mCategoryList ? mCategoryList.length : 0;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return null != mCategoryList ? mCategoryList.get(position) : null;
+        return null != mCategoryList ? mCategoryList[position].getName() : null;
     }
     @Override
     public int getItemPosition(Object object) {

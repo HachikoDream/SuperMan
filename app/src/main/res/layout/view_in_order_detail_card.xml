@@ -8,122 +8,128 @@
     android:paddingLeft="18dp"
     android:paddingRight="18dp"
     android:paddingTop="5dp">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingRight="18dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/testhead"
-            app:border_color="@color/navi_color"
-            app:border_width="1dp" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/grey_line"></View>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="18dp">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/course_name_tv"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:text="技术盲如何在创业初期搞定技术，低成本推出产品"
-            android:textColor="@color/near_black"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:paddingRight="18dp">
 
-        <RelativeLayout
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/login_pho"
+                app:border_color="@color/navi_color"
+                app:border_width="0dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey_line"></View>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingLeft="18dp">
 
             <TextView
-                android:id="@+id/username_tv"
+                android:id="@+id/course_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:singleLine="true"
-                android:text="孙坚"
-                android:textColor="@color/select_tab_color" />
+                android:paddingBottom="4dp"
+                android:text="正在加载中..."
+                android:textColor="@color/near_black"
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/time_tv"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/username_tv"
-                android:padding="4dp"
-                android:text="约1.5小时" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/username_tv"
-                android:padding="4dp"
-                android:text="￥30/课时"
-                android:textColor="@color/navi_color" />
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/username_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:singleLine="true"
+                    android:textColor="@color/select_tab_color" />
+
+                <TextView
+                    android:id="@+id/time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/username_tv"
+                    android:padding="4dp"
+                    android:text="请稍后" />
+
+                <TextView
+                    android:id="@+id/price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/username_tv"
+                    android:padding="4dp"
+                    android:textColor="@color/navi_color" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
     <View
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:layout_marginTop="15dp"
         android:background="@color/grey_line"></View>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
+
         <Button
             android:id="@+id/connect_sm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="联系达人"
-            android:padding="2dp"
-            android:textSize="12sp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/button_redside_white_bg"
-            android:textColor="@color/navi_color"/>
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="联系达人"
+            android:textColor="@color/navi_color"
+            android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/connect_sm_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/connect_sm_btn"
             android:paddingRight="5dp"
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
-            android:src="@drawable/page_buy_contact"
-            android:layout_toLeftOf="@id/connect_sm_btn"/>
+            android:src="@drawable/page_buy_contact" />
+
         <Button
-            android:id="@+id/order_phonenum"
+            android:id="@+id/order_phonenum_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="联系达人"
-            android:padding="2dp"
-            android:textSize="12sp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/button_redside_white_bg"
-            android:textColor="@color/navi_color"/>
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="联系达人"
+            android:textColor="@color/navi_color"
+            android:textSize="12sp" />
     </RelativeLayout>
 </LinearLayout>

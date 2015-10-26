@@ -9,12 +9,12 @@
     android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/realname_ev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp">
        <EditText
-           android:id="@+id/phonenum_ev"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:textSize="14sp"
@@ -22,26 +22,27 @@
            android:hint="真实姓名"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/connect_ev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp">
         <EditText
-            android:id="@+id/connect_ev"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="14sp"
+            android:inputType="number"
             android:background="@drawable/apptheme_edit_text_holo_light"
             android:hint="联系电话"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/time_ev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp">
         <EditText
-            android:id="@+id/time_ev"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="14sp"
@@ -49,12 +50,12 @@
             android:hint="时间"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/address_ev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp">
         <EditText
-            android:id="@+id/address_ev"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="14sp"
@@ -62,17 +63,17 @@
             android:hint="地点"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/another_info_ev"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="52dp"
         android:layout_marginRight="52dp">
         <EditText
-            android:id="@+id/another_info_ev"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="14sp"
             android:background="@drawable/apptheme_edit_text_holo_light"
-            android:hint="备注"/>
+            android:hint="备注(可选)"/>
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

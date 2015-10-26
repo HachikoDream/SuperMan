@@ -69,7 +69,9 @@ public class AddCourseActivity extends AbsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLessonDetailInfo(lesson_id);
+        if(source==FROM_MODIFY){
+            getLessonDetailInfo(lesson_id);
+        }
     }
 
     @Override

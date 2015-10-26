@@ -128,7 +128,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
 
             @Override
             public void onError() {
-                dismissPd();
+              toggleShowLoading(false,null);
             }
         });
     }

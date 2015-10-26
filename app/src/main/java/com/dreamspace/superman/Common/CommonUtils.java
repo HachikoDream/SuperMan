@@ -52,5 +52,33 @@ public class CommonUtils {
         }
 
     }
+    public static String getPriceWithInfo(int price){
+        StringBuilder sb=new StringBuilder();
+        String content=getStringFromPrice(price);
+        return sb.append(content).append("元/课时").toString();
+    }
+    public static String getStatusByCode(int code){
+        String content=null;
+        switch (code){
+            case -1:
+                content="已退款";
+                break;
+
+            case 0:
+                content="已取消";
+                break;
+            case 1:
+                content="待确认";
+                break;
+            case 2:
+                content="待付款";
+                break;
+
+            case 3:
+                content="带见面";
+                break;
+        }
+        return content;
+    }
 
 }

@@ -3,12 +3,14 @@ package com.dreamspace.superman.UI.Activity.Main;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
@@ -19,6 +21,7 @@ import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
+import com.dreamspace.superman.UI.Activity.Superman.SmIntroduceActivity;
 import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLessonFragment;
 import com.dreamspace.superman.UI.Fragment.CourseIntroductionFragment;
@@ -26,6 +29,7 @@ import com.dreamspace.superman.UI.Fragment.StudentCommentListFragment;
 import com.dreamspace.superman.UI.Fragment.SupermanIntroductionFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
+import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.LessonInfo;
 
@@ -33,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -43,6 +48,10 @@ public class LessonDetailInfoActivity extends AbsActivity {
     private static final int TITLE = R.string.title_activity_course_detail_info;
     @Bind(R.id.sliding_layout)
     SlidingTabLayout mSlidingTabLayout;
+    @Bind(R.id.talk_btn)
+    Button talkBtn;
+    @Bind(R.id.order_btn)
+    Button orderBtn;
     private CommonFragmentAdapter mAdapter;
     @Bind(R.id.viewpager)
     ViewPager mViewPager;
@@ -63,10 +72,11 @@ public class LessonDetailInfoActivity extends AbsActivity {
     private List<BaseLessonFragment> mFragments = new ArrayList<>();
     private int color = 0;
     private int normalColor = 0;
-    private LessonInfo mLessonInfo;
+    private LessonInfo mLessonInfo = null;
     private int less_id;
     private ProgressDialog pd;
-    private boolean isFirstIn=true;
+    private boolean isFirstIn = true;
+    public static final String LESSON_INFO = "LESSON_INFO";
 
     public LessonInfo getmLessonInfo() {
         return mLessonInfo;
@@ -121,6 +131,31 @@ public class LessonDetailInfoActivity extends AbsActivity {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
+        userIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLessonInfo != null) {
+                    Bundle b = new Bundle();
+                    b.putParcelable(LESSON_INFO, mLessonInfo);
+                    readyGo(SmIntroduceActivity.class, b);
+                }
+
+            }
+        });
+        orderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLessonInfo != null) {
+                    if (!CommonUtils.isEmpty(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
+                        Bundle b = new Bundle();
+                        b.putParcelable(LESSON_INFO, mLessonInfo);
+                        readyGo(SubscribeActivity.class, b);
+                    }else{
+                        readyGo(LoginActivity.class);
+                    }
+                }
+            }
+        });
         loadLessonInfo();
     }
 
@@ -184,7 +219,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
         priceTv.setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         userNameTv.setText(lessonInfo.getName());
         tagTv.setText(lessonInfo.getTags());
-        if(!isFirstIn){
+        if (!isFirstIn) {
             invalidateOptionsMenu();
         }
     }
@@ -210,38 +245,39 @@ public class LessonDetailInfoActivity extends AbsActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.item_collect) {
-            if(!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT))){
+            if (!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
                 //用户已经登录
                 if (less_id == -1) {
                     showToast("请您稍后再次尝试");
                 } else {
                     if (mLessonInfo != null) {
                         boolean result = mLessonInfo.is_collected();
-                        if(result){
-                            showWaringDialog(less_id,item);
-                        }else{
-                            CollectLessonById(less_id,item);
+                        if (result) {
+                            showWaringDialog(less_id, item);
+                        } else {
+                            CollectLessonById(less_id, item);
                         }
                     }
 
                 }
 
-            }else {
-              //用户未登录，跳转到登录界面
+            } else {
+                //用户未登录，跳转到登录界面
                 readyGo(LoginActivity.class);
             }
         }
         return super.onOptionsItemSelected(item);
     }
-    private void showWaringDialog(final int id, final MenuItem item){
-        AlertDialog dialog=new AlertDialog.Builder(this)
+
+    private void showWaringDialog(final int id, final MenuItem item) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("提示")
                 .setMessage("确定从收藏列表中移除该课程?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        DeleteCollectionsById(id,item);
+                        DeleteCollectionsById(id, item);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -252,9 +288,10 @@ public class LessonDetailInfoActivity extends AbsActivity {
                 })
                 .show();
     }
+
     private void DeleteCollectionsById(int id, final MenuItem item) {
         showProgressDialog();
-        if (NetUtils.isNetworkConnected(this)){
+        if (NetUtils.isNetworkConnected(this)) {
             ApiManager.getService(getApplicationContext()).deleteCollectionById(id, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
@@ -270,7 +307,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
                     showInnerError(error);
                 }
             });
-        }else {
+        } else {
             dimissPd();
             showNetWorkError();
         }
@@ -305,12 +342,19 @@ public class LessonDetailInfoActivity extends AbsActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(isFirstIn){
-            isFirstIn=false;
-        }else{
+        if (isFirstIn) {
+            isFirstIn = false;
+        } else {
             //用于登录后的刷新操作
             loadLessonInfo();
         }
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

@@ -20,14 +20,14 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2015/8/25 0025.
  */
-public abstract class BaseLazyCourseFragment<T> extends BaseLazyFragment {
+public abstract class BaseLazyCourseFragment<T> extends BaseLessonFragment {
     @Bind(R.id.load_more_lv)
     LoadMoreListView moreListView;
     private BasisAdapter mAdapter;
     @Bind(R.id.swiperefresh_id)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    public final static int LOAD=234;
-    public final static int ADD=233;
+    public final static int LOAD=233;
+    public final static int ADD=234;
 
     @Override
     protected void onFirstUserVisible() {

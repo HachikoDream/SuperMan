@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.Order;
 
@@ -24,11 +25,11 @@ public class SmOrderAdapter extends BasisAdapter<Order,SmOrderAdapter.viewHolder
 
     @Override
     protected void setDataIntoView(viewHolder holder, Order order) {
-        holder.courseNameTv.setText(order.getCoursename());
-        holder.priceTv.setText(order.getPrice() + "");
+        holder.courseNameTv.setText(order.getLess_name());
+        holder.priceTv.setText(CommonUtils.getStringFromPrice(order.getLess_price()));
         holder.timeTv.setText(order.getTime());
-        holder.statusTv.setText(order.getStatus());
-        holder.supermanNameTv.setText(order.getSupermanname());
+        holder.statusTv.setText(CommonUtils.getStatusByCode(order.getState()));
+        holder.supermanNameTv.setText(order.getName());
     }
 
     @Override

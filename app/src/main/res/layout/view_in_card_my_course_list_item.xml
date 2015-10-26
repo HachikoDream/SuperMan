@@ -20,8 +20,9 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
+            android:src="@drawable/login_pho"
             app:border_color="@color/navi_color"
-            app:border_width="1dp" />
+            app:border_width="0dp" />
 
     </LinearLayout>
 
@@ -50,7 +51,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <!--<TextView-->

@@ -3,20 +3,16 @@ package com.dreamspace.superman.UI.Activity.Superman;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.UI.Adapters.CommonFragmentAdapter;
 import com.dreamspace.superman.UI.Adapters.SmOrderContainerPagerAdapter;
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmCancelFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmCompleteFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmNoMeetFragment;
-import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmNopaymentFragment;
+import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmSubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
+import com.dreamspace.superman.model.OrderClassify;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +33,7 @@ public class OrderListActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-        List<String> mEntities = Arrays.asList(getResources().getStringArray(R.array.order_list_item));
+        final OrderClassify[] mEntities = Constant.ORDER_CLASSIFY.orderClassifys;
         mSlidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mAdapter = new SmOrderContainerPagerAdapter(getSupportFragmentManager(),mEntities);
@@ -64,6 +60,26 @@ public class OrderListActivity extends AbsActivity {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                SmSubscribeFragment fragment = (SmSubscribeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, position);
+                fragment.onPageSelected(position, mEntities[position]);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        SmSubscribeFragment fragment = (SmSubscribeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+        fragment.onPageSelected(0, mEntities[0]);
     }
 
     @Override
