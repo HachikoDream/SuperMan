@@ -156,6 +156,8 @@ public interface SupermanService {
     void getOrderListById(@Query("state") int state,@Query("page") int page,Callback<OrderlistRes> cb);
    //达人方取消订单
     //用户方取消订单
+    @DELETE("/user/order/{ord_id}")
+    void cancelOrderById(@Query("ord_id") int ord_id,Callback<Response> cb);
     //获取当前版本
     //创建反馈
 

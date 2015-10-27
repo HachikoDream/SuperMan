@@ -1,5 +1,10 @@
 package com.dreamspace.superman.UI.Activity.Person;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -23,8 +28,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class OrderDetailActivity extends AbsActivity {
-    //// TODO: 2015/10/26   增加onclick事件
+public class OrderDetailActivity extends AbsActivity implements View.OnClickListener {
+    //// TODO: 2015/10/27 测试
     private final int TITLE = R.string.title_activity_order_detail;
     @Bind(R.id.profile_image)
     CircleImageView profileImage;
@@ -101,6 +106,9 @@ public class OrderDetailActivity extends AbsActivity {
     public final static String ORDER_ID = "order_id";
     public final static String STATE = "order_state";
     public final static String COMMON_PRICE = "common_price";
+    private ProgressDialog pd;
+    private String mast_phone;//达人联系电话，用于取消预约操作
+
 
     @Override
     protected void setSelfContentView() {
@@ -118,9 +126,30 @@ public class OrderDetailActivity extends AbsActivity {
     @Override
     protected void initViews() {
         showViewByState(order_state);
+        setOnclickListenerOfAllBtn();
     }
 
- //todo 评价按钮
+
+    private void showPd(String msg) {
+        if (CommonUtils.isEmpty(msg)) {
+            msg = "正在提交您的请求,请稍后";
+        }
+        if (pd != null) {
+            if (!pd.isShowing()) {
+                pd.show();
+            }
+        } else {
+            pd = ProgressDialog.show(this, "", msg, true, false);
+        }
+    }
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
+            pd.dismiss();
+        }
+    }
+
+    //todo 评价按钮
     private void showViewByState(int order_state) {
         switch (order_state) {
             case Constant.ORDER_CLASSIFY.BACK_COST:
@@ -183,6 +212,7 @@ public class OrderDetailActivity extends AbsActivity {
                     @Override
                     public void success(OrderDetailRes orderDetailRes, Response response) {
                         toggleShowLoading(false, null);
+                        mast_phone = orderDetailRes.getMast_phone();
                         showDetailInfo(orderDetailRes);
                     }
 
@@ -293,5 +323,180 @@ public class OrderDetailActivity extends AbsActivity {
             learnedTv.setTextColor(getResources().getColor(R.color.select_tab_color));
             learnedIv.setImageResource(R.drawable.page_point_n);
         }
+    }
+
+    private void setOnclickListenerOfAllBtn() {
+        //state:1
+        quitSubBtn.setOnClickListener(this);
+        // 2
+        quitSubBtnInConfirm.setOnClickListener(this);
+        payBtnInConfirm.setOnClickListener(this);
+        //3
+        confirmBtn.setOnClickListener(this);
+        backMoneyBtn.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.quit_sub_btn:
+                cancelSubOrderBeforeConfirm();
+                break;
+            case R.id.quit_sub_btn_in_confirm:
+                cancelSubOrderAfterConfirm();
+                break;
+            case R.id.pay_btn_in_confirm:
+                payOrder();
+                break;
+            case R.id.confirm_btn:
+                confirmForPay();
+                break;
+            case R.id.back_money_btn:
+                refund();
+                break;
+        }
+    }
+
+    private void showAlertDialog(String msg, String positiveMsg, String negativeMsg, final OnFinish finish) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage(msg)
+                .setPositiveButton(positiveMsg, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish.finish(true);
+                    }
+                });
+        if (!CommonUtils.isEmpty(negativeMsg)) {
+            builder.setNegativeButton(negativeMsg, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish.finish(false);
+                }
+            });
+        }
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    /*
+      在达人已经确认以后取消课程,需要电话联系达人,这里提供达人的电话号码和客服的电话
+     */
+    private void cancelSubOrderAfterConfirm() {
+        showAlertDialog("由于之前达人已经有确认操作，因此您需要联系达人来取消订单.", "联系达人", "联系客服", new OnFinish() {
+            @Override
+            public void finish(boolean isOk) {
+                if (isOk) {
+                    if (!CommonUtils.isEmpty(mast_phone)) {
+                        callSb(mast_phone);
+                    } else {
+                        showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
+                            @Override
+                            public void finish(boolean isOk) {
+                               callSb(Constant.self_phone);
+                            }
+                        });
+                    }
+                } else {
+                    //联系客服
+                    callSb(Constant.self_phone);
+                }
+            }
+        });
+    }
+    private void callSb(String phone){
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+    }
+    /*
+      退款
+     */
+    private void refund() {
+        showAlertDialog("您需要联系达人来退款.", "联系达人", "联系客服", new OnFinish() {
+            @Override
+            public void finish(boolean isOk) {
+                if (isOk) {
+                    if (!CommonUtils.isEmpty(mast_phone)) {
+                        callSb(mast_phone);
+                    } else {
+                        showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
+                            @Override
+                            public void finish(boolean isOk) {
+                                callSb(Constant.self_phone);
+                            }
+                        });
+                    }
+                } else {
+                    //联系客服
+                    callSb(Constant.self_phone);
+                }
+            }
+        });
+
+
+    }
+
+    /*
+     确认见面
+     */
+    private void confirmForPay() {
+
+    }
+
+    /*
+      付款
+     */
+    private void payOrder() {
+
+    }
+
+    /*
+       在达人确认之前取消预约
+       todo 测试存在问题
+     */
+    private void cancelSubOrderBeforeConfirm() {
+        if (order_id != -1) {
+            showPd(null);
+            if (NetUtils.isNetworkConnected(this)) {
+                ApiManager.getService(getApplicationContext()).cancelOrderById(order_id, new Callback<Response>() {
+                    @Override
+                    public void success(Response response, Response response2) {
+                        if (response != null) {
+                            dismissPd();
+                            showAlertDialog("您已经取消了本次课程的预订.", "确定", null, new OnFinish() {
+                                @Override
+                                public void finish(boolean isOk) {
+                                    OrderDetailActivity.this.finish();
+                                }
+                            });
+                        } else {
+                            dismissPd();
+                            showToast("暂时无法提交您的请求");
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        dismissPd();
+                        showNetWorkError();
+                    }
+                });
+            } else {
+                showNetWorkError();
+            }
+        } else {
+            showToast("暂时无法提交您的请求");
+        }
+    }
+
+    interface OnFinish {
+        void finish(boolean isOk);
+
     }
 }
