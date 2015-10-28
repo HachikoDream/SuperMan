@@ -4,16 +4,16 @@ package com.dreamspace.superman.model.api;
  * Created by Wells on 2015/9/3.
  */
 public class OperatorReq {
-    //confirm rejected
-    private String operator;
+    //opeator:"confirmed" or "rejected"
+    private String opeator;
     private String reason;
 
-    public String getOperator() {
-        return operator;
+    public String getOpeator() {
+        return opeator;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setOpeator(String opeator) {
+        this.opeator = opeator;
     }
 
     public String getReason() {

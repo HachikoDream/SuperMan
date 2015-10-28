@@ -152,32 +152,32 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     //todo 评价按钮
     private void showViewByState(int order_state) {
         switch (order_state) {
-            case Constant.ORDER_CLASSIFY.BACK_COST:
-            case Constant.ORDER_CLASSIFY.CANCEL:
+            case Constant.ORDER_RELATED.BACK_COST:
+            case Constant.ORDER_RELATED.CANCEL:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.GONE);
                 statusView.setVisibility(View.GONE);
                 break;
-            case Constant.ORDER_CLASSIFY.SUSCRIBE:
+            case Constant.ORDER_RELATED.SUSCRIBE:
                 quitSubBtn.setVisibility(View.VISIBLE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.GONE);
                 setStatusIntoView(1);
                 break;
-            case Constant.ORDER_CLASSIFY.PRE_COST:
+            case Constant.ORDER_RELATED.PRE_COST:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.VISIBLE);
                 userPayLayout.setVisibility(View.GONE);
                 setStatusIntoView(2);
                 break;
-            case Constant.ORDER_CLASSIFY.PRE_MEET:
+            case Constant.ORDER_RELATED.PRE_MEET:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.VISIBLE);
                 setStatusIntoView(3);
                 break;
-            case Constant.ORDER_CLASSIFY.FINISH:
+            case Constant.ORDER_RELATED.FINISH:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.GONE);

@@ -7,14 +7,10 @@ import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.SmOrderContainerPagerAdapter;
-import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmSubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
 import com.dreamspace.superman.model.OrderClassify;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class OrderListActivity extends AbsActivity {
     private ViewPager mViewPager;
@@ -33,7 +29,7 @@ public class OrderListActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-        final OrderClassify[] mEntities = Constant.ORDER_CLASSIFY.orderClassifys;
+        final OrderClassify[] mEntities = Constant.ORDER_RELATED.orderClassifys;
         mSlidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mAdapter = new SmOrderContainerPagerAdapter(getSupportFragmentManager(),mEntities);

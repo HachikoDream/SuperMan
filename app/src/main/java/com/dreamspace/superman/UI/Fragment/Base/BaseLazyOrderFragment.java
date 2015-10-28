@@ -74,7 +74,11 @@ public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
         initDatas();
     }
     public void initDatas() {
-        mAdapter=new OrderAdapter(getActivity());
+        if(getOrderAdapter()==null){
+            mAdapter=new OrderAdapter(getActivity());
+        }else{
+            mAdapter=getOrderAdapter();
+        }
         moreListView.setAdapter(mAdapter);
         moreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,6 +88,10 @@ public abstract  class BaseLazyOrderFragment<T> extends BaseLazyFragment {
             }
         });
 
+    }
+    //为了解决达人订单列表与普通用户列表的差异化
+    public BasisAdapter getOrderAdapter(){
+        return null;
     }
 
     @Override

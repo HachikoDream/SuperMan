@@ -6,16 +6,14 @@ import android.view.View;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.UI.Activity.BaseListAct;
-import com.dreamspace.superman.UI.Adapters.OrderAdapter;
+import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.SmOrderAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyOrderFragment;
-import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.OrderClassify;
 import com.dreamspace.superman.model.api.OrderlistRes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -55,6 +53,7 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
 
     }
 
+
     @Override
     public void onPullDown() {
         page=1;
@@ -73,6 +72,11 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
             }
         });
 
+    }
+
+    @Override
+    public BasisAdapter getOrderAdapter() {
+        return new SmOrderAdapter(getActivity());
     }
 
     @Override
@@ -98,7 +102,7 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
     }
     private void getOrderListByPage(int page, final OnRefreshListener<Order> listener){
         if(NetUtils.isNetworkConnected(getActivity())){
-            ApiManager.getService(getActivity().getApplicationContext()).getSmOrderListById(selfCatalog.getState(), page, new Callback<OrderlistRes>() {
+            ApiManager.getService(getActivity().getApplicationContext()).getSmOrderListByState(selfCatalog.getState(), page, new Callback<OrderlistRes>() {
                 @Override
                 public void success(OrderlistRes order, Response response) {
                     if (order != null) {

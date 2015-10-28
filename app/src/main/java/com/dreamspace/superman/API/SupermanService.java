@@ -140,13 +140,13 @@ public interface SupermanService {
     void subscribeOrder(@Body SubscribeReq req,Callback<SubscribeRes> cb);
      //达人确认/拒绝订单
     @PUT("/master/order/{ord_id}")
-    void operateOrderBySm(@Body OperatorReq req,Callback<Response> cb);
+    void operateOrderBySm(@Path("ord_id") int ord_id,@Body OperatorReq req,Callback<Response> cb);
     //达人获取定订单详情
     @GET("/master/order/{ord_id}")
     void getSmOrderDetail(@Path("ord_id") String ord_id,Callback<OrderDetailRes> cb);
     //达人获取订单列表
     @GET("/master/orders")
-    void getSmOrderListById(@Query("state")int state,@Query("page") int page, Callback<OrderlistRes> cb);
+    void getSmOrderListByState(@Query("state") int state, @Query("page") int page, Callback<OrderlistRes> cb);
    //用户获取订单详情
     @GET("/user/order/{ord_id}")
     void getOrderDetailById(@Path("ord_id") int ord_id,Callback<OrderDetailRes> cb);

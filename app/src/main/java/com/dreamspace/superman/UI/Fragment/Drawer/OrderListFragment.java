@@ -7,14 +7,10 @@ import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.OrderContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
-import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
 import com.dreamspace.superman.UI.Fragment.Orders.Person.SubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
 import com.dreamspace.superman.model.OrderClassify;
-
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.Bind;
 
@@ -48,7 +44,7 @@ public class OrderListFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        final OrderClassify[] mEntities = Constant.ORDER_CLASSIFY.orderClassifys;
+        final OrderClassify[] mEntities = Constant.ORDER_RELATED.orderClassifys;
         mAdapter = new OrderContainerPagerAdapter(getChildFragmentManager(), mEntities);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(mEntities.length);

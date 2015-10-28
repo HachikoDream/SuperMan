@@ -30,7 +30,7 @@ public class Constant {
         public static final String ON="on";
         public static final String OFF="off";
     }
-    public static final class ORDER_CLASSIFY{
+    public static final class ORDER_RELATED {
         /**
          *     <string-array name="order_list_item">
          <item>预约</item>
@@ -56,6 +56,12 @@ public class Constant {
         public static final int FINISH=4;
         public static final int CANCEL=0;
         public static final int BACK_COST=-1;
+
+        public static final class SM_OPERATION{
+            public static final String CONFIRM ="confirmed";
+            public static final String REFUSE ="rejected";
+
+        }
 
     }
 }
