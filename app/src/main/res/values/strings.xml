@@ -67,4 +67,7 @@
     <string name="to_be_superman_hint">您上传的证书仅供平台审核身份使用，不会泄漏给他人</string>
     <string name="to_be_superman_refuse">您暂时没有权利进行此操作</string>
     <string name="to_be_superman_pending">您已经提交申请，系统正在审核.</string>
+    <string name="title_activity_refuse">拒绝理由</string>
+    <string name="order_refuse_tips">请简单写一下你拒绝的原因，预约者会收到即时的反馈</string>
+    <string name="refuse_edit_hint">请至少填写15个字</string>
 </resources>

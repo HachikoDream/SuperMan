@@ -1,11 +1,15 @@
 package com.dreamspace.superman.UI.Fragment.Orders.Superman;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.UI.Activity.BaseListAct;
+import com.dreamspace.superman.UI.Activity.Person.OrderDetailActivity;
 import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.SmOrderAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyOrderFragment;
@@ -29,6 +33,7 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
     private boolean onPage=false;
     private int page=1;
     private static final int DEFAULT_PAGE=1;
+    private static final int REQUEST_CODE=345;
     public SmSubscribeFragment() {
     }
 
@@ -90,6 +95,11 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
 
     @Override
     protected void onItemPicked(Order item, int position) {
+        Bundle b=new Bundle();
+        b.putInt(OrderDetailActivity.ORDER_ID,item.getId());
+        b.putInt(OrderDetailActivity.STATE,selfCatalog.getState());
+        b.putString(OrderDetailActivity.COMMON_PRICE, CommonUtils.getPriceWithInfo(item.getLess_price()));
+        readyGoForResult(OrderDetailActivity.class, REQUEST_CODE,b);
 
     }
     public void onPageSelected(int position, OrderClassify catalog) {
@@ -149,6 +159,13 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
             }
         });
 
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE&&resultCode==getActivity().RESULT_OK){
+            loadingDataWhenInit();
+        }
     }
 
 }

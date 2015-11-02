@@ -44,6 +44,7 @@
                 android:src="@drawable/page_buy_flow" />
 
             <RelativeLayout
+                android:id="@+id/status_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -168,7 +169,7 @@
         </LinearLayout>
 
         <Button
-            android:visibility="gone"
+            android:id="@+id/cancel_action"
             android:layout_width="150dp"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
@@ -179,6 +180,7 @@
             android:textColor="@color/near_white" />
 
         <RelativeLayout
+            android:id="@+id/premeet_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
@@ -186,6 +188,7 @@
             android:paddingRight="20dp">
 
             <Button
+                android:id="@+id/back_money_btn"
                 android:layout_alignParentLeft="true"
                 android:layout_width="150dp"
                 android:layout_height="32dp"
@@ -194,6 +197,7 @@
                 android:text="退款"
                 android:textColor="@color/near_white" />
             <Button
+                android:id="@+id/finish_btn"
                 android:layout_alignParentRight="true"
                 android:layout_width="150dp"
                 android:layout_height="32dp"
@@ -202,5 +206,33 @@
                 android:text="完成见面"
                 android:textColor="@color/near_white" />
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/sub_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <Button
+                android:id="@+id/agree_btn"
+                android:layout_alignParentLeft="true"
+                android:layout_width="150dp"
+                android:layout_height="32dp"
+                android:background="@drawable/normal_button_bg"
+                android:gravity="center"
+                android:text="同意"
+                android:textColor="@color/near_white" />
+            <Button
+                android:id="@+id/refuse_btn"
+                android:layout_alignParentRight="true"
+                android:layout_width="150dp"
+                android:layout_height="32dp"
+                android:background="@drawable/normal_button_bg"
+                android:gravity="center"
+                android:text="拒绝"
+                android:textColor="@color/near_white" />
+        </RelativeLayout>
+
     </LinearLayout>
 </ScrollView>

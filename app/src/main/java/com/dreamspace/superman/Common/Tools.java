@@ -1,6 +1,8 @@
 package com.dreamspace.superman.Common;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -49,6 +51,13 @@ public class Tools {
         }else {
             return "暂时不能提交您的请求,请稍后再试";
         }
+
+    }
+    //把电话号码传递到拨号界面
+    public static void callSb(Context context,String phone){
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
 
     }
 

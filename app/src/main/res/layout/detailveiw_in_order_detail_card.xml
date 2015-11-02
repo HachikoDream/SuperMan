@@ -128,7 +128,7 @@
             android:text="预约手机：" />
 
         <TextView
-            android:id="@+id/order_phonenum"
+            android:id="@+id/order_phonenum_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

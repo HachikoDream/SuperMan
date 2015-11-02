@@ -25,9 +25,9 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/testhead"
+                android:src="@drawable/login_pho"
                 app:border_color="@color/navi_color"
-                app:border_width="1dp" />
+                app:border_width="0dp" />
 
         </LinearLayout>
 
@@ -76,6 +76,7 @@
                     android:text="约1.5小时" />
 
                 <TextView
+                    android:id="@+id/price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

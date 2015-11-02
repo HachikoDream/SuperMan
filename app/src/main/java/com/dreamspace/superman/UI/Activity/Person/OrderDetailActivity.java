@@ -20,6 +20,7 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 
 import butterknife.Bind;
@@ -392,28 +393,23 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             public void finish(boolean isOk) {
                 if (isOk) {
                     if (!CommonUtils.isEmpty(mast_phone)) {
-                        callSb(mast_phone);
+                        Tools.callSb(OrderDetailActivity.this,mast_phone);
                     } else {
                         showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                               callSb(Constant.self_phone);
+                                Tools.callSb(OrderDetailActivity.this,Constant.self_phone);
                             }
                         });
                     }
                 } else {
                     //联系客服
-                    callSb(Constant.self_phone);
+                    Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                 }
             }
         });
     }
-    private void callSb(String phone){
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
 
-    }
     /*
       退款
      */
@@ -423,18 +419,18 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             public void finish(boolean isOk) {
                 if (isOk) {
                     if (!CommonUtils.isEmpty(mast_phone)) {
-                        callSb(mast_phone);
+                        Tools.callSb(OrderDetailActivity.this, mast_phone);
                     } else {
                         showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                callSb(Constant.self_phone);
+                                Tools.callSb(OrderDetailActivity.this,Constant.self_phone);
                             }
                         });
                     }
                 } else {
                     //联系客服
-                    callSb(Constant.self_phone);
+                    Tools.callSb(OrderDetailActivity.this,Constant.self_phone);
                 }
             }
         });
@@ -472,6 +468,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                             showAlertDialog("您已经取消了本次课程的预订.", "确定", null, new OnFinish() {
                                 @Override
                                 public void finish(boolean isOk) {
+                                    setResult(RESULT_OK);
                                     OrderDetailActivity.this.finish();
                                 }
                             });

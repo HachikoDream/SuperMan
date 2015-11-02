@@ -143,7 +143,7 @@ public interface SupermanService {
     void operateOrderBySm(@Path("ord_id") int ord_id,@Body OperatorReq req,Callback<Response> cb);
     //达人获取定订单详情
     @GET("/master/order/{ord_id}")
-    void getSmOrderDetail(@Path("ord_id") String ord_id,Callback<OrderDetailRes> cb);
+    void getSmOrderDetail(@Path("ord_id") int ord_id,Callback<OrderDetailRes> cb);
     //达人获取订单列表
     @GET("/master/orders")
     void getSmOrderListByState(@Query("state") int state, @Query("page") int page, Callback<OrderlistRes> cb);
@@ -155,6 +155,8 @@ public interface SupermanService {
     @GET("/user/orders")
     void getOrderListById(@Query("state") int state,@Query("page") int page,Callback<OrderlistRes> cb);
    //达人方取消订单
+    @DELETE("/master/order/{ord_id}")
+    void cancelSmOrderById(@Query("ord_id") int ord_id ,Callback<Response> cb);
     //用户方取消订单
     @DELETE("/user/order/{ord_id}")
     void cancelOrderById(@Query("ord_id") int ord_id,Callback<Response> cb);

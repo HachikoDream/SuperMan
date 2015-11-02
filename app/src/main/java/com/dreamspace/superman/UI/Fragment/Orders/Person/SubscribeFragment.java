@@ -1,5 +1,6 @@
 package com.dreamspace.superman.UI.Fragment.Orders.Person;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
     private boolean onPage=false;
     private int page=1;
     private static final int DEFAULT_PAGE=1;
+    private static final int REQUEST_CODE=345;
     public SubscribeFragment() {
 
     }
@@ -92,7 +94,7 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
         b.putInt(OrderDetailActivity.ORDER_ID,item.getId());
         b.putInt(OrderDetailActivity.STATE,selfCatalog.getState());
         b.putString(OrderDetailActivity.COMMON_PRICE, CommonUtils.getPriceWithInfo(item.getLess_price()));
-        readyGo(OrderDetailActivity.class,b);
+        readyGoForResult(OrderDetailActivity.class, REQUEST_CODE,b);
     }
 
     public void onPageSelected(int position, OrderClassify catalog) {
@@ -155,4 +157,11 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
            }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE&&resultCode==getActivity().RESULT_OK){
+            loadingDataWhenInit();
+        }
+    }
 }
