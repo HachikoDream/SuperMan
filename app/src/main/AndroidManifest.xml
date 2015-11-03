@@ -22,6 +22,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56375e7667e58e8810001067" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
+
         <activity
             android:name=".UI.Activity.Main.MainActivity"
             android:label="@string/app_name" >
@@ -118,6 +125,18 @@
         <activity
             android:name=".UI.Activity.Superman.RefuseActivity"
             android:label="@string/title_activity_refuse"
+            android:theme="@style/AppTheme" />
+        <!-- 友盟内含的Act和Service -->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" />
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".UI.Activity.Main.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
             android:theme="@style/AppTheme" >
         </activity>
     </application>

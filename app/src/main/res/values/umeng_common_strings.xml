@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="umeng_common_action_info_exist">The app is already in downloading list.</string>
-    <string name="umeng_common_info_interrupt">dowload interrupted.</string>
-    <string name="umeng_common_action_pause">Pause</string>
-    <string name="umeng_common_action_continue">Continue</string>
-    <string name="umeng_common_action_cancel">Cancel</string>
-	<string name="umeng_common_download_notification_prefix">Downloading: </string>
-	<string name="umeng_common_pause_notification_prefix">Pause: </string>
-	<string name="umeng_common_start_download_notification">Download start.</string>
-	<string name="umeng_common_start_patch_notification">Patch start.</string>
-	<string name="umeng_common_network_break_alert">Please make sure you are connected to internet, download failed</string>
-	<string name="umeng_common_download_failed">Download Failed! </string>
-	<string name="umeng_common_download_finish">Download finished,click to install it.</string>
-	<string name="umeng_common_patch_finish">Patch finished,click to install it.</string>
-	<string name="umeng_common_silent_download_finish">New version is ready,click to install it.</string>
-	<string name="umeng_common_icon">icon</string>
+    <string name="umeng_common_action_info_exist">该应用已处于下载列表中</string>
+    <string name="umeng_common_info_interrupt">下载中断</string>
+    <string name="umeng_common_action_pause">暂停</string>
+    <string name="umeng_common_action_continue">继续</string>
+    <string name="umeng_common_action_cancel">取消</string>
+	<string name="umeng_common_download_notification_prefix">下载中: </string>
+	<string name="umeng_common_pause_notification_prefix">暂定: </string>
+	<string name="umeng_common_start_download_notification">开始下载</string>
+	<string name="umeng_common_start_patch_notification">开始增量更新.</string>
+	<string name="umeng_common_network_break_alert">更新失败,请确定您已连接到网络</string>
+	<string name="umeng_common_download_failed">下载失败! </string>
+	<string name="umeng_common_download_finish">下载完成,点击安装</string>
+	<string name="umeng_common_patch_finish">增量下载完成,点击安装</string>
+	<string name="umeng_common_silent_download_finish">已经准备好新版本,点击下载</string>
+	<string name="umeng_common_icon">图标</string>
 </resources>

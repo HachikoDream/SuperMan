@@ -69,5 +69,8 @@
     <string name="to_be_superman_pending">您已经提交申请，系统正在审核.</string>
     <string name="title_activity_refuse">拒绝理由</string>
     <string name="order_refuse_tips">请简单写一下你拒绝的原因，预约者会收到即时的反馈</string>
+    <string name="feedback_tips">您的宝贵意见是我们发展的动力，我们会仔细阅读，不断改进</string>
     <string name="refuse_edit_hint">请至少填写15个字</string>
+    <string name="feedback_edit_hint">请在这里填写您的反馈内容</string>
+    <string name="title_activity_feedback">意见反馈</string>
 </resources>

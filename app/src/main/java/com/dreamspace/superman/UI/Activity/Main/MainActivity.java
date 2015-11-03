@@ -38,6 +38,7 @@ import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.SuperManHomeFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 import com.dreamspace.superman.UI.View.XViewPager;
+import com.umeng.update.UmengUpdateAgent;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,7 +69,8 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(this);
     }
 
     public void setCurrentPage(int currentPage) {

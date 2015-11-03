@@ -19,6 +19,7 @@ package com.dreamspace.superman.UI.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
@@ -31,7 +32,7 @@ import java.util.List;
  * Date:    2014/11/25.
  * Description:
  */
-public class VPFragmentAdapter extends FragmentPagerAdapter{
+public class VPFragmentAdapter extends FragmentStatePagerAdapter{
 
     private BaseLazyFragment[] mListFragments = null;
 

@@ -11,6 +11,7 @@ import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.CommentList;
 import com.dreamspace.superman.model.api.CommentReq;
 import com.dreamspace.superman.model.api.CommentRes;
+import com.dreamspace.superman.model.api.FeedbackReq;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.ModifyLessonReq;
 import com.dreamspace.superman.model.api.ModifyReq;
@@ -160,8 +161,8 @@ public interface SupermanService {
     //用户方取消订单
     @DELETE("/user/order/{ord_id}")
     void cancelOrderById(@Query("ord_id") int ord_id,Callback<Response> cb);
-    //获取当前版本
     //创建反馈
-
+    @POST("/feedback")
+    void sendFeedbackInfo(@Body FeedbackReq req,Callback<Response> cb);
 
 }
