@@ -39,4 +39,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.6.0'
     compile 'com.qiniu:qiniu-android-sdk:7.0.7.1'
+//    compile 'net.glxn.qrgen:android:2.0'
+    compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:1.0.0'
 }

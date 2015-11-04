@@ -73,4 +73,6 @@
     <string name="refuse_edit_hint">请至少填写15个字</string>
     <string name="feedback_edit_hint">请在这里填写您的反馈内容</string>
     <string name="title_activity_feedback">意见反馈</string>
+    <string name="title_activity_qrcode_show">我的二维码</string>
+    <string name="title_activity_qrreader">扫码</string>
 </resources>
