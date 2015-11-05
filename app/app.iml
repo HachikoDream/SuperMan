@@ -110,8 +110,8 @@
     <orderEntry type="library" exported="" name="qrcodereaderview-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="android-async-http-1.4.7" level="project" />
     <orderEntry type="library" exported="" name="happy-dns-0.2.1" level="project" />
+    <orderEntry type="library" exported="" name="android-async-http-1.4.7" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="qiniu-android-sdk-7.0.7.1" level="project" />

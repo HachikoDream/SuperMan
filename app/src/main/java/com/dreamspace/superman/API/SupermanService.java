@@ -19,6 +19,7 @@ import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 import com.dreamspace.superman.model.api.OrderlistRes;
 import com.dreamspace.superman.model.api.PublishReq;
+import com.dreamspace.superman.model.api.QRRes;
 import com.dreamspace.superman.model.api.SmIdRes;
 import com.dreamspace.superman.model.api.SmInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
@@ -164,5 +165,10 @@ public interface SupermanService {
     //创建反馈
     @POST("/feedback")
     void sendFeedbackInfo(@Body FeedbackReq req,Callback<Response> cb);
-
+    //达人获取隐藏在二维码中的信息
+    @GET("/user/order/{ord_id}/confiem")
+    void getQRCodeInfo(@Path("ord_id") int ord_id,Callback<QRRes> cb);
+    //// TODO: 2015/11/5  取消ord_id
+    @POST("/user/order/{ord_id}/confiem")
+    void scanQRCodeInfo(@Path("ord_id") int ord_id,@Body QRRes res,Callback<Response> cb);
 }
