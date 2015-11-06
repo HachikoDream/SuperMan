@@ -73,7 +73,7 @@ public abstract class BaseListAct<T> extends AbsActivity {
     @Override
     protected void initViews() {
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh_id);
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+        mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

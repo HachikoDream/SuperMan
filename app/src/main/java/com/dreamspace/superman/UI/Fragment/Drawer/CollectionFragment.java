@@ -165,7 +165,7 @@ public class CollectionFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+        mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

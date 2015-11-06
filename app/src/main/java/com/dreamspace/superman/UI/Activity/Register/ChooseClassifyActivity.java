@@ -8,6 +8,7 @@ import android.widget.Button;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.View.SelectorImageView;
 import com.dreamspace.superman.model.Catalog;
@@ -60,12 +61,17 @@ public class ChooseClassifyActivity extends AbsActivity {
             public void onClick(View v) {
                 Log.i("INFO", "source: " + source);
                 fillSelectedIds();
-                PreferenceUtils.writeClassifyIntoSp(ChooseClassifyActivity.this.getApplicationContext(), mSelectedFNs);
-                if (source.equals(COME_FROM_INDEX)) {
-                    ChooseClassifyActivity.this.setResult(RESULT_OK);
-                    ChooseClassifyActivity.this.finish();
-                } else {
-                    finish();
+                if(mSelectedFNs.isEmpty()){
+                     showToast("请至少选择一个分类");
+                }else{
+                    PreferenceUtils.writeClassifyIntoSp(ChooseClassifyActivity.this.getApplicationContext(), mSelectedFNs);
+                    if (source.equals(COME_FROM_INDEX)) {
+                        ChooseClassifyActivity.this.setResult(RESULT_OK);
+                        ChooseClassifyActivity.this.finish();
+                    } else {
+//                        readyGo(MainActivity.class);
+                        finish();
+                    }
                 }
             }
         });

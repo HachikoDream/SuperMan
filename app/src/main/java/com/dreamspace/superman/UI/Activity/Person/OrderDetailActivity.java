@@ -72,7 +72,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     TextView orderCoursename;
     @Bind(R.id.order_studentname)
     TextView orderStudentname;
-    @Bind(R.id.order_phonenum)
+    @Bind(R.id.order_subphone)
     TextView orderPhonenum;
     @Bind(R.id.course_time)
     TextView courseTime;

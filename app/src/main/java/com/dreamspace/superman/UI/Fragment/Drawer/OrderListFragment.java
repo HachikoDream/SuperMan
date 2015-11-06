@@ -21,10 +21,12 @@ public class OrderListFragment extends BaseLazyFragment {
     @Bind(R.id.sliding_layout)
      SlidingTabLayout mSlidingTabLayout;
     private OrderContainerPagerAdapter mAdapter;
+    private OrderClassify[] mEntities;
 
     @Override
     protected void onFirstUserVisible() {
-
+        SubscribeFragment fragment = (SubscribeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+        fragment.onPageSelected(0, mEntities[0]);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class OrderListFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        final OrderClassify[] mEntities = Constant.ORDER_RELATED.orderClassifys;
+        mEntities = Constant.ORDER_RELATED.orderClassifys;
         mAdapter = new OrderContainerPagerAdapter(getChildFragmentManager(), mEntities);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(mEntities.length);
@@ -88,8 +90,7 @@ public class OrderListFragment extends BaseLazyFragment {
 
             }
         });
-        SubscribeFragment fragment = (SubscribeFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
-        fragment.onPageSelected(0, mEntities[0]);
+
     }
 
     @Override

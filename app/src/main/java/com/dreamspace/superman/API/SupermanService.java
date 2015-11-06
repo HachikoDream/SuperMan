@@ -18,6 +18,7 @@ import com.dreamspace.superman.model.api.ModifyReq;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 import com.dreamspace.superman.model.api.OrderlistRes;
+import com.dreamspace.superman.model.api.PayRes;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.QRRes;
 import com.dreamspace.superman.model.api.SmIdRes;
@@ -171,4 +172,7 @@ public interface SupermanService {
     //// TODO: 2015/11/5  取消ord_id
     @POST("/user/order/{ord_id}/confiem")
     void scanQRCodeInfo(@Path("ord_id") int ord_id,@Body QRRes res,Callback<Response> cb);
+    //向后台发起支付请求
+    @POST("/user/order/{ord_id}/pay")
+    void sendPayRequest(@Path("ord_id") int ord_id,Callback<PayRes> cb);
 }

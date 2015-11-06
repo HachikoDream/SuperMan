@@ -20,6 +20,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 /*
    FragmentPagerAdapter: 把它所有持有的Fragment保存在内存里面
  */
@@ -37,10 +39,12 @@ import java.util.List;
 public class IndexContainerPagerAdapter extends FragmentPagerAdapter {
 
     private List<Catalog> mCategoryList = null;
+    private SparseArray<Fragment> fragments;
 
     public IndexContainerPagerAdapter(FragmentManager fm, List<Catalog> categoryList) {
         super(fm);
         mCategoryList = categoryList;
+        fragments = new SparseArray<>(getCount());
     }
 
     @Override
@@ -65,5 +69,20 @@ public class IndexContainerPagerAdapter extends FragmentPagerAdapter {
     public void setmCategoryList(List<Catalog> mCategoryList) {
         this.mCategoryList = mCategoryList;
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        fragments.put(position, fragment);
+        return fragment;
+    }
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
+        fragments.remove(position);
+    }
+    public Fragment getFragment(int position) {
+        return fragments.get(position);
     }
 }

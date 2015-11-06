@@ -65,13 +65,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     TextView mUserName;
     Menu slideMenu;
     private boolean isFirst=true;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(this);
-    }
+    public static final String COME_SOURCE="source";
+    public static final String FIRST_IN="first";
+    public static final String NOT_FIRST_IN="notfirst";
+    private String source;
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
@@ -88,9 +85,11 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
     @Override
     protected void prepareDatas() {
-
+      source=this.getIntent().getStringExtra(COME_SOURCE);
     }
-
+    public String getComeSource(){
+        return source;
+    }
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));

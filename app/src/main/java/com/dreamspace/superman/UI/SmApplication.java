@@ -16,14 +16,5 @@ public class SmApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(PreferenceUtils.hasKey(getApplicationContext(),KEY)){
-            //非第一次登陆
-            Log.i("INFO","not first");
-        }else{
-            //第一次打开软件时 设置已经打开过，增加初始化分类
-            Log.i("INFO", "first");
-            PreferenceUtils.putBoolean(getApplicationContext(), KEY, true);
-            PreferenceUtils.writeClassifyIntoSpForFirst(getApplicationContext());
-        }
     }
 }

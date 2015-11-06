@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Register.ChooseClassifyActivity;
 import com.dreamspace.superman.UI.Adapters.IndexContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
@@ -39,7 +40,7 @@ public class IndexFragment extends BaseLazyFragment {
     private IndexContainerPagerAdapter mAdapter;
     private static final int REQUEST_CHOOSE_CLASSIFY = 233;
     private int tabHeight;
-    private  List<Catalog> items;
+    private List<Catalog> items;
 
     public IndexFragment() {
         // Required empty public constructor
@@ -48,7 +49,8 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void onFirstUserVisible() {
-
+        HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
+        fragment.onPageSelected(0, items.get(0));
     }
 
     @Override
@@ -90,8 +92,6 @@ public class IndexFragment extends BaseLazyFragment {
 
             }
         });
-        HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
-        fragment.onPageSelected(0,items.get(0));
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +100,10 @@ public class IndexFragment extends BaseLazyFragment {
                 readyGoForResult(ChooseClassifyActivity.class, REQUEST_CHOOSE_CLASSIFY, b);
             }
         });
+        MainActivity parent = (MainActivity) getActivity();
+        if (parent.getComeSource() != null && parent.getComeSource().equals(MainActivity.FIRST_IN)) {
+            mImageView.performClick();
+        }
     }
 
     public void setItems(List<Catalog> items) {
@@ -116,7 +120,7 @@ public class IndexFragment extends BaseLazyFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //从sp获取数据 刷新viewpager项目
         if (resultCode == Activity.RESULT_OK) {
-            List<Catalog> mCatalogs=PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
+            List<Catalog> mCatalogs = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
             setItems(mCatalogs);
             mAdapter.setmCategoryList(mCatalogs);
             mSlidingTabLayout.setViewPager(mViewPager);

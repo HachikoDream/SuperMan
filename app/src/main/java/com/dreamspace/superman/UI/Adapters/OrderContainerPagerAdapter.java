@@ -32,7 +32,7 @@ import java.util.List;
  * Date:    2015/4/2.
  * Description:
  */
-public class OrderContainerPagerAdapter extends FragmentPagerAdapter {
+public class OrderContainerPagerAdapter extends FragmentStatePagerAdapter {
 
     private OrderClassify[] mCategoryList = null;
 
