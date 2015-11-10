@@ -19,6 +19,8 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Main.QRCodeShowActivity;
+import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 
@@ -259,10 +261,12 @@ public class SmOrderDetailActvity extends AbsActivity implements View.OnClickLis
     }
 
     /**
-     * 在待见面环节完成见面 todo 扫码
+     * 在待见面环节完成见面 todo 是否需要刷新相关界面？
      */
     private void finishMeeting() {
-
+      Bundle b=new Bundle();
+        b.putInt(QRCodeShowActivity.ORD_ID,order_id);
+        readyGo(QRReaderActivity.class,b);
     }
 
     private void killAct() {

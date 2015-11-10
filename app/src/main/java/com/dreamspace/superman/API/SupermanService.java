@@ -11,6 +11,7 @@ import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.CommentList;
 import com.dreamspace.superman.model.api.CommentReq;
 import com.dreamspace.superman.model.api.CommentRes;
+import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.FeedbackReq;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.ModifyLessonReq;
@@ -65,7 +66,7 @@ public interface SupermanService {
 
     //创建七牛的上传凭证
     @POST("/static/token")
-    void createQiNiuToken(Callback<QnRes> cb);
+    void createQiNiuToken(@Body EmptyBody body,Callback<QnRes> cb);
 
     //创建用户信息
     @POST("/user")
@@ -172,7 +173,7 @@ public interface SupermanService {
     //// TODO: 2015/11/5  取消ord_id
     @POST("/user/order/{ord_id}/confiem")
     void scanQRCodeInfo(@Path("ord_id") int ord_id,@Body QRRes res,Callback<Response> cb);
-    //向后台发起支付请求
+    //向后台发起支付请求,在调用后将获得的对象解析为json格式的字符串
     @POST("/user/order/{ord_id}/pay")
-    void sendPayRequest(@Path("ord_id") int ord_id,Callback<PayRes> cb);
+    void sendPayRequest(@Path("ord_id") int ord_id,@Body PayRes res,Callback<Response> cb);
 }

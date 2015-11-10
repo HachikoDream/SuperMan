@@ -23,6 +23,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
+import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.QnRes;
 import com.dreamspace.superman.model.api.ToBeSmReq;
 import com.qiniu.android.http.ResponseInfo;
@@ -200,7 +201,9 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(getActivity())) {
-            ApiManager.getService(getActivity().getApplicationContext()).createQiNiuToken(new Callback<QnRes>() {
+            EmptyBody body=new EmptyBody();
+            body.setInfo(Constant.FEMALE);
+            ApiManager.getService(getActivity().getApplicationContext()).createQiNiuToken(body,new Callback<QnRes>() {
                 @Override
                 public void success(QnRes qnRes, Response response) {
                     if (qnRes != null) {

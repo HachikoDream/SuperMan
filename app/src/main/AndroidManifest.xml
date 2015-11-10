@@ -134,6 +134,14 @@
             android:name=".UI.Activity.Superman.RefuseActivity"
             android:label="@string/title_activity_refuse"
             android:theme="@style/AppTheme" />
+        <activity android:name=".UI.Activity.Main.StartPageActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- 友盟内含的Act和Service -->
         <service
             android:name="com.umeng.update.net.DownloadingService"
@@ -153,8 +161,7 @@
         <activity
             android:name=".UI.Activity.Main.QRReaderActivity"
             android:label="@string/title_activity_qrreader"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <!-- Ping++ sdk -->
         <activity
             android:name="com.pingplusplus.android.PaymentActivity"
@@ -171,21 +178,27 @@
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
-        <activity android:name=".UI.Activity.Main.StartPageActivity" >
+            android:screenOrientation="behind" />
+        <!-- leanclound -->
+        <service android:name="com.avos.avoscloud.PushService" />
+
+        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
+        </receiver>
+        <receiver android:name=".Common.NotificationBroadcastReceiver" />
 
+        <activity
+            android:name=".UI.Activity.Main.ChatActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
     </application>
 

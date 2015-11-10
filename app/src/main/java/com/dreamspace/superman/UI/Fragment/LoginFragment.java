@@ -8,7 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.Common.AVImClientManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
@@ -64,7 +68,7 @@ public class LoginFragment extends BaseFragment {
 
     //登陆操作
     private void login(LoginReq req) {
-        pd = ProgressDialog.show(getActivity(), "", "正在登陆", true, false);
+        showPd();
         if (NetUtils.isNetworkConnected(getActivity())) {
             ApiManager.getService(getActivity().getApplicationContext()).createAccessToken(req, new Callback<LoginRes>() {
                 @Override
@@ -76,16 +80,28 @@ public class LoginFragment extends BaseFragment {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    pd.dismiss();
+                    dismissPd();
                     showInnerError(error);
                 }
             });
 
         } else {
-            pd.dismiss();
+            dismissPd();
             showNetWorkError();
         }
 
+    }
+    private void showPd(){
+        if(pd==null){
+            pd=ProgressDialog.show(getActivity(),"","正在加载中",true,false);
+        }else{
+            pd.show();
+        }
+    }
+    private void dismissPd(){
+        if (pd!=null&&pd.isShowing()){
+            pd.dismiss();
+        }
     }
 
     //获取用户信息
@@ -96,19 +112,43 @@ public class LoginFragment extends BaseFragment {
                 if (userInfo != null) {
                     Log.i("INFO", userInfo.toString());
                     saveUserInfo(userInfo);
-                    pd.dismiss();
-                    getActivity().finish();
+                    openChatService(userInfo.getId());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                pd.dismiss();
+                dismissPd();
                 showInnerError(error);
             }
         });
     }
+    //使用leancloud打开聊天服务
+    private void openChatService(String userId){
+        AVImClientManager.getInstance().open(userId, new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if (filterException(e)) {
+                    dismissPd();
+                    getActivity().finish();
+                } else {
+                    showToast("聊天功能暂时不可用");
+                    dismissPd();
+                    getActivity().finish();
+                }
 
+            }
+        });
+    }
+    protected boolean filterException(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+            showToast(e.getMessage());
+            return false;
+        } else {
+            return true;
+        }
+    }
     //保存用户信息到本地
     private void saveUserInfo(UserInfo userInfo) {
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.ACCOUNT, userInfo.getNickname());
@@ -117,6 +157,7 @@ public class LoginFragment extends BaseFragment {
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.PHONE, phoneEt.getText().toString());
         PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAST_STATE,userInfo.getMast_state());
+        PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.UID,userInfo.getId());
         if(!CommonUtils.isEmpty(userInfo.getMas_id())){
             PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
         }

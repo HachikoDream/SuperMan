@@ -22,7 +22,7 @@ import retrofit.RetrofitError;
  */
 public abstract class AbsActivity extends AppCompatActivity {
     private Toolbar mToolBar;
-    private VaryViewHelperController mVaryViewHelperController=null;
+    private VaryViewHelperController mVaryViewHelperController = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public abstract class AbsActivity extends AppCompatActivity {
     protected abstract void prepareDatas();
 
     protected abstract void initViews();
+
     protected abstract View getLoadingTargetView();
 
     @Override
@@ -158,14 +159,17 @@ public abstract class AbsActivity extends AppCompatActivity {
     }
 
     protected void showInnerError(RetrofitError error) {
-        if (error != null)
+        if (error != null){
             showToast(CommonUtils.getErrorInfo(error).getReason());
+        }
+
     }
-    protected String getInnerErrorInfo(RetrofitError error){
-        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
-        if(res!=null){
-            return  res.getReason();
-        }else {
+
+    protected String getInnerErrorInfo(RetrofitError error) {
+        ErrorRes res = (ErrorRes) error.getBodyAs(ErrorRes.class);
+        if (res != null) {
+            return res.getReason();
+        } else {
             return getString(R.string.common_error_msg);
         }
 
@@ -236,6 +240,16 @@ public abstract class AbsActivity extends AppCompatActivity {
             mVaryViewHelperController.showNetworkError(onClickListener);
         } else {
             mVaryViewHelperController.restore();
+        }
+    }
+
+    protected boolean filterException(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+            showToast(e.getMessage());
+            return false;
+        } else {
+            return true;
         }
     }
 

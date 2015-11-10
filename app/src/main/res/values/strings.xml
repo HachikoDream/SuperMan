@@ -75,4 +75,5 @@
     <string name="title_activity_feedback">意见反馈</string>
     <string name="title_activity_qrcode_show">我的二维码</string>
     <string name="title_activity_qrreader">扫码</string>
+    <string name="unspport_message_type">暂不支持此消息类型</string>
 </resources>

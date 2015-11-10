@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.Common.AVImClientManager;
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
@@ -25,8 +31,8 @@ public class StartPageActivity extends AppCompatActivity implements android.os.H
     private Handler mHandler;
     private static final int check_is_login = 233;
     private static final String KEY = "IS_FIRST";
-    private static final String COME_FROM_START="start";
-    private static final String SOURCE="SOURCE";
+    private static final String COME_FROM_START = "start";
+    private static final String SOURCE = "SOURCE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,11 @@ public class StartPageActivity extends AppCompatActivity implements android.os.H
             if (PreferenceUtils.hasKey(getApplicationContext(), KEY)) {
                 //非第一次登陆
                 Log.i("INFO", "not first");
-                getUserInfo();
+                if (!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
+                    getUserInfo();
+                } else {
+                    gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+                }
 
             } else {
                 //第一次打开软件时 设置已经打开过，增加初始化分类
@@ -61,36 +71,78 @@ public class StartPageActivity extends AppCompatActivity implements android.os.H
         }
         return true;
     }
-    private void gotoMainWithInfo(String info){
-        Bundle b=new Bundle();
-        b.putString(MainActivity.COME_SOURCE,info);
-        Intent intent=new Intent(StartPageActivity.this,MainActivity.class);
+
+    private void gotoMainWithInfo(String info) {
+        Bundle b = new Bundle();
+        b.putString(MainActivity.COME_SOURCE, info);
+        Intent intent = new Intent(StartPageActivity.this, MainActivity.class);
         intent.putExtras(b);
         startActivity(intent);
         finish();
     }
+
     //获取用户信息
     private void getUserInfo() {
-        if(NetUtils.isNetworkConnected(this)){
+        if (NetUtils.isNetworkConnected(this)) {
             ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
                 @Override
                 public void success(UserInfo userInfo, Response response) {
                     if (userInfo != null) {
                         saveUserInfo(userInfo);
-                        gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+                        //// TODO: 2015/11/8  临时添加
+                        if (CommonUtils.isEmpty(userInfo.getMas_id())) {
+                            openChatServer(userInfo.getId());
+                        } else {
+                            openChatServer(userInfo.getMas_id());
+                        }
+
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+                    String uid = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.UID);
+                    if (!CommonUtils.isEmpty(uid)) {
+                        openChatServer(uid);
+                    } else {
+                        gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+                    }
+
                 }
             });
 
-        }else {
+        } else {
             gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
         }
     }
+
+    //打开应用后连接到leancloud服务器
+    private void openChatServer(String clientId) {
+        AVImClientManager.getInstance().open(clientId, new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                filterException(e);
+                gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+            }
+        });
+    }
+
+    protected boolean filterException(Exception e) {
+        if (e != null) {
+            e.printStackTrace();
+            showToast(e.getMessage());
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    protected void showToast(String msg) {
+        if (null != msg && !CommonUtils.isEmpty(msg)) {
+            Snackbar.make(getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
     //保存用户信息到本地
     private void saveUserInfo(UserInfo userInfo) {
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT, userInfo.getNickname());
@@ -99,8 +151,9 @@ public class StartPageActivity extends AppCompatActivity implements android.os.H
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.PHONE, userInfo.getPhone());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAST_STATE, userInfo.getMast_state());
-        if(!CommonUtils.isEmpty(userInfo.getMas_id())){
-            PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.UID, userInfo.getId());
+        if (!CommonUtils.isEmpty(userInfo.getMas_id())) {
+            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAS_ID, userInfo.getMas_id());
         }
     }
 

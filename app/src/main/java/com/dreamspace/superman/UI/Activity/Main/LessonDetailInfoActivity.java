@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
@@ -150,6 +151,21 @@ public class LessonDetailInfoActivity extends AbsActivity {
                         Bundle b = new Bundle();
                         b.putParcelable(LESSON_INFO, mLessonInfo);
                         readyGo(SubscribeActivity.class, b);
+                    }else{
+                        readyGo(LoginActivity.class);
+                    }
+                }
+            }
+        });
+        talkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mLessonInfo!=null){
+                    if(!CommonUtils.isEmpty(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT))){
+                        Bundle b=new Bundle();
+                        //// TODO: 2015/11/8 临时
+                        b.putString(Constant.MEMBER_ID,mLessonInfo.getMast_id());
+                        readyGo(ChatActivity.class,b);
                     }else{
                         readyGo(LoginActivity.class);
                     }

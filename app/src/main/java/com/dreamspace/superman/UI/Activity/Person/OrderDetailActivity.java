@@ -1,7 +1,9 @@
 package com.dreamspace.superman.UI.Activity.Person;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,16 +22,21 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
 import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.api.OrderDetailRes;
+import com.dreamspace.superman.model.api.PayRes;
+import com.pingplusplus.android.PaymentActivity;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class OrderDetailActivity extends AbsActivity implements View.OnClickListener {
+    private static final int REQUEST_CODE_PAYMENT = 827;
     //// TODO: 2015/10/27 测试
     private final int TITLE = R.string.title_activity_order_detail;
     @Bind(R.id.profile_image)
@@ -107,6 +114,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     public final static String ORDER_ID = "order_id";
     public final static String STATE = "order_state";
     public final static String COMMON_PRICE = "common_price";
+    public final static int QRREADER_REQUEST_CODE = 156;
     private ProgressDialog pd;
     private String mast_phone;//达人联系电话，用于取消预约操作
 
@@ -367,7 +375,9 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        finish.finish(true);
+                        if (finish != null) {
+                            finish.finish(true);
+                        }
                     }
                 });
         if (!CommonUtils.isEmpty(negativeMsg)) {
@@ -375,7 +385,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    finish.finish(false);
+                    if (finish != null)
+                        finish.finish(false);
                 }
             });
         }
@@ -393,12 +404,12 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             public void finish(boolean isOk) {
                 if (isOk) {
                     if (!CommonUtils.isEmpty(mast_phone)) {
-                        Tools.callSb(OrderDetailActivity.this,mast_phone);
+                        Tools.callSb(OrderDetailActivity.this, mast_phone);
                     } else {
                         showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                Tools.callSb(OrderDetailActivity.this,Constant.self_phone);
+                                Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                             }
                         });
                     }
@@ -424,13 +435,13 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                         showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                Tools.callSb(OrderDetailActivity.this,Constant.self_phone);
+                                Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                             }
                         });
                     }
                 } else {
                     //联系客服
-                    Tools.callSb(OrderDetailActivity.this,Constant.self_phone);
+                    Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                 }
             }
         });
@@ -442,14 +453,53 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
      确认见面
      */
     private void confirmForPay() {
-
+        Bundle b = new Bundle();
+        b.putInt(QRReaderActivity.ORD_ID, order_id);
+        readyGoForResult(QRReaderActivity.class, QRREADER_REQUEST_CODE,b);
     }
 
     /*
       付款
      */
+    //// TODO: 2015/11/7  注意混淆
     private void payOrder() {
+        if (NetUtils.isNetworkConnected(this)) {
+            showPd(null);
+            PayRes res = new PayRes();
+            res.setInfo("info");//这里的body不起作用，防止后台报错
+            ApiManager.getService(getApplicationContext()).sendPayRequest(order_id, res, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    dismissPd();
+                    if (response != null) {
+                        String charge = new String(((TypedByteArray) response.getBody()).getBytes());
+                        gotoPayView(charge);
+                    } else {
+                        showAlertDialog("暂时无法完成您的请求，请稍后再试", "确定", null, null);
+                    }
+                }
 
+                @Override
+                public void failure(RetrofitError error) {
+                    dismissPd();
+                    showAlertDialog(getInnerErrorInfo(error), "确定", null, null);
+                }
+            });
+        } else {
+            showAlertDialog("请检查您的网络连接", "确定", null, null);
+        }
+    }
+
+    /**
+     * 调用ping++
+     */
+    private void gotoPayView(String charge) {
+        Intent intent = new Intent();
+        String packageName = getPackageName();
+        ComponentName componentName = new ComponentName(packageName, packageName + ".wxapi.WXPayEntryActivity");
+        intent.setComponent(componentName);
+        intent.putExtra(PaymentActivity.EXTRA_CHARGE, charge);
+        startActivityForResult(intent, REQUEST_CODE_PAYMENT);
     }
 
     /*
@@ -495,5 +545,30 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     interface OnFinish {
         void finish(boolean isOk);
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //支付页面返回处理
+        if (requestCode == REQUEST_CODE_PAYMENT) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getExtras().getString("pay_result");
+            /* 处理返回值
+             * "success" - payment succeed todo 状态变化刷新
+             * "fail"    - payment failed
+             * "cancel"  - user canceld
+             * "invalid" - payment plugin not installed
+             */
+                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+                showToast(result);
+                showAlertDialog(errorMsg + extraMsg, "确定", null, null);
+            }
+        }
+        //扫码页面返回处理
+        if(requestCode==QRREADER_REQUEST_CODE){
+            if(resultCode==Activity.RESULT_OK){
+                //// TODO: 2015/11/7 状态变化 刷新
+            }
+        }
     }
 }

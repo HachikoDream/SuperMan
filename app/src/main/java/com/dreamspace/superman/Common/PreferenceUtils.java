@@ -31,6 +31,8 @@ public class PreferenceUtils {
         public static final String MAS_ID="MAS_ID";
         public static final String QINIU_SOURCE="QINIU_CODE";
         public static final String MAST_STATE="MAST_STATE";
+        public static final String UID="UID";
+
     }
 
     public static final String DEFAULT_STRING = "";

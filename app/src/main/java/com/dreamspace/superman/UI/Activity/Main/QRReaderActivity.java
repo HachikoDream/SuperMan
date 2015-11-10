@@ -29,7 +29,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
     //// TODO: 2015/11/5 增加定时设置 超过18s仍未检测到二维码给用户提示
     private boolean isTimeUp=false;
     private int ord_id;//// TODO: 2015/11/5 从订单详情页面传过来
-    private static final String ORD_ID="ord_id";
+    public static final String ORD_ID="ord_id";
 
     @Override
     protected void setSelfContentView() {

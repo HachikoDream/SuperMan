@@ -8,9 +8,16 @@ import java.util.Map;
  * Created by Administrator on 2015/8/20 0020.
  */
 public class Constant {
+    //leancloud baseinfo for the app
+    public static final String APP_KEY="4msiwzy7w8d0mh9pnwt7937zpwya6ikt0ubqroo4sbwoivqe";
+    public static final String APP_ID="65jys8t38y6q8vkrny5z2czo1c6p09dj91e3cwh2cbzkztbs";
+
     public static String BASE_URL="http://api2.hloli.me:9777/v1.0";
     public static final String FEMALE="female";
     public static final String MALE="male";
+    private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.dreamspace.superman";
+    public static final String MEMBER_ID = getPrefixConstant("member_id");
+    public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");
     //// TODO: 2015/10/27 增加客服电话
     public static final String self_phone="15651630827";
     public static final class COME_SOURCE{
@@ -63,5 +70,8 @@ public class Constant {
 
         }
 
+    }
+    private static String getPrefixConstant(String str) {
+        return LEANMESSAGE_CONSTANTS_PREFIX + str;
     }
 }

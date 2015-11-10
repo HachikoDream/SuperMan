@@ -13,9 +13,13 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.bumptech.glide.Glide;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.API.SupermanService;
+import com.dreamspace.superman.Common.AVImClientManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
@@ -26,6 +30,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.model.UserInfo;
+import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.ErrorRes;
 import com.dreamspace.superman.model.api.LoginRes;
 import com.dreamspace.superman.model.api.QnRes;
@@ -104,8 +109,18 @@ public class RegisterInfoActivity extends AbsActivity {
         }
         Log.i("INFO", "genderInfo: " + sex);
     }
-
-
+   private void showPd(){
+       if(pd==null){
+           pd=ProgressDialog.show(this,"","正在加载中,请稍后",true,false);
+       }else{
+           pd.show();
+       }
+   }
+    private void dismissPd(){
+        if(pd!=null&&pd.isShowing()){
+            pd.dismiss();
+        }
+    }
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
@@ -138,7 +153,7 @@ public class RegisterInfoActivity extends AbsActivity {
                     nameInput.setErrorEnabled(false);
                     realNameInput.setErrorEnabled(false);
                     password=pwd;
-                    pd = ProgressDialog.show(RegisterInfoActivity.this, "", "正在提交数据，请稍后", true, false);
+                    showPd();
                     getUploadToken();
                 }
             }
@@ -162,7 +177,9 @@ public class RegisterInfoActivity extends AbsActivity {
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(RegisterInfoActivity.this)) {
-            mService.createQiNiuToken(new Callback<QnRes>() {
+            EmptyBody body=new EmptyBody();
+            body.setInfo(Constant.FEMALE);
+            mService.createQiNiuToken(body,new Callback<QnRes>() {
                 @Override
                 public void success(QnRes qnRes, Response response) {
                     if (qnRes != null) {
@@ -172,12 +189,12 @@ public class RegisterInfoActivity extends AbsActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    pd.dismiss();
+                    dismissPd();
                     showInnerError(error);
                 }
             });
         } else {
-            pd.dismiss();
+            dismissPd();
             showNetWorkError();
         }
 
@@ -201,10 +218,10 @@ public class RegisterInfoActivity extends AbsActivity {
                     register(req);
 
                 } else if (info.isNetworkBroken()) {
-                    pd.dismiss();
+                    dismissPd();
                     showNetWorkError();
                 } else if (info.isServerError()) {
-                    pd.dismiss();
+                    dismissPd();
                     showToast("服务暂时不可用，请稍后重试");
                 }
             }
@@ -219,7 +236,7 @@ public class RegisterInfoActivity extends AbsActivity {
             public void success(LoginRes res, Response response) {
                 if (res != null) {
                     PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.ACCESS, res.getAccess_token());
-                    PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.QINIU_SOURCE,req.getImage());
+                    PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE, req.getImage());
                     ApiManager.clear();
                     getUserInfo();
                 }
@@ -227,7 +244,7 @@ public class RegisterInfoActivity extends AbsActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                pd.dismiss();
+                dismissPd();
                 showInnerError(error);
             }
         });
@@ -238,15 +255,30 @@ public class RegisterInfoActivity extends AbsActivity {
             @Override
             public void success(UserInfo userInfo, Response response) {
                 saveUserInfo(userInfo);
-                pd.dismiss();
-//                readyGo(MainActivity.class);
-                finish();
+                openChatService(userInfo.getId());
             }
 
             @Override
             public void failure(RetrofitError error) {
                 showInnerError(error);
-                pd.dismiss();
+                dismissPd();
+            }
+        });
+    }
+    //使用leancloud打开聊天服务
+    private void openChatService(String userId){
+        AVImClientManager.getInstance().open(userId, new AVIMClientCallback() {
+            @Override
+            public void done(AVIMClient avimClient, AVIMException e) {
+                if(filterException(e)){
+                    dismissPd();
+                    finish();
+                }else{
+                    showToast("聊天功能暂时不可用");
+                    dismissPd();
+                    finish();
+                }
+
             }
         });
     }
@@ -258,6 +290,7 @@ public class RegisterInfoActivity extends AbsActivity {
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.PHONE,phoneNum);
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.UID,userInfo.getId());
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAST_STATE,userInfo.getMast_state());
         if(!CommonUtils.isEmpty(userInfo.getMas_id())){
             PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());

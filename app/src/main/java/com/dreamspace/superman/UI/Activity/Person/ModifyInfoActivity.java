@@ -24,6 +24,7 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Register.VerifyByPhoneAct;
 import com.dreamspace.superman.model.UserInfo;
+import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.QnRes;
 import com.dreamspace.superman.model.api.RegisterReq;
 import com.dreamspace.superman.model.api.UpdateReq;
@@ -247,7 +248,9 @@ public class ModifyInfoActivity extends AbsActivity {
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(ModifyInfoActivity.this)) {
-            ApiManager.getService(getApplicationContext()).createQiNiuToken(new Callback<QnRes>() {
+            EmptyBody body=new EmptyBody();
+            body.setInfo(Constant.FEMALE);
+            ApiManager.getService(getApplicationContext()).createQiNiuToken(body,new Callback<QnRes>() {
                 @Override
                 public void success(QnRes qnRes, Response response) {
                     if (qnRes != null) {

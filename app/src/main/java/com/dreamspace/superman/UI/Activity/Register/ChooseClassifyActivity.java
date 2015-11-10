@@ -54,6 +54,8 @@ public class ChooseClassifyActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         showSelectedItems();
         final String source = this.getIntent().getStringExtra("SOURCE");
         mButton.setOnClickListener(new View.OnClickListener() {

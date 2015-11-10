@@ -101,7 +101,7 @@ public class IndexFragment extends BaseLazyFragment {
             }
         });
         MainActivity parent = (MainActivity) getActivity();
-        if (parent.getComeSource() != null && parent.getComeSource().equals(MainActivity.FIRST_IN)) {
+        if (parent.getComeSource() != null && parent.getComeSource().equals(MainActivity.FIRST_IN)||PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()).size()==1) {
             mImageView.performClick();
         }
     }
@@ -118,9 +118,14 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        List<Catalog> mCatalogs = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
+
+        if(mCatalogs.size()==1){
+            getActivity().finish();
+            return;
+        }
         //从sp获取数据 刷新viewpager项目
         if (resultCode == Activity.RESULT_OK) {
-            List<Catalog> mCatalogs = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
             setItems(mCatalogs);
             mAdapter.setmCategoryList(mCatalogs);
             mSlidingTabLayout.setViewPager(mViewPager);
