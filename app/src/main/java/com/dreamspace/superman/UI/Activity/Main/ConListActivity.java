@@ -1,5 +1,6 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
@@ -12,8 +13,11 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.ConListAdapter;
+import com.dreamspace.superman.UI.SmApplication;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.model.ConList;
+import com.ds.greendao.Conversation;
+import com.ds.greendao.ConversationDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,22 +95,22 @@ public class ConListActivity extends AbsActivity {
         return null;
     }
 
-    public void refreshDate(List<ConList> mEntities) {
+    public void refreshDate(List<Conversation> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();
     }
     public void getInitData() {
-        refreshDate(getTestData());
+
     }
-    public List<ConList> getTestData() {
-        List<ConList> mConLists = new ArrayList<>();
-        ConList mConList;
-        for (int i = 0; i < 10; i++) {
-            mConList = new ConList();
-            mConList.setLatestContent("技术盲如何在创业初期搞定技术，低成本推出产品" + i);
-            mConLists.add(mConList);
-        }
-        return mConLists;
+    private ConversationDao getConversationDao(){
+        return ((SmApplication)this.getApplicationContext()).getDaoSession().getConversationDao();
     }
+    private SQLiteDatabase getDb(){
+        return ((SmApplication)this.getApplicationContext()).getDb();
+    }
+    private List<Conversation> getAllConFromDb(){
+        getDb().query();
+    }
+
 
 }
