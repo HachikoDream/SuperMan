@@ -16,6 +16,8 @@ public class Constant {
     public static String BASE_URL="http://api2.hloli.me:9777/v1.0";
     public static final String FEMALE="female";
     public static final String MALE="male";
+    public static final String FAIL_AVATER="FAIL";
+    public static final String FAIL_MEMBER_NAME="unknown superman";
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.dreamspace.superman";
     public static final String MEMBER_ID = getPrefixConstant("member_id");
     public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");

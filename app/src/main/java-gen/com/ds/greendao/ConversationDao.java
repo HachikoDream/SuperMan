@@ -23,13 +23,12 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MemberId = new Property(1, Integer.class, "memberId", false, "MEMBER_ID");
-        public final static Property MemberName = new Property(2, String.class, "memberName", false, "MEMBER_NAME");
-        public final static Property ChatTime = new Property(3, java.util.Date.class, "chatTime", false, "CHAT_TIME");
-        public final static Property MemberAvater = new Property(4, String.class, "memberAvater", false, "MEMBER_AVATER");
-        public final static Property LastContent = new Property(5, String.class, "lastContent", false, "LAST_CONTENT");
-        public final static Property IsRead = new Property(6, Boolean.class, "isRead", false, "IS_READ");
+        public final static Property MemberId = new Property(0, Long.class, "memberId", true, "MEMBER_ID");
+        public final static Property MemberName = new Property(1, String.class, "memberName", false, "MEMBER_NAME");
+        public final static Property ChatTime = new Property(2, java.util.Date.class, "chatTime", false, "CHAT_TIME");
+        public final static Property MemberAvater = new Property(3, String.class, "memberAvater", false, "MEMBER_AVATER");
+        public final static Property LastContent = new Property(4, String.class, "lastContent", false, "LAST_CONTENT");
+        public final static Property IsRead = new Property(5, Boolean.class, "isRead", false, "IS_READ");
     };
 
 
@@ -45,13 +44,12 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONVERSATION\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"MEMBER_ID\" INTEGER," + // 1: memberId
-                "\"MEMBER_NAME\" TEXT," + // 2: memberName
-                "\"CHAT_TIME\" INTEGER," + // 3: chatTime
-                "\"MEMBER_AVATER\" TEXT," + // 4: memberAvater
-                "\"LAST_CONTENT\" TEXT," + // 5: lastContent
-                "\"IS_READ\" INTEGER);"); // 6: isRead
+                "\"MEMBER_ID\" INTEGER PRIMARY KEY ," + // 0: memberId
+                "\"MEMBER_NAME\" TEXT," + // 1: memberName
+                "\"CHAT_TIME\" INTEGER," + // 2: chatTime
+                "\"MEMBER_AVATER\" TEXT," + // 3: memberAvater
+                "\"LAST_CONTENT\" TEXT," + // 4: lastContent
+                "\"IS_READ\" INTEGER);"); // 5: isRead
     }
 
     /** Drops the underlying database table. */
@@ -65,39 +63,34 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     protected void bindValues(SQLiteStatement stmt, Conversation entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
- 
-        Integer memberId = entity.getMemberId();
+        Long memberId = entity.getMemberId();
         if (memberId != null) {
-            stmt.bindLong(2, memberId);
+            stmt.bindLong(1, memberId);
         }
  
         String memberName = entity.getMemberName();
         if (memberName != null) {
-            stmt.bindString(3, memberName);
+            stmt.bindString(2, memberName);
         }
  
         java.util.Date chatTime = entity.getChatTime();
         if (chatTime != null) {
-            stmt.bindLong(4, chatTime.getTime());
+            stmt.bindLong(3, chatTime.getTime());
         }
  
         String memberAvater = entity.getMemberAvater();
         if (memberAvater != null) {
-            stmt.bindString(5, memberAvater);
+            stmt.bindString(4, memberAvater);
         }
  
         String lastContent = entity.getLastContent();
         if (lastContent != null) {
-            stmt.bindString(6, lastContent);
+            stmt.bindString(5, lastContent);
         }
  
         Boolean isRead = entity.getIsRead();
         if (isRead != null) {
-            stmt.bindLong(7, isRead ? 1L: 0L);
+            stmt.bindLong(6, isRead ? 1L: 0L);
         }
     }
 
@@ -111,13 +104,12 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     @Override
     public Conversation readEntity(Cursor cursor, int offset) {
         Conversation entity = new Conversation( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // memberId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // memberName
-            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // chatTime
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // memberAvater
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // lastContent
-            cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0 // isRead
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // memberId
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // memberName
+            cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)), // chatTime
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // memberAvater
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // lastContent
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // isRead
         );
         return entity;
     }
@@ -125,19 +117,18 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, Conversation entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMemberId(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setMemberName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setChatTime(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setMemberAvater(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setLastContent(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setIsRead(cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0);
+        entity.setMemberId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setMemberName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setChatTime(cursor.isNull(offset + 2) ? null : new java.util.Date(cursor.getLong(offset + 2)));
+        entity.setMemberAvater(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setLastContent(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setIsRead(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
      }
     
     /** @inheritdoc */
     @Override
     protected Long updateKeyAfterInsert(Conversation entity, long rowId) {
-        entity.setId(rowId);
+        entity.setMemberId(rowId);
         return rowId;
     }
     
@@ -145,7 +136,7 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     @Override
     public Long getKey(Conversation entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getMemberId();
         } else {
             return null;
         }

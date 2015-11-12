@@ -8,10 +8,17 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.event.DbChangeEvent;
 import com.dreamspace.superman.event.ImTypeMessageEvent;
+import com.dreamspace.superman.model.api.SimpleInfo;
+import com.ds.greendao.Conversation;
 
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by zhangxiaobo on 15/4/20.
@@ -34,7 +41,7 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
 
                 // 过滤掉自己发的消息
                 if (!message.getFrom().equals(clientID)) {
-                    sendEvent(message, conversation);
+                    sendEvent(message, conversation, Integer.parseInt(message.getFrom()));
                     if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
                         sendNotification(message, conversation);
                     }
@@ -54,11 +61,94 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
      * @param message
      * @param conversation
      */
-    private void sendEvent(AVIMTypedMessage message, AVIMConversation conversation) {
+    private void sendEvent(AVIMTypedMessage message, AVIMConversation conversation, int memberId) {
+        Conversation dbCon = new Conversation();
+        dbCon.setChatTime(conversation.getLastMessageAt());
+        dbCon.setIsRead(true);
+        String content = context.getResources().getString(R.string.unspport_message_type);
+        if (message instanceof AVIMTextMessage) {
+            content = ((AVIMTextMessage) message).getText();
+        }
+        dbCon.setLastContent(content);
+        dbCon.setMemberId((long) memberId);
+        storeIntoDb(dbCon,message,conversation);
+
+    }
+    private void sendMsgByBus(AVIMTypedMessage message, AVIMConversation conversation){
         ImTypeMessageEvent event = new ImTypeMessageEvent();
         event.message = message;
         event.conversation = conversation;
+        DbChangeEvent changeEvent=new DbChangeEvent();
         EventBus.getDefault().post(event);
+        EventBus.getDefault().post(changeEvent);
+    }
+    private void storeIntoDb(final Conversation dbCon, final AVIMTypedMessage message, final AVIMConversation conversation) {
+        final Conversation previous = DbRelated.findConById(context, dbCon.getMemberId());
+        if (previous != null) {
+            if(previous.getMemberAvater().equals(Constant.FAIL_AVATER)){
+                getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
+                    @Override
+                    public void onSuccess(SimpleInfo info) {
+                        dbCon.setMemberName(info.getNickname());
+                        dbCon.setMemberAvater(info.getImage());
+                        DbRelated.updateCon(context, dbCon);
+                        sendMsgByBus(message,conversation);
+                    }
+
+                    @Override
+                    public void onFail() {
+                        DbRelated.updateCon(context, dbCon);
+                        sendMsgByBus(message, conversation);
+                    }
+                });
+            }else{
+                dbCon.setMemberAvater(previous.getMemberAvater());
+                dbCon.setMemberName(previous.getMemberName());
+                DbRelated.updateCon(context, dbCon);
+                sendMsgByBus(message, conversation);
+            }
+
+        } else {
+            getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
+                @Override
+                public void onSuccess(SimpleInfo info) {
+                    dbCon.setMemberName(info.getNickname());
+                    dbCon.setMemberAvater(info.getImage());
+                    DbRelated.insertCon(context, dbCon);
+                    sendMsgByBus(message, conversation);
+                }
+
+                @Override
+                public void onFail() {
+                    dbCon.setMemberAvater(Constant.FAIL_AVATER);
+                    dbCon.setMemberName(Constant.FAIL_MEMBER_NAME);
+                    DbRelated.insertCon(context,dbCon);
+                    sendMsgByBus(message,conversation);
+                }
+            });
+        }
+    }
+
+    private void getInfoFromServer(int id, final InfoLoadingListener listener) {
+        if (NetUtils.isNetworkConnected(context)) {
+            ApiManager.getService(context.getApplicationContext()).getUserInfoById(id, new Callback<SimpleInfo>() {
+                @Override
+                public void success(SimpleInfo userInfo, Response response) {
+                    if (userInfo != null) {
+                        listener.onSuccess(userInfo);
+                    } else {
+                        listener.onFail();
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    listener.onFail();
+                }
+            });
+        } else {
+            listener.onFail();
+        }
     }
 
     private void sendNotification(AVIMTypedMessage message, AVIMConversation conversation) {
@@ -69,4 +159,11 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
         intent.putExtra(Constant.MEMBER_ID, message.getFrom());
         NotificationUtils.showNotification(context, "", notificationContent, null, intent);
     }
+
+    private interface InfoLoadingListener {
+        void onSuccess(SimpleInfo info);
+
+        void onFail();
+    }
+
 }

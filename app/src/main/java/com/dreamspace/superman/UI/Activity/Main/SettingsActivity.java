@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.DbRelated;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -23,7 +24,6 @@ import com.umeng.update.UpdateStatus;
 import butterknife.Bind;
 
 public class SettingsActivity extends AbsActivity {
-    //// TODO: 2015/10/24 ADD 意见反馈  版本更新
     @Bind(R.id.check_update_tv)
     TextView checkUpdateTv;
     @Bind(R.id.find_bugs_tv)
@@ -122,6 +122,7 @@ public class SettingsActivity extends AbsActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         clearUserInfo();
+                        DbRelated.clearAll(SettingsActivity.this);
                         //// TODO: 2015/10/24  改变通知方式
                         finish();
                     }

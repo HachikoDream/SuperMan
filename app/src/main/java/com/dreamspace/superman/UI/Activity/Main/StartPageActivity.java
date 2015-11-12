@@ -89,13 +89,7 @@ public class StartPageActivity extends AppCompatActivity implements android.os.H
                 public void success(UserInfo userInfo, Response response) {
                     if (userInfo != null) {
                         saveUserInfo(userInfo);
-                        //// TODO: 2015/11/8  临时添加
-                        if (CommonUtils.isEmpty(userInfo.getMas_id())) {
-                            openChatServer(userInfo.getId());
-                        } else {
-                            openChatServer(userInfo.getMas_id());
-                        }
-
+                        openChatServer(userInfo.getId());
                     }
                 }
 

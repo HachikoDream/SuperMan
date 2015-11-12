@@ -34,6 +34,16 @@ public class LessonInfo implements Parcelable{
     private String description;
     private String tags;
     private boolean is_collected;
+    private int mast_user_id;
+
+    public int getMast_user_id() {
+        return mast_user_id;
+    }
+
+    public void setMast_user_id(int mast_user_id) {
+        this.mast_user_id = mast_user_id;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
@@ -49,6 +59,7 @@ public class LessonInfo implements Parcelable{
         dest.writeString(description);
         dest.writeString(tags);
         dest.writeByte((byte)(is_collected?1:0));
+        dest.writeInt(mast_user_id);
 
     }
     protected LessonInfo(Parcel in) {
@@ -65,6 +76,7 @@ public class LessonInfo implements Parcelable{
         description = in.readString();
         tags = in.readString();
         is_collected = in.readByte() != 0;
+        mast_user_id=in.readInt();
     }
 
     public static final Creator<LessonInfo> CREATOR = new Creator<LessonInfo>() {

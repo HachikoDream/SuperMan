@@ -13,8 +13,8 @@ public class GreendaoGenerator {
   }
     private static void addConversation(Schema schema){
         Entity conversation=schema.addEntity("Conversation");
-        conversation.addIdProperty();
-        conversation.addIntProperty("memberId");
+//        conversation.addIdProperty().autoincrement();
+        conversation.addLongProperty("memberId").primaryKey();
         conversation.addStringProperty("memberName");
         conversation.addDateProperty("chatTime");
         conversation.addStringProperty("memberAvater");

@@ -1,7 +1,9 @@
 package com.dreamspace.superman.UI.Fragment.Drawer;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Superman.OnFinish;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
@@ -292,7 +295,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                      * 3.显示一个提示对话框
                      * 4.导航到主页面
                      */
-                    showToast(tempRes.getMast_id());
+
                     dismissPd();
 
                 }
@@ -304,6 +307,19 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                 dismissPd();
             }
         });
+    }
+    private void showInfoWithDialog(String msg, final OnFinish listener){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity())
+                .setTitle("提示")
+                .setMessage(msg)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       listener.finish(true);
+                    }
+                });
+//                .
+
     }
 
     //从本地加载用户相关的数据

@@ -41,8 +41,8 @@ public class ChatActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-        setTitle(memberId);
-        chatFragment = (ChatFragment) getFragmentManager().findFragmentById(R.id.fragment_chat);
+        setTitle("对话中");
+        chatFragment = (ChatFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_chat);
         getConversation(memberId);
     }
 
@@ -52,7 +52,7 @@ public class ChatActivity extends AbsActivity {
         Bundle extras = intent.getExtras();
         if (null != extras && extras.containsKey(Constant.MEMBER_ID)) {
             String memberId = extras.getString(Constant.MEMBER_ID);
-            setTitle(memberId);
+            setTitle("对话中");
             getConversation(memberId);
         }
     }
@@ -85,14 +85,14 @@ public class ChatActivity extends AbsActivity {
                 if (filterException(e)) {
                     //注意：此处仍有漏洞，如果获取了多个 conversation，默认取第一个
                     if (null != list && list.size() > 0) {
-                        chatFragment.setConversation(list.get(0));
+                        chatFragment.setConversation(list.get(0),Integer.parseInt(memberId));
                     } else {
                         HashMap<String, Object> attributes = new HashMap<String, Object>();
                         attributes.put("customConversationType", 1);
                         client.createConversation(Arrays.asList(memberId), null, attributes, false, new AVIMConversationCreatedCallback() {
                             @Override
                             public void done(AVIMConversation avimConversation, AVIMException e) {
-                                chatFragment.setConversation(avimConversation);
+                                chatFragment.setConversation(avimConversation,Integer.parseInt(memberId));
                             }
                         });
                     }

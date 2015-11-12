@@ -24,7 +24,7 @@ public class QRCodeShowActivity extends AbsActivity {
     ImageView qrcodeIv;
     @Bind(R.id.qr_content)
     RelativeLayout contentView;
-    private int ord_id;//todo 订单详情页面传入
+    private int ord_id;
     public static String ORD_ID="ord_id";
     @Override
     protected void setSelfContentView() {

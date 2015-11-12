@@ -74,6 +74,7 @@
                 android:src="@drawable/daren_zhifubao" />
 
             <TextView
+                android:id="@+id/bind_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"

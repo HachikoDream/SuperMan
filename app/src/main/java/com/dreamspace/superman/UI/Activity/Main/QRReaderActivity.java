@@ -73,7 +73,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
             showPd();
             final QRRes res=new QRRes();
             res.setCode(info);
-            ApiManager.getService(getApplicationContext()).scanQRCodeInfo(ord_id, res, new Callback<Response>() {
+            ApiManager.getService(getApplicationContext()).scanQRCodeInfo(res, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
                     if(response!=null){

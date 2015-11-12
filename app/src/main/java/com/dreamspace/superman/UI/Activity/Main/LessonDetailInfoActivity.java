@@ -162,10 +162,13 @@ public class LessonDetailInfoActivity extends AbsActivity {
             public void onClick(View v) {
                 if(mLessonInfo!=null){
                     if(!CommonUtils.isEmpty(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT))){
-                        Bundle b=new Bundle();
-                        //// TODO: 2015/11/8 临时
-                        b.putString(Constant.MEMBER_ID,mLessonInfo.getMast_id());
-                        readyGo(ChatActivity.class,b);
+                        if(String.valueOf(mLessonInfo.getMast_user_id()).equals(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.UID))){
+                             showToast("您不能和自己对话");
+                        }else{
+                            Bundle b=new Bundle();
+                            b.putString(Constant.MEMBER_ID,String.valueOf(mLessonInfo.getMast_user_id()));
+                            readyGo(ChatActivity.class,b);
+                        }
                     }else{
                         readyGo(LoginActivity.class);
                     }
@@ -231,7 +234,6 @@ public class LessonDetailInfoActivity extends AbsActivity {
         lessonnameTv.setText(lessonInfo.getLess_name());
         meet_num_tv.setText(String.valueOf(lessonInfo.getCollection_count()));
         success_num_tv.setText(String.valueOf(lessonInfo.getSuccess_count()));
-//        priceTv.setText(String.valueOf(lessonInfo.getPrice()));
         priceTv.setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         userNameTv.setText(lessonInfo.getName());
         tagTv.setText(lessonInfo.getTags());
@@ -367,10 +369,4 @@ public class LessonDetailInfoActivity extends AbsActivity {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

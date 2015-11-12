@@ -196,10 +196,10 @@ public class SmOrderDetailActvity extends AbsActivity implements View.OnClickLis
         orderPhonenum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (student_phone!=null){
-                    Tools.callSb(SmOrderDetailActvity.this,student_phone);
-                }else{
-                    showAlertDialog("暂未获取到学员联系方式,请刷新重试","确定",null,null);
+                if (student_phone != null) {
+                    Tools.callSb(SmOrderDetailActvity.this, student_phone);
+                } else {
+                    showAlertDialog("暂未获取到学员联系方式,请刷新重试", "确定", null, null);
                 }
             }
         });
@@ -261,12 +261,12 @@ public class SmOrderDetailActvity extends AbsActivity implements View.OnClickLis
     }
 
     /**
-     * 在待见面环节完成见面 todo 是否需要刷新相关界面？
+     * 在待见面环节完成见面
      */
     private void finishMeeting() {
-      Bundle b=new Bundle();
-        b.putInt(QRCodeShowActivity.ORD_ID,order_id);
-        readyGo(QRReaderActivity.class,b);
+        Bundle b = new Bundle();
+        b.putInt(QRCodeShowActivity.ORD_ID, order_id);
+        readyGo(QRReaderActivity.class, b);
     }
 
     private void killAct() {
@@ -329,7 +329,7 @@ public class SmOrderDetailActvity extends AbsActivity implements View.OnClickLis
     private void refuseOrder() {
         Bundle b = new Bundle();
         b.putInt(ORDER_ID, order_id);
-        readyGoForResult(RefuseActivity.class, REFUSE_REQUEST_CODE,b);
+        readyGoForResult(RefuseActivity.class, REFUSE_REQUEST_CODE, b);
     }
 
     /**
@@ -535,7 +535,7 @@ public class SmOrderDetailActvity extends AbsActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==REFUSE_REQUEST_CODE&&resultCode==RESULT_OK){
+        if (requestCode == REFUSE_REQUEST_CODE && resultCode == RESULT_OK) {
             setResult(RESULT_OK);
             finish();
         }

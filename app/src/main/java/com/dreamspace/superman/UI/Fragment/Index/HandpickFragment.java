@@ -26,7 +26,6 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-//todo 首次登陆进入时存在问题
 public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     public Catalog selfCatalog;
     public int page = 1;

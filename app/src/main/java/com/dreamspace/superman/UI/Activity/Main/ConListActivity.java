@@ -1,32 +1,40 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.ConverListLoader;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.ConListAdapter;
-import com.dreamspace.superman.UI.SmApplication;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
-import com.dreamspace.superman.model.ConList;
+import com.dreamspace.superman.event.DbChangeEvent;
 import com.ds.greendao.Conversation;
-import com.ds.greendao.ConversationDao;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConListActivity extends AbsActivity {
+import de.greenrobot.event.EventBus;
+
+public class ConListActivity extends AbsActivity implements LoaderManager.LoaderCallbacks<List<Conversation>> {
 
     private MenuLoadMoreListView mSwipeMenuListView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ConListAdapter mAdapter;
+    private static final int LOADER_ID = 1;
+    private boolean isVisible=false;
+    private boolean shouldRefresh=false;
 
     @Override
     protected void setSelfContentView() {
@@ -35,7 +43,7 @@ public class ConListActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-
+        EventBus.getDefault().register(this);
     }
 
     public int dp2px(float dpVal) {
@@ -45,7 +53,7 @@ public class ConListActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh_id);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh_id);
         mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -55,8 +63,8 @@ public class ConListActivity extends AbsActivity {
 
             }
         });
-        mAdapter=new ConListAdapter(this);
-        mSwipeMenuListView=(MenuLoadMoreListView)findViewById(R.id.listview);
+        mAdapter = new ConListAdapter(this);
+        mSwipeMenuListView = (MenuLoadMoreListView) findViewById(R.id.listview);
         mSwipeMenuListView.setAdapter(mAdapter);
         mSwipeMenuListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         mSwipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -69,7 +77,6 @@ public class ConListActivity extends AbsActivity {
                 return false;
             }
         });
-        getInitData();
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
@@ -88,29 +95,74 @@ public class ConListActivity extends AbsActivity {
             }
         };
         mSwipeMenuListView.setMenuCreator(creator);
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        mSwipeMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int memberId = mAdapter.getItem(position).getMemberId().intValue();
+                Bundle b = new Bundle();
+                b.putString(Constant.MEMBER_ID, String.valueOf(memberId));
+                readyGo(ChatActivity.class, b);
+
+            }
+        });
     }
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return mSwipeRefreshLayout;
     }
 
     public void refreshDate(List<Conversation> mEntities) {
         mAdapter.setmEntities(mEntities);
         mAdapter.notifyDataSetChanged();
     }
-    public void getInitData() {
 
-    }
-    private ConversationDao getConversationDao(){
-        return ((SmApplication)this.getApplicationContext()).getDaoSession().getConversationDao();
-    }
-    private SQLiteDatabase getDb(){
-        return ((SmApplication)this.getApplicationContext()).getDb();
-    }
-    private List<Conversation> getAllConFromDb(){
-        getDb().query();
+    @Override
+    public Loader<List<Conversation>> onCreateLoader(int id, Bundle args) {
+        return new ConverListLoader(this);
     }
 
+    @Override
+    public void onLoadFinished(Loader<List<Conversation>> loader, List<Conversation> data) {
+        if (data == null && data.isEmpty()) {
+            toggleShowEmpty(true, "暂无联系人", null);
+        } else {
+            toggleShowEmpty(false, null, null);
+            mAdapter.refreshDate(data);
+        }
 
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Conversation>> loader) {
+        mAdapter.refreshDate(new ArrayList<Conversation>());
+    }
+
+    public void onEvent(DbChangeEvent event) {
+        Log.i("EVENTBUS","Msg come");
+       if(isVisible){
+           getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
+       }else{
+           shouldRefresh=true;
+       }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isVisible=true;
+        if(shouldRefresh){
+            shouldRefresh=false;
+            getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isVisible=false;
+
+    }
 }

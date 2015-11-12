@@ -37,7 +37,6 @@ import retrofit.mime.TypedByteArray;
 
 public class OrderDetailActivity extends AbsActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_PAYMENT = 827;
-    //// TODO: 2015/10/27 测试
     private final int TITLE = R.string.title_activity_order_detail;
     @Bind(R.id.profile_image)
     CircleImageView profileImage;
@@ -455,7 +454,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     private void confirmForPay() {
         Bundle b = new Bundle();
         b.putInt(QRReaderActivity.ORD_ID, order_id);
-        readyGoForResult(QRReaderActivity.class, QRREADER_REQUEST_CODE,b);
+        readyGoForResult(QRReaderActivity.class, QRREADER_REQUEST_CODE, b);
     }
 
     /*
@@ -500,6 +499,9 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         intent.setComponent(componentName);
         intent.putExtra(PaymentActivity.EXTRA_CHARGE, charge);
         startActivityForResult(intent, REQUEST_CODE_PAYMENT);
+    }
+    private void killSelf(){
+        finish();
     }
 
     /*
@@ -553,21 +555,35 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getExtras().getString("pay_result");
             /* 处理返回值
-             * "success" - payment succeed todo 状态变化刷新
+             * "success" - payment succeed
              * "fail"    - payment failed
              * "cancel"  - user canceld
              * "invalid" - payment plugin not installed
              */
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-                showToast(result);
-                showAlertDialog(errorMsg + extraMsg, "确定", null, null);
+                if (result.equals("success")){
+                    showAlertDialog("支付成功!", "确定", null, new OnFinish() {
+                        @Override
+                        public void finish(boolean isOk) {
+                            setResult(RESULT_OK);
+                            killSelf();
+                        }
+                    });
+                }else if(result.equals("invalid")){
+                    showAlertDialog("您尚未安装相关组件","确定",null,null);
+                }else if (result.equals("fail")){
+                    String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
+                    String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+                    showToast(result);
+                    showAlertDialog(errorMsg + extraMsg, "确定", null, null);
+                }
+
             }
         }
         //扫码页面返回处理
         if(requestCode==QRREADER_REQUEST_CODE){
             if(resultCode==Activity.RESULT_OK){
-                //// TODO: 2015/11/7 状态变化 刷新
+                setResult(RESULT_OK);
+                finish();
             }
         }
     }

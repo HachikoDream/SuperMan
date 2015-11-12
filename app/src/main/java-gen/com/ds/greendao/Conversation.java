@@ -6,8 +6,7 @@ package com.ds.greendao;
  */
 public class Conversation {
 
-    private Long id;
-    private Integer memberId;
+    private Long memberId;
     private String memberName;
     private java.util.Date chatTime;
     private String memberAvater;
@@ -17,12 +16,11 @@ public class Conversation {
     public Conversation() {
     }
 
-    public Conversation(Long id) {
-        this.id = id;
+    public Conversation(Long memberId) {
+        this.memberId = memberId;
     }
 
-    public Conversation(Long id, Integer memberId, String memberName, java.util.Date chatTime, String memberAvater, String lastContent, Boolean isRead) {
-        this.id = id;
+    public Conversation(Long memberId, String memberName, java.util.Date chatTime, String memberAvater, String lastContent, Boolean isRead) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.chatTime = chatTime;
@@ -31,19 +29,11 @@ public class Conversation {
         this.isRead = isRead;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getMemberId() {
+    public Long getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Integer memberId) {
+    public void setMemberId(Long memberId) {
         this.memberId = memberId;
     }
 

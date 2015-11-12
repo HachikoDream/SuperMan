@@ -22,6 +22,7 @@ import com.dreamspace.superman.model.api.OrderlistRes;
 import com.dreamspace.superman.model.api.PayRes;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.QRRes;
+import com.dreamspace.superman.model.api.SimpleInfo;
 import com.dreamspace.superman.model.api.SmIdRes;
 import com.dreamspace.superman.model.api.SmInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
@@ -37,6 +38,8 @@ import com.dreamspace.superman.model.api.RegistertokenReq;
 import com.dreamspace.superman.model.api.RegistertokenRes;
 import com.dreamspace.superman.model.api.SendVerifyReq;
 import com.dreamspace.superman.model.api.ToBeSmReq;
+import com.dreamspace.superman.model.api.payAccountRes;
+import com.squareup.okhttp.Call;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -83,7 +86,8 @@ public interface SupermanService {
     //获取当前用户信息
     @GET("/user")
     void getUserInfo(Callback<UserInfo> cb);
-
+    @GET("/user/{id}")
+    void getUserInfoById(@Path("id") int id,Callback<SimpleInfo> cb);
     //获取用户当前账户余额
     @GET("/user/balance")
     void getUserBalance(Callback<BalanceRes> cb);
@@ -170,10 +174,11 @@ public interface SupermanService {
     //达人获取隐藏在二维码中的信息
     @GET("/user/order/{ord_id}/confiem")
     void getQRCodeInfo(@Path("ord_id") int ord_id,Callback<QRRes> cb);
-    //// TODO: 2015/11/5  取消ord_id
-    @POST("/user/order/{ord_id}/confiem")
-    void scanQRCodeInfo(@Path("ord_id") int ord_id,@Body QRRes res,Callback<Response> cb);
+    @POST("/user/order/confiem")
+    void scanQRCodeInfo(@Body QRRes res,Callback<Response> cb);
     //向后台发起支付请求,在调用后将获得的对象解析为json格式的字符串
     @POST("/user/order/{ord_id}/pay")
     void sendPayRequest(@Path("ord_id") int ord_id,@Body PayRes res,Callback<Response> cb);
+    @GET("/master/payaccount")
+    void getPayAccount(Callback<payAccountRes> cb);
 }

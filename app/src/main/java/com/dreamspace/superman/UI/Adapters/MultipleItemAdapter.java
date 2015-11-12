@@ -60,7 +60,6 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     } else if (viewType == ITEM_RIGHT_TEXT) {
       return new RightTextHolder(parent.getContext(), parent);
     } else {
-      //TODO
       return null;
     }
   }

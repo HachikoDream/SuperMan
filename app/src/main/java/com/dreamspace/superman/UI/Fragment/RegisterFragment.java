@@ -89,7 +89,6 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     }
 
 
-    //todo check bug
     public void sendVerifyCode() {
 
         if (isPhoneValid()) {
