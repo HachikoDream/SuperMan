@@ -273,4 +273,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         }
 
     }
+    public void gotoIndex(){
+        mViewPager.setCurrentItem(0, false);
+        setFragmentTitle(R.string.nav_item_index);
+    }
+    //// TODO: 2015/11/17 点击抽屉 刷新列表内容
 }

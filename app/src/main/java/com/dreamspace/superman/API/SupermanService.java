@@ -120,7 +120,7 @@ public interface SupermanService {
     void getUserApplyInfo(Callback<ApplyInfoRes> cb);
     //获取达人发布的课程信息
     @GET("/master/{mas_id}/lessons")
-    void getLessonsbyMid(@Path("mas_id")String mas_id,@Query("page") int page,Callback<SmLessonList> cb);
+    void getLessonsbyMid(@Path("mas_id")String mas_id,@Query("page") int page,@Query("state") String state,Callback<SmLessonList> cb);
     //由达人发布
     @POST("/lesson")
     void publishLessonBySm(@Body PublishReq req,Callback<PublishRes> cb);
@@ -167,12 +167,12 @@ public interface SupermanService {
     void cancelSmOrderById(@Query("ord_id") int ord_id ,Callback<Response> cb);
     //用户方取消订单
     @DELETE("/user/order/{ord_id}")
-    void cancelOrderById(@Query("ord_id") int ord_id,Callback<Response> cb);
+    void cancelOrderById(@Path("ord_id") int ord_id,Callback<Response> cb);
     //创建反馈
     @POST("/feedback")
     void sendFeedbackInfo(@Body FeedbackReq req,Callback<Response> cb);
     //达人获取隐藏在二维码中的信息
-    @GET("/user/order/{ord_id}/confiem")
+    @GET("/master/order/{ord_id}/confirm")
     void getQRCodeInfo(@Path("ord_id") int ord_id,Callback<QRRes> cb);
     @POST("/user/order/confiem")
     void scanQRCodeInfo(@Body QRRes res,Callback<Response> cb);

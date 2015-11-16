@@ -3,7 +3,6 @@ package com.dreamspace.superman.UI.Activity.Superman;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -19,10 +18,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.OperatorReq;
 
-import org.w3c.dom.Text;
-
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -46,7 +42,7 @@ public class RefuseActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-        order_id = this.getIntent().getIntExtra(SmOrderDetailActvity.ORDER_ID, -1);
+        order_id = this.getIntent().getIntExtra(SmOrderDetailActivity.ORDER_ID, -1);
 
     }
 

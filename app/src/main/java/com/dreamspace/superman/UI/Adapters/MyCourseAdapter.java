@@ -2,6 +2,7 @@ package com.dreamspace.superman.UI.Adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreamspace.superman.Common.CommonUtils;
@@ -33,6 +34,9 @@ public class MyCourseAdapter extends BasisAdapter<LessonInfo,MyCourseAdapter.vie
         holder.courseNameTv.setText(entity.getLess_name());
         holder.priceTv.setText(CommonUtils.getStringFromPrice(entity.getPrice()));
         holder.timeTv.setText(entity.getKeeptime());
+        if(entity.getState().equals("off")){
+            holder.courseBg.setBackgroundColor(getmContext().getResources().getColor(R.color.grey_line));
+        }
     }
 
     @Override
@@ -41,6 +45,7 @@ public class MyCourseAdapter extends BasisAdapter<LessonInfo,MyCourseAdapter.vie
         holder.courseNameTv= (TextView) convertView.findViewById(R.id.course_name_tv);
         holder.priceTv= (TextView) convertView.findViewById(R.id.course_price);
         holder.timeTv=(TextView)convertView.findViewById(R.id.time_tv);
+        holder.courseBg=(LinearLayout)convertView.findViewById(R.id.course_bg);
     }
 
     @Override
@@ -53,6 +58,7 @@ public class MyCourseAdapter extends BasisAdapter<LessonInfo,MyCourseAdapter.vie
         public TextView priceTv;
         public TextView timeTv;
         public CircleImageView avaterIv;
+        public LinearLayout courseBg;
 
     }
 }

@@ -133,6 +133,39 @@ public class AddCourseActivity extends AbsActivity {
         coursetimeEv.getEditText().setText(lessonInfo.getKeeptime());
         priceEv.getEditText().setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         descEv.setText(lessonInfo.getDescription());
+        if(lessonInfo.getState().equals(Constant.LESSON_STATE.ON)){
+            pauseBtn.setText("下架课程");
+            pauseBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showWarningDialog("下架之后，本课程只对自己可见，之后您可以选择重新上架该课程，是否进行此操作？", new OnFinishListener() {
+                        @Override
+                        public void onFinish() {
+                            ModifyLessonReq req = new ModifyLessonReq();
+                            req.setState(Constant.LESSON_STATE.OFF);
+                            ModifyLessonInfoById(lesson_id, req);
+                        }
+                    });
+                }
+            });
+
+        }else{
+            pauseBtn.setText("上架课程");
+            pauseBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showWarningDialog("上架之后，您的课程可以重新被发现，是否进行此操作？", new OnFinishListener() {
+                        @Override
+                        public void onFinish() {
+                            ModifyLessonReq req = new ModifyLessonReq();
+                            req.setState(Constant.LESSON_STATE.ON);
+                            ModifyLessonInfoById(lesson_id, req);
+                        }
+                    });
+                }
+            });
+
+        }
     }
 
     private void showPd() {
@@ -171,7 +204,7 @@ public class AddCourseActivity extends AbsActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showWarningDialog("该操作不可恢复，您确定要删除该课程吗？",new OnFinishListener() {
+                showWarningDialog("该操作不可恢复，您确定要删除该课程吗？", new OnFinishListener() {
 
                     public void onFinish() {
                         deleteLessonById(lesson_id);
@@ -193,19 +226,6 @@ public class AddCourseActivity extends AbsActivity {
                     req.setDescription(description);
                     ModifyLessonInfoById(lesson_id, req);
                 }
-            }
-        });
-        pauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWarningDialog("下架之后，您可以在我的课程-已下架中找到该课程，之后您可以选择重新上架该课程，是否进行此操作？", new OnFinishListener() {
-                    @Override
-                    public void onFinish() {
-                        ModifyLessonReq req = new ModifyLessonReq();
-                        req.setState(Constant.LESSON_STATE.OFF);
-                        ModifyLessonInfoById(lesson_id, req);
-                    }
-                });
             }
         });
     }

@@ -22,13 +22,16 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Main.ChatActivity;
 import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
+import com.dreamspace.superman.event.OrderChangeEvent;
 import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 import com.dreamspace.superman.model.api.PayRes;
 import com.pingplusplus.android.PaymentActivity;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -106,7 +109,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     Button confirmBtn;
     @Bind(R.id.user_pay_layout)
     RelativeLayout userPayLayout;
-
+    @Bind(R.id.comment_btn)
+    Button commentBtn;
     private int order_id;
     private int order_state;
     private String common_price;
@@ -157,7 +161,6 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         }
     }
 
-    //todo 评价按钮
     private void showViewByState(int order_state) {
         switch (order_state) {
             case Constant.ORDER_RELATED.BACK_COST:
@@ -246,7 +249,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         }
     }
 
-    private void showDetailInfo(OrderDetailRes orderDetailRes) {
+    private void showDetailInfo(final OrderDetailRes orderDetailRes) {
         Tools.showImageWithGlide(this, profileImage, orderDetailRes.getImage());
         courseNameTv.setText(orderDetailRes.getLess_name());
         usernameTv.setText(orderDetailRes.getMast_name());
@@ -261,6 +264,16 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         courseTime.setText(orderDetailRes.getStart_time());
         courseAddress.setText(orderDetailRes.getSite());
         courseRemark.setText(orderDetailRes.getRemark());
+        if(!CommonUtils.isEmpty(orderDetailRes.getCom_id())){
+            commentBtn.setVisibility(View.VISIBLE);
+            //// TODO: 2015/11/15 评价事件
+        }
+        orderPhonenumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.callSb(OrderDetailActivity.this,orderDetailRes.getMast_phone());
+            }
+        });
 
     }
 
@@ -269,26 +282,26 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             case 1:
                 setSubView(true);
                 setConfirmView(false);
-                setFinishView(false);
                 setPayView(false);
+                setFinishView(false);
                 break;
             case 2:
                 setSubView(true);
                 setConfirmView(true);
-                setFinishView(false);
                 setPayView(false);
+                setFinishView(false);
                 break;
             case 3:
                 setSubView(true);
                 setConfirmView(true);
-                setFinishView(true);
-                setPayView(false);
+                setPayView(true);
+                setFinishView(false);
                 break;
             case 4:
                 setSubView(true);
                 setConfirmView(true);
-                setFinishView(true);
                 setPayView(true);
+                setFinishView(true);
                 break;
         }
     }
@@ -520,7 +533,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                             showAlertDialog("您已经取消了本次课程的预订.", "确定", null, new OnFinish() {
                                 @Override
                                 public void finish(boolean isOk) {
-                                    setResult(RESULT_OK);
+                                    setResult(RESULT_OK);//// TODO: 2015/11/16 回调刷新
+                                    EventBus.getDefault().post(new OrderChangeEvent());
                                     OrderDetailActivity.this.finish();
                                 }
                             });
@@ -565,6 +579,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                         @Override
                         public void finish(boolean isOk) {
                             setResult(RESULT_OK);
+                            EventBus.getDefault().post(new OrderChangeEvent());
                             killSelf();
                         }
                     });
@@ -583,6 +598,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         if(requestCode==QRREADER_REQUEST_CODE){
             if(resultCode==Activity.RESULT_OK){
                 setResult(RESULT_OK);
+                EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
             }
         }

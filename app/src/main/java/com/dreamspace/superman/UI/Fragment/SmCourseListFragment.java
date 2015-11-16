@@ -92,7 +92,7 @@ public class SmCourseListFragment extends BaseLazyCourseFragment<LessonInfo> {
     public void getDataByPage(int page, final OnRefreshListener<LessonInfo> listener) {
         if (NetUtils.isNetworkConnected(getActivity())) {
             if (!CommonUtils.isEmpty(mast_id)) {
-                ApiManager.getService(getActivity().getApplicationContext()).getLessonsbyMid(mast_id, page, new Callback<SmLessonList>() {
+                ApiManager.getService(getActivity().getApplicationContext()).getLessonsbyMid(mast_id, page,"on", new Callback<SmLessonList>() {
                     @Override
                     public void success(SmLessonList smLessonList, Response response) {
                         if (smLessonList != null) {

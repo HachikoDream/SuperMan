@@ -9,7 +9,7 @@ import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.UI.Activity.BaseListAct;
-import com.dreamspace.superman.UI.Activity.Person.OrderDetailActivity;
+import com.dreamspace.superman.UI.Activity.Superman.SmOrderDetailActivity;
 import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.SmOrderAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyOrderFragment;
@@ -96,10 +96,10 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
     @Override
     protected void onItemPicked(Order item, int position) {
         Bundle b=new Bundle();
-        b.putInt(OrderDetailActivity.ORDER_ID,item.getId());
-        b.putInt(OrderDetailActivity.STATE,selfCatalog.getState());
-        b.putString(OrderDetailActivity.COMMON_PRICE, CommonUtils.getPriceWithInfo(item.getLess_price()));
-        readyGoForResult(OrderDetailActivity.class, REQUEST_CODE,b);
+        b.putInt(SmOrderDetailActivity.ORDER_ID,item.getId());
+        b.putInt(SmOrderDetailActivity.STATE,selfCatalog.getState());
+        b.putString(SmOrderDetailActivity.COMMON_PRICE, CommonUtils.getPriceWithInfo(item.getLess_price()));
+        readyGoForResult(SmOrderDetailActivity.class, REQUEST_CODE,b);
 
     }
     public void onPageSelected(int position, OrderClassify catalog) {

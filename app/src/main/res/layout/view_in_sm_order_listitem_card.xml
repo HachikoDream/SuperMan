@@ -90,6 +90,8 @@
         android:layout_width="70dp"
         android:layout_height="19dp"
         android:text="同意"
+        android:focusable="false"
+        android:clickable="true"
         android:layout_gravity="right"
         android:textColor="@color/navi_color"
         android:background="@drawable/button_redside_white_bg"/>

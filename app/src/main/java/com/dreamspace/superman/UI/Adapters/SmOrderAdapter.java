@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Main.QRCodeShowActivity;
+import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.api.OperatorReq;
@@ -64,7 +68,10 @@ public class SmOrderAdapter extends BasisAdapter<Order, SmOrderAdapter.viewHolde
                 holder.mButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //// TODO: 2015/10/28 扫码
+                        Bundle b = new Bundle();
+                        b.putInt(QRCodeShowActivity.ORD_ID, order.getId());
+                        readyGo(QRCodeShowActivity.class, b);
+
                     }
                 });
                 break;
@@ -77,7 +84,19 @@ public class SmOrderAdapter extends BasisAdapter<Order, SmOrderAdapter.viewHolde
 
         }
     }
-
+    /**
+     * startActivity with bundle
+     *
+     * @param clazz
+     * @param bundle
+     */
+    protected void readyGo(Class<?> clazz, Bundle bundle) {
+        Intent intent = new Intent(getmContext(), clazz);
+        if (null != bundle) {
+            intent.putExtras(bundle);
+        }
+        getmContext().startActivity(intent);
+    }
     private void showPd(String msg) {
         if (pd == null) {
             if (msg == null) {

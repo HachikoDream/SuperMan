@@ -240,6 +240,15 @@
                 android:text="确认见面"
                 android:textColor="@color/near_white" />
         </RelativeLayout>
-
+        <Button
+            android:id="@+id/comment_btn"
+            android:layout_width="150dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            android:background="@drawable/normal_button_bg"
+            android:gravity="center"
+            android:text="评价"
+            android:textColor="@color/near_white" />
     </LinearLayout>
 </ScrollView>

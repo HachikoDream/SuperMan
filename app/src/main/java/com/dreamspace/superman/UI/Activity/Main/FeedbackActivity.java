@@ -67,7 +67,6 @@ public class FeedbackActivity extends AbsActivity {
             pd.dismiss();
         }
     }
- //TODO 重新测试
     private void sendFeedBackInfo() {
         if (NetUtils.isNetworkConnected(this)) {
             showPd();

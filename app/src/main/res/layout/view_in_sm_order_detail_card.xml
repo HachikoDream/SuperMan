@@ -100,7 +100,7 @@
         android:layout_margin="5dp">
 
         <Button
-            android:id="@+id/connect_sm_btn"
+            android:id="@+id/connect_student_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

@@ -27,11 +27,11 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MyCourseListActivity extends BaseListAct<LessonInfo> {
-    //todo add stop course list
     private static final int REQUEST_CODE = 235;
     private ProgressDialog pd;
     private int page = 1;
     private final int DEFAULT_PAGE = 1;
+    //// TODO: 2015/11/17 刷新状态列表 添加课程 删除课程
 
     public MyCourseListActivity() {
         super(MyCourseAdapter.class);
@@ -56,11 +56,9 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
             item.setEnabled(false);
         }
         if (id == R.id.add_course) {
-            Intent intent = new Intent(this, AddCourseActivity.class);
             Bundle b=new Bundle();
             b.putInt(AddCourseActivity.COME_SOURCE,AddCourseActivity.FROM_ADD);
-            intent.putExtras(b);
-            startActivityForResult(intent, REQUEST_CODE);
+            readyGoForResult(AddCourseActivity.class,REQUEST_CODE,b);
             return true;
         }
 
@@ -185,7 +183,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
         if (NetUtils.isNetworkConnected(this)) {
             String mas_id = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAS_ID);
             if (!CommonUtils.isEmpty(mas_id)) {
-                ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page, new Callback<SmLessonList>() {
+                ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page,"all", new Callback<SmLessonList>() {
                     @Override
                     public void success(SmLessonList smLessonList, Response response) {
                         if (smLessonList != null) {

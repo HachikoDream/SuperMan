@@ -1,6 +1,7 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,8 +40,15 @@ public class QRCodeShowActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-       getPrivateInfo();
+
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getPrivateInfo();
+    }
+
     //从服务器获取订单相关的信息，放入二维码中
     private void getPrivateInfo(){
         toggleShowLoading(true,null);

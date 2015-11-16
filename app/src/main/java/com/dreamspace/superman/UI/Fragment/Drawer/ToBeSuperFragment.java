@@ -22,6 +22,7 @@ import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Superman.OnFinish;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.model.TempRes;
@@ -294,9 +295,17 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                      * 2.在本地缓存标志位表示已经进行过申请操作，避免后续的重复申请
                      * 3.显示一个提示对话框
                      * 4.导航到主页面
+                     * 测试
                      */
 
                     dismissPd();
+                    showInfoWithDialog("申请成功，我们会以短信的方式通知您的申请结果，请等待.", new OnFinish() {
+                        @Override
+                        public void finish(boolean isOk) {
+                            MainActivity activity= (MainActivity) getActivity();
+                            activity.gotoIndex();
+                        }
+                    });
 
                 }
             }
@@ -309,7 +318,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         });
     }
     private void showInfoWithDialog(String msg, final OnFinish listener){
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity())
+        AlertDialog dialog=new AlertDialog.Builder(getActivity())
                 .setTitle("提示")
                 .setMessage(msg)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -317,7 +326,9 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                     public void onClick(DialogInterface dialog, int which) {
                        listener.finish(true);
                     }
-                });
+                })
+                .show();
+        dialog.setCanceledOnTouchOutside(false);
 //                .
 
     }

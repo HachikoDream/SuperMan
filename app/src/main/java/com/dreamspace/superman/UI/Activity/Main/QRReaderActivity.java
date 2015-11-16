@@ -28,7 +28,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
     private ProgressDialog pd;
     //// TODO: 2015/11/5 增加定时设置 超过18s仍未检测到二维码给用户提示
     private boolean isTimeUp=false;
-    private int ord_id;//// TODO: 2015/11/5 从订单详情页面传过来
+    private int ord_id;
     public static final String ORD_ID="ord_id";
 
     @Override
@@ -80,7 +80,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
                         showAlertInfo("您已成功完成本次课程", "确定", new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                setResult(RESULT_OK); //// TODO: 2015/11/5 订单详情界面刷新 订单列表视情况同样进行刷新
+                                setResult(RESULT_OK);
                                 killSelf();
                             }
                         });
