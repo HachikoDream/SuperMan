@@ -22,10 +22,12 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.ChatActivity;
 import com.dreamspace.superman.UI.Activity.Main.QRCodeShowActivity;
 import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
+import com.dreamspace.superman.event.SmOrderChangeEvent;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -33,7 +35,6 @@ import retrofit.client.Response;
 
 public class SmOrderDetailActivity extends AbsActivity implements View.OnClickListener {
 
-//// TODO: 2015/11/17 刷新状态列表
     @Bind(R.id.profile_image)
     CircleImageView profileImage;
     @Bind(R.id.course_name_tv)
@@ -300,7 +301,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
                         showAlertDialog(msg, "确定", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                setResult(RESULT_OK);
+                                EventBus.getDefault().post(new SmOrderChangeEvent());
                                 killAct();
                             }
                         });
@@ -357,7 +358,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
                     showAlertDialog("操作成功,需等待学员付款，您现在可以在待付款中查看该订单的进展", "我知道啦", null, new OnFinish() {
                         @Override
                         public void finish(boolean isOk) {
-                            setResult(RESULT_OK);
+                            EventBus.getDefault().post(new SmOrderChangeEvent());
                             killAct();
                         }
                     });
@@ -546,7 +547,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REFUSE_REQUEST_CODE && resultCode == RESULT_OK) {
-            setResult(RESULT_OK);
+            EventBus.getDefault().post(new SmOrderChangeEvent());
             finish();
         }
     }

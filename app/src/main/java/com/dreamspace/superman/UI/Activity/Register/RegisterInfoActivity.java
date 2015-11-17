@@ -29,6 +29,7 @@ import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.ErrorRes;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
@@ -272,10 +274,12 @@ public class RegisterInfoActivity extends AbsActivity {
             public void done(AVIMClient avimClient, AVIMException e) {
                 if(filterException(e)){
                     dismissPd();
+                    EventBus.getDefault().post(new AccountChangeEvent());
                     finish();
                 }else{
                     showToast("聊天功能暂时不可用");
                     dismissPd();
+                    EventBus.getDefault().post(new AccountChangeEvent());
                     finish();
                 }
 

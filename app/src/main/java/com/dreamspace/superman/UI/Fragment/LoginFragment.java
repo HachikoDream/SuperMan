@@ -19,11 +19,13 @@ import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.LoginReq;
 import com.dreamspace.superman.model.api.LoginRes;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -130,10 +132,12 @@ public class LoginFragment extends BaseFragment {
             public void done(AVIMClient avimClient, AVIMException e) {
                 if (filterException(e)) {
                     dismissPd();
+                    EventBus.getDefault().post(new AccountChangeEvent());
                     getActivity().finish();
                 } else {
                     showToast("聊天功能暂时不可用");
                     dismissPd();
+                    EventBus.getDefault().post(new AccountChangeEvent());
                     getActivity().finish();
                 }
 

@@ -21,6 +21,7 @@ public class OrderDetailRes {
     private String name;
     private String mast_name;
     private String com_id;
+    private int less_id;
 
     public String getCom_id() {
         return com_id;
@@ -156,5 +157,13 @@ public class OrderDetailRes {
 
     public void setMast_name(String mast_name) {
         this.mast_name = mast_name;
+    }
+
+    public int getLess_id() {
+        return less_id;
+    }
+
+    public void setLess_id(int less_id) {
+        this.less_id = less_id;
     }
 }

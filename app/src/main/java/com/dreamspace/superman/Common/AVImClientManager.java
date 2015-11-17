@@ -3,6 +3,7 @@ package com.dreamspace.superman.Common;
 import android.text.TextUtils;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
 /**
@@ -29,6 +30,16 @@ public class AVImClientManager {
     this.clientId = clientId;
     avimClient = AVIMClient.getInstance(clientId);
     avimClient.open(callback);
+  }
+  public void close(){
+    if (avimClient!=null){
+      avimClient.close(new AVIMClientCallback() {
+        @Override
+        public void done(AVIMClient avimClient, AVIMException e) {
+
+        }
+      });
+    }
   }
 
   public AVIMClient getClient() {

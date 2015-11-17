@@ -50,7 +50,6 @@ public class Constant {
          <item>取消/退款</item>
          </string-array>
          */
-        //todo 增加状态 是否评价
                                                 //  1       2        3       4       0   -1
         public static final String[] ORDER_NAME={"预约","待付款","待见面","已完成","取消/退款"};
         public static final OrderClassify[] orderClassifys={

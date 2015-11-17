@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Activity.Superman;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,6 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
     private ProgressDialog pd;
     private int page = 1;
     private final int DEFAULT_PAGE = 1;
-    //// TODO: 2015/11/17 刷新状态列表 添加课程 删除课程
 
     public MyCourseListActivity() {
         super(MyCourseAdapter.class);
@@ -160,6 +160,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("RESULT","result in");
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             showPd();

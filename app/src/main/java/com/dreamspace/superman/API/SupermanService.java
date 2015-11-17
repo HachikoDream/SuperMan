@@ -138,7 +138,7 @@ public interface SupermanService {
     void deleteLesson(@Path("les_id") int les_id,Callback<Response> cb);
     //对课程评论
     @POST("/lesson/{les_id}/comment")
-    void comment(@Path("les_id")String les_id,@Body CommentReq req,Callback<CommentRes> cb);
+    void comment(@Path("les_id")int les_id,@Body CommentReq req,Callback<CommentRes> cb);
 
     //获取课程评论
     @GET("/lesson/{les_id}/comments")
@@ -164,7 +164,7 @@ public interface SupermanService {
     void getOrderListById(@Query("state") int state,@Query("page") int page,Callback<OrderlistRes> cb);
    //达人方取消订单
     @DELETE("/master/order/{ord_id}")
-    void cancelSmOrderById(@Query("ord_id") int ord_id ,Callback<Response> cb);
+    void cancelSmOrderById(@Path("ord_id") int ord_id ,Callback<Response> cb);
     //用户方取消订单
     @DELETE("/user/order/{ord_id}")
     void cancelOrderById(@Path("ord_id") int ord_id,Callback<Response> cb);

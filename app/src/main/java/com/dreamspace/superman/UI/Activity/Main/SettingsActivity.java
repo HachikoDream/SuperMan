@@ -10,18 +10,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.AVImClientManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.DbRelated;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 public class SettingsActivity extends AbsActivity {
     @Bind(R.id.check_update_tv)
@@ -88,9 +91,7 @@ public class SettingsActivity extends AbsActivity {
             exitBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //// TODO: 2015/11/3  变为ForResult
-                    finish();
-                    readyGo(LoginActivity.class);
+                    readyGoThenKill(LoginActivity.class);
                 }
             });
             findBugsTv.setVisibility(View.GONE);
@@ -123,7 +124,8 @@ public class SettingsActivity extends AbsActivity {
                         dialog.dismiss();
                         clearUserInfo();
                         DbRelated.clearAll(SettingsActivity.this);
-                        //// TODO: 2015/10/24  改变通知方式
+                        EventBus.getDefault().post(new AccountChangeEvent());
+                        AVImClientManager.getInstance().close();
                         finish();
                     }
                 })

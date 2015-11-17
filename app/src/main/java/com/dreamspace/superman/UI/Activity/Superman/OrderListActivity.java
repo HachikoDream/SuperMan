@@ -12,6 +12,8 @@ import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
 import com.dreamspace.superman.model.OrderClassify;
 
+import de.greenrobot.event.EventBus;
+
 public class OrderListActivity extends AbsActivity {
     private ViewPager mViewPager;
     private SlidingTabLayout mSlidingTabLayout;
@@ -82,5 +84,6 @@ public class OrderListActivity extends AbsActivity {
     protected View getLoadingTargetView() {
         return null;
     }
+
 
 }

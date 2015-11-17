@@ -14,12 +14,14 @@ import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.SmOrderAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyOrderFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
+import com.dreamspace.superman.event.SmOrderChangeEvent;
 import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.OrderClassify;
 import com.dreamspace.superman.model.api.OrderlistRes;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -30,10 +32,11 @@ import retrofit.client.Response;
 public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
     private OrderClassify selfCatalog;
     private boolean onFirst = false;
-    private boolean onPage=false;
-    private int page=1;
-    private static final int DEFAULT_PAGE=1;
-    private static final int REQUEST_CODE=345;
+    private boolean onPage = false;
+    private int page = 1;
+    private static final int DEFAULT_PAGE = 1;
+    private static final int REQUEST_CODE = 345;
+
     public SmSubscribeFragment() {
     }
 
@@ -43,10 +46,10 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
             @Override
             public void onFinish(List<Order> mEntities) {
                 onPullUpFinished();
-                if(mEntities.isEmpty()){
+                if (mEntities.isEmpty()) {
                     showToast("没有更多的数据");
-                }else{
-                    refreshDate(mEntities,BaseListAct.ADD);
+                } else {
+                    refreshDate(mEntities, BaseListAct.ADD);
                 }
             }
 
@@ -61,13 +64,13 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
 
     @Override
     public void onPullDown() {
-        page=1;
+        page = 1;
         getOrderListByPage(page, new OnRefreshListener<Order>() {
             @Override
             public void onFinish(List<Order> mEntities) {
                 onPullDownFinished();
-                if(!mEntities.isEmpty()){
-                    refreshDate(mEntities,BaseListAct.LOAD);
+                if (!mEntities.isEmpty()) {
+                    refreshDate(mEntities, BaseListAct.LOAD);
                 }
             }
 
@@ -86,32 +89,34 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
 
     @Override
     public void getInitData() {
+        EventBus.getDefault().register(this);
         onFirst = true;
         if (selfCatalog != null) {
-            Log.i("SUB","ON FIRST NOT NULL IN----"+selfCatalog.getName());
             loadingDataWhenInit();
         }
     }
 
     @Override
     protected void onItemPicked(Order item, int position) {
-        Bundle b=new Bundle();
-        b.putInt(SmOrderDetailActivity.ORDER_ID,item.getId());
-        b.putInt(SmOrderDetailActivity.STATE,selfCatalog.getState());
+        Bundle b = new Bundle();
+        b.putInt(SmOrderDetailActivity.ORDER_ID, item.getId());
+        b.putInt(SmOrderDetailActivity.STATE, selfCatalog.getState());
         b.putString(SmOrderDetailActivity.COMMON_PRICE, CommonUtils.getPriceWithInfo(item.getLess_price()));
-        readyGoForResult(SmOrderDetailActivity.class, REQUEST_CODE,b);
+        readyGoForResult(SmOrderDetailActivity.class, REQUEST_CODE, b);
 
     }
+
     public void onPageSelected(int position, OrderClassify catalog) {
         selfCatalog = catalog;
-        if (onFirst&&!onPage) {
-            onPage=true;
+        if (onFirst && !onPage) {
+            onPage = true;
             Log.i("SUB", "onPageSelected IN---" + selfCatalog.getName());
             loadingDataWhenInit();
         }
     }
-    private void getOrderListByPage(int page, final OnRefreshListener<Order> listener){
-        if(NetUtils.isNetworkConnected(getActivity())){
+
+    private void getOrderListByPage(int page, final OnRefreshListener<Order> listener) {
+        if (NetUtils.isNetworkConnected(getActivity())) {
             ApiManager.getService(getActivity().getApplicationContext()).getSmOrderListByState(selfCatalog.getState(), page, new Callback<OrderlistRes>() {
                 @Override
                 public void success(OrderlistRes order, Response response) {
@@ -128,44 +133,41 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
                     listener.onError();
                 }
             });
-        }else{
+        } else {
             showNetWorkError();
             listener.onError();
         }
     }
 
     private void loadingDataWhenInit() {
-        toggleShowLoading(true,null);
+        toggleShowLoading(true, null);
         getOrderListByPage(DEFAULT_PAGE, new OnRefreshListener<Order>() {
             @Override
             public void onFinish(List<Order> mEntities) {
-                toggleShowLoading(false,null);
-                if(mEntities.isEmpty()){
+                toggleShowLoading(false, null);
+                if (mEntities.isEmpty()) {
                     toggleShowError(true, "暂时还没有相关订单,点击图标重新获取", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             loadingDataWhenInit();
                         }
                     });
-                }else{
+                } else {
                     refreshDate(mEntities, BaseListAct.LOAD);
                 }
             }
 
             @Override
             public void onError() {
-                toggleShowError(true,"暂时不能获取到相关信息,请稍后重试",null);
+                toggleShowError(true, "暂时不能获取到相关信息,请稍后重试", null);
 
             }
         });
 
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CODE&&resultCode==getActivity().RESULT_OK){
-            loadingDataWhenInit();
-        }
+
+    public void onEvent(SmOrderChangeEvent event) {
+        loadingDataWhenInit();
     }
 
 }

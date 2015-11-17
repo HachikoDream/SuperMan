@@ -117,7 +117,14 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     public final static String ORDER_ID = "order_id";
     public final static String STATE = "order_state";
     public final static String COMMON_PRICE = "common_price";
+    //用于向评价界面传递数据
+    public final static String IMAGE = "image";
+    public final static String LESS_KEEP_TIME = "less_keeptime";
+    public final static String MAST_NAME = "master_name";
+    public final static String LESS_NAME = "less_name";
+    public final static String LESS_ID = "less_id";
     public final static int QRREADER_REQUEST_CODE = 156;
+    public final static int EVALUATE_REQUEST_CODE = 157;
     private ProgressDialog pd;
     private String mast_phone;//达人联系电话，用于取消预约操作
 
@@ -267,6 +274,20 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         if(!CommonUtils.isEmpty(orderDetailRes.getCom_id())){
             commentBtn.setVisibility(View.VISIBLE);
             //// TODO: 2015/11/15 评价事件
+            commentBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle b=new Bundle();
+                    b.putString(IMAGE,orderDetailRes.getImage());
+                    b.putString(MAST_NAME,orderDetailRes.getMast_name());
+                    b.putString(LESS_KEEP_TIME,orderDetailRes.getLess_keeptime());
+                    b.putString(LESS_NAME,orderDetailRes.getLess_name());
+                    b.putString(COMMON_PRICE,common_price);
+                    b.putInt(LESS_ID, orderDetailRes.getLess_id());
+                    b.putInt(ORDER_ID,order_id);
+                    readyGoForResult(EvaluateActivity.class, EVALUATE_REQUEST_CODE, b);
+                }
+            });
         }
         orderPhonenumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -519,7 +540,6 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
 
     /*
        在达人确认之前取消预约
-       todo 测试存在问题
      */
     private void cancelSubOrderBeforeConfirm() {
         if (order_id != -1) {
@@ -533,7 +553,6 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                             showAlertDialog("您已经取消了本次课程的预订.", "确定", null, new OnFinish() {
                                 @Override
                                 public void finish(boolean isOk) {
-                                    setResult(RESULT_OK);//// TODO: 2015/11/16 回调刷新
                                     EventBus.getDefault().post(new OrderChangeEvent());
                                     OrderDetailActivity.this.finish();
                                 }
@@ -595,9 +614,16 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             }
         }
         //扫码页面返回处理
-        if(requestCode==QRREADER_REQUEST_CODE){
+        else if(requestCode==QRREADER_REQUEST_CODE){
             if(resultCode==Activity.RESULT_OK){
                 setResult(RESULT_OK);
+                EventBus.getDefault().post(new OrderChangeEvent());
+                finish();
+            }
+        }
+        //评价页面返回处理
+        else if(requestCode==EVALUATE_REQUEST_CODE){
+            if(resultCode==RESULT_OK){
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
             }

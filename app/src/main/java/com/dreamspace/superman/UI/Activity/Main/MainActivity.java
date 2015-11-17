@@ -38,9 +38,11 @@ import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.SuperManHomeFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 import com.dreamspace.superman.UI.View.XViewPager;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.umeng.update.UmengUpdateAgent;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,7 +66,6 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     @Bind(R.id.username_tv)
     TextView mUserName;
     Menu slideMenu;
-    private boolean isFirst=true;
     public static final String COME_SOURCE="source";
     public static final String FIRST_IN="first";
     public static final String NOT_FIRST_IN="notfirst";
@@ -92,6 +93,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     }
     @Override
     protected void initViews() {
+        EventBus.getDefault().register(this);
         getSupportActionBar().setTitle(getString(TITLE));
         checkIsLogin();
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -261,17 +263,12 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         return result;
     }
 
-    @Override
-    protected void onResume() {
-        //todo change the way 用onActivityResult代替
-        super.onResume();
-        if(isFirst){
-            isFirst=false;
-        }else {
-            checkIsLogin();
-            checkIsSuperMan();
-        }
-
+    private void checkLoginState(){
+        checkIsLogin();
+        checkIsSuperMan();
+    }
+    public void onEvent(AccountChangeEvent event){
+        checkLoginState();
     }
     public void gotoIndex(){
         mViewPager.setCurrentItem(0, false);

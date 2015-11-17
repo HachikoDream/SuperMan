@@ -290,7 +290,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
             @Override
             public void success(TempRes tempRes, Response response) {
                 if (tempRes != null) {
-                    /**todo:
+                    /**
                      * 1.取消toast对id的显示
                      * 2.在本地缓存标志位表示已经进行过申请操作，避免后续的重复申请
                      * 3.显示一个提示对话框
