@@ -12,6 +12,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyCourseFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
+import com.dreamspace.superman.event.LessonListRefreshEvent;
 import com.dreamspace.superman.model.Catalog;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -78,7 +80,6 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
 
     @Override
     public void getInitData() {
-        Log.i("HP", "On First "+this.toString());
         onFirst=true;
         if (selfCatalog != null) {
             loadingDataWhenInit();
@@ -87,6 +88,7 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     }
 
     private void loadingDataWhenInit() {
+        page=1;
         toggleShowLoading(true, getString(R.string.common_loading_message));
         loadingDataByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
             @Override
@@ -165,5 +167,8 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
     @Override
     public void getLessonInfo(LessonInfo mLessonInfo) {
 
+    }
+    public void onEvent(LessonListRefreshEvent event){
+      loadingDataWhenInit();
     }
 }

@@ -36,6 +36,8 @@ public class MyCourseAdapter extends BasisAdapter<LessonInfo,MyCourseAdapter.vie
         holder.timeTv.setText(entity.getKeeptime());
         if(entity.getState().equals("off")){
             holder.courseBg.setBackgroundColor(getmContext().getResources().getColor(R.color.grey_line));
+        }else{
+            holder.courseBg.setBackgroundColor(getmContext().getResources().getColor(R.color.near_white));
         }
     }
 

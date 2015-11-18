@@ -23,7 +23,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class FeedbackActivity extends AbsActivity {
-
+  //// TODO: 2015/11/18 转移到抽屉
     @Bind(R.id.feedback_content)
     EditText feedbackContent;
     @Bind(R.id.submit_action)

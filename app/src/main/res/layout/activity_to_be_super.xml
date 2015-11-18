@@ -65,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
                 android:hint="擅长技能"
                 android:textSize="14sp" />
@@ -80,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
                 android:hint="个性标签（例如：钢琴十级）"
                 android:textSize="14sp" />

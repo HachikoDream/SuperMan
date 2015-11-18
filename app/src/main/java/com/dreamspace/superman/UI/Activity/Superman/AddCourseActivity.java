@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.InputUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
@@ -129,10 +130,12 @@ public class AddCourseActivity extends AbsActivity {
 
 
     private void showExistLessonInfo(LessonInfo lessonInfo) {
+        InputUtils.reverse(this);
         coursenameEv.getEditText().setText(lessonInfo.getLess_name());
         coursetimeEv.getEditText().setText(lessonInfo.getKeeptime());
         priceEv.getEditText().setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         descEv.setText(lessonInfo.getDescription());
+        coursenameEv.requestFocus();
         if(lessonInfo.getState().equals(Constant.LESSON_STATE.ON)){
             pauseBtn.setText("下架课程");
             pauseBtn.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +231,7 @@ public class AddCourseActivity extends AbsActivity {
                 }
             }
         });
+
     }
 
     private void ModifyLessonInfoById(int lesson_id, ModifyLessonReq req) {

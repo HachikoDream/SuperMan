@@ -39,6 +39,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 public class OrderDetailActivity extends AbsActivity implements View.OnClickListener {
+    //// TODO: 2015/11/18 增加微信支付
     private static final int REQUEST_CODE_PAYMENT = 827;
     private final int TITLE = R.string.title_activity_order_detail;
     @Bind(R.id.profile_image)
@@ -271,9 +272,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         courseTime.setText(orderDetailRes.getStart_time());
         courseAddress.setText(orderDetailRes.getSite());
         courseRemark.setText(orderDetailRes.getRemark());
-        if(!CommonUtils.isEmpty(orderDetailRes.getCom_id())){
+        if(CommonUtils.isEmpty(orderDetailRes.getCom_id())){
             commentBtn.setVisibility(View.VISIBLE);
-            //// TODO: 2015/11/15 评价事件
             commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

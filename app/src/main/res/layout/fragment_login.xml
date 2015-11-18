@@ -27,6 +27,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
+                android:singleLine="true"
                 android:hint="请输入您的手机号"
                 android:paddingLeft="50dp"
                 android:textSize="13sp" />
@@ -53,6 +54,7 @@
 
             <EditText
                 android:id="@+id/pwd_ed"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"

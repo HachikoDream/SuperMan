@@ -27,7 +27,7 @@ import retrofit.client.Response;
 
 
 public class StartPageActivity extends AppCompatActivity implements android.os.Handler.Callback {
-
+//// TODO: 2015/11/18 达人状态改变的相关提示
     private Handler mHandler;
     private static final int check_is_login = 233;
     private static final String KEY = "IS_FIRST";

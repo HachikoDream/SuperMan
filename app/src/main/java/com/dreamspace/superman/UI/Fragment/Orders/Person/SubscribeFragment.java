@@ -109,6 +109,7 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
     }
 
     private void loadingDataWhenInit() {
+        page=1;
         toggleShowLoading(true, null);
         getOrderListByPage(DEFAULT_PAGE, new OnRefreshListener<Order>() {
             @Override
@@ -160,14 +161,6 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
         }
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.i("RESULT","RESULT COME");
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
-//            loadingDataWhenInit();
-//        }
-//    }
     public void onEvent(OrderChangeEvent event){
         loadingDataWhenInit();
     }

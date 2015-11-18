@@ -15,7 +15,6 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.api.CommentReq;
 import com.dreamspace.superman.model.api.CommentRes;
 
@@ -42,6 +41,11 @@ public class EvaluateActivity extends AbsActivity {
     CheckBox isNameCb;
     @Bind(R.id.submit_btn)
     Button submitBtn;
+    @Bind(R.id.course_price_right)
+    TextView coursePriceRight;
+    @Bind(R.id.price_flag)
+    TextView priceFlag;
+
     private int less_id;
     private int order_id;
     private String course_price;
@@ -75,13 +79,13 @@ public class EvaluateActivity extends AbsActivity {
 
     private boolean isValid() {
         isAnonimity = isNameCb.isChecked();
-        evaluate=evaluateContent.getText().toString();
-        if(CommonUtils.isEmpty(evaluate)){
+        evaluate = evaluateContent.getText().toString();
+        if (CommonUtils.isEmpty(evaluate)) {
             showToast("请先输入您的评价内容");
             return false;
         }
-        int left=15-evaluate.length();
-        if(left>0){
+        int left = 15 - evaluate.length();
+        if (left > 0) {
             showToast("您还差" + left + "字才到15个字哦");
             return false;
         }
@@ -89,6 +93,8 @@ public class EvaluateActivity extends AbsActivity {
     }
 
     private void showViewbyData() {
+        coursePriceRight.setVisibility(View.GONE);
+        priceFlag.setVisibility(View.GONE);
         Tools.showImageWithGlide(this, profileImage, image);
         courseNameTv.setText(less_name);
         timeTv.setText(keeptime);
@@ -98,7 +104,7 @@ public class EvaluateActivity extends AbsActivity {
                 @Override
                 public void onClick(View v) {
                     if (isValid()) {
-
+                        submitEvaluateToServer();
                     }
                 }
             });
@@ -111,26 +117,28 @@ public class EvaluateActivity extends AbsActivity {
             });
         }
     }
-    private void killSelf(){
+
+    private void killSelf() {
         finish();
     }
-    private void submitEvaluateToServer(){
-        if(NetUtils.isNetworkConnected(this)){
-            CommentReq req=new CommentReq();
+
+    private void submitEvaluateToServer() {
+        if (NetUtils.isNetworkConnected(this)) {
+            CommentReq req = new CommentReq();
             req.setAnonymous(isAnonimity);
             req.setContent(evaluate);
             req.setOrder_id(order_id);
             ApiManager.getService(getApplicationContext()).comment(less_id, req, new Callback<CommentRes>() {
                 @Override
                 public void success(CommentRes commentRes, Response response) {
-                    if(commentRes!=null){
-                      showAlertDialog("评价成功，在课程详情中可以看到您的评论。", "确定", null, new OnFinish() {
-                          @Override
-                          public void finish(boolean isOk) {
-                              setResult(RESULT_OK);
-                              killSelf();
-                          }
-                      });
+                    if (commentRes != null) {
+                        showAlertDialog("评价成功，在课程详情中可以看到您的评论。", "确定", null, new OnFinish() {
+                            @Override
+                            public void finish(boolean isOk) {
+                                setResult(RESULT_OK);
+                                killSelf();
+                            }
+                        });
                     }
                 }
 
@@ -139,10 +147,11 @@ public class EvaluateActivity extends AbsActivity {
                     showInnerError(error);
                 }
             });
-        }else{
+        } else {
             showNetWorkError();
         }
     }
+
     private void showAlertDialog(String msg, String positiveMsg, String negativeMsg, final OnFinish finish) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("提示")
@@ -170,10 +179,19 @@ public class EvaluateActivity extends AbsActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
     @Override
     protected View getLoadingTargetView() {
         return null;
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
     interface OnFinish {
         void finish(boolean isOk);
 

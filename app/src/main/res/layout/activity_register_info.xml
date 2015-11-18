@@ -68,6 +68,7 @@
                 android:layout_marginRight="20dp"
                 android:inputType="textPassword"
                 android:hint="密码(长度不少于6)"
+                android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
                 android:textSize="14sp" />
 
@@ -85,6 +86,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textSize="14sp"
+                android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
                 android:hint="昵     称" />
         </android.support.design.widget.TextInputLayout>
@@ -102,6 +104,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textSize="14sp"
+                android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
                 android:hint="真  实  姓  名" />
         </android.support.design.widget.TextInputLayout>

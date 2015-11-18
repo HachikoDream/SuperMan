@@ -11,11 +11,13 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
+import com.dreamspace.superman.event.MoneyRefreshEvent;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.ErrorRes;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -81,7 +83,10 @@ public class MyWalletFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-
+        EventBus.getDefault().register(this);
+    }
+    public void onEvent(MoneyRefreshEvent event){
+       getUserBalance();
     }
 
     @Override

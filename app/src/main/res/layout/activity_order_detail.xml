@@ -245,6 +245,8 @@
             android:layout_width="150dp"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="65dp"
+            android:layout_marginBottom="100dp"
             android:visibility="gone"
             android:background="@drawable/normal_button_bg"
             android:gravity="center"

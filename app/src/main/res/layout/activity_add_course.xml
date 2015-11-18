@@ -31,6 +31,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:singleLine="true"
                     android:background="@drawable/apptheme_edit_text_holo_light"
                     android:hint="课程名称"
                     android:textSize="14sp" />
@@ -44,6 +45,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:singleLine="true"
                     android:background="@drawable/apptheme_edit_text_holo_light"
                     android:hint="课程时长(单位：小时)"
                     android:inputType="numberDecimal"
@@ -58,6 +60,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:singleLine="true"
                     android:background="@drawable/apptheme_edit_text_holo_light"
                     android:hint="课程价格(单位：元/课时)"
                     android:inputType="numberDecimal"

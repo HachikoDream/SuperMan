@@ -28,6 +28,7 @@
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
                 android:hint="请输入您的手机号"
+                android:singleLine="true"
                 android:paddingLeft="50dp"
                 android:textSize="13sp" />
 
@@ -68,6 +69,7 @@
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
                 android:hint="请输入验证码"
+                android:singleLine="true"
                 android:paddingLeft="50dp"
                 android:textSize="13sp" />
 

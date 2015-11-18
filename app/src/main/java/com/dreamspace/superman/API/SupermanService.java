@@ -174,7 +174,7 @@ public interface SupermanService {
     //达人获取隐藏在二维码中的信息
     @GET("/master/order/{ord_id}/confirm")
     void getQRCodeInfo(@Path("ord_id") int ord_id,Callback<QRRes> cb);
-    @POST("/user/order/confiem")
+    @POST("/user/order/confirm")
     void scanQRCodeInfo(@Body QRRes res,Callback<Response> cb);
     //向后台发起支付请求,在调用后将获得的对象解析为json格式的字符串
     @POST("/user/order/{ord_id}/pay")

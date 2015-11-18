@@ -25,7 +25,7 @@ import retrofit.client.Response;
 public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.OnQRCodeReadListener {
     @Bind(R.id.qrdecoderview)
     QRCodeReaderView qrdecoderview;
-    private ProgressDialog pd;
+    private ProgressDialog pd=null;
     //// TODO: 2015/11/5 增加定时设置 超过18s仍未检测到二维码给用户提示
     private boolean isTimeUp=false;
     private int ord_id;
@@ -57,7 +57,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
     }
 
     private void showPd(){
-        if(pd!=null){
+        if(pd==null){
             pd=ProgressDialog.show(this,"","正在提交您扫描到的信息",true,false);
         }else{
             pd.show();

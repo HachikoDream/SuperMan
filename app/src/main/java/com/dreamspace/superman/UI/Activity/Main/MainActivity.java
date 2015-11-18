@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +24,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.InputUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
@@ -39,6 +41,10 @@ import com.dreamspace.superman.UI.Fragment.Drawer.SuperManHomeFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
 import com.dreamspace.superman.UI.View.XViewPager;
 import com.dreamspace.superman.event.AccountChangeEvent;
+import com.dreamspace.superman.event.CollectionChangeEvent;
+import com.dreamspace.superman.event.LessonListRefreshEvent;
+import com.dreamspace.superman.event.MoneyRefreshEvent;
+import com.dreamspace.superman.event.OrderChangeEvent;
 import com.umeng.update.UmengUpdateAgent;
 
 import butterknife.Bind;
@@ -109,6 +115,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                InputUtils.closeInputMethod(MainActivity.this);
                 invalidateOptionsMenu();
                 setTitle(getString(R.string.app_name));
             }
@@ -180,7 +187,11 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_conversation) {
-            startActivity(new Intent(MainActivity.this, ConListActivity.class));
+            if(isLogin()){
+                startActivity(new Intent(MainActivity.this, ConListActivity.class));
+            }else{
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            }
             return true;
         }
 
@@ -193,28 +204,34 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
+        InputUtils.closeInputMethod(this);
         mDrawerLayout.closeDrawer(mNavigationView);
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (menuItem.getItemId()) {
             case R.id.nav_index:
                 mViewPager.setCurrentItem(0, false);
+                EventBus.getDefault().post(new LessonListRefreshEvent());
                 setFragmentTitle(R.string.nav_item_index);
                 return true;
             case R.id.nav_mybalance:
                 if(isLogin()){
                     mViewPager.setCurrentItem(1, false);
+                    EventBus.getDefault().post(new MoneyRefreshEvent());
                     setFragmentTitle(R.string.nav_item_mybalance);
+
                 }
                 return true;
             case R.id.nav_myorder:
                 if(isLogin()){
                     mViewPager.setCurrentItem(2, false);
+                    EventBus.getDefault().post(new OrderChangeEvent());
                     setFragmentTitle(R.string.nav_item_myorder);
                 }
                 return true;
             case R.id.nav_mycollect:
                 if(isLogin()){
                     mViewPager.setCurrentItem(3, false);
+                    EventBus.getDefault().post(new CollectionChangeEvent());
                     setFragmentTitle(R.string.nav_item_mycollect);
                 }
                 return true;
@@ -274,5 +291,4 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         mViewPager.setCurrentItem(0, false);
         setFragmentTitle(R.string.nav_item_index);
     }
-    //// TODO: 2015/11/17 点击抽屉 刷新列表内容
 }

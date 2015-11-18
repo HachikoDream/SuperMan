@@ -21,6 +21,7 @@ import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
+import com.dreamspace.superman.event.CollectionChangeEvent;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
 import com.google.gson.Gson;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -98,6 +100,7 @@ public class CollectionFragment extends BaseLazyFragment {
     }
 
     private void loadDataWhenInit() {
+        page=1;
         if (NetUtils.isNetworkConnected(getActivity())) {
             toggleShowLoading(true, getString(R.string.common_loading_message));
             ApiManager.getService(getActivity().getApplicationContext()).getAllCollections(1, new Callback<SmLessonList>() {
@@ -165,6 +168,7 @@ public class CollectionFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
+        EventBus.getDefault().register(this);
         mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -272,7 +276,9 @@ public class CollectionFragment extends BaseLazyFragment {
             }
         });
     }
-
+    public void onEvent(CollectionChangeEvent event){
+        loadDataWhenInit();
+    }
 
     @Override
     protected int getContentViewLayoutID() {
