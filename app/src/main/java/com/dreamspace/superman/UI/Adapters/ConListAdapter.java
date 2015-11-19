@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.DataUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.ds.greendao.Conversation;
@@ -29,7 +30,7 @@ public class ConListAdapter extends BasisAdapter<Conversation, ConListAdapter.vi
 
     @Override
     protected void setDataIntoView(viewHolder holder, Conversation entity) {
-        holder.timeTv.setText(entity.getChatTime().toLocaleString());//// TODO: 2015/11/12 修改时间格式
+        holder.timeTv.setText(DataUtils.getTag(entity.getChatTime()));//// TODO: 测试
         holder.nameTv.setText(entity.getMemberName());
         holder.latestContentTv.setText(entity.getLastContent());
         Tools.showImageWithGlide(getmContext(),holder.avaterIv,entity.getMemberAvater());

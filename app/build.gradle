@@ -46,7 +46,7 @@ dependencies {
     compile 'com.qiniu:qiniu-android-sdk:7.0.7.1'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
-//    compile 'net.glxn.qrgen:android:2.0'
     compile 'de.greenrobot:greendao:2.0.0'
     compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:1.0.0'
+    compile project(':DatePicker')
 }

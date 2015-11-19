@@ -185,12 +185,6 @@ public class EvaluateActivity extends AbsActivity {
         return null;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     interface OnFinish {
         void finish(boolean isOk);

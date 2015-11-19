@@ -5,14 +5,20 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.text.InputType;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.DataUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
@@ -23,6 +29,8 @@ import com.dreamspace.superman.model.api.SubscribeReq;
 import com.dreamspace.superman.model.api.SubscribeRes;
 
 import butterknife.Bind;
+import cn.aigestudio.datepicker.cons.DPMode;
+import cn.aigestudio.datepicker.views.DatePicker;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -61,6 +69,7 @@ public class SubscribeActivity extends AbsActivity {
     private String anotherInfo;
     private ProgressDialog pd;
 
+
     @Override
     protected void setSelfContentView() {
         setContentView(R.layout.activity_subscribe);
@@ -79,8 +88,8 @@ public class SubscribeActivity extends AbsActivity {
         suscribeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValid()){
-                    SubscribeReq req=new SubscribeReq();
+                if (isValid()) {
+                    SubscribeReq req = new SubscribeReq();
                     req.setName(realName);
                     req.setLess_id(mLessonInfo.getId());
                     req.setPhone(phoneNum);
@@ -89,6 +98,16 @@ public class SubscribeActivity extends AbsActivity {
                     req.setTime(meetTime);
                     suscribeLesson(req);
                 }
+            }
+        });
+        timeEv.getEditText().setInputType(InputType.TYPE_NULL);
+        timeEv.getEditText().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                    showDataPickerDialog();
+                }
+                return true;
             }
         });
 
@@ -203,4 +222,30 @@ public class SubscribeActivity extends AbsActivity {
         return null;
     }
 
+    private void showDataPickerDialog(){
+        final AlertDialog dialog = new AlertDialog.Builder(SubscribeActivity.this).create();
+        dialog.show();
+        DatePicker picker = new DatePicker(SubscribeActivity.this);
+        picker.setDate(DataUtils.getCurrentYear(), DataUtils.getCurrentMonth());
+        picker.setMode(DPMode.SINGLE);
+        picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
+            @Override
+            public void onDatePicked(String date) {
+                dialog.dismiss();
+                onDatePickedFromDialog(date);
+            }
+        });
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setContentView(picker, params);
+        dialog.getWindow().setGravity(Gravity.CENTER);
+
+    }
+
+
+    public void onDatePickedFromDialog(String date) {
+       if(!CommonUtils.isEmpty(date)){
+           timeEv.getEditText().setText(date);
+       }
+    }
 }

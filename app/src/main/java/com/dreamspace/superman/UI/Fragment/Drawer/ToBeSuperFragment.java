@@ -81,7 +81,6 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private ProgressDialog pd;
     private String photoPath;//荣誉证书照片的本地路径
     private boolean choose_glory_iv = false;//用于表明用户是否选择了荣誉证书的照片进行上传
-//// TODO: 2015/11/18 改变日期
     @Override
     protected void onFirstUserVisible() {
         getUserInfoForApply(true);
