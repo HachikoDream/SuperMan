@@ -100,7 +100,7 @@
         android:layout_margin="5dp">
 
         <Button
-            android:id="@+id/connect_student_btn"
+            android:id="@+id/connect_superman_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/connect_sm_btn"
+            android:layout_toLeftOf="@id/connect_superman_btn"
             android:src="@drawable/page_buy_contact" />
 
         <Button

@@ -41,10 +41,6 @@ public class EvaluateActivity extends AbsActivity {
     CheckBox isNameCb;
     @Bind(R.id.submit_btn)
     Button submitBtn;
-    @Bind(R.id.course_price_right)
-    TextView coursePriceRight;
-    @Bind(R.id.price_flag)
-    TextView priceFlag;
 
     private int less_id;
     private int order_id;
@@ -93,8 +89,6 @@ public class EvaluateActivity extends AbsActivity {
     }
 
     private void showViewbyData() {
-        coursePriceRight.setVisibility(View.GONE);
-        priceFlag.setVisibility(View.GONE);
         Tools.showImageWithGlide(this, profileImage, image);
         courseNameTv.setText(less_name);
         timeTv.setText(keeptime);

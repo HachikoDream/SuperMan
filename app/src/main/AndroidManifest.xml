@@ -198,7 +198,11 @@
         <activity
             android:name=".UI.Activity.Main.ChatActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name=".UI.Activity.Main.PayChannelActivity"
+            android:label="@string/title_activity_paychannel">
         </activity>
     </application>
 

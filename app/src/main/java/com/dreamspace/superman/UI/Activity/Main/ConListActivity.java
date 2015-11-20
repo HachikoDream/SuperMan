@@ -100,8 +100,10 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int memberId = mAdapter.getItem(position).getMemberId().intValue();
+                String memberName=mAdapter.getItem(position).getMemberName();
                 Bundle b = new Bundle();
                 b.putString(Constant.MEMBER_ID, String.valueOf(memberId));
+                b.putString(Constant.MEMBER_NAME,memberName);
                 readyGo(ChatActivity.class, b);
 
             }

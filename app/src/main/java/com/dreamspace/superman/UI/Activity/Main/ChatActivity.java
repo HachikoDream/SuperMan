@@ -1,7 +1,6 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -27,6 +26,7 @@ public class ChatActivity extends AbsActivity {
 
     private ChatFragment chatFragment;
     private String memberId;
+    private String memberName;
 
     @Override
     protected void setSelfContentView() {
@@ -36,28 +36,30 @@ public class ChatActivity extends AbsActivity {
     @Override
     protected void prepareDatas() {
         String memberId = getIntent().getStringExtra(Constant.MEMBER_ID);
+        String memberName = getIntent().getStringExtra(Constant.MEMBER_NAME);
         this.memberId = memberId;
+        this.memberName=memberName;
     }
 
     @Override
     protected void initViews() {
         setTitle("对话中");
         chatFragment = (ChatFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_chat);
-        getConversation(memberId);
+        getConversation(memberId, memberName);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
-        if (null != extras && extras.containsKey(Constant.MEMBER_ID)) {
+        if (null != extras && extras.containsKey(Constant.MEMBER_ID)&&extras.containsKey(Constant.MEMBER_NAME)) {
             String memberId = extras.getString(Constant.MEMBER_ID);
             setTitle("对话中");
-            getConversation(memberId);
+            getConversation(memberId,memberName);
         }
     }
 
-    private void getConversation(final String memberId) {
+    private void getConversation(final String memberId, String memberName) {
         final AVIMClient client = AVImClientManager.getInstance().getClient();
         if(client==null){
             String uid= PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.UID);
@@ -85,14 +87,14 @@ public class ChatActivity extends AbsActivity {
                 if (filterException(e)) {
                     //注意：此处仍有漏洞，如果获取了多个 conversation，默认取第一个
                     if (null != list && list.size() > 0) {
-                        chatFragment.setConversation(list.get(0),Integer.parseInt(memberId));
+                        chatFragment.setConversation(list.get(0),Integer.parseInt(memberId),memberName);
                     } else {
                         HashMap<String, Object> attributes = new HashMap<String, Object>();
                         attributes.put("customConversationType", 1);
                         client.createConversation(Arrays.asList(memberId), null, attributes, false, new AVIMConversationCreatedCallback() {
                             @Override
                             public void done(AVIMConversation avimConversation, AVIMException e) {
-                                chatFragment.setConversation(avimConversation,Integer.parseInt(memberId));
+                                chatFragment.setConversation(avimConversation,Integer.parseInt(memberId),memberName);
                             }
                         });
                     }

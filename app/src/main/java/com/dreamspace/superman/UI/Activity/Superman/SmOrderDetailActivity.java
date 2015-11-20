@@ -21,7 +21,6 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.ChatActivity;
 import com.dreamspace.superman.UI.Activity.Main.QRCodeShowActivity;
-import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
 import com.dreamspace.superman.event.SmOrderChangeEvent;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
@@ -45,7 +44,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
     TextView timeTv;
     @Bind(R.id.price_tv)
     TextView priceTv;
-    @Bind(R.id.connect_student_btn)
+    @Bind(R.id.connect_superman_btn)
     Button connectStudentBtn;
     @Bind(R.id.order_phonenum)
     Button orderPhonenum;
@@ -183,7 +182,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
         orderPrice.setText(CommonUtils.getStringFromPrice(orderDetailRes.getLess_price()));
         orderCoursename.setText(orderDetailRes.getLess_name());
         orderStudentname.setText(orderDetailRes.getName());
-        orderPhonenum.setText(orderDetailRes.getPhone());
+        orderPhonenumTv.setText(orderDetailRes.getPhone());
         courseTime.setText(orderDetailRes.getStart_time());
         courseAddress.setText(orderDetailRes.getSite());
         courseRemark.setText(orderDetailRes.getRemark());
@@ -191,8 +190,10 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 int memberId =orderDetailRes.getUser_id();
+                String memberName=orderDetailRes.getName();
                 Bundle b = new Bundle();
                 b.putString(Constant.MEMBER_ID, String.valueOf(memberId));
+                b.putString(Constant.MEMBER_NAME, memberName);
                 readyGo(ChatActivity.class, b);
             }
         });

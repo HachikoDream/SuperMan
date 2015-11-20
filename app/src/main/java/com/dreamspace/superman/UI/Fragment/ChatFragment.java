@@ -142,7 +142,8 @@ public class ChatFragment extends Fragment implements Handler.Callback{
 
     }
 
-    public void setConversation(AVIMConversation conversation, int memberId) {
+    public void setConversation(AVIMConversation conversation, int memberId,String memberName) {
+        itemAdapter.setMemberName(memberName);
         this.memberId = memberId;
         imConversation = conversation;
         refreshLayout.setEnabled(true);

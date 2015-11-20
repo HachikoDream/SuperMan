@@ -5,6 +5,24 @@ package com.dreamspace.superman.model.api;
  */
 public class payAccountRes {
     private String payaccount;
+    private int arrived_balance;
+    private int not_arrived_balance;
+
+    public int getArrived_balance() {
+        return arrived_balance;
+    }
+
+    public void setArrived_balance(int arrived_balance) {
+        this.arrived_balance = arrived_balance;
+    }
+
+    public int getNot_arrived_balance() {
+        return not_arrived_balance;
+    }
+
+    public void setNot_arrived_balance(int not_arrived_balance) {
+        this.not_arrived_balance = not_arrived_balance;
+    }
 
     public String getPayaccount() {
         return payaccount;

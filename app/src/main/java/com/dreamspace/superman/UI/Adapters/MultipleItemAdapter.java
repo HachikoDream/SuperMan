@@ -26,6 +26,7 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private final long TIME_INTERVAL = 10 * 60 * 1000;
 
   private List<AVIMMessage> messageList = new ArrayList<AVIMMessage>();
+  private String membername;
 
   public MultipleItemAdapter() {
   }
@@ -66,12 +67,14 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    ((AVCommonViewHolder)holder).bindData(messageList.get(position));
     if (holder instanceof LeftTextHolder) {
       ((LeftTextHolder)holder).showTimeView(shouldShowTime(position));
+      ((LeftTextHolder)holder).setMemberName(membername);
     } else if (holder instanceof RightTextHolder) {
       ((RightTextHolder)holder).showTimeView(shouldShowTime(position));
     }
+    ((AVCommonViewHolder)holder).bindData(messageList.get(position));
+
   }
 
   @Override
@@ -96,5 +99,9 @@ public class MultipleItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     long lastTime = messageList.get(position - 1).getTimestamp();
     long curTime = messageList.get(position).getTimestamp();
     return curTime - lastTime > TIME_INTERVAL;
+  }
+
+  public void setMemberName(String memberName) {
+     this.membername=memberName;
   }
 }

@@ -32,7 +32,7 @@ public class MyCourseAdapter extends BasisAdapter<LessonInfo,MyCourseAdapter.vie
     protected void setDataIntoView(viewHolder holder, LessonInfo entity) {
         Tools.showImageWithGlide(getmContext(),holder.avaterIv,entity.getImage());
         holder.courseNameTv.setText(entity.getLess_name());
-        holder.priceTv.setText(CommonUtils.getStringFromPrice(entity.getPrice()));
+        holder.priceTv.setText(CommonUtils.getPriceWithInfo(entity.getPrice()));
         holder.timeTv.setText(entity.getKeeptime());
         if(entity.getState().equals("off")){
             holder.courseBg.setBackgroundColor(getmContext().getResources().getColor(R.color.grey_line));

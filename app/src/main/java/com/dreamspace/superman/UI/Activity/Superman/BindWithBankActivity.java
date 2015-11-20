@@ -21,7 +21,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class BindWithBankActivity extends AbsActivity {
-//// TODO: 2015/11/18 添加事件
     @Bind(R.id.bankaccount_ev)
     TextInputLayout bankaccountEv;
     @Bind(R.id.repeat_bankaccount_ev)

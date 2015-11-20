@@ -30,6 +30,7 @@ public class LeftTextHolder extends AVCommonViewHolder {
 
   @Bind(R.id.chat_left_text_tv_name)
   protected TextView nameView;
+  private String memberName;
 
   public LeftTextHolder(Context context, ViewGroup root) {
     super(context, root, R.layout.chat_left_text_view);
@@ -49,7 +50,11 @@ public class LeftTextHolder extends AVCommonViewHolder {
 
     contentView.setText(content);
     timeView.setText(time);
-    nameView.setText(message.getFrom());
+//    nameView.setText(message.getFrom());
+    nameView.setText(memberName);
+  }
+  public void setMemberName(String memberName){
+    this.memberName=memberName;
   }
 
   public void showTimeView(boolean isShow) {

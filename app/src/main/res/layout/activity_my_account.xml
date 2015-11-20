@@ -15,6 +15,7 @@
         android:paddingRight="10dp">
 
         <RadioGroup
+            android:id="@+id/radiogroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -46,12 +47,13 @@
         </RadioGroup>
 
         <TextView
+            android:id="@+id/account_show_tv"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_account"
             android:gravity="center"
-            android:text="$2000"
+            android:text="加载中"
             android:textColor="@color/navi_color"
             android:textSize="45sp" />
 

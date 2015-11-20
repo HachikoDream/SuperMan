@@ -96,9 +96,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
-
         <Button
-            android:id="@+id/connect_sm_btn"
+            android:id="@+id/connect_superman_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -115,21 +114,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/connect_sm_btn"
-            android:paddingRight="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/connect_superman_btn"
             android:src="@drawable/page_buy_contact" />
 
         <Button
-            android:id="@+id/order_phonenum_btn"
+            android:id="@+id/order_phonenum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/connect_sm_iv"
             android:background="@drawable/button_redside_white_bg"
             android:gravity="center"
             android:padding="2dp"
-            android:text="联系达人"
+            android:text="拨打电话"
             android:textColor="@color/navi_color"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/phone_sm_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/order_phonenum"
+            android:src="@drawable/page_buy_phone" />
+
+
     </RelativeLayout>
 </LinearLayout>

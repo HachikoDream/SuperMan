@@ -4,13 +4,13 @@ package com.dreamspace.superman.model.api;
  * Created by Wells on 2015/11/7.
  */
 public class PayRes {
-    private String info;
+    private String channel;
 
-    public String getInfo() {
-        return info;
+    public String getChannel() {
+        return channel;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

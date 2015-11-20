@@ -20,6 +20,7 @@ public class Constant {
     public static final String FAIL_MEMBER_NAME="unknown superman";
     private static final String LEANMESSAGE_CONSTANTS_PREFIX = "com.dreamspace.superman";
     public static final String MEMBER_ID = getPrefixConstant("member_id");
+    public static final String MEMBER_NAME = getPrefixConstant("member_name");
     public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");
     //// TODO: 2015/10/27 增加客服电话
     public static final String self_phone="15651630827";

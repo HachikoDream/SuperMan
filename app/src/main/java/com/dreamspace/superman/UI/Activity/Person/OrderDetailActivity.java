@@ -3,15 +3,14 @@ package com.dreamspace.superman.UI.Activity.Person;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,12 +22,10 @@ import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.ChatActivity;
+import com.dreamspace.superman.UI.Activity.Main.PayChannelActivity;
 import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
 import com.dreamspace.superman.event.OrderChangeEvent;
-import com.dreamspace.superman.model.Order;
 import com.dreamspace.superman.model.api.OrderDetailRes;
-import com.dreamspace.superman.model.api.PayRes;
-import com.pingplusplus.android.PaymentActivity;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -36,11 +33,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class OrderDetailActivity extends AbsActivity implements View.OnClickListener {
-    //// TODO: 2015/11/18 增加微信支付
-    private static final int REQUEST_CODE_PAYMENT = 827;
+    private static final int REQUEST_CODE_PAYCHANNEL = 82;
     private final int TITLE = R.string.title_activity_order_detail;
     @Bind(R.id.profile_image)
     CircleImageView profileImage;
@@ -50,11 +45,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     TextView usernameTv;
     @Bind(R.id.time_tv)
     TextView timeTv;
-    @Bind(R.id.connect_sm_btn)
-    Button connectSmBtn;
-    @Bind(R.id.connect_sm_iv)
-    ImageView connectSmIv;
-    @Bind(R.id.order_phonenum_btn)
+    @Bind(R.id.order_phonenum)
     Button orderPhonenumBtn;
     @Bind(R.id.preview_iv)
     ImageView previewIv;
@@ -82,8 +73,6 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     TextView orderCoursename;
     @Bind(R.id.order_studentname)
     TextView orderStudentname;
-    @Bind(R.id.order_subphone)
-    TextView orderPhonenum;
     @Bind(R.id.course_time)
     TextView courseTime;
     @Bind(R.id.course_address)
@@ -112,6 +101,12 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     RelativeLayout userPayLayout;
     @Bind(R.id.comment_btn)
     Button commentBtn;
+    @Bind(R.id.connect_superman_btn)
+    Button connectSupermanBtn;
+    @Bind(R.id.order_phonenum_tv)
+    TextView orderPhonenumTv;
+    @Bind(R.id.phone_sm_iv)
+    ImageView phoneSmIv;
     private int order_id;
     private int order_state;
     private String common_price;
@@ -177,29 +172,39 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.GONE);
                 statusView.setVisibility(View.GONE);
+                orderPhonenumBtn.setVisibility(View.VISIBLE);
+                phoneSmIv.setVisibility(View.VISIBLE);
                 break;
             case Constant.ORDER_RELATED.SUSCRIBE:
                 quitSubBtn.setVisibility(View.VISIBLE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.GONE);
+                orderPhonenumBtn.setVisibility(View.INVISIBLE);
+                phoneSmIv.setVisibility(View.INVISIBLE);
                 setStatusIntoView(1);
                 break;
             case Constant.ORDER_RELATED.PRE_COST:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.VISIBLE);
                 userPayLayout.setVisibility(View.GONE);
+                orderPhonenumBtn.setVisibility(View.VISIBLE);
+                phoneSmIv.setVisibility(View.VISIBLE);
                 setStatusIntoView(2);
                 break;
             case Constant.ORDER_RELATED.PRE_MEET:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.VISIBLE);
+                orderPhonenumBtn.setVisibility(View.VISIBLE);
+                phoneSmIv.setVisibility(View.VISIBLE);
                 setStatusIntoView(3);
                 break;
             case Constant.ORDER_RELATED.FINISH:
                 quitSubBtn.setVisibility(View.GONE);
                 masterConfirmLayout.setVisibility(View.GONE);
                 userPayLayout.setVisibility(View.GONE);
+                orderPhonenumBtn.setVisibility(View.VISIBLE);
+                phoneSmIv.setVisibility(View.VISIBLE);
                 setStatusIntoView(4);
                 break;
         }
@@ -243,6 +248,12 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                                 getDetailOrderInfoById(order_id);
                             }
                         });
+                        payBtnInConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                showToast("获取订单信息失败,请稍后重试");
+                            }
+                        });
                     }
                 });
             } else {
@@ -268,23 +279,23 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         orderPrice.setText(CommonUtils.getStringFromPrice(orderDetailRes.getLess_price()));
         orderCoursename.setText(orderDetailRes.getLess_name());
         orderStudentname.setText(orderDetailRes.getName());
-        orderPhonenum.setText(orderDetailRes.getPhone());
+        orderPhonenumTv.setText(orderDetailRes.getPhone());
         courseTime.setText(orderDetailRes.getStart_time());
         courseAddress.setText(orderDetailRes.getSite());
         courseRemark.setText(orderDetailRes.getRemark());
-        if(CommonUtils.isEmpty(orderDetailRes.getCom_id())){
+        if (CommonUtils.isEmpty(orderDetailRes.getCom_id()) && order_state == Constant.ORDER_RELATED.FINISH) {
             commentBtn.setVisibility(View.VISIBLE);
             commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle b=new Bundle();
-                    b.putString(IMAGE,orderDetailRes.getImage());
-                    b.putString(MAST_NAME,orderDetailRes.getMast_name());
-                    b.putString(LESS_KEEP_TIME,orderDetailRes.getLess_keeptime());
-                    b.putString(LESS_NAME,orderDetailRes.getLess_name());
-                    b.putString(COMMON_PRICE,common_price);
+                    Bundle b = new Bundle();
+                    b.putString(IMAGE, orderDetailRes.getImage());
+                    b.putString(MAST_NAME, orderDetailRes.getMast_name());
+                    b.putString(LESS_KEEP_TIME, orderDetailRes.getLess_keeptime());
+                    b.putString(LESS_NAME, orderDetailRes.getLess_name());
+                    b.putString(COMMON_PRICE, common_price);
                     b.putInt(LESS_ID, orderDetailRes.getLess_id());
-                    b.putInt(ORDER_ID,order_id);
+                    b.putInt(ORDER_ID, order_id);
                     readyGoForResult(EvaluateActivity.class, EVALUATE_REQUEST_CODE, b);
                 }
             });
@@ -292,7 +303,24 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         orderPhonenumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.callSb(OrderDetailActivity.this,orderDetailRes.getMast_phone());
+                Tools.callSb(OrderDetailActivity.this, orderDetailRes.getMast_phone());
+            }
+        });
+        payBtnInConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payOrder(orderDetailRes);
+            }
+        });
+        connectSupermanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int memberId = orderDetailRes.getUser_id();
+                String memberName = orderDetailRes.getMast_name();
+                Bundle b = new Bundle();
+                b.putString(Constant.MEMBER_ID, String.valueOf(memberId));
+                b.putString(Constant.MEMBER_NAME, memberName);
+                readyGo(ChatActivity.class, b);
             }
         });
 
@@ -372,7 +400,6 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         quitSubBtn.setOnClickListener(this);
         // 2
         quitSubBtnInConfirm.setOnClickListener(this);
-        payBtnInConfirm.setOnClickListener(this);
         //3
         confirmBtn.setOnClickListener(this);
         backMoneyBtn.setOnClickListener(this);
@@ -388,9 +415,6 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             case R.id.quit_sub_btn_in_confirm:
                 cancelSubOrderAfterConfirm();
                 break;
-            case R.id.pay_btn_in_confirm:
-                payOrder();
-                break;
             case R.id.confirm_btn:
                 confirmForPay();
                 break;
@@ -398,6 +422,19 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                 refund();
                 break;
         }
+    }
+
+    //跳转到选择支付渠道的界面
+    private void payOrder(OrderDetailRes orderDetailRes) {
+        Bundle b = new Bundle();
+        b.putString(IMAGE, orderDetailRes.getImage());
+        b.putString(MAST_NAME, orderDetailRes.getMast_name());
+        b.putString(LESS_KEEP_TIME, orderDetailRes.getLess_keeptime());
+        b.putString(LESS_NAME, orderDetailRes.getLess_name());
+        b.putString(COMMON_PRICE, common_price);
+        b.putInt(LESS_ID, orderDetailRes.getLess_id());
+        b.putInt(ORDER_ID, order_id);
+        readyGoForResult(PayChannelActivity.class, REQUEST_CODE_PAYCHANNEL, b);
     }
 
     private void showAlertDialog(String msg, String positiveMsg, String negativeMsg, final OnFinish finish) {
@@ -491,50 +528,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         readyGoForResult(QRReaderActivity.class, QRREADER_REQUEST_CODE, b);
     }
 
-    /*
-      付款
-     */
-    //// TODO: 2015/11/7  注意混淆
-    private void payOrder() {
-        if (NetUtils.isNetworkConnected(this)) {
-            showPd(null);
-            PayRes res = new PayRes();
-            res.setInfo("info");//这里的body不起作用，防止后台报错
-            ApiManager.getService(getApplicationContext()).sendPayRequest(order_id, res, new Callback<Response>() {
-                @Override
-                public void success(Response response, Response response2) {
-                    dismissPd();
-                    if (response != null) {
-                        String charge = new String(((TypedByteArray) response.getBody()).getBytes());
-                        gotoPayView(charge);
-                    } else {
-                        showAlertDialog("暂时无法完成您的请求，请稍后再试", "确定", null, null);
-                    }
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    dismissPd();
-                    showAlertDialog(getInnerErrorInfo(error), "确定", null, null);
-                }
-            });
-        } else {
-            showAlertDialog("请检查您的网络连接", "确定", null, null);
-        }
-    }
-
-    /**
-     * 调用ping++
-     */
-    private void gotoPayView(String charge) {
-        Intent intent = new Intent();
-        String packageName = getPackageName();
-        ComponentName componentName = new ComponentName(packageName, packageName + ".wxapi.WXPayEntryActivity");
-        intent.setComponent(componentName);
-        intent.putExtra(PaymentActivity.EXTRA_CHARGE, charge);
-        startActivityForResult(intent, REQUEST_CODE_PAYMENT);
-    }
-    private void killSelf(){
+    private void killSelf() {
         finish();
     }
 
@@ -584,46 +578,23 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //支付页面返回处理
-        if (requestCode == REQUEST_CODE_PAYMENT) {
+        if (requestCode == REQUEST_CODE_PAYCHANNEL) {
             if (resultCode == Activity.RESULT_OK) {
-                String result = data.getExtras().getString("pay_result");
-            /* 处理返回值
-             * "success" - payment succeed
-             * "fail"    - payment failed
-             * "cancel"  - user canceld
-             * "invalid" - payment plugin not installed
-             */
-                if (result.equals("success")){
-                    showAlertDialog("支付成功!", "确定", null, new OnFinish() {
-                        @Override
-                        public void finish(boolean isOk) {
-                            setResult(RESULT_OK);
-                            EventBus.getDefault().post(new OrderChangeEvent());
-                            killSelf();
-                        }
-                    });
-                }else if(result.equals("invalid")){
-                    showAlertDialog("您尚未安装相关组件","确定",null,null);
-                }else if (result.equals("fail")){
-                    String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                    String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-                    showToast(result);
-                    showAlertDialog(errorMsg + extraMsg, "确定", null, null);
-                }
-
+                EventBus.getDefault().post(new OrderChangeEvent());
+                killSelf();
             }
         }
         //扫码页面返回处理
-        else if(requestCode==QRREADER_REQUEST_CODE){
-            if(resultCode==Activity.RESULT_OK){
+        else if (requestCode == QRREADER_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 setResult(RESULT_OK);
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
             }
         }
         //评价页面返回处理
-        else if(requestCode==EVALUATE_REQUEST_CODE){
-            if(resultCode==RESULT_OK){
+        else if (requestCode == EVALUATE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
             }

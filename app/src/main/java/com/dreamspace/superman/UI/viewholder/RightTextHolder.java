@@ -69,7 +69,7 @@ public class RightTextHolder extends AVCommonViewHolder {
 
     contentView.setText(content);
     timeView.setText(time);
-    nameView.setText(message.getFrom());
+    nameView.setText("我");
 
     if (AVIMMessage.AVIMMessageStatus.AVIMMessageStatusFailed == message.getMessageStatus()) {
       errorView.setVisibility(View.VISIBLE);

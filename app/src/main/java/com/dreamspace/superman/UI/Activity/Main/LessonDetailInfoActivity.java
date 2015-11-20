@@ -167,7 +167,8 @@ public class LessonDetailInfoActivity extends AbsActivity {
                         }else{
                             Bundle b=new Bundle();
                             b.putString(Constant.MEMBER_ID,String.valueOf(mLessonInfo.getMast_user_id()));
-                            readyGo(ChatActivity.class,b);
+                            b.putString(Constant.MEMBER_NAME,String.valueOf(mLessonInfo.getName()));
+                            readyGo(ChatActivity.class, b);
                         }
                     }else{
                         readyGo(LoginActivity.class);

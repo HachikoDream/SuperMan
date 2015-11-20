@@ -32,7 +32,7 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
     }
 
     @Override
-    public void onMessage(AVIMTypedMessage message, AVIMConversation conversation, AVIMClient client) {
+    public void onMessage(final AVIMTypedMessage message, final AVIMConversation conversation, AVIMClient client) {
 
         String clientID = "";
         try {
@@ -43,7 +43,17 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
                 if (!message.getFrom().equals(clientID)) {
                     sendEvent(message, conversation, Integer.parseInt(message.getFrom()));
                     if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
-                        sendNotification(message, conversation);
+                        getInfoFromServer(Integer.parseInt(message.getFrom()), new InfoLoadingListener() {
+                            @Override
+                            public void onSuccess(SimpleInfo info) {
+                                sendNotification(message, conversation,info.getNickname());
+                            }
+
+                            @Override
+                            public void onFail() {
+                                sendNotification(message, conversation,"学员");
+                            }
+                        });
                     }
                 }
             } else {
@@ -85,7 +95,6 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
     private void storeIntoDb(final Conversation dbCon, final AVIMTypedMessage message, final AVIMConversation conversation) {
         final Conversation previous = DbRelated.findConById(context, dbCon.getMemberId());
         if (previous != null) {
-            if(previous.getMemberAvater().equals(Constant.FAIL_AVATER)){
                 getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
                     @Override
                     public void onSuccess(SimpleInfo info) {
@@ -101,13 +110,6 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
                         sendMsgByBus(message, conversation);
                     }
                 });
-            }else{
-                dbCon.setMemberAvater(previous.getMemberAvater());
-                dbCon.setMemberName(previous.getMemberName());
-                DbRelated.updateCon(context, dbCon);
-                sendMsgByBus(message, conversation);
-            }
-
         } else {
             getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
                 @Override
@@ -151,12 +153,13 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
         }
     }
 
-    private void sendNotification(AVIMTypedMessage message, AVIMConversation conversation) {
+    private void sendNotification(AVIMTypedMessage message, AVIMConversation conversation, String nickname) {
         String notificationContent = message instanceof AVIMTextMessage ?
                 ((AVIMTextMessage) message).getText() : context.getString(R.string.unspport_message_type);
         Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
         intent.putExtra(Constant.CONVERSATION_ID, conversation.getConversationId());
         intent.putExtra(Constant.MEMBER_ID, message.getFrom());
+        intent.putExtra(Constant.MEMBER_NAME,nickname);
         NotificationUtils.showNotification(context, "", notificationContent, null, intent);
     }
 
