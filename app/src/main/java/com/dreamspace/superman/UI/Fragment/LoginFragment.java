@@ -1,12 +1,17 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -14,10 +19,12 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.AVImClientManager;
 import com.dreamspace.superman.Common.CommonUtils;
+import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
+import com.dreamspace.superman.UI.Activity.Register.VerifyByPhoneAct;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
@@ -40,7 +47,11 @@ public class LoginFragment extends BaseFragment {
     EditText phoneEt;
     @Bind(R.id.pwd_ed)
     EditText pwdEt;
+    @Bind(R.id.forget_pwd_tv)
+    TextView forgetPwdTv;
     private ProgressDialog pd;
+    private final static int REQUEST_MODIFY_PWD=23;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -191,8 +202,33 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-
+       forgetPwdTv.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Bundle b=new Bundle();
+               b.putInt(Constant.COME_SOURCE.SOURCE,Constant.COME_SOURCE.MODIFY_PWD);
+//               b.putInt(Constant.COME_SOURCE.SOURCE,-1);
+               readyGoForResult(VerifyByPhoneAct.class,REQUEST_MODIFY_PWD,b);
+           }
+       });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==REQUEST_MODIFY_PWD&&resultCode==getActivity().RESULT_OK){
+            AlertDialog dialog=new AlertDialog.Builder(getActivity())
+                    .setTitle("提示")
+                    .setMessage("密码修改成功,请使用新密码来登录")
+                    .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
 
+        }
+    }
 }

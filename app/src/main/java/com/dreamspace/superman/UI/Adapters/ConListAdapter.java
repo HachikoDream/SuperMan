@@ -30,7 +30,7 @@ public class ConListAdapter extends BasisAdapter<Conversation, ConListAdapter.vi
 
     @Override
     protected void setDataIntoView(viewHolder holder, Conversation entity) {
-        holder.timeTv.setText(DataUtils.getTag(entity.getChatTime()));//// TODO: 测试
+        holder.timeTv.setText(DataUtils.getTag(entity.getChatTime()));
         holder.nameTv.setText(entity.getMemberName());
         holder.latestContentTv.setText(entity.getLastContent());
         Tools.showImageWithGlide(getmContext(),holder.avaterIv,entity.getMemberAvater());

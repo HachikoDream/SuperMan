@@ -38,7 +38,7 @@ public class ChatActivity extends AbsActivity {
         String memberId = getIntent().getStringExtra(Constant.MEMBER_ID);
         String memberName = getIntent().getStringExtra(Constant.MEMBER_NAME);
         this.memberId = memberId;
-        this.memberName=memberName;
+        this.memberName = memberName;
     }
 
     @Override
@@ -52,17 +52,17 @@ public class ChatActivity extends AbsActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
-        if (null != extras && extras.containsKey(Constant.MEMBER_ID)&&extras.containsKey(Constant.MEMBER_NAME)) {
+        if (null != extras && extras.containsKey(Constant.MEMBER_ID) && extras.containsKey(Constant.MEMBER_NAME)) {
             String memberId = extras.getString(Constant.MEMBER_ID);
             setTitle("对话中");
-            getConversation(memberId,memberName);
+            getConversation(memberId, memberName);
         }
     }
 
     private void getConversation(final String memberId, String memberName) {
         final AVIMClient client = AVImClientManager.getInstance().getClient();
-        if(client==null){
-            String uid= PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.UID);
+        if (client == null) {
+            String uid = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.UID);
             AVImClientManager.getInstance().open(uid, new AVIMClientCallback() {
                 @Override
                 public void done(AVIMClient avimClient, AVIMException e) {
@@ -72,29 +72,30 @@ public class ChatActivity extends AbsActivity {
                     }
                 }
             });
-        }else{
+        } else {
             getCon(client);
         }
 
     }
-    private void getCon(final AVIMClient client){
+
+    private void getCon(final AVIMClient client) {
         AVIMConversationQuery conversationQuery = client.getQuery();
         conversationQuery.withMembers(Arrays.asList(memberId), true);
-        conversationQuery.whereEqualTo("customConversationType", 1);
+        conversationQuery.whereEqualTo("type", 0);
         conversationQuery.findInBackground(new AVIMConversationQueryCallback() {
             @Override
             public void done(List<AVIMConversation> list, AVIMException e) {
                 if (filterException(e)) {
                     //注意：此处仍有漏洞，如果获取了多个 conversation，默认取第一个
                     if (null != list && list.size() > 0) {
-                        chatFragment.setConversation(list.get(0),Integer.parseInt(memberId),memberName);
+                        chatFragment.setConversation(list.get(0), Integer.parseInt(memberId), memberName);
                     } else {
                         HashMap<String, Object> attributes = new HashMap<String, Object>();
-                        attributes.put("customConversationType", 1);
+                        attributes.put("type", 0);
                         client.createConversation(Arrays.asList(memberId), null, attributes, false, new AVIMConversationCreatedCallback() {
                             @Override
                             public void done(AVIMConversation avimConversation, AVIMException e) {
-                                chatFragment.setConversation(avimConversation,Integer.parseInt(memberId),memberName);
+                                chatFragment.setConversation(avimConversation, Integer.parseInt(memberId), memberName);
                             }
                         });
                     }

@@ -134,7 +134,7 @@ public class PreferenceUtils {
     public static void writeClassifyIntoSp(Context context, List<Catalog> items) {
         Gson gson = new Gson();
         Catalog catalog=new Catalog();
-        catalog.setId(1);
+        catalog.setId(-1);
         catalog.setIcon("TEST");
         catalog.setName("精选");
         items.add(0, catalog);
@@ -142,7 +142,6 @@ public class PreferenceUtils {
         putString(context, Key.CLASSIFY, content);
     }
     public static void writeClassifyIntoSpForFirst(Context context) {
-        //// TODO: 2015/10/24 换为序列化的方式
         Gson gson = new Gson();
         Catalog catalog=new Catalog();
         catalog.setId(1);

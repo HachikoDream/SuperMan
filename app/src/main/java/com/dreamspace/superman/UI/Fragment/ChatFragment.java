@@ -50,7 +50,7 @@ import retrofit.client.Response;
  * Created by wli on 15/8/27.
  * 将聊天相关的封装到此 Fragment 里边，只需要通过 setConversation 传入 Conversation 即可
  */
-//// TODO: 2015/11/20  修改昵称  发布之前清空消息记录
+//// TODO: 2015/11/20   发布之前清空消息记录
 public class ChatFragment extends Fragment implements Handler.Callback{
     protected AVIMConversation imConversation;
 

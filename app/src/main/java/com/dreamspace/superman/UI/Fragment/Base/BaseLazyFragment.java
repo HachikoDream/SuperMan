@@ -316,10 +316,14 @@ public abstract class BaseLazyFragment extends Fragment {
     }
 
     protected void showInnerError(RetrofitError error) {
-        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
-        if(res!=null){
-            showToast(res.getReason());
-        }else{
+        try {
+            ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
+            if(res!=null){
+                showToast(res.getReason());
+            }else{
+                showToast("网络环境过差,请稍后再试");
+            }
+        }catch (RuntimeException e){
             showToast("网络环境过差,请稍后再试");
         }
 

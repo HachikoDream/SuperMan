@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="316dp"
-        android:layout_height="74dp"
+        android:layout_height="111dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="56dp"
         android:padding="4dp"
@@ -87,5 +87,14 @@
         android:text="登陆"
         android:textColor="@android:color/white" />
 
-
+    <TextView
+        android:id="@+id/forget_pwd_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码"
+        android:layout_gravity="center_horizontal"
+        android:padding="5dp"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        />
 </LinearLayout>

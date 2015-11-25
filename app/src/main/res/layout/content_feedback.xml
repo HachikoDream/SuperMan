@@ -8,42 +8,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <include layout="@layout/custom_toolbar"/>
-        <LinearLayout
+        <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="15dp"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/feedback_tips"
-                android:textColor="@color/near_black"
-                android:textSize="16sp"/>
-            <EditText
-                android:id="@+id/feedback_content"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@drawable/edit_bg"
-                android:hint="@string/feedback_edit_hint"
-                android:padding="10dp"
-                android:gravity="left"
-                android:layout_marginTop="20dp"
-                android:textSize="14sp"
-                />
-            <Button
-                android:id="@+id/submit_action"
-                android:layout_width="150dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="65dp"
-                android:background="@drawable/normal_button_bg"
-                android:gravity="center"
-                android:text="提交"
-                android:textColor="@color/near_white" />
-
-        </LinearLayout>
+            android:name="com.dreamspace.superman.UI.Fragment.Drawer.FeedbackFragment"
+            tools:layout="@layout/content_feedback" />
     </LinearLayout>
 </ScrollView>

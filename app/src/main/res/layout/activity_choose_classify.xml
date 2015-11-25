@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context="com.dreamspace.superman.UI.Activity.Register.ChooseClassifyActivity">
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
@@ -40,11 +40,11 @@
                    android:paddingBottom="7.5dp">
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/it"
+                       android:id="@+id/dance"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_centerHorizontal="true"
-                       android:src="@drawable/class_it_noma" />
+                       android:src="@drawable/class_dance_nomal" />
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
                        android:id="@+id/ball"
@@ -54,11 +54,11 @@
                        android:src="@drawable/class_sports_nomal" />
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/body"
+                       android:id="@+id/paint"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_alignParentRight="true"
-                       android:src="@drawable/class_gym_nomal" />
+                       android:src="@drawable/class_paint_nomal" />
 
                </RelativeLayout>
 
@@ -67,27 +67,27 @@
                    android:layout_height="wrap_content"
                    android:paddingTop="7.5dp"
                    android:paddingBottom="7.5dp">
-
-                   <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/camera"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_centerHorizontal="true"
-                       android:src="@drawable/class_camera_nomal" />
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
                        android:id="@+id/educate"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:layout_alignParentLeft="true"
+                       android:layout_centerHorizontal="true"
                        android:src="@drawable/class_edu_nomal" />
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/swim"
+                       android:id="@+id/english"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_alignParentLeft="true"
+                       android:src="@drawable/class_eng_normal" />
+
+                   <com.dreamspace.superman.UI.View.SelectorImageView
+                       android:id="@+id/code"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_alignParentRight="true"
-                       android:src="@drawable/class_swim_nomal" />
+                       android:src="@drawable/class_it_noma" />
 
 
                </RelativeLayout>
@@ -99,25 +99,25 @@
                    android:paddingBottom="7.5dp">
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/paint"
+                       android:id="@+id/dressup"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_centerHorizontal="true"
-                       android:src="@drawable/class_paint_nomal" />
+                       android:src="@drawable/class_dressup_normal" />
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/music"
+                       android:id="@+id/camera"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_alignParentLeft="true"
-                       android:src="@drawable/class_music_nomal" />
+                       android:src="@drawable/class_camera_nomal" />
 
                    <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/dance"
+                       android:id="@+id/game"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:layout_alignParentRight="true"
-                       android:src="@drawable/class_dance_nomal" />
+                       android:src="@drawable/class_game_normal" />
 
 
                </RelativeLayout>
@@ -132,16 +132,8 @@
                        android:id="@+id/others"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:layout_centerHorizontal="true"
-                       android:src="@drawable/class_others_nomal" />
-
-                   <com.dreamspace.superman.UI.View.SelectorImageView
-                       android:id="@+id/write"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
                        android:layout_alignParentLeft="true"
-                       android:src="@drawable/class_w_nomal" />
-
+                       android:src="@drawable/class_others_nomal" />
 
                </RelativeLayout>
            </LinearLayout>

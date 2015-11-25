@@ -179,6 +179,10 @@ public interface SupermanService {
     //向后台发起支付请求,在调用后将获得的对象解析为json格式的字符串
     @POST("/user/order/{ord_id}/pay")
     void sendPayRequest(@Path("ord_id") int ord_id,@Body PayRes res,Callback<Response> cb);
+    //获取达人账户信息
     @GET("/master/payaccount")
     void getPayAccount(Callback<payAccountRes> cb);
+    //获取推荐课程信息
+    @GET("/lessons/recommends")
+    void getRecommentLessons(@Query("page") int page,Callback<SmLessonList> cb);
 }

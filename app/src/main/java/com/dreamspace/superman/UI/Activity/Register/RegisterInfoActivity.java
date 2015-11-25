@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Activity.Register;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -40,9 +42,11 @@ import com.dreamspace.superman.model.api.RegisterRes;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
+import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -96,8 +100,6 @@ public class RegisterInfoActivity extends AbsActivity {
         mService = ApiManager.getService(getApplicationContext());
         register_token = this.getIntent().getStringExtra("token");
         phoneNum=this.getIntent().getStringExtra("phoneNum");
-        Log.i("INFO", "register-token  :" + register_token);
-        Log.i("INFO", "phoneNum  :" + phoneNum);
     }
 
     @OnClick({R.id.gender_man, R.id.gender_woman})
@@ -164,10 +166,11 @@ public class RegisterInfoActivity extends AbsActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoPickerIntent intent = new PhotoPickerIntent(RegisterInfoActivity.this);
-                intent.setPhotoCount(1);
-                intent.setShowCamera(true);
-                startActivityForResult(intent, REQUEST_CODE);
+                Crop.pickImage(RegisterInfoActivity.this);
+//                PhotoPickerIntent intent = new PhotoPickerIntent(RegisterInfoActivity.this);
+//                intent.setPhotoCount(1);
+//                intent.setShowCamera(true);
+//                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
@@ -318,19 +321,40 @@ public class RegisterInfoActivity extends AbsActivity {
     private boolean realNameValid(String realName) {
         return !(realName.isEmpty() || realName == null);
     }
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));//// TODO: 2015/11/25  删除缓存图片
+        Crop.of(source, destination).asSquare().start(this);
+    }
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            photoPath=Crop.getOutput(result).getPath();
+            Log.i("info",photoPath);
+            Tools.showImageWithGlide(this,mImageView,photoPath);
+            choose_avater = true;
+//            resultView.setImageURI(Crop.getOutput(result));
+        } else if (resultCode == Crop.RESULT_ERROR) {
+          showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
+        }
+    }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            if (data != null) {
-                ArrayList<String> photos =
-                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                Log.i("INFO", "PHOTO:" + photos.get(0));
-                photoPath = photos.get(0);
-                Tools.showImageWithGlide(this,mImageView,photoPath);
-                choose_avater = true;
-            }
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+        super.onActivityResult(requestCode, resultCode, result);
+        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            beginCrop(result.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, result);
         }
+
+//        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+//            if (data != null) {
+//                ArrayList<String> photos =
+//                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+//                Log.i("INFO", "PHOTO:" + photos.get(0));
+//                photoPath = photos.get(0);
+//                Tools.showImageWithGlide(this,mImageView,photoPath);
+//                choose_avater = true;
+//            }
+//        }
     }
 }

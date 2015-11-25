@@ -110,11 +110,13 @@
                     android:paddingTop="4dp">
 
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/homepage_deal" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/success_meet_num_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -122,6 +124,7 @@
                         android:textColor="@color/navi_color"
                         android:textSize="10sp" />
                     <TextView
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"

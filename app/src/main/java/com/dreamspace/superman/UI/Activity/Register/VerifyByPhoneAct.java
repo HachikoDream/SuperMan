@@ -72,6 +72,11 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
     protected void prepareDatas() {
         mHandler = new Handler(this);
         source = this.getIntent().getIntExtra(Constant.COME_SOURCE.SOURCE, -1);
+        //test
+        if(source==-1){
+            setResult(RESULT_OK);
+            finish();
+        }
         setViewBySource(source);
     }
 
@@ -79,10 +84,13 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
         setMyBtnText(source);
         if (source == Constant.COME_SOURCE.MODIFY_PWD) {
             phoneNum=PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.PHONE);
-            phoneNumEt.setText(fuzzyString(phoneNum));
-            phoneNumEt.setEnabled(false);
-            special = true;
-            sendVerifyCode();
+            if (!CommonUtils.isEmpty(phoneNum)){ //用户已登录
+                phoneNumEt.setText(fuzzyString(phoneNum));
+                phoneNumEt.setEnabled(false);
+                special = true;
+                sendVerifyCode();
+            }
+
         }
     }
 
@@ -168,11 +176,11 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
 
     private void modifyPwd() {
         showDialog();
-        if (isCodeValid()) {
+        if (isCodeValid()&&isPhoneValid()) {
             if (NetUtils.isNetworkConnected(this)) {
                 RegistertokenReq req = new RegistertokenReq();
                 req.setCode(code);
-                req.setPhone(PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.PHONE));
+                req.setPhone(phoneNum);
                 ApiManager.getService(this.getApplicationContext()).createRegisterToken(req, new Callback<RegistertokenRes>() {
                     @Override
                     public void success(RegistertokenRes registertokenRes, Response response) {

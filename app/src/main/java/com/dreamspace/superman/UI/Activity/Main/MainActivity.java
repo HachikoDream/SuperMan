@@ -34,6 +34,7 @@ import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Adapters.VPFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.FeedbackFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
@@ -51,7 +52,7 @@ import butterknife.Bind;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener,FeedbackFragment.FeedbackComplete {
 
     @Bind(R.id.dl_left)
     DrawerLayout mDrawerLayout;
@@ -60,7 +61,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     private ActionBarDrawerToggle mDrawerToggle;
     @Bind(R.id.header_layout)
     RelativeLayout headerLayout;
-    BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment(), new SuperManHomeFragment()};
+    BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment(), new SuperManHomeFragment(),new FeedbackFragment()};
     @Bind(R.id.footer_item_settings)
     TextView mSettings;
     private static final int TITLE = R.string.app_name;
@@ -245,6 +246,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
                 mViewPager.setCurrentItem(5, false);
                 setFragmentTitle(R.string.nav_item_superhome);
                 return true;
+            case R.id.nav_feedback://// TODO: 2015/11/22 是否需要登录
+                mViewPager.setCurrentItem(6, false);
+                setFragmentTitle(R.string.nav_item_feedback);
+                return true;
         }
         return false;
     }
@@ -290,5 +295,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     public void gotoIndex(){
         mViewPager.setCurrentItem(0, false);
         setFragmentTitle(R.string.nav_item_index);
+    }
+
+    @Override
+    public void complete() {
+        gotoIndex();
     }
 }

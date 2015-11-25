@@ -12,7 +12,8 @@ import retrofit.RestAdapter;
  * Created by Administrator on 2015/8/24 0024.
  */
 public final class ApiManager {
-    public static String BASE_URL = "http://api2.hloli.me:9777/v1.0";
+    //    public static String BASE_URL = "http://api2.hloli.me:9777/v1.0";
+    public static String BASE_URL = "https://api2.idarenhui.com/v1.0";
     private static SupermanService mService;
     static volatile RestAdapter restAdapter = null;
 

@@ -19,14 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+
 //// TODO: 改为从网络获取
 public class ChooseClassifyActivity extends AbsActivity {
-    @Bind({R.id.ball, R.id.it, R.id.body, R.id.educate, R.id.camera, R.id.swim, R.id.music, R.id.paint, R.id.dance, R.id.write, R.id.others})
+    @Bind({R.id.ball, R.id.dance, R.id.paint, R.id.english, R.id.educate, R.id.code, R.id.camera, R.id.dressup, R.id.game, R.id.others})
     SelectorImageView[]
             mSelectorImageViews = new SelectorImageView[11];
-    private String[] mFragmentNames = {"球类运动", "IT技术", "健身", "教育", "摄影", "游泳", "器乐", "绘画", "舞蹈", "写作", "其他"};
+    private String[] mFragmentNames = {"体育运动", "器乐舞蹈", "书法绘画", "留学外语", "学习辅导", "软件编程", "摄影后期", "化妆美甲", "游戏竞技", "其他"};
     private List<Catalog> mSelectedFNs = new ArrayList<>();
-    private List<Catalog> mCatalogs=new ArrayList<>();
+    private List<Catalog> mCatalogs = new ArrayList<>();
     @Bind(R.id.begin_read)
     Button mButton;
     private static final String COME_FROM_INDEX = "INDEX";
@@ -40,11 +41,11 @@ public class ChooseClassifyActivity extends AbsActivity {
     @Override
     protected void prepareDatas() {
         Catalog catalog;
-        for (int i=0;i<mFragmentNames.length;i++){
-            catalog=new Catalog();
+        for (int i = 1; i <= mFragmentNames.length; i++) {
+            catalog = new Catalog();
             catalog.setIcon("TEST");
-            catalog.setId(i+7);
-            catalog.setName(mFragmentNames[i]);
+            catalog.setId(i);
+            catalog.setName(mFragmentNames[i-1]);
             mCatalogs.add(catalog);
         }
         for (int i = 0; i < mSelectorImageViews.length; i++) {
@@ -63,9 +64,9 @@ public class ChooseClassifyActivity extends AbsActivity {
             public void onClick(View v) {
                 Log.i("INFO", "source: " + source);
                 fillSelectedIds();
-                if(mSelectedFNs.isEmpty()){
-                     showToast("请至少选择一个分类");
-                }else{
+                if (mSelectedFNs.size()<6) {
+                    showToast("请至少选择6个分类");
+                } else {
                     PreferenceUtils.writeClassifyIntoSp(ChooseClassifyActivity.this.getApplicationContext(), mSelectedFNs);
                     if (source.equals(COME_FROM_INDEX)) {
                         ChooseClassifyActivity.this.setResult(RESULT_OK);
