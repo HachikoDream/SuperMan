@@ -24,10 +24,14 @@ import butterknife.ButterKnife;
 public class CourseIntroductionFragment extends BaseLessonFragment {
     @Bind(R.id.id_course_desc)
     TextView contentTv;
-    private final static String TAG="课程介绍";
-    private String desc;
-    private boolean onFirst=false;
-    private boolean getLesson=false;
+    @Bind(R.id.course_keeptime_tv)
+    TextView courseKeeptimeTv;
+    private final static String TAG = "课程介绍";
+    private String desc = null;//课程描述
+    private String lesson_keeptime = null;//课程时长
+    private boolean onFirst = false;
+    private boolean getLesson = false;
+
     public CourseIntroductionFragment() {
         // Required empty public constructor
         setTAG(TAG);
@@ -36,15 +40,14 @@ public class CourseIntroductionFragment extends BaseLessonFragment {
 
     @Override
     protected void onFirstUserVisible() {
-        onFirst=true;
-        if(getLesson){
-            if(desc!=null){
-                contentTv.setText(desc);
-            }else {
-                toggleShowError(true,getString(R.string.common_error_msg),null);
+        onFirst = true;
+        if (getLesson) {
+            if (desc != null && lesson_keeptime != null) {
+                setDataIntoView();
+            } else {
+                toggleShowError(true, getString(R.string.common_error_msg), null);
             }
         }
-        Log.i("SM", "CourseIntroduction Fragment onFirst in");
     }
 
     @Override
@@ -59,7 +62,7 @@ public class CourseIntroductionFragment extends BaseLessonFragment {
 
     @Override
     protected View getLoadingTargetView() {
-        return ButterKnife.findById(getActivity(),R.id.card_view);
+        return ButterKnife.findById(getActivity(), R.id.card_view);
     }
 
     @Override
@@ -73,20 +76,22 @@ public class CourseIntroductionFragment extends BaseLessonFragment {
 
     @Override
     public void getLessonInfo(LessonInfo mLessonInfo) {
-        getLesson=true;
-        if(onFirst){
-            if(mLessonInfo!=null){
-                desc=mLessonInfo.getDescription();
-                contentTv.setText(desc);
-            }else{
-                toggleNetworkError(true,null);
-            }
-        }else {
-            if (mLessonInfo!=null){
-                desc=mLessonInfo.getDescription();
-            }else{
-                desc=null;
+        getLesson = true;
+        if (mLessonInfo != null) {
+            desc = mLessonInfo.getDescription();
+            lesson_keeptime = new StringBuilder().append(mLessonInfo.getKeeptime()).append("小时").toString();
+        }
+        if (onFirst) {
+            if (desc != null && lesson_keeptime != null) {
+                setDataIntoView();
+            } else {
+                toggleNetworkError(true, null);
             }
         }
+    }
+
+    private void setDataIntoView() {
+        contentTv.setText(desc);
+        courseKeeptimeTv.setText(lesson_keeptime);
     }
 }

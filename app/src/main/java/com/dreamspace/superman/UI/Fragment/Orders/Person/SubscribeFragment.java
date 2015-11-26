@@ -85,7 +85,6 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
         EventBus.getDefault().register(this);
         onFirst = true;
         if (selfCatalog != null) {
-            Log.i("SUB", "ON FIRST NOT NULL IN----" + selfCatalog.getName());
             loadingDataWhenInit();
         }
     }
@@ -103,7 +102,6 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
         selfCatalog = catalog;
         if (onFirst && !onPage) {
             onPage = true;
-            Log.i("SUB", "onPageSelected IN---" + selfCatalog.getName());
             loadingDataWhenInit();
         }
     }
@@ -163,5 +161,11 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
 
     public void onEvent(OrderChangeEvent event){
         loadingDataWhenInit();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 }

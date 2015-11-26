@@ -93,4 +93,10 @@ public class MyWalletFragment extends BaseLazyFragment {
     protected int getContentViewLayoutID() {
         return R.layout.activity_my_balance;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 }

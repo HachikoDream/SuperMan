@@ -30,6 +30,7 @@ import com.dreamspace.superman.UI.Fragment.StudentCommentListFragment;
 import com.dreamspace.superman.UI.Fragment.SupermanIntroductionFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.LessonInfo;
@@ -151,7 +152,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
                         Bundle b = new Bundle();
                         b.putParcelable(LESSON_INFO, mLessonInfo);
                         readyGo(SubscribeActivity.class, b);
-                    }else{
+                    } else {
                         readyGo(LoginActivity.class);
                     }
                 }
@@ -160,17 +161,17 @@ public class LessonDetailInfoActivity extends AbsActivity {
         talkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mLessonInfo!=null){
-                    if(!CommonUtils.isEmpty(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT))){
-                        if(String.valueOf(mLessonInfo.getMast_user_id()).equals(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.UID))){
-                             showToast("您不能和自己对话");
-                        }else{
-                            Bundle b=new Bundle();
-                            b.putString(Constant.MEMBER_ID,String.valueOf(mLessonInfo.getMast_user_id()));
-                            b.putString(Constant.MEMBER_NAME,String.valueOf(mLessonInfo.getName()));
+                if (mLessonInfo != null) {
+                    if (!CommonUtils.isEmpty(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
+                        if (String.valueOf(mLessonInfo.getMast_user_id()).equals(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.UID))) {
+                            showToast("您不能和自己对话");
+                        } else {
+                            Bundle b = new Bundle();
+                            b.putString(Constant.MEMBER_ID, String.valueOf(mLessonInfo.getMast_user_id()));
+                            b.putString(Constant.MEMBER_NAME, String.valueOf(mLessonInfo.getName()));
                             readyGo(ChatActivity.class, b);
                         }
-                    }else{
+                    } else {
                         readyGo(LoginActivity.class);
                     }
                 }
@@ -207,7 +208,6 @@ public class LessonDetailInfoActivity extends AbsActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Log.i("SM", "retrofit error");
                     dimissPd();
                     showInnerError(error);
                     passInfoToChild(null);
@@ -231,6 +231,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
     }
 
     private void showLessonInfo(LessonInfo lessonInfo) {
+        invalidateOptionsMenu();
         Tools.showImageWithGlide(this, userIv, lessonInfo.getImage());
         lessonnameTv.setText(lessonInfo.getLess_name());
         meet_num_tv.setText(String.valueOf(lessonInfo.getCollection_count()));
@@ -245,7 +246,6 @@ public class LessonDetailInfoActivity extends AbsActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.i("LDI", "onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_lesson_detail, menu);
         MenuItem menuItem = menu.getItem(0);
@@ -358,16 +358,36 @@ public class LessonDetailInfoActivity extends AbsActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (isFirstIn) {
-            isFirstIn = false;
-        } else {
-            //用于登录后的刷新操作
-            loadLessonInfo();
-        }
+    //用于登录后的刷新操作
+    private void refreshLessonInfo() {
+        showProgressDialog();
+        if (NetUtils.isNetworkConnected(this)) {
+            ApiManager.getService(getApplicationContext()).getLessonDetail(less_id, new Callback<LessonInfo>() {
+                @Override
+                public void success(LessonInfo lessonInfo, Response response) {
+                    if (lessonInfo != null) {
+                        dimissPd();
+                        showLessonInfo(lessonInfo);
+                        mLessonInfo = lessonInfo;
+                    }
+                }
 
+                @Override
+                public void failure(RetrofitError error) {
+                    dimissPd();
+                    showInnerError(error);
+                    mLessonInfo = null;
+                }
+            });
+        } else {
+            dimissPd();
+            showNetWorkError();
+            mLessonInfo = null;
+        }
+    }
+
+    public void onEvent(AccountChangeEvent event) {
+        refreshLessonInfo();
     }
 
 }

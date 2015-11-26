@@ -62,6 +62,8 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     TextInputLayout skilsEv;
     @Bind(R.id.tags_ev)
     TextInputLayout tagsEv;
+    @Bind(R.id.realname_ev)
+    TextInputLayout realnameEv;
     @Bind(R.id.honour_ev)
     EditText honourEv;
     @Bind(R.id.introduction_ev)
@@ -73,7 +75,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private String avater_url;
     private String tags;//个人标签
     private String honour;//荣誉
-    private String realName;//真实姓名，从本地数据中读取
+    private String realName;//真实姓名，从本地数据中读取,允许用户修改,修改后保存在本地
     private String skills;//技能
     private String phone;//电话，从本地数据中读取
     private String introduction;//介绍
@@ -81,6 +83,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private ProgressDialog pd;
     private String photoPath;//荣誉证书照片的本地路径
     private boolean choose_glory_iv = false;//用于表明用户是否选择了荣誉证书的照片进行上传
+
     @Override
     protected void onFirstUserVisible() {
         getUserInfoForApply(true);
@@ -131,13 +134,14 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     @Override
     protected void initViewsAndEvents() {
         loadFromLocal();
+        realnameEv.getEditText().setText(realName);
         gloryIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
-                intent.setPhotoCount(1);
-                intent.setShowCamera(true);
-                startActivityForResult(intent, REQUEST_CODE);
+//                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
+//                intent.setPhotoCount(1);
+//                intent.setShowCamera(true);
+//                startActivityForResult(intent, REQUEST_CODE);
 
             }
         });
@@ -204,9 +208,9 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(getActivity())) {
-            EmptyBody body=new EmptyBody();
+            EmptyBody body = new EmptyBody();
             body.setInfo(Constant.FEMALE);
-            ApiManager.getService(getActivity().getApplicationContext()).createQiNiuToken(body,new Callback<QnRes>() {
+            ApiManager.getService(getActivity().getApplicationContext()).createQiNiuToken(body, new Callback<QnRes>() {
                 @Override
                 public void success(QnRes qnRes, Response response) {
                     if (qnRes != null) {
@@ -289,19 +293,12 @@ public class ToBeSuperFragment extends BaseLazyFragment {
             @Override
             public void success(TempRes tempRes, Response response) {
                 if (tempRes != null) {
-                    /**
-                     * 1.取消toast对id的显示
-                     * 2.在本地缓存标志位表示已经进行过申请操作，避免后续的重复申请
-                     * 3.显示一个提示对话框
-                     * 4.导航到主页面
-                     * 测试
-                     */
-
                     dismissPd();
+                    PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME, realName);
                     showInfoWithDialog("申请成功，我们会以短信的方式通知您的申请结果，请等待.", new OnFinish() {
                         @Override
                         public void finish(boolean isOk) {
-                            MainActivity activity= (MainActivity) getActivity();
+                            MainActivity activity = (MainActivity) getActivity();
                             activity.gotoIndex();
                         }
                     });
@@ -316,14 +313,15 @@ public class ToBeSuperFragment extends BaseLazyFragment {
             }
         });
     }
-    private void showInfoWithDialog(String msg, final OnFinish listener){
-        AlertDialog dialog=new AlertDialog.Builder(getActivity())
+
+    private void showInfoWithDialog(String msg, final OnFinish listener) {
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle("提示")
                 .setMessage(msg)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                       listener.finish(true);
+                        listener.finish(true);
                     }
                 })
                 .show();
@@ -355,8 +353,10 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         tags = tagsEv.getEditText().getText().toString();
         honour = honourEv.getText().toString();
         introduction = introductionEv.getText().toString();
+        realName = realnameEv.getEditText().getText().toString();
         skilsEv.setErrorEnabled(false);
         tagsEv.setErrorEnabled(false);
+        realnameEv.setErrorEnabled(false);
         if (CommonUtils.isEmpty(tags)) {
             showToast("请先为自己写一个标签");
             return false;
@@ -375,6 +375,10 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         } else if (CommonUtils.isEmpty(introduction)) {
             introductionEv.setSelected(true);
             showToast("请输入您的个人介绍");
+            return false;
+        } else if (CommonUtils.isEmpty(realName)) {
+            realnameEv.setErrorEnabled(true);
+            realnameEv.setError("请输入您的真实姓名");
             return false;
         }
         return true;

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="124dp"
+    android:layout_height="110dp"
     android:orientation="horizontal"
     android:paddingBottom="5dp"
     android:paddingLeft="18dp"
@@ -52,6 +52,7 @@
             android:id="@+id/course_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxHeight="40dp"
             android:paddingBottom="4dp"
             android:textColor="@color/near_black"
             android:textSize="16sp" />
@@ -64,99 +65,106 @@
             android:padding="4dp"
             android:singleLine="true"
             android:textColor="@color/select_tab_color" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/homepage_favor" />
+
+                <TextView
+                    android:id="@+id/want_meet_num_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:textColor="@color/navi_color"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="人想见"
+                    android:textColor="@color/navi_color"
+                    android:textSize="10sp" />
+            </LinearLayout>
+            <!--用于后续版本，多少人已成功约见。-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:paddingTop="4dp">
+                    android:paddingTop="4dp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/homepage_favor" />
+                        android:src="@drawable/homepage_deal"
+                        android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/want_meet_num_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:textColor="@color/navi_color"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:text="人想见"
-                        android:textColor="@color/navi_color"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:paddingTop="4dp">
-
-                    <ImageView
-                        android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/homepage_deal" />
-
-                    <TextView
-                        android:visibility="gone"
                         android:id="@+id/success_meet_num_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:textColor="@color/navi_color"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+
                     <TextView
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="2dp"
                         android:text="人已成功约见"
                         android:textColor="@color/navi_color"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                >
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/navi_color"
-                    android:text="￥"/>
+                    android:text="￥"
+                    android:textColor="@color/navi_color" />
 
                 <TextView
                     android:id="@+id/price_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/navi_color" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/navi_color"
-                    android:text="/课时"/>
+                    android:text="/次"
+                    android:textColor="@color/navi_color" />
 
             </LinearLayout>
         </RelativeLayout>

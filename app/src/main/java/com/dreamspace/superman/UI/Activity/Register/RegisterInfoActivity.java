@@ -60,7 +60,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class RegisterInfoActivity extends AbsActivity {
-    //// TODO: 2015/11/18 添加图片剪裁 默认
     private static final int TITLE = R.string.title_activity_register_info;
     @Bind(R.id.nickname_ev)
     TextInputLayout nameInput;
@@ -112,7 +111,6 @@ public class RegisterInfoActivity extends AbsActivity {
                 sex = Constant.FEMALE;
                 break;
         }
-        Log.i("INFO", "genderInfo: " + sex);
     }
    private void showPd(){
        if(pd==null){

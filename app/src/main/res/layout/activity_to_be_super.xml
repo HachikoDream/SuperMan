@@ -54,6 +54,21 @@
                 android:text="女"
                 android:textColor="@color/color_genderbutton" />
         </RadioGroup>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/realname_ev"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:singleLine="true"
+                android:background="@drawable/apptheme_edit_text_holo_light"
+                android:hint="真实姓名"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/skils_ev"

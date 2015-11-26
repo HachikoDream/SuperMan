@@ -124,7 +124,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="2dp"
-                        android:text="30"
                         android:textColor="@color/navi_color"
                         android:textSize="10sp" />
                     <TextView
@@ -151,7 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="元/课时"
+                        android:text="元/次"
                         android:textColor="@color/navi_color" />
 
                 </LinearLayout>

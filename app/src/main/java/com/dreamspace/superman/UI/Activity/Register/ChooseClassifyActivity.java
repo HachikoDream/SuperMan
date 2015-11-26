@@ -20,7 +20,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 
-//// TODO: 改为从网络获取
 public class ChooseClassifyActivity extends AbsActivity {
     @Bind({R.id.ball, R.id.dance, R.id.paint, R.id.english, R.id.educate, R.id.code, R.id.camera, R.id.dressup, R.id.game, R.id.others})
     SelectorImageView[]

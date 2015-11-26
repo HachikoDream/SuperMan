@@ -110,7 +110,6 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
         selfCatalog = catalog;
         if (onFirst && !onPage) {
             onPage = true;
-            Log.i("SUB", "onPageSelected IN---" + selfCatalog.getName());
             loadingDataWhenInit();
         }
     }
@@ -170,4 +169,9 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
         loadingDataWhenInit();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 }

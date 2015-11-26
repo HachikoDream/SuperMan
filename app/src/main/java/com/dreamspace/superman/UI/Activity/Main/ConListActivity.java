@@ -167,4 +167,10 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
         isVisible=false;
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

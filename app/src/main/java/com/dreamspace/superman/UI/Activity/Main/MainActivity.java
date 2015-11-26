@@ -301,4 +301,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     public void complete() {
         gotoIndex();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

@@ -55,7 +55,7 @@ public class CommonUtils {
     public static String getPriceWithInfo(int price){
         StringBuilder sb=new StringBuilder();
         String content=getStringFromPrice(price);
-        return sb.append(content).append("元/课时").toString();
+        return sb.append(content).append("元/次").toString();
     }
     public static String getStatusByCode(int code){
         String content=null;

@@ -285,4 +285,9 @@ public class CollectionFragment extends BaseLazyFragment {
         return R.layout.fragment_collection;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
 }

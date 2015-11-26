@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Activity.Person;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Register.VerifyByPhoneAct;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.QnRes;
@@ -31,12 +33,15 @@ import com.dreamspace.superman.model.api.UpdateReq;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
+import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
@@ -90,7 +95,7 @@ public class ModifyInfoActivity extends AbsActivity {
     }
 
     private void setContentFromLocal() {
-        Tools.showImageWithGlide(this,avaterIv,PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.AVATAR));
+        Tools.showImageWithGlide(this, avaterIv, PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.AVATAR));
         phoneTv.setText(fuzzyString(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.PHONE)));
         userNameTv.setText(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT));
         realNameTv.setText(PreferenceUtils.getString(this.getApplicationContext(), PreferenceUtils.Key.REALNAME));
@@ -102,15 +107,32 @@ public class ModifyInfoActivity extends AbsActivity {
         genderTv.setText(genderContent);
     }
 
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));//// TODO: 2015/11/25  删除缓存图片
+        Crop.of(source, destination).asSquare().start(this);
+    }
+
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            photoPath = Crop.getOutput(result).getPath();
+            showProgressDialog();
+            getUploadToken();
+            Log.i("info", photoPath);
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
+        }
+    }
+
     @Override
     protected void initViews() {
         avaterLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoPickerIntent intent = new PhotoPickerIntent(ModifyInfoActivity.this);
-                intent.setPhotoCount(1);
-                intent.setShowCamera(true);
-                startActivityForResult(intent, REQUEST_PHOTO);
+                Crop.pickImage(ModifyInfoActivity.this);
+//                PhotoPickerIntent intent = new PhotoPickerIntent(ModifyInfoActivity.this);
+//                intent.setPhotoCount(1);
+//                intent.setShowCamera(true);
+//                startActivityForResult(intent, REQUEST_PHOTO);
             }
         });
         nicknameLayout.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +151,7 @@ public class ModifyInfoActivity extends AbsActivity {
                                 //保存新的用户名到sp
                                 PreferenceUtils.putString(ModifyInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT, content);
                                 pd.dismiss();
+                                EventBus.getDefault().post(new AccountChangeEvent());
                             }
 
                             @Override
@@ -248,9 +271,9 @@ public class ModifyInfoActivity extends AbsActivity {
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(ModifyInfoActivity.this)) {
-            EmptyBody body=new EmptyBody();
+            EmptyBody body = new EmptyBody();
             body.setInfo(Constant.FEMALE);
-            ApiManager.getService(getApplicationContext()).createQiNiuToken(body,new Callback<QnRes>() {
+            ApiManager.getService(getApplicationContext()).createQiNiuToken(body, new Callback<QnRes>() {
                 @Override
                 public void success(QnRes qnRes, Response response) {
                     if (qnRes != null) {
@@ -272,7 +295,7 @@ public class ModifyInfoActivity extends AbsActivity {
     }
 
     private void dismissDialog() {
-        if (pd != null) {
+        if (pd != null&&pd.isShowing()) {
             pd.dismiss();
         }
     }
@@ -287,8 +310,11 @@ public class ModifyInfoActivity extends AbsActivity {
                     modifyInfo(AVATER, key, new FinishUpdate() {
                         @Override
                         public void onFinish() {
-                            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE,key);
-                            getUserInfo();
+                            dismissDialog();
+                            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE, key);
+                            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.AVATAR, photoPath);
+                            Tools.showImageWithGlide(ModifyInfoActivity.this, avaterIv, photoPath);
+                            EventBus.getDefault().post(new AccountChangeEvent());
                         }
 
                         @Override
@@ -308,7 +334,7 @@ public class ModifyInfoActivity extends AbsActivity {
         }, null);
     }
 
-    //获取用户信息
+    //获取用户信息,暂时不用
     private void getUserInfo() {
         ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
             @Override
@@ -415,15 +441,11 @@ public class ModifyInfoActivity extends AbsActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_PHOTO:
-                    if (data != null) {
-                        ArrayList<String> photos =
-                                data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                        Log.i("INFO", "PHOTO:" + photos.get(0));
-                        photoPath = photos.get(0);
-                        showProgressDialog();
-                        getUploadToken();
-                    }
+                case Crop.REQUEST_PICK:
+                    beginCrop(data.getData());
+                    break;
+                case Crop.REQUEST_CROP:
+                    handleCrop(resultCode, data);
                     break;
                 case REQUEST_MODIFY_PHONE:
                     if (data != null) {
@@ -451,6 +473,7 @@ public class ModifyInfoActivity extends AbsActivity {
 
         void onError();
     }
+
 
     private interface DialogButtonClicked {
         void onPositiveClicked(String content, DialogInterface dialog);
