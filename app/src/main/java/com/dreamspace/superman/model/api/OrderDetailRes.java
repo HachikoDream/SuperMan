@@ -6,6 +6,7 @@ package com.dreamspace.superman.model.api;
 public class OrderDetailRes {
     private int id;
     private String less_name;
+    private int mast_user_id;
     private int mast_id;
     private String site;
     private int state;
@@ -165,5 +166,13 @@ public class OrderDetailRes {
 
     public void setLess_id(int less_id) {
         this.less_id = less_id;
+    }
+
+    public int getMast_user_id() {
+        return mast_user_id;
+    }
+
+    public void setMast_user_id(int mast_user_id) {
+        this.mast_user_id = mast_user_id;
     }
 }

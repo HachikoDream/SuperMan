@@ -47,10 +47,10 @@ public class SmOrderAdapter extends BasisAdapter<Order, SmOrderAdapter.viewHolde
     @Override
     protected void setDataIntoView(viewHolder holder, final Order order) {
         holder.courseNameTv.setText(order.getLess_name());
-        holder.priceTv.setText(CommonUtils.getStringFromPrice(order.getLess_price()));
+        holder.priceTv.setText(CommonUtils.getPriceWithInfo(order.getLess_price()));
         holder.timeTv.setText(order.getTime());
         holder.statusTv.setText(CommonUtils.getStatusByCode(order.getState()));
-        holder.supermanNameTv.setText(order.getName());
+        holder.supermanNameTv.setText(new StringBuilder().append("下单人: ").append(order.getName()));
         switch (order.getState()) {
             case Constant.ORDER_RELATED.SUSCRIBE:
                 holder.mButton.setVisibility(View.VISIBLE);

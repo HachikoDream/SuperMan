@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="10-11 12:45"
             android:textColor="@color/grey_line" />
 
         <TextView
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="待同意"
             android:textColor="@color/grey_line" />
 
     </LinearLayout>
@@ -52,47 +50,46 @@
             android:orientation="vertical">
 
             <TextView
-                android:padding="4dp"
                 android:id="@+id/course_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="钢琴十级课程"
+                android:padding="4dp"
                 android:textColor="@color/near_black"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
+
             <TextView
-                android:padding="4dp"
-                android:id="@+id/superman_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="孙坚"
-                android:textSize="16sp"
-                />
-            <TextView
-                android:padding="4dp"
                 android:id="@+id/price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥60/课时"
-                android:textSize="16sp"
-                />
+                android:padding="4dp"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/superman_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textColor="@color/navi_color"
+                android:textSize="16sp" />
 
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/page_goright"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:src="@drawable/page_goright" />
     </RelativeLayout>
+
     <Button
         android:id="@+id/mButton"
         android:layout_width="70dp"
         android:layout_height="19dp"
-        android:text="同意"
-        android:focusable="false"
-        android:clickable="true"
         android:layout_gravity="right"
-        android:textColor="@color/navi_color"
-        android:background="@drawable/button_redside_white_bg"/>
+        android:background="@drawable/button_redside_white_bg"
+        android:clickable="true"
+        android:focusable="false"
+        android:text="同意"
+        android:textColor="@color/navi_color" />
 </LinearLayout>

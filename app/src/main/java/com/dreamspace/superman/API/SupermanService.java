@@ -8,6 +8,7 @@ import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.BindReq;
 import com.dreamspace.superman.model.api.CollectReq;
+import com.dreamspace.superman.model.api.CollectRes;
 import com.dreamspace.superman.model.api.CommentList;
 import com.dreamspace.superman.model.api.CommentReq;
 import com.dreamspace.superman.model.api.CommentRes;

@@ -100,6 +100,7 @@ public class FeedbackFragment extends BaseLazyFragment {
                 public void success(Response response, Response response2) {
                     dismissPd();
                     if (response != null) {
+                        feedbackContent.setText(null);
                         AlertDialog dialog=new AlertDialog.Builder(getActivity())
                                 .setTitle("提示")
                                 .setMessage("已经收到您的意见反馈，我们会马上处理。")

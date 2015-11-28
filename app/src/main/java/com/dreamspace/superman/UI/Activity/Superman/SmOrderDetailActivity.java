@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.DataUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
@@ -175,7 +176,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
         Tools.showImageWithGlide(this, profileImage, orderDetailRes.getImage());
         courseNameTv.setText(orderDetailRes.getLess_name());
         usernameTv.setText(orderDetailRes.getMast_name());
-        timeTv.setText(orderDetailRes.getLess_keeptime() + "元");
+        timeTv.setText(orderDetailRes.getLess_keeptime() + "小时");
         priceTv.setText(common_price);
         orderNumber.setText(String.valueOf(orderDetailRes.getId()));
         orderTime.setText(orderDetailRes.getTime());
@@ -183,7 +184,7 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
         orderCoursename.setText(orderDetailRes.getLess_name());
         orderStudentname.setText(orderDetailRes.getName());
         orderPhonenumTv.setText(orderDetailRes.getPhone());
-        courseTime.setText(orderDetailRes.getStart_time());
+        courseTime.setText(DataUtils.fetchDateDeleteTime(orderDetailRes.getStart_time()));
         courseAddress.setText(orderDetailRes.getSite());
         courseRemark.setText(orderDetailRes.getRemark());
         connectStudentBtn.setOnClickListener(new View.OnClickListener() {

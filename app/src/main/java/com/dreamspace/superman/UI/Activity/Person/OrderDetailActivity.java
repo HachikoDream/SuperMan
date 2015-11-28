@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
+import com.dreamspace.superman.Common.DataUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
@@ -280,7 +281,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         orderCoursename.setText(orderDetailRes.getLess_name());
         orderStudentname.setText(orderDetailRes.getName());
         orderPhonenumTv.setText(orderDetailRes.getPhone());
-        courseTime.setText(orderDetailRes.getStart_time());
+        courseTime.setText(DataUtils.fetchDateDeleteTime(orderDetailRes.getStart_time()));
         courseAddress.setText(orderDetailRes.getSite());
         courseRemark.setText(orderDetailRes.getRemark());
         if (CommonUtils.isEmpty(orderDetailRes.getCom_id()) && order_state == Constant.ORDER_RELATED.FINISH) {
@@ -315,7 +316,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         connectSupermanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int memberId = orderDetailRes.getUser_id();
+                int memberId = orderDetailRes.getMast_user_id();
                 String memberName = orderDetailRes.getMast_name();
                 Bundle b = new Bundle();
                 b.putString(Constant.MEMBER_ID, String.valueOf(memberId));

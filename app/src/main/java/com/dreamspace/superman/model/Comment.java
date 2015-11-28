@@ -16,7 +16,7 @@ package com.dreamspace.superman.model;
  */
 public class Comment {
     private String time;
-    private String Image;
+    private String image;
     private String content;
     private String nickname;
 
@@ -25,7 +25,7 @@ public class Comment {
     }
 
     public void setImage(String image) {
-        Image = image;
+        this.image = image;
     }
 
     public void setContent(String content) {
@@ -42,7 +42,7 @@ public class Comment {
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
     public String getContent() {

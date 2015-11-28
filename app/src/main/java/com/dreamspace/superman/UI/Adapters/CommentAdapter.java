@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.dreamspace.superman.Common.DataUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.Comment;
@@ -28,7 +29,7 @@ public class CommentAdapter extends BasisAdapter<Comment,CommentAdapter.viewHold
     @Override
     protected void setDataIntoView(viewHolder holder, Comment entity) {
         holder.contentTv.setText(entity.getContent());
-        holder.timeTv.setText(entity.getTime());
+        holder.timeTv.setText(DataUtils.fetchDateDeleteTime(entity.getTime()));
         Tools.showImageWithGlide(getmContext(),holder.userAvaterIv,entity.getImage());
         holder.userNameTv.setText(entity.getNickname());
     }

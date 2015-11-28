@@ -20,8 +20,9 @@ import android.os.Parcelable;
  * "price": 666
  * }
  */
-public class LessonInfo implements Parcelable{
-    private int id;
+public class LessonInfo implements Parcelable {
+    private int id;//用于一般情况课程id的获取
+    private int less_id;//用于收藏课程页面id的获取 temp
     private String name;
     private String image;
     private String less_name;
@@ -35,6 +36,14 @@ public class LessonInfo implements Parcelable{
     private String tags;
     private boolean is_collected;
     private int mast_user_id;
+
+    public int getLess_id() {
+        return less_id;
+    }
+
+    public void setLess_id(int less_id) {
+        this.less_id = less_id;
+    }
 
     public int getMast_user_id() {
         return mast_user_id;
@@ -58,10 +67,11 @@ public class LessonInfo implements Parcelable{
         dest.writeString(mast_id);
         dest.writeString(description);
         dest.writeString(tags);
-        dest.writeByte((byte)(is_collected?1:0));
+        dest.writeByte((byte) (is_collected ? 1 : 0));
         dest.writeInt(mast_user_id);
 
     }
+
     protected LessonInfo(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -76,7 +86,7 @@ public class LessonInfo implements Parcelable{
         description = in.readString();
         tags = in.readString();
         is_collected = in.readByte() != 0;
-        mast_user_id=in.readInt();
+        mast_user_id = in.readInt();
     }
 
     public static final Creator<LessonInfo> CREATOR = new Creator<LessonInfo>() {
@@ -90,6 +100,7 @@ public class LessonInfo implements Parcelable{
             return new LessonInfo[size];
         }
     };
+
     /**
      * Created by Wells on 2015/9/3.
      * {
@@ -107,7 +118,6 @@ public class LessonInfo implements Parcelable{
      * "price": 666
      * }
      */
-
 
 
     public boolean is_collected() {

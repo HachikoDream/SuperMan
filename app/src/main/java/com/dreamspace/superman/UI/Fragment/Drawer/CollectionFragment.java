@@ -22,6 +22,7 @@ import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.event.CollectionChangeEvent;
+import com.dreamspace.superman.model.api.CollectRes;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
 import com.google.gson.Gson;
@@ -206,7 +207,7 @@ public class CollectionFragment extends BaseLazyFragment {
                 Log.i("SWIP", "position:" + position);
                 // false : close the menu; true : not close the menu
 //                mAdapter.removeItem(position);
-                deleteCollectionLessonsById(mAdapter.getItem(position).getId(), position);
+                deleteCollectionLessonsById(mAdapter.getItem(position).getLess_id(), position);
                 return false;
             }
         });
@@ -236,6 +237,7 @@ public class CollectionFragment extends BaseLazyFragment {
                     public void onFinish(List<LessonInfo> lessons) {
                         mSwipeMenuListView.setLoading(false);
                         if (lessons.size() == 0) {
+                            --page;
                             showToast(getString(R.string.common_nomore_data));
                         } else {
                             refreshDate(lessons, ADD);
@@ -254,7 +256,7 @@ public class CollectionFragment extends BaseLazyFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LessonInfo item = mAdapter.getItem(position);
                 Bundle bundle = new Bundle();
-                bundle.putInt("LESSON_INFO", item.getId());
+                bundle.putInt(LessonDetailInfoActivity.LESSON_INFO, item.getLess_id());
                 readyGo(LessonDetailInfoActivity.class, bundle);
             }
         });

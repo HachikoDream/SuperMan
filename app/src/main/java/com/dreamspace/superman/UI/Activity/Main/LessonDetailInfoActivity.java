@@ -96,7 +96,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
         mFragments.add(new CourseIntroductionFragment());
         mFragments.add(new SupermanIntroductionFragment());
         mFragments.add(new StudentCommentListFragment());
-        less_id = this.getIntent().getIntExtra("LESSON_INFO", -1);
+        less_id = this.getIntent().getIntExtra(LESSON_INFO, -1);
 
     }
 
@@ -108,7 +108,6 @@ public class LessonDetailInfoActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-        Log.i("LDI", "init views");
         getSupportActionBar().setTitle(TITLE);
         mAdapter = new CommonFragmentAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mAdapter);

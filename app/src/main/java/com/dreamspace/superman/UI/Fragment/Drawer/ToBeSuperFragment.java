@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
@@ -33,9 +34,11 @@ import com.dreamspace.superman.model.api.ToBeSmReq;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
+import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -138,6 +141,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         gloryIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Crop.pickImage(getActivity());
 //                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
 //                intent.setPhotoCount(1);
 //                intent.setShowCamera(true);
@@ -394,20 +398,39 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));//// TODO: 2015/11/25  删除缓存图片
+        Crop.of(source, destination).asSquare().start(getActivity());
+    }
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == getActivity().RESULT_OK) {
+            photoPath=Crop.getOutput(result).getPath();
+            Log.i("info",photoPath);
+            Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
+            choose_glory_iv = true;
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-            if (data != null) {
-                ArrayList<String> photos =
-                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                Log.i("INFO", "PHOTO:" + photos.get(0));
-                photoPath = photos.get(0);
-                Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
-                choose_glory_iv = true;
-            }
+//        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+//            if (data != null) {
+//                ArrayList<String> photos =
+//                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+//                Log.i("INFO", "PHOTO:" + photos.get(0));
+//                photoPath = photos.get(0);
+//                Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
+//                choose_glory_iv = true;
+//            }
+//        }
+        if (requestCode == Crop.REQUEST_PICK && resultCode == getActivity().RESULT_OK) {
+            beginCrop(data.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, data);
         }
     }
 }

@@ -2,58 +2,65 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/red_square"/>
+                android:src="@drawable/red_square" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:padding="2dp"
+                android:text="课程时长"
                 android:textColor="@color/near_black"
-                android:text="课程时长"/>
+                android:textSize="14sp" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/course_keeptime_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="1.5小时"/>
+            android:layout_marginTop="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/red_square"/>
+                android:src="@drawable/red_square" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:padding="2dp"
+                android:text="课程介绍"
                 android:textColor="@color/near_black"
-                android:text="课程介绍"/>
+                android:textSize="14sp" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/id_course_desc"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="这是一个非常好的课程，有不少同学都喜欢听我说话 听我上课，我非常有自信  嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻想"/>
+            android:layout_marginTop="5dp"
+            android:layout_weight="1" />
     </LinearLayout>
 </ScrollView>

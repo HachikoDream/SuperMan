@@ -1,5 +1,7 @@
 package com.dreamspace.superman.Common;
 
+import android.text.format.DateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -65,6 +67,10 @@ public class DataUtils {
 
     public static int betweenMinute(Date date1, Date date2) {
         return (int) (betweenmillonsecond(date1, date2) / MINUTE_MS);
+    }
+    public static String fetchDateDeleteTime(String dateString){
+        String[] result=dateString.trim().split("\\s+");
+        return result[0];
     }
     public static String getTag(Date date){
         int day=betweenDays(date,new Date());
