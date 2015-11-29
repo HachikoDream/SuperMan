@@ -171,7 +171,7 @@ public class SubscribeActivity extends AbsActivity {
         courseNameTv.setText(mLessonInfo.getLess_name());
         priceTv.setText(CommonUtils.getPriceWithInfo(mLessonInfo.getPrice()));
         Tools.showImageWithGlide(this, profileImage, mLessonInfo.getImage());
-        timeTv.setText(mLessonInfo.getKeeptime());
+        timeTv.setText(mLessonInfo.getKeeptime()+"小时");
         String realName=PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.REALNAME);
         String phoneNum=PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.PHONE);
         if(!CommonUtils.isEmpty(realName)){

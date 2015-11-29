@@ -26,6 +26,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Superman.OnFinish;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
+import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.EmptyBody;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
@@ -118,9 +120,9 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     private void showGender() {
         if (gender.equals(Constant.FEMALE)) {
-            genderWoman.setSelected(true);
+            genderWoman.setChecked(true);
         } else {
-            genderMan.setSelected(true);
+            genderMan.setChecked(true);
         }
     }
 
@@ -136,12 +138,11 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        loadFromLocal();
-        realnameEv.getEditText().setText(realName);
+//        loadFromLocal();
         gloryIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Crop.pickImage(getActivity());
+                Crop.pickImage(getActivity(),ToBeSuperFragment.this);
 //                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
 //                intent.setPhotoCount(1);
 //                intent.setShowCamera(true);
@@ -162,14 +163,14 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                     toggleShowLoading(false, null);
                     if (applyInfoRes != null) {
                         String state = applyInfoRes.getState();
-                        if (state.equals(Constant.USER_APPLY_STATE.STOP)) {
+                        if (state.equalsIgnoreCase(Constant.USER_APPLY_STATE.STOP)) {
                             toggleShowError(true, getString(R.string.to_be_superman_refuse), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     getUserInfoForApply(false);
                                 }
                             });
-                        } else if (state.equals(Constant.USER_APPLY_STATE.PENDING)) {
+                        } else if (state.equalsIgnoreCase(Constant.USER_APPLY_STATE.PENDING)) {
                             toggleShowError(true, getString(R.string.to_be_superman_pending), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -177,13 +178,22 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                                 }
                             });
 
-                        } else {
-                            if (isFirst) {
-                                genderMan.setEnabled(false);
-                                genderWoman.setEnabled(false);
-                                Tools.showImageWithGlide(getActivity(), userIv, avater_url);
-                                showGender();
-                            }
+                        } else if(state.equals(Constant.USER_APPLY_STATE.NOT_APPLY)){
+                            loadFromLocal();
+                            realnameEv.getEditText().setText(realName);
+                            Tools.showImageWithGlide(getActivity(), userIv, avater_url);
+                            showGender();
+                            genderMan.setEnabled(false);
+                            genderWoman.setEnabled(false);
+                        }else if(state.equals(Constant.USER_APPLY_STATE.NORMAL)){
+                            showInfoWithDialog("恭喜您已经通过我们的认证，成为一名达人，您之后可以点击菜单栏中的达人主页来管理您的信息与课程。点击确定跳转到您的达人主页", new OnFinish() {
+                                @Override
+                                public void finish(boolean isOk) {
+                                    AccountChangeEvent event=new AccountChangeEvent();
+                                    event.type=AccountChangeEvent.MAST_STATE_CHANGE;
+                                    EventBus.getDefault().post(event);
+                                }
+                            });
                         }
                     }
                 }
@@ -398,14 +408,16 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));//// TODO: 2015/11/25  删除缓存图片
-        Crop.of(source, destination).asSquare().start(getActivity());
+        Crop.of(source, destination).asSquare().start(getActivity(),ToBeSuperFragment.this);
     }
+
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == getActivity().RESULT_OK) {
-            photoPath=Crop.getOutput(result).getPath();
-            Log.i("info",photoPath);
+            photoPath = Crop.getOutput(result).getPath();
+            Log.i("info", photoPath);
             Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
             choose_glory_iv = true;
         } else if (resultCode == Crop.RESULT_ERROR) {

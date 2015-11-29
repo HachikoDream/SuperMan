@@ -89,7 +89,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
 
                 @Override
                 public void failure(RetrofitError error) {
-                    showAlertInfo(getInnerErrorInfo(error),"确定",null);
+//                    showAlertInfo(getInnerErrorInfo(error),"确定",null);
                 }
             });
         }else{

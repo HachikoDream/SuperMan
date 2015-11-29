@@ -22,9 +22,9 @@
     <string name="title_activity_reset_pwd">重置密码</string>
     <string name="title_activity_course_detail_info">课程详情</string>
     <string-array name="course_detail_info_list">
-      <item>课程介绍</item>
-      <item>达人简介</item>
-      <item>学员评论</item>
+        <item>课程介绍</item>
+        <item>达人简介</item>
+        <item>学员评论</item>
     </string-array>
     <string-array name="order_list_item">
         <item>预约</item>

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,14 +13,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.InputUtils;
@@ -46,7 +40,6 @@ import com.dreamspace.superman.event.CollectionChangeEvent;
 import com.dreamspace.superman.event.LessonListRefreshEvent;
 import com.dreamspace.superman.event.MoneyRefreshEvent;
 import com.dreamspace.superman.event.OrderChangeEvent;
-import com.umeng.update.UmengUpdateAgent;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -64,6 +57,8 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment(), new SuperManHomeFragment(),new FeedbackFragment()};
     @Bind(R.id.footer_item_settings)
     TextView mSettings;
+    @Bind(R.id.footer_item_aboutus)
+    TextView mAboutus;
     private static final int TITLE = R.string.app_name;
     private int currentPage;
     @Bind(R.id.fragment_container)
@@ -105,11 +100,17 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         checkIsLogin();
         mNavigationView.setNavigationItemSelectedListener(this);
         slideMenu = mNavigationView.getMenu();
-        checkIsSuperMan();
+        checkIsSuperMan(AccountChangeEvent.LOGIN);
         mSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            }
+        });
+        mAboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readyGo(AboutusActivity.class);
             }
         });
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -141,7 +142,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     }
 
     //检测用户是否属于达人用户
-    private void checkIsSuperMan() {
+    private void checkIsSuperMan(String type) {
         String mast_state = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAST_STATE);
         MenuItem shItem = slideMenu.findItem(R.id.nav_superhome);
         MenuItem tobeItem = slideMenu.findItem(R.id.nav_tobesuperman);
@@ -149,6 +150,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         tobeItem.setVisible(false);
         if (!CommonUtils.isEmpty(mast_state)&&mast_state.equals(Constant.USER_APPLY_STATE.NORMAL)) {
             shItem.setVisible(true);
+            if(type.equals(AccountChangeEvent.MAST_STATE_CHANGE)){
+                gotoMasterHome();
+            }
         } else{
             tobeItem.setVisible(true);
         }
@@ -285,16 +289,20 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         return result;
     }
 
-    private void checkLoginState(){
+    private void checkLoginState(String type){
         checkIsLogin();
-        checkIsSuperMan();
+        checkIsSuperMan(type);
     }
     public void onEvent(AccountChangeEvent event){
-        checkLoginState();
+        checkLoginState(event.type);
     }
     public void gotoIndex(){
         mViewPager.setCurrentItem(0, false);
         setFragmentTitle(R.string.nav_item_index);
+    }
+    public void gotoMasterHome(){
+        mViewPager.setCurrentItem(5,false);
+        setFragmentTitle(R.string.nav_item_superhome);
     }
 
     @Override
@@ -307,4 +315,5 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
 }
