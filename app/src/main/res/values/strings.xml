@@ -15,7 +15,7 @@
     <string name="nav_item_feedback">意见反馈</string>
     <string name="nav_footer_aboutus">关于我们</string>
     <string name="nav_footer_settings">设置</string>
-    <string name="title_activity_login">登陆</string>
+    <string name="title_activity_login">登录</string>
     <string name="title_fragment_register">注册</string>
     <string name="title_activity_register_info">个人基本信息</string>
     <string name="title_activity_register_by_phone">手机绑定</string>

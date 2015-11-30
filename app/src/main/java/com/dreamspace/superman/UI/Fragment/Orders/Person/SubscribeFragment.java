@@ -10,6 +10,7 @@ import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.UI.Activity.BaseListAct;
 import com.dreamspace.superman.UI.Activity.Person.OrderDetailActivity;
+import com.dreamspace.superman.UI.Adapters.OrderAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyOrderFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.event.OrderChangeEvent;
@@ -107,7 +108,7 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
     }
 
     private void loadingDataWhenInit() {
-        page=1;
+        page = 1;
         toggleShowLoading(true, null);
         getOrderListByPage(DEFAULT_PAGE, new OnRefreshListener<Order>() {
             @Override
@@ -159,7 +160,7 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
         }
     }
 
-    public void onEvent(OrderChangeEvent event){
+    public void onEvent(OrderChangeEvent event) {
         loadingDataWhenInit();
     }
 
@@ -168,4 +169,5 @@ public class SubscribeFragment extends BaseLazyOrderFragment<Order> {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
+
 }

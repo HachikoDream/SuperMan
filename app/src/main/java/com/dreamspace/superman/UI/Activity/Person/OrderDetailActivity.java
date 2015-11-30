@@ -122,6 +122,12 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
     public final static String LESS_ID = "less_id";
     public final static int QRREADER_REQUEST_CODE = 156;
     public final static int EVALUATE_REQUEST_CODE = 157;
+    private int COME_SOURCE = -1;
+    public final static int COME_FROM_COMMENT = 257;
+    public final static int COME_FROM_PAY = 258;
+    public final static int COME_FROM_QR = 259;
+    public final static String COME_SOURCE_KEY = "come_source";
+
     private ProgressDialog pd;
     private String mast_phone;//达人联系电话，用于取消预约操作
 
@@ -136,6 +142,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
         order_id = this.getIntent().getIntExtra(ORDER_ID, -1);
         order_state = this.getIntent().getIntExtra(STATE, -1);
         common_price = this.getIntent().getStringExtra(COMMON_PRICE);
+        COME_SOURCE = this.getIntent().getIntExtra(COME_SOURCE_KEY, -1);
         getSupportActionBar().setTitle(TITLE);
     }
 
@@ -324,6 +331,13 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                 readyGo(ChatActivity.class, b);
             }
         });
+        if (COME_SOURCE == COME_FROM_COMMENT) {
+            commentBtn.performClick();
+        } else if (COME_SOURCE == COME_FROM_PAY) {
+            payBtnInConfirm.performClick();
+        }else if(COME_SOURCE==COME_FROM_QR){
+            confirmBtn.performClick();
+        }
 
     }
 
@@ -470,7 +484,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
       在达人已经确认以后取消课程,需要电话联系达人,这里提供达人的电话号码和客服的电话
      */
     private void cancelSubOrderAfterConfirm() {
-        showAlertDialog("由于之前达人已经有确认操作，因此您需要联系达人来取消订单.", "联系达人", "联系客服", new OnFinish() {
+        showAlertDialog("由于之前达人已经有确认操作，因此您需要联系达人来取消订单.", "联系达人", "取消", new OnFinish() {
             @Override
             public void finish(boolean isOk) {
                 if (isOk) {
@@ -484,10 +498,11 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                             }
                         });
                     }
-                } else {
-                    //联系客服
-                    Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                 }
+//                else {
+//                    //联系客服
+//                    Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
+//                }
             }
         });
     }
@@ -583,6 +598,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             if (resultCode == Activity.RESULT_OK) {
                 EventBus.getDefault().post(new OrderChangeEvent());
                 killSelf();
+            }else if(COME_SOURCE!=-1){
+                killSelf();
             }
         }
         //扫码页面返回处理
@@ -591,6 +608,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                 setResult(RESULT_OK);
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
+            }else if(COME_SOURCE!=-1){
+                killSelf();
             }
         }
         //评价页面返回处理
@@ -598,6 +617,8 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             if (resultCode == RESULT_OK) {
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
+            }else if(COME_SOURCE!=-1){
+                killSelf();
             }
         }
     }

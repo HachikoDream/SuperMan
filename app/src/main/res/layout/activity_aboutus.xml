@@ -50,11 +50,16 @@
                 android:padding="5dp"
                 android:text="在这里\n让你的特长更有价值\n在这里\n让你遇见兴趣相投的朋友\n\n技能共享变达人，达人荟让你的优点闪闪发光；\n一个提供教育资源、服务和时间共享的平台。"
                 android:textSize="14sp" />
-
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="50dp"
+              android:gravity="center"
+              android:background="@drawable/aboutus_linear_bg"
+              android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:gravity="center"
                 android:text="创梦空间" />
 
@@ -82,6 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+          </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

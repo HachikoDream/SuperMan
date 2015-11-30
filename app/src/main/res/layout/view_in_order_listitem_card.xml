@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="10-11 12:45"
             android:textColor="@color/grey_line" />
 
         <TextView
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right"
-            android:text="待同意"
             android:textColor="@color/grey_line" />
 
     </LinearLayout>
@@ -56,7 +54,6 @@
                 android:id="@+id/course_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="钢琴十级课程"
                 android:textColor="@color/near_black"
                 android:textSize="16sp"
                 />
@@ -65,7 +62,6 @@
                 android:id="@+id/superman_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="孙坚"
                 android:textSize="16sp"
                 />
             <TextView
@@ -73,7 +69,6 @@
                 android:id="@+id/price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥60/课时"
                 android:textSize="16sp"
                 />
 
@@ -85,4 +80,13 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
+    <Button
+        android:id="@+id/mButton"
+        android:layout_width="70dp"
+        android:layout_height="19dp"
+        android:layout_gravity="right"
+        android:background="@drawable/button_redside_white_bg"
+        android:clickable="true"
+        android:focusable="false"
+        android:textColor="@color/navi_color" />
 </LinearLayout>

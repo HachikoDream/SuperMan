@@ -10,6 +10,15 @@ public class Order {
     private int less_price;
     private String less_name;
     private String name;
+    private boolean commented;
+
+    public boolean isCommented() {
+        return commented;
+    }
+
+    public void setCommented(boolean commented) {
+        this.commented = commented;
+    }
 
     public int getId() {
         return id;

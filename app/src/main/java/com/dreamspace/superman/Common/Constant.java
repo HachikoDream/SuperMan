@@ -70,7 +70,13 @@ public class Constant {
         public static final int FINISH = 4;
         public static final int CANCEL = 0;
         public static final int BACK_COST = -1;
-
+        public static int tranverse(int state){
+            if(state==-1){
+                return 0;
+            }else{
+                return state;
+            }
+        }
         public static final class SM_OPERATION {
             public static final String CONFIRM = "confirmed";
             public static final String REFUSE = "rejected";
