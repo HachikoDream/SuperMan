@@ -144,7 +144,7 @@ public class PreferenceUtils {
     public static void writeClassifyIntoSpForFirst(Context context) {
         Gson gson = new Gson();
         Catalog catalog=new Catalog();
-        catalog.setId(1);
+        catalog.setId(-1);
         catalog.setIcon("TEST");
         catalog.setName("精选");
         List<Catalog> mCata=new ArrayList<>();
