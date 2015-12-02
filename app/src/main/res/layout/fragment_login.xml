@@ -84,7 +84,7 @@
         android:layout_marginTop="64dp"
         android:background="@drawable/normal_button_bg"
         android:gravity="center"
-        android:text="登陆"
+        android:text="登录"
         android:textColor="@android:color/white" />
 
     <TextView

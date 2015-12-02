@@ -30,7 +30,7 @@
             android:title="@string/nav_item_superhome"/>
         <item
             android:id="@+id/nav_feedback"
-            android:icon="@drawable/side_class"
+            android:icon="@drawable/feedback_logo"
             android:title="@string/nav_item_feedback"/>
         <item
             android:title=""

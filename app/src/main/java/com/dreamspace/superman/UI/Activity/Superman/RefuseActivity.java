@@ -61,36 +61,38 @@ public class RefuseActivity extends AbsActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                 int number=numberTv.getText().length();
-                StringBuilder sb=new StringBuilder();
-                 numberTv.setText(sb.append("已写").append(number).append("字").toString());
+                int number = s.length();
+                StringBuilder sb = new StringBuilder();
+                numberTv.setText(sb.append("已写").append(number).append("字").toString());
             }
         });
         cancelAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isValid()) {
-                   refuseOrder(reason);
+                    refuseOrder(reason);
                 }
             }
         });
     }
 
-    private void showPd(String msg){
-        if(msg==null){
-            msg="正在提交请求,请稍后";
+    private void showPd(String msg) {
+        if (msg == null) {
+            msg = "正在提交请求,请稍后";
         }
-        if(pd==null){
-            pd=ProgressDialog.show(this,"",msg,true,false);
-        }else{
+        if (pd == null) {
+            pd = ProgressDialog.show(this, "", msg, true, false);
+        } else {
             pd.show();
         }
     }
-    private void dismissShow(){
-        if(pd!=null&&!pd.isShowing()){
+
+    private void dismissShow() {
+        if (pd != null && !pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     @Override
     protected View getLoadingTargetView() {
         return null;
@@ -109,6 +111,7 @@ public class RefuseActivity extends AbsActivity {
             return true;
         }
     }
+
     private void showAlertDialog(String msg, String positiveMsg, String negativeMsg, final OnFinish finish) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("提示")
@@ -138,26 +141,27 @@ public class RefuseActivity extends AbsActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
-    private void refuseOrder(String reason){
-        if(NetUtils.isNetworkConnected(this)){
+
+    private void refuseOrder(String reason) {
+        if (NetUtils.isNetworkConnected(this)) {
             showPd(null);
-            OperatorReq req=new OperatorReq();
+            OperatorReq req = new OperatorReq();
             req.setOpeator(Constant.ORDER_RELATED.SM_OPERATION.REFUSE);
             req.setReason(reason);
             ApiManager.getService(getApplicationContext()).operateOrderBySm(order_id, req, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
                     dismissShow();
-                    if(response!=null){
-                          showAlertDialog("您已拒绝该请求,我们会将拒绝理由反馈给达人.", "知道了", null, new OnFinish() {
-                              @Override
-                              public void finish(boolean isOk) {
-                                  if (isOk){
-                                      setResult(RESULT_OK);
-                                      killAct();
-                                  }
-                              }
-                          });
+                    if (response != null) {
+                        showAlertDialog("您已拒绝该请求,我们会将拒绝理由反馈给达人.", "知道了", null, new OnFinish() {
+                            @Override
+                            public void finish(boolean isOk) {
+                                if (isOk) {
+                                    setResult(RESULT_OK);
+                                    killAct();
+                                }
+                            }
+                        });
                     }
                 }
 
@@ -167,11 +171,12 @@ public class RefuseActivity extends AbsActivity {
                     showInnerError(error);
                 }
             });
-        }else{
+        } else {
             showNetWorkError();
         }
     }
-    private void killAct(){
+
+    private void killAct() {
         finish();
     }
 }

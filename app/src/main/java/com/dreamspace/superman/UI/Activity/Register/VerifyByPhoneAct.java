@@ -344,7 +344,7 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
     private void showAlertDialog() {
         AlertDialog builder = new AlertDialog.Builder(this)
                 .setTitle("提示")
-                .setMessage("手机号修改成功，之后您可以用修改后的手机号进行登陆等相关操作，该账号与原手机不再有任何关联。")
+                .setMessage("手机号修改成功，之后您可以用修改后的手机号进行登录等相关操作，该账号与原手机不再有任何关联。")
                 .setNeutralButton("我知道了", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

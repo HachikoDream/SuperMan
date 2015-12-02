@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -108,7 +109,7 @@ public class ModifyInfoActivity extends AbsActivity {
     }
 
     private void beginCrop(Uri source) {
-        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));//// TODO: 2015/11/25  删除缓存图片
+        Uri destination = Uri.fromFile(new File(getCacheDir(), String.valueOf(new Date().getTime())));//// TODO: 2015/11/25  删除缓存图片
         Crop.of(source, destination).asSquare().start(this);
     }
 

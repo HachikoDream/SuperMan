@@ -27,7 +27,7 @@
             android:button="@null"
             android:checked="true"
             android:gravity="center"
-            android:text="登陆"
+            android:text="登录"
             android:textColor="@color/color_login_radiobutton" />
 
         <RadioButton

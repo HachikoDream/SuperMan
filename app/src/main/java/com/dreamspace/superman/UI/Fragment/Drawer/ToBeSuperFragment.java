@@ -41,6 +41,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -378,11 +379,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
             tagsEv.setErrorEnabled(true);
             tagsEv.setError("标签不应大于20个字");
             return false;
-        } else if (CommonUtils.isEmpty(honour)) {
-            honourEv.setSelected(true);
-            showToast("请输入您的荣誉");
-            return false;
-        } else if (CommonUtils.isEmpty(skills)) {
+        }else if (CommonUtils.isEmpty(skills)) {
             skilsEv.setErrorEnabled(true);
             skilsEv.setError("请输入您擅长的技能");
             return false;
@@ -410,7 +407,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     }
 
     private void beginCrop(Uri source) {
-        Uri destination = Uri.fromFile(new File(getActivity().getCacheDir(), "cropped"));//// TODO: 2015/11/25  删除缓存图片
+        Uri destination = Uri.fromFile(new File(getActivity().getCacheDir(), String.valueOf(new Date().getTime())));//// TODO: 2015/11/25  删除缓存图片
         Crop.of(source, destination).asSquare().start(getActivity(),ToBeSuperFragment.this);
     }
 

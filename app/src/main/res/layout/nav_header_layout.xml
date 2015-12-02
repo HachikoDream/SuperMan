@@ -17,7 +17,7 @@
             android:id="@+id/username_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登陆"
+            android:text="登录"
             android:layout_centerVertical="true"
             android:textColor="@android:color/white"
             android:textSize="16sp"

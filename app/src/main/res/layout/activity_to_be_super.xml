@@ -82,7 +82,7 @@
                 android:layout_marginRight="20dp"
                 android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="擅长技能"
+                android:hint="擅长技能(如：吉他演奏)"
                 android:textSize="14sp" />
         </android.support.design.widget.TextInputLayout>
 
@@ -98,8 +98,8 @@
                 android:layout_marginRight="20dp"
                 android:singleLine="true"
                 android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="个性标签（例如：钢琴十级）"
-                android:textSize="14sp" />
+                android:hint="达人标签（荣誉、等级或社团部门）"
+                android:textSize="12sp" />
         </android.support.design.widget.TextInputLayout>
 
         <EditText
@@ -108,10 +108,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@color/near_white"
-            android:gravity="center"
-            android:hint="简要介绍所获荣誉"
+            android:gravity="left"
+            android:hint="简要介绍所获荣誉,如校园吉他演奏比赛一等奖(选填)"
             android:minHeight="97dp"
-            android:padding="4dp"
+            android:padding="10dp"
             android:textSize="12sp" />
 
         <EditText
@@ -120,10 +120,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@color/near_white"
-            android:gravity="center"
-            android:hint="简要介绍个人情况"
+            android:gravity="left"
+            android:hint="简要介绍个人情况(例：我是张三，现在是一名信息工程专业大四的学生。业余热爱吉他演奏，已经有5年吉他学习经验，在整个学习过程中积累了很多独到经验，来达人荟，我希望通过它可以让我的技能发挥更大价值，帮助到更多的同学，也让我结交到更多有相同爱好的朋友。)"
             android:minHeight="97dp"
-            android:padding="4dp"
+            android:padding="10dp"
             android:textSize="12sp" />
         <View
             android:layout_marginTop="20dp"

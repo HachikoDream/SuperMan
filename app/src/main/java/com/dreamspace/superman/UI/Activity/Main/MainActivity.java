@@ -1,7 +1,9 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -72,6 +74,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     public static final String FIRST_IN="first";
     public static final String NOT_FIRST_IN="notfirst";
     private String source;
+    private boolean master_available=true;
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
@@ -153,7 +156,10 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
             if(type.equals(AccountChangeEvent.MAST_STATE_CHANGE)){
                 gotoMasterHome();
             }
-        } else{
+        } else if(!CommonUtils.isEmpty(mast_state)&&mast_state.equalsIgnoreCase(Constant.USER_APPLY_STATE.STOP)){
+            shItem.setVisible(true);
+            master_available=false;
+        }else{
             tobeItem.setVisible(true);
         }
     }
@@ -247,10 +253,25 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
                 }
                 return true;
             case R.id.nav_superhome:
-                mViewPager.setCurrentItem(5, false);
-                setFragmentTitle(R.string.nav_item_superhome);
+                if(master_available){
+                    mViewPager.setCurrentItem(5, false);
+                    setFragmentTitle(R.string.nav_item_superhome);
+                }else{
+                    AlertDialog dialog=new AlertDialog.Builder(this)
+                            .setTitle("提示")
+                            .setMessage("您的达人权限已被禁用，如有疑问请联系客服。")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create();
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                }
                 return true;
-            case R.id.nav_feedback://// TODO: 2015/11/22 是否需要登录
+            case R.id.nav_feedback:
                 mViewPager.setCurrentItem(6, false);
                 setFragmentTitle(R.string.nav_item_feedback);
                 return true;

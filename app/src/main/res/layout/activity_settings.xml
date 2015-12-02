@@ -40,7 +40,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="200dp"
             android:background="@drawable/normal_button_bg"
-            android:text="退出登陆"
+            android:text="退出登录"
             android:textColor="@color/near_white"/>
     </LinearLayout>
 

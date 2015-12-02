@@ -1,5 +1,6 @@
 package com.dreamspace.superman.UI.Activity.Main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,7 +27,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class StartPageActivity extends AppCompatActivity implements android.os.Handler.Callback {
+public class StartPageActivity extends Activity implements android.os.Handler.Callback {
 //// TODO: 2015/11/18 达人状态改变的相关提示
     private Handler mHandler;
     private static final int check_is_login = 233;

@@ -140,7 +140,9 @@
             android:name=".UI.Activity.Superman.RefuseActivity"
             android:label="@string/title_activity_refuse"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.Activity.Main.StartPageActivity">
+        <activity
+            android:name=".UI.Activity.Main.StartPageActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -216,7 +216,7 @@
 
             <Button
                 android:id="@+id/agree_btn"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_width="150dp"
                 android:layout_height="32dp"
                 android:background="@drawable/normal_button_bg"
@@ -225,7 +225,7 @@
                 android:textColor="@color/near_white" />
             <Button
                 android:id="@+id/refuse_btn"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
                 android:layout_width="150dp"
                 android:layout_height="32dp"
                 android:background="@drawable/normal_button_bg"

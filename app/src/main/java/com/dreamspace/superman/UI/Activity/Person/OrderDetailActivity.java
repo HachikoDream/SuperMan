@@ -491,10 +491,10 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                     if (!CommonUtils.isEmpty(mast_phone)) {
                         Tools.callSb(OrderDetailActivity.this, mast_phone);
                     } else {
-                        showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
+                        showAlertDialog("暂无达人联系方式", "确定", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
+
                             }
                         });
                     }
@@ -511,14 +511,14 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
       退款
      */
     private void refund() {
-        showAlertDialog("您需要联系达人来退款.", "联系达人", "联系客服", new OnFinish() {
+        showAlertDialog("您需要联系达人来退款.", "联系达人", "取消", new OnFinish() {
             @Override
             public void finish(boolean isOk) {
                 if (isOk) {
                     if (!CommonUtils.isEmpty(mast_phone)) {
                         Tools.callSb(OrderDetailActivity.this, mast_phone);
                     } else {
-                        showAlertDialog("暂无达人联系方式", "联系客服", null, new OnFinish() {
+                        showAlertDialog("暂无达人联系方式", "确定", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
                                 Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
@@ -527,7 +527,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                     }
                 } else {
                     //联系客服
-                    Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
+//                    Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                 }
             }
         });

@@ -73,8 +73,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:background="@color/near_white"
-                android:gravity="center"
-                android:hint="简要介绍下课程内容"
+                android:gravity="center_vertical"
+                android:hint="简要介绍下课程内容\n(例:本课程主要针对吉他刚入门的同学，授课内容为基础的吉他上手知识和简单的音阶练习。本课程人数大致为2-3人，地点初定在大活琴房，学习课程需自备吉他。
+达人只有每周五晚有时间哦，欢迎有时间的同学来预约，具体时间会在预约时商讨～)"
                 android:minHeight="190dp"
                 android:padding="4dp"
                 android:textSize="12sp" />

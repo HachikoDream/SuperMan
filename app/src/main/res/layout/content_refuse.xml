@@ -40,7 +40,7 @@
                 android:padding="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已写15字"/>
+                android:text="已写0字"/>
             <Button
                 android:id="@+id/cancel_action"
                 android:layout_width="150dp"
