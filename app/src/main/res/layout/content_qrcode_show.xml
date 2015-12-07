@@ -9,6 +9,15 @@
 
     <include layout="@layout/custom_toolbar" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="请用户扫描您的二维码,确认完成课程教学."
+        android:textSize="16sp" />
+
     <RelativeLayout
         android:id="@+id/qr_content"
         android:layout_width="match_parent"

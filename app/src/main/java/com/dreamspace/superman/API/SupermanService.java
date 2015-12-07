@@ -21,6 +21,7 @@ import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
 import com.dreamspace.superman.model.api.OrderlistRes;
 import com.dreamspace.superman.model.api.PayRes;
+import com.dreamspace.superman.model.api.PlatPhoneRes;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.QRRes;
 import com.dreamspace.superman.model.api.SimpleInfo;
@@ -186,4 +187,7 @@ public interface SupermanService {
     //获取推荐课程信息
     @GET("/lessons/recommends")
     void getRecommentLessons(@Query("page") int page,Callback<SmLessonList> cb);
+    //获取运营电话
+    @GET("/service_phone")
+    void getPlatformPhone(Callback<PlatPhoneRes> cb);
 }

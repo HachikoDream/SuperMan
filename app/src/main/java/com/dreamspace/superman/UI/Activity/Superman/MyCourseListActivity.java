@@ -28,7 +28,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class MyCourseListActivity extends BaseListAct<LessonInfo> {
-    private static final int REQUEST_CODE = 235;
+    private static final int REQUEST_CODE = 2688;
     private ProgressDialog pd;
     private int page = 1;
     private final int DEFAULT_PAGE = 1;
@@ -52,13 +52,13 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if(!NetUtils.isNetworkConnected(this)){
+        if (!NetUtils.isNetworkConnected(this)) {
             item.setEnabled(false);
         }
         if (id == R.id.add_course) {
-            Bundle b=new Bundle();
-            b.putInt(AddCourseActivity.COME_SOURCE,AddCourseActivity.FROM_ADD);
-            readyGoForResult(AddCourseActivity.class,REQUEST_CODE,b);
+            Bundle b = new Bundle();
+            b.putInt(AddCourseActivity.COME_SOURCE, AddCourseActivity.FROM_ADD);
+            readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
             return true;
         }
 
@@ -104,29 +104,29 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void getInitData() {
-        toggleShowLoading(true,null);
+        toggleShowLoading(true, null);
         page = DEFAULT_PAGE;
         getDataByPage(page, new OnRefreshListener<LessonInfo>() {
             @Override
             public void onFinish(List<LessonInfo> mEntities) {
-                if(mEntities.size()==0){
-                  toggleShowEmpty(true, "您还没有发布过课程,点击图标开启发布之旅~", new View.OnClickListener() {
-                      @Override
-                      public void onClick(View v) {
-                          Bundle b=new Bundle();
-                          b.putInt(AddCourseActivity.COME_SOURCE,AddCourseActivity.FROM_ADD);
-                          readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
-                      }
-                  });
-                }else{
-                    toggleShowLoading(false,null);
+                if (mEntities.size() == 0) {
+                    toggleShowEmpty(true, "您还没有发布过课程,点击图标开启发布之旅~", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle b = new Bundle();
+                            b.putInt(AddCourseActivity.COME_SOURCE, AddCourseActivity.FROM_ADD);
+                            readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
+                        }
+                    });
+                } else {
+                    toggleShowLoading(false, null);
                     refreshDate(mEntities, BaseListAct.LOAD);
                 }
             }
 
             @Override
             public void onError() {
-              toggleShowLoading(false,null);
+                toggleShowLoading(false, null);
             }
         });
     }
@@ -147,9 +147,9 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void onItemPicked(LessonInfo mEntity, int position) {
-        Bundle b=new Bundle();
-        b.putInt(AddCourseActivity.COME_SOURCE,AddCourseActivity.FROM_MODIFY);
-        b.putInt(AddCourseActivity.COME_INFO,mEntity.getId());
+        Bundle b = new Bundle();
+        b.putInt(AddCourseActivity.COME_SOURCE, AddCourseActivity.FROM_MODIFY);
+        b.putInt(AddCourseActivity.COME_INFO, mEntity.getId());
         readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
     }
 
@@ -160,7 +160,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("RESULT","result in");
+        Log.i("info","course result in");
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             showPd();
@@ -168,7 +168,21 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
                 @Override
                 public void onFinish(List<LessonInfo> mEntities) {
                     dismissPd();
-                    refreshDate(mEntities, BaseListAct.LOAD);
+                    if(mEntities.size()==0){
+                        toggleShowEmpty(true, "您还没有发布过课程,点击图标开启发布之旅~", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Bundle b = new Bundle();
+                                b.putInt(AddCourseActivity.COME_SOURCE, AddCourseActivity.FROM_ADD);
+                                readyGoForResult(AddCourseActivity.class, REQUEST_CODE, b);
+                            }
+                        });
+
+                    }else{
+                        toggleShowEmpty(false,null,null);
+                        refreshDate(mEntities, BaseListAct.LOAD);
+                    }
+
                 }
 
                 @Override
@@ -184,7 +198,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
         if (NetUtils.isNetworkConnected(this)) {
             String mas_id = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAS_ID);
             if (!CommonUtils.isEmpty(mas_id)) {
-                ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page,"all", new Callback<SmLessonList>() {
+                ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page, "all", new Callback<SmLessonList>() {
                     @Override
                     public void success(SmLessonList smLessonList, Response response) {
                         if (smLessonList != null) {

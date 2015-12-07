@@ -89,7 +89,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private ProgressDialog pd;
     private String photoPath;//荣誉证书照片的本地路径
     private boolean choose_glory_iv = false;//用于表明用户是否选择了荣誉证书的照片进行上传
-
+    private String qiniu_key=null;
     @Override
     protected void onFirstUserVisible() {
         getUserInfoForApply(true);
@@ -172,6 +172,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                                 }
                             });
                         } else if (state.equalsIgnoreCase(Constant.USER_APPLY_STATE.PENDING)) {
+
                             toggleShowError(true, getString(R.string.to_be_superman_pending), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -190,6 +191,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                             showInfoWithDialog("恭喜您已经通过我们的认证，成为一名达人，您之后可以点击菜单栏中的达人主页来管理您的信息与课程。点击确定跳转到您的达人主页", new OnFinish() {
                                 @Override
                                 public void finish(boolean isOk) {
+                                    PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.MAST_STATE,Constant.USER_APPLY_STATE.NORMAL);
                                     AccountChangeEvent event=new AccountChangeEvent();
                                     event.type=AccountChangeEvent.MAST_STATE_CHANGE;
                                     EventBus.getDefault().post(event);
@@ -248,13 +250,17 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     //上传用户的证书信息到七牛服务器
     private void uploadPhoto(QnRes res) {
+        showPd();
         UploadManager manager = UpLoadUtils.getInstance();
         manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
-                    Log.i("INFO", "upload is Ok");
-                    toBeSm(key);
+                    dismissPd();
+                    Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
+                    choose_glory_iv = true;
+                    qiniu_key=key;
+//                    toBeSm(key);
 
                 } else if (info.isNetworkBroken()) {
                     dismissPd();
@@ -269,21 +275,23 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     //点击确定按钮后的处理函数
     private void tryToBeSm() {
-        if (choose_glory_iv) {
-            //选择了证书图片，需要先进行七牛的图片上传服务，再调用API
-            showPd();
-            getUploadToken();
-        } else {
-            //直接调用API
-            showPd();
-            if (NetUtils.isNetworkConnected(getActivity())) {
-                toBeSm(null);
-            } else {
-                showNetWorkError();
-                dismissPd();
-            }
-
-        }
+        showPd();
+        toBeSm(qiniu_key);
+//        if (choose_glory_iv) {
+//            //选择了证书图片，需要先进行七牛的图片上传服务，再调用API
+//            showPd();
+//            getUploadToken();
+//        } else {
+//            //直接调用API
+//            showPd();
+//            if (NetUtils.isNetworkConnected(getActivity())) {
+//                toBeSm(null);
+//            } else {
+//                showNetWorkError();
+//                dismissPd();
+//            }
+//
+//        }
     }
 
     //上传相关数据，申请成为达人
@@ -414,9 +422,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == getActivity().RESULT_OK) {
             photoPath = Crop.getOutput(result).getPath();
-            Log.i("info", photoPath);
-            Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
-            choose_glory_iv = true;
+            getUploadToken();
         } else if (resultCode == Crop.RESULT_ERROR) {
             showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
         }

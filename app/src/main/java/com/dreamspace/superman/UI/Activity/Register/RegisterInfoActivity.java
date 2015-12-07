@@ -32,6 +32,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.event.AccountChangeEvent;
+import com.dreamspace.superman.event.AvaterChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.ErrorRes;
@@ -158,7 +159,15 @@ public class RegisterInfoActivity extends AbsActivity {
                     realNameInput.setErrorEnabled(false);
                     password=pwd;
                     showPd();
-                    getUploadToken();
+                    RegisterReq req = new RegisterReq();
+                    req.setImage(photoPath);
+                    req.setName(name);
+                    req.setNickname(nickname);
+                    req.setRegister_token(register_token);
+                    req.setSex(sex);
+                    req.setPassword(password);
+                    register(req);
+//                    getUploadToken();
                 }
             }
         });
@@ -180,58 +189,59 @@ public class RegisterInfoActivity extends AbsActivity {
     }
 
     //获得七牛（第三方服务）的上传资源的凭证
-    private void getUploadToken() {
-        if (NetUtils.isNetworkConnected(RegisterInfoActivity.this)) {
-            EmptyBody body=new EmptyBody();
-            body.setInfo(Constant.FEMALE);
-            mService.createQiNiuToken(body,new Callback<QnRes>() {
-                @Override
-                public void success(QnRes qnRes, Response response) {
-                    if (qnRes != null) {
-                        uploadPhoto(qnRes);
-                    }
-                }
+//    private void getUploadToken() {
+//        if (NetUtils.isNetworkConnected(RegisterInfoActivity.this)) {
+//            EmptyBody body=new EmptyBody();
+//            body.setInfo(Constant.FEMALE);
+//            mService.createQiNiuToken(body,new Callback<QnRes>() {
+//                @Override
+//                public void success(QnRes qnRes, Response response) {
+//                    if (qnRes != null) {
+//                        uploadPhoto(qnRes);
+//                    }
+//                }
+//
+//                @Override
+//                public void failure(RetrofitError error) {
+//                    dismissPd();
+//                    showInnerError(error);
+//                }
+//            });
+//        } else {
+//            dismissPd();
+//            showNetWorkError();
+//        }
+//
+//    }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    dismissPd();
-                    showInnerError(error);
-                }
-            });
-        } else {
-            dismissPd();
-            showNetWorkError();
-        }
-
-    }
-
-    //上传用户的头像到七牛服务器
-    private void uploadPhoto(QnRes res) {
-        UploadManager manager = UpLoadUtils.getInstance();
-        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
-            @Override
-            public void complete(String key, ResponseInfo info, JSONObject response) {
-                if (info.isOK()) {
-                    Log.i("INFO", "upload is Ok");
-                    RegisterReq req = new RegisterReq();
-                    req.setImage(key);
-                    req.setName(name);
-                    req.setNickname(nickname);
-                    req.setRegister_token(register_token);
-                    req.setSex(sex);
-                    req.setPassword(password);
-                    register(req);
-
-                } else if (info.isNetworkBroken()) {
-                    dismissPd();
-                    showNetWorkError();
-                } else if (info.isServerError()) {
-                    dismissPd();
-                    showToast("服务暂时不可用，请稍后重试");
-                }
-            }
-        }, null);
-    }
+//    //上传用户的头像到七牛服务器
+//    private void uploadPhoto(final QnRes res) {
+//        UploadManager manager = UpLoadUtils.getInstance();
+//        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
+//            @Override
+//            public void complete(String key, ResponseInfo info, JSONObject response) {
+//                if (info.isOK()) {
+//                    Log.i("INFO", "upload is Ok");
+//                    PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE, res.getKey());
+//                    RegisterReq req = new RegisterReq();
+//                    req.setImage(key);
+//                    req.setName(name);
+//                    req.setNickname(nickname);
+//                    req.setRegister_token(register_token);
+//                    req.setSex(sex);
+//                    req.setPassword(password);
+//                    register(req);
+//
+//                } else if (info.isNetworkBroken()) {
+//                    dismissPd();
+//                    showNetWorkError();
+//                } else if (info.isServerError()) {
+//                    dismissPd();
+//                    showToast("服务暂时不可用，请稍后重试");
+//                }
+//            }
+//        }, null);
+//    }
 
     //上传用户信息到业务服务器
     private void register(final RegisterReq req) {
@@ -241,7 +251,6 @@ public class RegisterInfoActivity extends AbsActivity {
             public void success(LoginRes res, Response response) {
                 if (res != null) {
                     PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.ACCESS, res.getAccess_token());
-                    PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.QINIU_SOURCE, req.getImage());
                     ApiManager.clear();
                     getUserInfo();
                 }
@@ -260,7 +269,10 @@ public class RegisterInfoActivity extends AbsActivity {
             @Override
             public void success(UserInfo userInfo, Response response) {
                 saveUserInfo(userInfo);
-                openChatService(userInfo.getId());
+                EventBus.getDefault().post(new AccountChangeEvent());
+                EventBus.getDefault().post(new AvaterChangeEvent(photoPath));
+                finish();
+//                openChatService(userInfo.getId());
             }
 
             @Override
@@ -293,7 +305,8 @@ public class RegisterInfoActivity extends AbsActivity {
     //保存用户信息到本地
     private void saveUserInfo(UserInfo userInfo) {
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.ACCOUNT,userInfo.getNickname());
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.AVATAR,userInfo.getImage());
+//        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.AVATAR,userInfo.getImage());
+        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.AVATAR,photoPath);
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.PHONE,phoneNum);

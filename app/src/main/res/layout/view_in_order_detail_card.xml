@@ -48,6 +48,7 @@
                 android:id="@+id/course_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="2"
                 android:paddingBottom="4dp"
                 android:text="正在加载中..."
                 android:textColor="@color/near_black"

@@ -25,6 +25,7 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Register.VerifyByPhoneAct;
 import com.dreamspace.superman.event.AccountChangeEvent;
+import com.dreamspace.superman.event.AvaterChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.QnRes;
@@ -116,9 +117,14 @@ public class ModifyInfoActivity extends AbsActivity {
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == RESULT_OK) {
             photoPath = Crop.getOutput(result).getPath();
-            showProgressDialog();
-            getUploadToken();
-            Log.i("info", photoPath);
+            Tools.showImageWithGlide(ModifyInfoActivity.this, avaterIv, photoPath);
+            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.AVATAR, photoPath);
+            EventBus.getDefault().post(new AccountChangeEvent());
+            EventBus.getDefault().post(new AvaterChangeEvent(photoPath));
+//            finish();
+//            showProgressDialog();
+//            getUploadToken();
+//            Log.i("info", photoPath);
         } else if (resultCode == Crop.RESULT_ERROR) {
             showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
         }

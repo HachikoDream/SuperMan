@@ -50,36 +50,40 @@
             android:orientation="vertical">
 
             <TextView
-                android:padding="4dp"
                 android:id="@+id/course_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/near_black"
-                android:textSize="16sp"
-                />
-            <TextView
+                android:maxLines="2"
                 android:padding="4dp"
+                android:textColor="@color/near_black"
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/superman_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                />
-            <TextView
+                android:singleLine="true"
                 android:padding="4dp"
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/price_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                />
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textSize="16sp" />
 
         </LinearLayout>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/page_goright"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:src="@drawable/page_goright" />
     </RelativeLayout>
+
     <Button
         android:id="@+id/mButton"
         android:layout_width="70dp"

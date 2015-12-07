@@ -8,7 +8,14 @@
 
 
     <include layout="@layout/custom_toolbar" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:text="请扫描达人的二维码,确认完成课程教学."/>
     <com.dlazaro66.qrcodereaderview.QRCodeReaderView
         android:id="@+id/qrdecoderview"
         android:layout_width="match_parent"

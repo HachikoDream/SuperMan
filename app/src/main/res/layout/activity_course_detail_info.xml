@@ -55,7 +55,8 @@
             <TextView
                 android:id="@+id/course_name_tv"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
                 android:paddingBottom="2dp"
                 android:singleLine="false"
                 android:text="@string/common_loading_message"

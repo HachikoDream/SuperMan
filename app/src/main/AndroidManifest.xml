@@ -206,12 +206,16 @@
         <activity
             android:name=".UI.Activity.Main.ChatActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".UI.Activity.Main.PayChannelActivity"
-            android:label="@string/title_activity_paychannel"></activity>
+            android:label="@string/title_activity_paychannel" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".UI.Activity.Main.AboutusActivity"></activity>
+        <activity android:name=".UI.Activity.Main.AboutusActivity" />
+        <activity
+            android:name=".UI.Activity.Main.AboutSupermanActivity"
+            android:label="达人申请说明">
+        </activity>
     </application>
 
 </manifest>

@@ -1,169 +1,178 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment">
 
-
-    <LinearLayout
+    <ScrollView
         android:id="@+id/content_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="80dp"
-        android:paddingLeft="63dp"
-        android:paddingRight="63dp"
-        android:paddingTop="13dp">
+        android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_avater_iv"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/login_pho_mistake" />
-
-        <RadioGroup
-            android:id="@+id/radiogroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/gender_man"
-                android:layout_width="62dp"
-                android:layout_height="24dp"
-                android:background="@drawable/gender_man_bg"
-                android:button="@null"
-                android:checked="true"
-                android:gravity="center"
-                android:text="男"
-                android:textColor="@color/color_genderbutton" />
-
-            <RadioButton
-                android:id="@+id/gender_woman"
-                android:layout_width="62dp"
-                android:layout_height="24dp"
-                android:background="@drawable/gender_woman_bg"
-                android:button="@null"
-                android:checked="false"
-                android:gravity="center"
-                android:text="女"
-                android:textColor="@color/color_genderbutton" />
-        </RadioGroup>
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/realname_ev"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="63dp"
+            android:paddingRight="63dp"
+            android:paddingTop="13dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_avater_iv"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/login_pho_mistake" />
+
+            <RadioGroup
+                android:id="@+id/radiogroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/gender_man"
+                    android:layout_width="62dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/gender_man_bg"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="男"
+                    android:textColor="@color/color_genderbutton" />
+
+                <RadioButton
+                    android:id="@+id/gender_woman"
+                    android:layout_width="62dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/gender_woman_bg"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:text="女"
+                    android:textColor="@color/color_genderbutton" />
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/realname_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/apptheme_edit_text_holo_light"
+                    android:hint="真实姓名"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/skils_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/apptheme_edit_text_holo_light"
+                    android:hint="擅长技能(如：吉他演奏)"
+                    android:singleLine="true"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tags_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/apptheme_edit_text_holo_light"
+                    android:hint="达人标签（荣誉、等级或社团部门）"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
+            </android.support.design.widget.TextInputLayout>
 
             <EditText
+                android:id="@+id/honour_ev"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:singleLine="true"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="真实姓名"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/skils_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:singleLine="true"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="擅长技能(如：吉他演奏)"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tags_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:singleLine="true"
-                android:background="@drawable/apptheme_edit_text_holo_light"
-                android:hint="达人标签（荣誉、等级或社团部门）"
+                android:layout_marginTop="20dp"
+                android:background="@color/near_white"
+                android:gravity="left"
+                android:hint="简要介绍所获荣誉,如校园吉他演奏比赛一等奖(选填)"
+                android:minHeight="97dp"
+                android:padding="10dp"
                 android:textSize="12sp" />
-        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/honour_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/near_white"
-            android:gravity="left"
-            android:hint="简要介绍所获荣誉,如校园吉他演奏比赛一等奖(选填)"
-            android:minHeight="97dp"
-            android:padding="10dp"
-            android:textSize="12sp" />
+            <EditText
+                android:id="@+id/introduction_ev"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/near_white"
+                android:gravity="left"
+                android:hint="简要介绍个人情况(例：我是张三，现在是一名信息工程专业大四的学生。业余热爱吉他演奏，已经有5年吉他学习经验，在整个学习过程中积累了很多独到经验，来达人荟，我希望通过它可以让我的技能发挥更大价值，帮助到更多的同学，也让我结交到更多有相同爱好的朋友。)"
+                android:minHeight="97dp"
+                android:padding="10dp"
+                android:textSize="12sp" />
 
-        <EditText
-            android:id="@+id/introduction_ev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/near_white"
-            android:gravity="left"
-            android:hint="简要介绍个人情况(例：我是张三，现在是一名信息工程专业大四的学生。业余热爱吉他演奏，已经有5年吉他学习经验，在整个学习过程中积累了很多独到经验，来达人荟，我希望通过它可以让我的技能发挥更大价值，帮助到更多的同学，也让我结交到更多有相同爱好的朋友。)"
-            android:minHeight="97dp"
-            android:padding="10dp"
-            android:textSize="12sp" />
-        <View
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey_line"></View>
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="您上传的证书仅供平台审核身份使用，不会泄漏给他人"
-             android:textSize="12sp"
-             android:layout_marginTop="5dp"
-             android:drawableLeft="@drawable/page_tips"
-             android:drawablePadding="2dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="技能荣誉证书"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="17dp"
-            android:textSize="12sp"/>
-        <ImageView
-            android:id="@+id/glory_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/page_add"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/grey_line"></View>
 
-        <Button
-            android:id="@+id/mybtn"
-            android:layout_width="150dp"
-            android:layout_height="32dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/normal_button_bg"
-            android:gravity="center"
-            android:text="完成"
-            android:textColor="@android:color/white" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/page_tips"
+                android:drawablePadding="2dp"
+                android:text="您上传的证书仅供平台审核身份使用，不会泄漏给他人"
+                android:textSize="12sp" />
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="17dp"
+                android:text="请上传技能相关的获奖证书或作品照片"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/glory_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/page_add" />
+
+            <Button
+                android:id="@+id/mybtn"
+                android:layout_width="150dp"
+                android:layout_height="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="80dp"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/normal_button_bg"
+                android:gravity="center"
+                android:text="完成"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

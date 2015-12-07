@@ -32,6 +32,9 @@ public class PreferenceUtils {
         public static final String QINIU_SOURCE="QINIU_CODE";
         public static final String MAST_STATE="MAST_STATE";
         public static final String UID="UID";
+        public static final String AVATER_AVAILABLE="avater_ava";
+        public static final String AVATER_CACHE_PATH="avater_cache_path";
+        public static final String SM_INFO_READ="sm_info_read";
 
     }
 

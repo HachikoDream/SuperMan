@@ -55,7 +55,6 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
         if (msg.what == check_is_login) {
             if (PreferenceUtils.hasKey(getApplicationContext(), KEY)) {
                 //非第一次登陆
-                Log.i("INFO", "not first");
                 if (!CommonUtils.isEmpty(PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
                     getUserInfo();
                 } else {
@@ -81,6 +80,17 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
         startActivity(intent);
         finish();
     }
+    private void gotoMainWithAvaterTask(String cachedPath){
+        Bundle b = new Bundle();
+        b.putString(MainActivity.COME_SOURCE, MainActivity.NOT_FIRST_IN);
+        b.putInt(MainActivity.AVATER_TASK,MainActivity.AVATER_LOAD_TASK);
+        b.putString(MainActivity.CACHED_PHOTO_PATH,cachedPath);
+        Intent intent = new Intent(StartPageActivity.this, MainActivity.class);
+        intent.putExtras(b);
+        startActivity(intent);
+        finish();
+    }
+
 
     //获取用户信息
     private void getUserInfo() {
@@ -117,7 +127,13 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
                 filterException(e);
-                gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+                if(PreferenceUtils.hasKey(getApplicationContext(),PreferenceUtils.Key.AVATER_AVAILABLE)&&!PreferenceUtils.getBoolean(getApplicationContext(),PreferenceUtils.Key.AVATER_AVAILABLE)){
+                    String cachedPath=PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.AVATER_CACHE_PATH);
+                    gotoMainWithAvaterTask(cachedPath);
+                }else{
+                    gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
+                }
+
             }
         });
     }

@@ -68,6 +68,7 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
           public void onFinish(List<LessonInfo> mEntities) {
               onPullUpFinished();
               if(mEntities.size()==0){
+                  --page;
                   showToast("没有更多数据");
               }else{
                   refreshDate(mEntities,BaseListAct.ADD);
