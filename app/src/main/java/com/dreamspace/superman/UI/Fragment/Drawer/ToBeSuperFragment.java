@@ -89,7 +89,8 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private ProgressDialog pd;
     private String photoPath;//荣誉证书照片的本地路径
     private boolean choose_glory_iv = false;//用于表明用户是否选择了荣誉证书的照片进行上传
-    private String qiniu_key=null;
+    private String qiniu_key = null;
+
     @Override
     protected void onFirstUserVisible() {
         getUserInfoForApply(true);
@@ -143,11 +144,11 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         gloryIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Crop.pickImage(getActivity(),ToBeSuperFragment.this);
-//                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
-//                intent.setPhotoCount(1);
-//                intent.setShowCamera(true);
-//                startActivityForResult(intent, REQUEST_CODE);
+//                Crop.pickImage(getActivity(), ToBeSuperFragment.this);
+                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
+                intent.setPhotoCount(1);
+                intent.setShowCamera(true);
+                startActivityForResult(intent, REQUEST_CODE);
 
             }
         });
@@ -180,20 +181,20 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                                 }
                             });
 
-                        } else if(state.equals(Constant.USER_APPLY_STATE.NOT_APPLY)){
+                        } else if (state.equals(Constant.USER_APPLY_STATE.NOT_APPLY)) {
                             loadFromLocal();
                             realnameEv.getEditText().setText(realName);
                             Tools.showImageWithGlide(getActivity(), userIv, avater_url);
                             showGender();
                             genderMan.setEnabled(false);
                             genderWoman.setEnabled(false);
-                        }else if(state.equals(Constant.USER_APPLY_STATE.NORMAL)){
+                        } else if (state.equals(Constant.USER_APPLY_STATE.NORMAL)) {
                             showInfoWithDialog("恭喜您已经通过我们的认证，成为一名达人，您之后可以点击菜单栏中的达人主页来管理您的信息与课程。点击确定跳转到您的达人主页", new OnFinish() {
                                 @Override
                                 public void finish(boolean isOk) {
-                                    PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.MAST_STATE,Constant.USER_APPLY_STATE.NORMAL);
-                                    AccountChangeEvent event=new AccountChangeEvent();
-                                    event.type=AccountChangeEvent.MAST_STATE_CHANGE;
+                                    PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.MAST_STATE, Constant.USER_APPLY_STATE.NORMAL);
+                                    AccountChangeEvent event = new AccountChangeEvent();
+                                    event.type = AccountChangeEvent.MAST_STATE_CHANGE;
                                     EventBus.getDefault().post(event);
                                 }
                             });
@@ -251,15 +252,14 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     //上传用户的证书信息到七牛服务器
     private void uploadPhoto(QnRes res) {
         showPd();
-        UploadManager manager = UpLoadUtils.getInstance();
-        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
+        UpLoadUtils.upLoadImage(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
                     dismissPd();
                     Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
                     choose_glory_iv = true;
-                    qiniu_key=key;
+                    qiniu_key = key;
 //                    toBeSm(key);
 
                 } else if (info.isNetworkBroken()) {
@@ -387,7 +387,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
             tagsEv.setErrorEnabled(true);
             tagsEv.setError("标签不应大于20个字");
             return false;
-        }else if (CommonUtils.isEmpty(skills)) {
+        } else if (CommonUtils.isEmpty(skills)) {
             skilsEv.setErrorEnabled(true);
             skilsEv.setError("请输入您擅长的技能");
             return false;
@@ -416,7 +416,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getActivity().getCacheDir(), String.valueOf(new Date().getTime())));//// TODO: 2015/11/25  删除缓存图片
-        Crop.of(source, destination).asSquare().start(getActivity(),ToBeSuperFragment.this);
+        Crop.of(source, destination).asSquare().start(getActivity(), ToBeSuperFragment.this);
     }
 
     private void handleCrop(int resultCode, Intent result) {
@@ -432,19 +432,19 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-//            if (data != null) {
-//                ArrayList<String> photos =
-//                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-//                Log.i("INFO", "PHOTO:" + photos.get(0));
-//                photoPath = photos.get(0);
-//                Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
-//                choose_glory_iv = true;
-//            }
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
+            if (data != null) {
+                ArrayList<String> photos =
+                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                Log.i("INFO", "PHOTO:" + photos.get(0));
+                photoPath = photos.get(0);
+                beginCrop(Uri.fromFile(new File(photoPath)));
+            }
+        }
+//        if (requestCode == Crop.REQUEST_PICK && resultCode == getActivity().RESULT_OK) {
+//            beginCrop(data.getData());
 //        }
-        if (requestCode == Crop.REQUEST_PICK && resultCode == getActivity().RESULT_OK) {
-            beginCrop(data.getData());
-        } else if (requestCode == Crop.REQUEST_CROP) {
+        else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, data);
         }
     }

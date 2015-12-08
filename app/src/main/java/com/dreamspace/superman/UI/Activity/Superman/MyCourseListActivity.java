@@ -17,6 +17,7 @@ import com.dreamspace.superman.UI.Activity.BaseListAct;
 import com.dreamspace.superman.UI.Adapters.MyCourseAdapter;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.model.Lesson;
+import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
 
@@ -160,7 +161,6 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("info","course result in");
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             showPd();
@@ -198,29 +198,47 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
         if (NetUtils.isNetworkConnected(this)) {
             String mas_id = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAS_ID);
             if (!CommonUtils.isEmpty(mas_id)) {
-                ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page, "all", new Callback<SmLessonList>() {
-                    @Override
-                    public void success(SmLessonList smLessonList, Response response) {
-                        if (smLessonList != null) {
-                            listener.onFinish(smLessonList.getLessons());
-                        } else {
-                            listener.onError();
-                        }
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        showInnerError(error);
-                        listener.onError();
-                    }
-                });
+                getCourseInfo(mas_id,listener);
             } else {
-                showToast("暂时查询不到您的课程信息");
+                  ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
+                      @Override
+                      public void success(UserInfo userInfo, Response response) {
+                          PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
+                          getCourseInfo(userInfo.getMas_id(),listener);
+                      }
+
+                      @Override
+                      public void failure(RetrofitError error) {
+                          showInnerError(error);
+                          listener.onError();
+                      }
+                  });
+//                listener.onError();
+//                showToast("暂时查询不到您的课程信息");
             }
 
         } else {
             showNetWorkError();
             listener.onError();
         }
+    }
+    private void getCourseInfo(String mas_id,final OnRefreshListener<LessonInfo> listener){
+        ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page, "all", new Callback<SmLessonList>() {
+            @Override
+            public void success(SmLessonList smLessonList, Response response) {
+                if (smLessonList != null) {
+                    listener.onFinish(smLessonList.getLessons());
+                } else {
+                    listener.onError();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                showInnerError(error);
+                listener.onError();
+            }
+        });
+
     }
 }

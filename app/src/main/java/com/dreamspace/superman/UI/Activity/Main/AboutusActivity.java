@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
+import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.PlatPhoneRes;
@@ -35,8 +36,14 @@ public class AboutusActivity extends AbsActivity {
         if(NetUtils.isNetworkConnected(this)){
             ApiManager.getService(getApplicationContext()).getPlatformPhone(new Callback<PlatPhoneRes>() {
                 @Override
-                public void success(PlatPhoneRes platPhoneRes, Response response) {
+                public void success(final PlatPhoneRes platPhoneRes, Response response) {
                     phoneTv.setText(platPhoneRes.getPhone());
+                    phoneTv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Tools.callSb(AboutusActivity.this,platPhoneRes.getPhone());
+                        }
+                    });
                 }
 
                 @Override

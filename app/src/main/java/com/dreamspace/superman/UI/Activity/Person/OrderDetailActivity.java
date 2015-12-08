@@ -521,7 +521,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                         showAlertDialog("暂无达人联系方式", "确定", null, new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
+//                                Tools.callSb(OrderDetailActivity.this, Constant.self_phone);
                             }
                         });
                     }

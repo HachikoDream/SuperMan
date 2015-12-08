@@ -78,7 +78,7 @@ public class RegisterInfoActivity extends AbsActivity {
     private boolean choose_avater = false;
     @Bind(R.id.user_avater_iv)
     CircleImageView mImageView;
-    private final static int REQUEST_CODE = 233;
+    private final static int REQUEST_PICK = 233;
     private ProgressDialog pd;
     private SupermanService mService;
     private String photoPath;
@@ -100,11 +100,11 @@ public class RegisterInfoActivity extends AbsActivity {
     protected void prepareDatas() {
         mService = ApiManager.getService(getApplicationContext());
         register_token = this.getIntent().getStringExtra("token");
-        phoneNum=this.getIntent().getStringExtra("phoneNum");
+        phoneNum = this.getIntent().getStringExtra("phoneNum");
     }
 
     @OnClick({R.id.gender_man, R.id.gender_woman})
-     void getGenderInfo() {
+    void getGenderInfo() {
         switch (mRadioGroup.getCheckedRadioButtonId()) {
             case R.id.gender_man:
                 sex = Constant.MALE;
@@ -114,18 +114,21 @@ public class RegisterInfoActivity extends AbsActivity {
                 break;
         }
     }
-   private void showPd(){
-       if(pd==null){
-           pd=ProgressDialog.show(this,"","正在加载中,请稍后",true,false);
-       }else{
-           pd.show();
-       }
-   }
-    private void dismissPd(){
-        if(pd!=null&&pd.isShowing()){
+
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(this, "", "正在加载中,请稍后", true, false);
+        } else {
+            pd.show();
+        }
+    }
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     @Override
     protected void initViews() {
         getSupportActionBar().setTitle(getString(TITLE));
@@ -135,12 +138,12 @@ public class RegisterInfoActivity extends AbsActivity {
             public void onClick(View v) {
                 String userName = nameInput.getEditText().getText().toString();
                 String realName = realNameInput.getEditText().getText().toString();
-                String pwd=pwdInput.getEditText().getText().toString();
+                String pwd = pwdInput.getEditText().getText().toString();
                 pwdInput.setErrorEnabled(false);
                 nameInput.setErrorEnabled(false);
                 realNameInput.setErrorEnabled(false);
-                String reason="none";
-                if(!pwdValid(pwd,reason)){
+                String reason = "none";
+                if (!pwdValid(pwd, reason)) {
                     pwdInput.setErrorEnabled(true);
                     pwdInput.setError(reason);
                 }
@@ -157,7 +160,7 @@ public class RegisterInfoActivity extends AbsActivity {
                     name = realName;
                     nameInput.setErrorEnabled(false);
                     realNameInput.setErrorEnabled(false);
-                    password=pwd;
+                    password = pwd;
                     showPd();
                     RegisterReq req = new RegisterReq();
                     req.setImage(photoPath);
@@ -174,11 +177,11 @@ public class RegisterInfoActivity extends AbsActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Crop.pickImage(RegisterInfoActivity.this);
-//                PhotoPickerIntent intent = new PhotoPickerIntent(RegisterInfoActivity.this);
-//                intent.setPhotoCount(1);
-//                intent.setShowCamera(true);
-//                startActivityForResult(intent, REQUEST_CODE);
+//                Crop.pickImage(RegisterInfoActivity.this);
+                PhotoPickerIntent intent = new PhotoPickerIntent(RegisterInfoActivity.this);
+                intent.setPhotoCount(1);
+                intent.setShowCamera(true);
+                startActivityForResult(intent, REQUEST_PICK);
             }
         });
     }
@@ -245,7 +248,7 @@ public class RegisterInfoActivity extends AbsActivity {
 
     //上传用户信息到业务服务器
     private void register(final RegisterReq req) {
-        Log.i("INFO","req: "+req);
+        Log.i("INFO", "req: " + req);
         mService.register(req, new Callback<LoginRes>() {
             @Override
             public void success(LoginRes res, Response response) {
@@ -263,8 +266,9 @@ public class RegisterInfoActivity extends AbsActivity {
             }
         });
     }
+
     //获取用户信息
-    private void getUserInfo(){
+    private void getUserInfo() {
         ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
             @Override
             public void success(UserInfo userInfo, Response response) {
@@ -282,16 +286,17 @@ public class RegisterInfoActivity extends AbsActivity {
             }
         });
     }
+
     //使用leancloud打开聊天服务
-    private void openChatService(String userId){
+    private void openChatService(String userId) {
         AVImClientManager.getInstance().open(userId, new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
-                if(filterException(e)){
+                if (filterException(e)) {
                     dismissPd();
                     EventBus.getDefault().post(new AccountChangeEvent());
                     finish();
-                }else{
+                } else {
                     showToast("聊天功能暂时不可用");
                     dismissPd();
                     EventBus.getDefault().post(new AccountChangeEvent());
@@ -304,56 +309,65 @@ public class RegisterInfoActivity extends AbsActivity {
 
     //保存用户信息到本地
     private void saveUserInfo(UserInfo userInfo) {
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.ACCOUNT,userInfo.getNickname());
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.ACCOUNT, userInfo.getNickname());
 //        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.AVATAR,userInfo.getImage());
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.AVATAR,photoPath);
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.REALNAME,userInfo.getName());
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.AVATAR, photoPath);
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.REALNAME, userInfo.getName());
         PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.PHONE,phoneNum);
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.UID,userInfo.getId());
-        PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAST_STATE,userInfo.getMast_state());
-        if(!CommonUtils.isEmpty(userInfo.getMas_id())){
-            PreferenceUtils.putString(getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.PHONE, phoneNum);
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.UID, userInfo.getId());
+        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAST_STATE, userInfo.getMast_state());
+        if (!CommonUtils.isEmpty(userInfo.getMas_id())) {
+            PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAS_ID, userInfo.getMas_id());
         }
     }
 
     private boolean nameValid(String name) {
         return !(name.isEmpty() || name == null);
     }
-    private boolean pwdValid(String pwd,String reason){
-       if(CommonUtils.isEmpty(pwd)){
-           reason="请输入密码";
-           return false;
-       }else if(pwd.length()<6){
-           reason="密码长度不足";
-           return false;
-       }
+
+    private boolean pwdValid(String pwd, String reason) {
+        if (CommonUtils.isEmpty(pwd)) {
+            reason = "请输入密码";
+            return false;
+        } else if (pwd.length() < 6) {
+            reason = "密码长度不足";
+            return false;
+        }
         return true;
     }
+
     private boolean realNameValid(String realName) {
         return !(realName.isEmpty() || realName == null);
     }
+
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getCacheDir(), String.valueOf(new Date().getTime())));//// TODO: 2015/11/25  删除缓存图片
         Crop.of(source, destination).asSquare().start(this);
     }
+
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == RESULT_OK) {
-            photoPath=Crop.getOutput(result).getPath();
-            Log.i("info",photoPath);
-            Tools.showImageWithGlide(this,mImageView,photoPath);
+            photoPath = Crop.getOutput(result).getPath();
+            Log.i("info", photoPath);
+            Tools.showImageWithGlide(this, mImageView, photoPath);
             choose_avater = true;
 //            resultView.setImageURI(Crop.getOutput(result));
         } else if (resultCode == Crop.RESULT_ERROR) {
-          showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
+            showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         super.onActivityResult(requestCode, resultCode, result);
-        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
-            beginCrop(result.getData());
+        if (requestCode == REQUEST_PICK && resultCode == RESULT_OK) {
+            if (result != null) {
+                ArrayList<String> photos =
+                        result.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                photoPath = photos.get(0);
+                beginCrop(Uri.fromFile(new File(photoPath)));
+            }
         } else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, result);
         }

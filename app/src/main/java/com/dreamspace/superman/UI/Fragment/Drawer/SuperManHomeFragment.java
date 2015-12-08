@@ -60,7 +60,10 @@ public class SuperManHomeFragment extends BaseLazyFragment {
 
     @Override
     protected void onUserVisible() {
-
+        String avater_url=PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR);
+        String user_name=PreferenceUtils.getString(getActivity().getApplicationContext(),PreferenceUtils.Key.REALNAME);
+        Tools.showImageWithGlide(getActivity(),userIv, avater_url);
+        userNameTv.setText(user_name);
     }
 
     @Override

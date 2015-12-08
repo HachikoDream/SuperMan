@@ -349,6 +349,9 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     }
 
     public void onEvent(AccountChangeEvent event) {
+        if(mViewPager.getCurrentItem()==5){
+            gotoIndex();
+        }
         checkLoginState(event.type);
     }
 
@@ -410,8 +413,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
 
     //上传用户的头像到七牛服务器
     private void uploadPhoto(final String photoPath, final QnRes res) {
-        UploadManager manager = UpLoadUtils.getInstance();
-        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
+        UpLoadUtils.upLoadImage(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {

@@ -19,31 +19,30 @@
         app:itemIconTint="@android:color/white"
         app:menu="@menu/my_navigation_items">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:layout_gravity="bottom"
-            android:orientation="horizontal"
             android:background="@color/navi_color">
 
             <TextView
                 android:id="@+id/footer_item_aboutus"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="left|center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
                 android:paddingLeft="?attr/listPreferredItemPaddingLeft"
                 android:text="@string/nav_footer_aboutus"
                 android:textColor="@color/near_white" />
             <TextView
                 android:id="@+id/footer_item_settings"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
                 android:paddingRight="?attr/listPreferredItemPaddingLeft"
                 android:text="@string/nav_footer_settings"
                 android:textColor="@color/near_white" />
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

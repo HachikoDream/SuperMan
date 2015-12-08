@@ -100,7 +100,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:hint="达人标签（荣誉、等级或社团部门）"
+                    android:hint="标签（荣誉、等级或社团）"
                     android:singleLine="true"
                     android:textSize="12sp" />
             </android.support.design.widget.TextInputLayout>

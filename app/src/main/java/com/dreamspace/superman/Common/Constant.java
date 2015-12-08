@@ -12,8 +12,6 @@ public class Constant {
     public static final String APP_KEY = "4msiwzy7w8d0mh9pnwt7937zpwya6ikt0ubqroo4sbwoivqe";
     public static final String APP_ID = "65jys8t38y6q8vkrny5z2czo1c6p09dj91e3cwh2cbzkztbs";
     public static final String DB_NAME = "Conversation";
-
-    public static String BASE_URL = "http://api2.hloli.me:9777/v1.0";
     public static final String FEMALE = "female";
     public static final String MALE = "male";
     public static final String FAIL_AVATER = "FAIL";
@@ -22,8 +20,6 @@ public class Constant {
     public static final String MEMBER_ID = getPrefixConstant("member_id");
     public static final String MEMBER_NAME = getPrefixConstant("member_name");
     public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");
-    //// TODO: 2015/10/27 增加客服电话
-    public static final String self_phone = "15651630827";
 
     public static final class COME_SOURCE {
         public static final String SOURCE = "source_of_verify_phone";

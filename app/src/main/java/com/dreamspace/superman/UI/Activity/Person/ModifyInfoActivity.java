@@ -135,11 +135,11 @@ public class ModifyInfoActivity extends AbsActivity {
         avaterLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Crop.pickImage(ModifyInfoActivity.this);
-//                PhotoPickerIntent intent = new PhotoPickerIntent(ModifyInfoActivity.this);
-//                intent.setPhotoCount(1);
-//                intent.setShowCamera(true);
-//                startActivityForResult(intent, REQUEST_PHOTO);
+//                Crop.pickImage(ModifyInfoActivity.this);
+                PhotoPickerIntent intent = new PhotoPickerIntent(ModifyInfoActivity.this);
+                intent.setPhotoCount(1);
+                intent.setShowCamera(true);
+                startActivityForResult(intent, REQUEST_PHOTO);
             }
         });
         nicknameLayout.setOnClickListener(new View.OnClickListener() {
@@ -302,7 +302,7 @@ public class ModifyInfoActivity extends AbsActivity {
     }
 
     private void dismissDialog() {
-        if (pd != null&&pd.isShowing()) {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
@@ -448,8 +448,17 @@ public class ModifyInfoActivity extends AbsActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case Crop.REQUEST_PICK:
-                    beginCrop(data.getData());
+                case REQUEST_PHOTO:
+//                case Crop.REQUEST_PICK:
+                    if (data != null) {
+                        ArrayList<String> photos =
+                                data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                        Log.i("PHOTO-INFO", "PHOTO:" + photos.get(0));
+                        photoPath = photos.get(0);
+                        beginCrop(Uri.fromFile(new File(photoPath)));
+                    }
+//                    Log.i("PHOTO-INFO", "PHOTO:" + data.getData());
+//                    beginCrop(data.getData());
                     break;
                 case Crop.REQUEST_CROP:
                     handleCrop(resultCode, data);
