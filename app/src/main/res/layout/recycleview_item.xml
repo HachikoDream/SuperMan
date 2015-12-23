@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/content_imageview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/class_compete_nomal" />
+    <!--<ImageView-->
+    <!--android:id="@+id/close_btn"-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="10dp"-->
+    <!--android:clickable="true"-->
+    <!--android:src="@drawable/close"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_alignParentRight="true"/>-->
+</LinearLayout>

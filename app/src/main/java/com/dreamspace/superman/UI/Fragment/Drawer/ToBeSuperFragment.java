@@ -7,13 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
@@ -25,29 +23,36 @@ import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Superman.OnFinish;
+import com.dreamspace.superman.UI.Adapters.MultiShowIvAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.TempRes;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.EmptyBody;
+import com.dreamspace.superman.model.api.MultiQnReq;
 import com.dreamspace.superman.model.api.QnRes;
+import com.dreamspace.superman.model.api.SingleQnRes;
 import com.dreamspace.superman.model.api.ToBeSmReq;
 import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCancellationSignal;
 import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.entity.Photo;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -58,24 +63,26 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     Button finishBtn;
     @Bind(R.id.user_avater_iv)
     CircleImageView userIv;
-    @Bind(R.id.radiogroup)
-    RadioGroup mRadiogroup;
-    @Bind(R.id.gender_man)
-    RadioButton genderMan;
-    @Bind(R.id.gender_woman)
-    RadioButton genderWoman;
+    //    @Bind(R.id.radiogroup)
+//    RadioGroup mRadiogroup;
+//    @Bind(R.id.gender_man)
+//    RadioButton genderMan;
+//    @Bind(R.id.gender_woman)
+//    RadioButton genderWoman;
     @Bind(R.id.skils_ev)
     TextInputLayout skilsEv;
     @Bind(R.id.tags_ev)
     TextInputLayout tagsEv;
-    @Bind(R.id.realname_ev)
-    TextInputLayout realnameEv;
+    //    @Bind(R.id.realname_ev)
+//    TextInputLayout realnameEv;
     @Bind(R.id.honour_ev)
     EditText honourEv;
     @Bind(R.id.introduction_ev)
     EditText introductionEv;
-    @Bind(R.id.glory_image)
-    ImageView gloryIv;
+    //    @Bind(R.id.glory_image)
+//    ImageView gloryIv;
+    @Bind(R.id.multi_image_show)
+    RecyclerView multiView;
     private String gender;//性别，从本地数据中读取
     private String avater_code;//七牛的原始code，从本地数据中读取
     private String avater_url;
@@ -87,9 +94,10 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private String introduction;//介绍
     private final static int REQUEST_CODE = 233;
     private ProgressDialog pd;
-    private String photoPath;//荣誉证书照片的本地路径
-    private boolean choose_glory_iv = false;//用于表明用户是否选择了荣誉证书的照片进行上传
-    private String qiniu_key = null;
+    private List<Photo> selectedPhotos = new ArrayList<>();//已经选择的图片
+    private MultiShowIvAdapter adapter;
+    private List<String> keys = new ArrayList<>();//存储七牛的key，用于成为达人的接口
+    private boolean cancel_qiniu = false;//取消七牛的上传操作
 
     @Override
     protected void onFirstUserVisible() {
@@ -97,21 +105,24 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     }
 
-    private void showPd() {
+    private void showPd(String text) {
+        if (text == null) {
+            text = getString(R.string.common_loading_message);
+        }
         if (pd == null) {
-            pd = ProgressDialog.show(getActivity(), "", getString(R.string.common_loading_message), true, false);
+            pd = ProgressDialog.show(getActivity(), "", text, true, false);
         } else {
             if (!pd.isShowing()) {
                 pd.show();
+            } else {
+                pd.setMessage(text);
             }
         }
     }
 
     private void dismissPd() {
-        if (pd != null) {
-            if (pd.isShowing()) {
-                pd.dismiss();
-            }
+        if (pd != null && pd.isShowing()) {
+            pd.dismiss();
         }
     }
 
@@ -120,13 +131,13 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         getUserInfoForApply(false);
     }
 
-    private void showGender() {
-        if (gender.equals(Constant.FEMALE)) {
-            genderWoman.setChecked(true);
-        } else {
-            genderMan.setChecked(true);
-        }
-    }
+//    private void showGender() {
+//        if (gender.equals(Constant.FEMALE)) {
+//            genderWoman.setChecked(true);
+//        } else {
+//            genderMan.setChecked(true);
+//        }
+//    }
 
     @Override
     protected void onUserInvisible() {
@@ -141,17 +152,33 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     @Override
     protected void initViewsAndEvents() {
 //        loadFromLocal();
-        gloryIv.setOnClickListener(new View.OnClickListener() {
+        adapter = new MultiShowIvAdapter(selectedPhotos, getActivity());
+        adapter.setPhotoClickListener(new MultiShowIvAdapter.onPhotoClickListener() {
             @Override
-            public void onClick(View v) {
-//                Crop.pickImage(getActivity(), ToBeSuperFragment.this);
+            public void onPhotoClick() {
                 PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
-                intent.setPhotoCount(1);
+                intent.setPhotoCount(4);
                 intent.setShowCamera(true);
+                intent.setSeletedPhotos(selectedPhotos);
                 startActivityForResult(intent, REQUEST_CODE);
-
             }
         });
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        multiView.setAdapter(adapter);
+        multiView.setLayoutManager(manager);
+//        gloryIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Crop.pickImage(getActivity(), ToBeSuperFragment.this);
+//                PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
+//                intent.setPhotoCount(1);
+//                intent.setShowCamera(true);
+//                startActivityForResult(intent, REQUEST_CODE);
+//
+//            }
+//        });
+
 
     }
 
@@ -183,11 +210,11 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
                         } else if (state.equals(Constant.USER_APPLY_STATE.NOT_APPLY)) {
                             loadFromLocal();
-                            realnameEv.getEditText().setText(realName);
+//                            realnameEv.getEditText().setText(realName);
                             Tools.showImageWithGlide(getActivity(), userIv, avater_url);
-                            showGender();
-                            genderMan.setEnabled(false);
-                            genderWoman.setEnabled(false);
+//                            showGender();
+//                            genderMan.setEnabled(false);
+//                            genderWoman.setEnabled(false);
                         } else if (state.equals(Constant.USER_APPLY_STATE.NORMAL)) {
                             showInfoWithDialog("恭喜您已经通过我们的认证，成为一名达人，您之后可以点击菜单栏中的达人主页来管理您的信息与课程。点击确定跳转到您的达人主页", new OnFinish() {
                                 @Override
@@ -226,19 +253,18 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     //获得七牛（第三方服务）的上传资源的凭证
     private void getUploadToken() {
         if (NetUtils.isNetworkConnected(getActivity())) {
-            EmptyBody body = new EmptyBody();
-            body.setInfo(Constant.FEMALE);
-            ApiManager.getService(getActivity().getApplicationContext()).createQiNiuToken(body, new Callback<QnRes>() {
+            MultiQnReq req = new MultiQnReq();
+            req.setQuantity(selectedPhotos.size());
+            ApiManager.getService(getActivity().getApplicationContext()).createMultiQiNiuToken(req, new Callback<QnRes>() {
                 @Override
-                public void success(QnRes qnRes, Response response) {
-                    if (qnRes != null) {
-                        uploadPhoto(qnRes);
+                public void success(QnRes res, Response response) {
+                    if (res != null) {
+                        upLoadPhotos(res.getTokens());
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    dismissPd();
                     showInnerError(error);
                 }
             });
@@ -249,34 +275,36 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     }
 
-    //上传用户的证书信息到七牛服务器
-    private void uploadPhoto(QnRes res) {
-        showPd();
+    //上传用户的证书图片到七牛服务器
+    private void uploadSinglePhoto(SingleQnRes res,String photoPath) {
         UpLoadUtils.upLoadImage(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
                 if (info.isOK()) {
-                    dismissPd();
-                    Tools.showImageWithGlide(getActivity(), gloryIv, photoPath);
-                    choose_glory_iv = true;
-                    qiniu_key = key;
-//                    toBeSm(key);
+                    finishFromSingleThread(true, key);
 
                 } else if (info.isNetworkBroken()) {
-                    dismissPd();
-                    showNetWorkError();
+                    finishFromSingleThread(false, null);
                 } else if (info.isServerError()) {
-                    dismissPd();
-                    showToast("服务暂时不可用，请稍后重试");
+                    finishFromSingleThread(false, null);
                 }
             }
-        }, null);
+        }, new UploadOptions(null, null, false, null, new UpCancellationSignal() {
+            @Override
+            public boolean isCancelled() {
+                return cancel_qiniu;
+            }
+        }));
     }
 
     //点击确定按钮后的处理函数
     private void tryToBeSm() {
-        showPd();
-        toBeSm(qiniu_key);
+        if (selectedPhotos.isEmpty()) {
+            toBeSm(null);
+        } else {
+           getUploadToken();
+        }
+
 //        if (choose_glory_iv) {
 //            //选择了证书图片，需要先进行七牛的图片上传服务，再调用API
 //            showPd();
@@ -295,7 +323,8 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     }
 
     //上传相关数据，申请成为达人
-    private void toBeSm(String certificate_code) {
+    private void toBeSm(String[] certificates) {
+        showPd("正在上传申请信息到服务器,请稍等...");
         ToBeSmReq req = new ToBeSmReq();
         req.setGlory(honour);
         req.setImage(avater_code);
@@ -305,12 +334,11 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         req.setSex(gender);
         req.setTags(tags);
         req.setWant_cata(skills);
-        if (certificate_code != null) {
-            String[] certificates = {certificate_code};
+        if (certificates != null) {
             req.setCertificates(certificates);
         } else {
-            String[] certificates = {};
-            req.setCertificates(certificates);
+            String[] certificates_em = {};
+            req.setCertificates(certificates_em);
         }
         ApiManager.getService(getActivity().getApplicationContext()).applytoSuperMan(req, new Callback<TempRes>() {
             @Override
@@ -344,7 +372,9 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.finish(true);
+                        dialog.dismiss();
+                        if (listener != null)
+                            listener.finish(true);
                     }
                 })
                 .show();
@@ -376,10 +406,10 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         tags = tagsEv.getEditText().getText().toString();
         honour = honourEv.getText().toString();
         introduction = introductionEv.getText().toString();
-        realName = realnameEv.getEditText().getText().toString();
+//        realName = realnameEv.getEditText().getText().toString();
         skilsEv.setErrorEnabled(false);
         tagsEv.setErrorEnabled(false);
-        realnameEv.setErrorEnabled(false);
+//        realnameEv.setErrorEnabled(false);
         if (CommonUtils.isEmpty(tags)) {
             showToast("请先为自己写一个标签");
             return false;
@@ -395,11 +425,12 @@ public class ToBeSuperFragment extends BaseLazyFragment {
             introductionEv.setSelected(true);
             showToast("请输入您的个人介绍");
             return false;
-        } else if (CommonUtils.isEmpty(realName)) {
-            realnameEv.setErrorEnabled(true);
-            realnameEv.setError("请输入您的真实姓名");
-            return false;
         }
+//        else if (CommonUtils.isEmpty(realName)) {
+//            realnameEv.setErrorEnabled(true);
+//            realnameEv.setError("请输入您的真实姓名");
+//            return false;
+//        }
         return true;
     }
 
@@ -421,10 +452,31 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == getActivity().RESULT_OK) {
-            photoPath = Crop.getOutput(result).getPath();
+//            photoPath = Crop.getOutput(result).getPath();
             getUploadToken();
         } else if (resultCode == Crop.RESULT_ERROR) {
             showToast(Crop.getError(result).getMessage());//// TODO: 2015/11/25  失败考虑默认头像
+        }
+    }
+
+    private synchronized void finishFromSingleThread(boolean result, String key) {
+        if (result && key != null) {
+            keys.add(key);
+            showPd("正在上传您的第" + (keys.size() + 1) + "张证书,请稍等..");
+            if (keys.size() == selectedPhotos.size()) {
+                toBeSm(keys.toArray(new String[selectedPhotos.size()]));
+            }
+        } else {
+            dismissPd();
+            cancel_qiniu = true;
+            showInfoWithDialog("上传证书信息到服务器时发生错误,请您稍后再试.", null);
+        }
+
+    }
+
+    private void upLoadPhotos(List<SingleQnRes> res) {
+        for (int i = 0; i < res.size(); i++) {
+            uploadSinglePhoto(res.get(i),selectedPhotos.get(i).getPath());
         }
     }
 
@@ -434,11 +486,13 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             if (data != null) {
-                ArrayList<String> photos =
-                        data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                Log.i("INFO", "PHOTO:" + photos.get(0));
-                photoPath = photos.get(0);
-                beginCrop(Uri.fromFile(new File(photoPath)));
+                selectedPhotos =
+                        data.getParcelableArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                adapter.setmPhotos(selectedPhotos);
+                adapter.notifyDataSetChanged();
+//                Log.i("INFO", "PHOTO:" + photos.get(0));
+//                photoPath = photos.get(0).getPath();
+//                beginCrop(Uri.fromFile(new File(photoPath)));
             }
         }
 //        if (requestCode == Crop.REQUEST_PICK && resultCode == getActivity().RESULT_OK) {

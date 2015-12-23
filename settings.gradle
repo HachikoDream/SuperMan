@@ -1,1 +1,1 @@
-include ':app', ':daogenerator', ':DatePicker'
+include ':app', ':daogenerator', ':DatePicker', ':PhotoPicker'

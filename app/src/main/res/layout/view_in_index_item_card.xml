@@ -42,11 +42,20 @@
         android:layout_marginTop="15dp"
         android:background="@color/grey_line"></View>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:paddingLeft="18dp">
+
+        <TextView
+            android:id="@+id/desc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:singleLine="true"
+            android:textColor="@color/select_tab_color" />
 
         <TextView
             android:id="@+id/course_name_tv"
@@ -54,19 +63,13 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:paddingBottom="4dp"
+            android:layout_above="@id/desc_tv"
             android:textColor="@color/near_black"
             android:textSize="16sp" />
 
 
-        <TextView
-            android:id="@+id/desc_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:singleLine="true"
-            android:textColor="@color/select_tab_color" />
-
         <RelativeLayout
+            android:layout_below="@id/desc_tv"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -168,5 +171,5 @@
 
             </LinearLayout>
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

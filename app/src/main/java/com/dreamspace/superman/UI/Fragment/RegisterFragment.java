@@ -2,10 +2,13 @@ package com.dreamspace.superman.UI.Fragment;
 
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,11 +16,14 @@ import android.widget.EditText;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.API.SupermanService;
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Register.LoginActivity;
 import com.dreamspace.superman.UI.Activity.Register.RegisterInfoActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.model.api.ErrorRes;
+import com.dreamspace.superman.model.api.ModifyReq;
 import com.dreamspace.superman.model.api.RegistertokenReq;
 import com.dreamspace.superman.model.api.RegistertokenRes;
 import com.dreamspace.superman.model.api.SendVerifyReq;
@@ -50,6 +56,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     private String code;
     private String register_token;
     private ProgressDialog pd;
+
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -58,20 +65,23 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
     public int getLayoutId() {
         return R.layout.fragment_register;
     }
-    private void showPd(){
-        if(pd==null){
-            pd=ProgressDialog.show(getActivity(),"","正在提交注册请求",true,false);
-        }else {
-            if(!pd.isShowing()){
+
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(getActivity(), "", "正在提交注册请求", true, false);
+        } else {
+            if (!pd.isShowing()) {
                 pd.show();
             }
         }
     }
-    private void dismissPd(){
-        if(pd!=null&&pd.isShowing()){
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     @Override
     public void initViews(View view) {
         sendVerifyBtn.setOnClickListener(new View.OnClickListener() {
@@ -120,18 +130,45 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
             final RegistertokenReq req = new RegistertokenReq();
             req.setPhone(phoneNum);
             req.setCode(code);
-            if(NetUtils.isNetworkConnected(getActivity())){
+            if (NetUtils.isNetworkConnected(getActivity())) {
                 mService.createRegisterToken(req, new Callback<RegistertokenRes>() {
                     @Override
                     public void success(RegistertokenRes s, Response response) {
                         if (response.getStatus() == 200) {
                             dismissPd();
                             register_token = s.getRegister_token();
-                            Bundle b = new Bundle();
-                            b.putString("token", register_token);
-                            b.putString("phoneNum", phoneNum);
-                            readyGo(RegisterInfoActivity.class, b);
-                            killSelf();
+                            if (!s.isRegistered()) {
+                                Bundle b = new Bundle();
+                                b.putString("token", register_token);
+                                b.putString("phoneNum", phoneNum);
+                                readyGo(RegisterInfoActivity.class, b);
+                                killSelf();
+                            } else {
+                                showInfoWithDialog("检测到该手机号已被注册，是否现在修改密码？修改完成后您可以用新密码来进行登录操作。", true, new DialogButtonClicked() {
+                                    @Override
+                                    public void onPositiveClicked(String content, DialogInterface dialog) {
+                                        showDialogWithEt("请输入6个以上字符作为新密码", "修改密码", new DialogButtonClicked() {
+                                            @Override
+                                            public void onPositiveClicked(String content, DialogInterface dialog) {
+                                                ModifyReq mreq=new ModifyReq();
+                                                mreq.setPassword(content);
+                                                mreq.setRegister_token(register_token);
+                                                doModify(mreq);
+                                            }
+
+                                            @Override
+                                            public void onNegativeClicked(DialogInterface dialog) {
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void onNegativeClicked(DialogInterface dialog) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
                         } else {
                             dismissPd();
                             showToast(response.getReason());
@@ -144,7 +181,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
                         showInnerError(error);
                     }
                 });
-            }else{
+            } else {
                 showNetWorkError();
             }
         }
@@ -186,6 +223,114 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
         return true;
     }
 
+    /*
+    content:EditText init content
+    title: dialog's title
+
+ */
+    private void showDialogWithEt(final String content, String title, final DialogButtonClicked btnListener) {
+        final EditText mEdit = new EditText(getActivity());
+        mEdit.setHint(content);
+        mEdit.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        AlertDialog builder = new AlertDialog.Builder(getActivity())
+                .setTitle(title)
+                .setView(mEdit)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newcontent = mEdit.getText().toString();
+                        if (newcontent.equals(content)) {
+                            dialog.dismiss();
+                        } else if (CommonUtils.isEmpty(newcontent)) {
+                            showToast("请输入密码");
+                        } else if (newcontent.length() < 6) {
+                            showToast("长度不足6位");
+                            mEdit.selectAll();
+                        } else {
+                            btnListener.onPositiveClicked(newcontent, dialog);
+                        }
+
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        btnListener.onNegativeClicked(dialog);
+                    }
+                })
+                .show();
+
+    }
+
+    private void doModify(ModifyReq mreq) {
+        showPd();
+        if (NetUtils.isNetworkConnected(getActivity())) {
+            ApiManager.getService(getActivity().getApplicationContext()).modifyPwd(mreq, new Callback<Response>() {
+                @Override
+                public void success(Response response, Response response2) {
+                    dismissPd();
+                    if (response != null) {
+                        showInfoWithDialog("密码修改成功，您现在可以用新密码来登录您的账号",false, new DialogButtonClicked() {
+                            @Override
+                            public void onPositiveClicked(String content, DialogInterface dialog) {
+                                LoginActivity parent = (LoginActivity) getActivity();
+                                parent.swipeToLogin(phoneNum);
+                            }
+
+                            @Override
+                            public void onNegativeClicked(DialogInterface dialog) {
+
+                            }
+                        });
+
+                    } else {
+                        showInfoWithDialog(response.getReason(),false, null);
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    dismissPd();
+                    showInnerError(error);
+                }
+            });
+
+        } else {
+            showNetWorkError();
+        }
+    }
+
+    private void showInfoWithDialog(String info, boolean showNBtn, final DialogButtonClicked listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle("提示")
+                .setMessage(info)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (listener != null) {
+                            listener.onPositiveClicked(null, dialog);
+                        }
+
+                    }
+                });
+        if (showNBtn) {
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    if (listener != null) {
+                        listener.onNegativeClicked(dialog);
+                    }
+                }
+            });
+        }
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+
     @Override
     public void initDatas() {
         mHandler = new Handler(this);
@@ -212,5 +357,11 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
             }
         }
         return true;
+    }
+
+    private interface DialogButtonClicked {
+        void onPositiveClicked(String content, DialogInterface dialog);
+
+        void onNegativeClicked(DialogInterface dialog);
     }
 }

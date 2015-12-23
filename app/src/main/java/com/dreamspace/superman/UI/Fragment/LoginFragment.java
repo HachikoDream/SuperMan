@@ -1,14 +1,18 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +34,7 @@ import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.LoginReq;
 import com.dreamspace.superman.model.api.LoginRes;
+import com.dreamspace.superman.model.api.PageReq;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -50,8 +55,8 @@ public class LoginFragment extends BaseFragment {
     @Bind(R.id.forget_pwd_tv)
     TextView forgetPwdTv;
     private ProgressDialog pd;
-    private final static int REQUEST_MODIFY_PWD=23;
-
+    private final static int REQUEST_MODIFY_PWD = 23;
+    private String phoneNum;//一般情况下为null，当外部传入时有值，这时传入EditText，方便用户操作，这时光标在密码框.
 
     public LoginFragment() {
         // Required empty public constructor
@@ -79,6 +84,93 @@ public class LoginFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        printInfoForDebug("onDestroyView");
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        printInfoForDebug("onCreate,Bundle is null?  "+(savedInstanceState==null?"t":"f"));
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        printInfoForDebug("onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        printInfoForDebug("onCreateView,Bundle is null?  "+(savedInstanceState==null?"t":"f"));
+        return super.onCreateView(inflater, container, savedInstanceState);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        printInfoForDebug("onSaveInstanceState");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        printInfoForDebug("onPause");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        printInfoForDebug("onStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        printInfoForDebug("onStop");
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        printInfoForDebug("onAttach");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        printInfoForDebug("onDetach");
+    }
+
+    private void printInfoForDebug(String info){
+        Log.i("FRAGMENT-LIFT-CYCLE",info);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (phoneNum != null) {
+            phoneEt.setText(phoneNum);
+            pwdEt.setFocusable(true);
+            pwdEt.requestFocus();
+        }
+
+    }
+
+
+    //用于外部模块填充phone的Edittext
+    public void fillPhoneEditText(String phone) {
+        if (phoneEt != null) {
+            phoneEt.setText(phone);
+        } else {
+            this.phoneNum = phone;
+        }
+    }
+
     //登陆操作
     private void login(LoginReq req) {
         showPd();
@@ -104,15 +196,17 @@ public class LoginFragment extends BaseFragment {
         }
 
     }
-    private void showPd(){
-        if(pd==null){
-            pd=ProgressDialog.show(getActivity(),"","正在加载中",true,false);
-        }else{
+
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(getActivity(), "", "正在加载中", true, false);
+        } else {
             pd.show();
         }
     }
-    private void dismissPd(){
-        if (pd!=null&&pd.isShowing()){
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
@@ -136,8 +230,9 @@ public class LoginFragment extends BaseFragment {
             }
         });
     }
+
     //使用leancloud打开聊天服务
-    private void openChatService(String userId){
+    private void openChatService(String userId) {
         AVImClientManager.getInstance().open(userId, new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
@@ -155,6 +250,7 @@ public class LoginFragment extends BaseFragment {
             }
         });
     }
+
     protected boolean filterException(Exception e) {
         if (e != null) {
             e.printStackTrace();
@@ -164,6 +260,7 @@ public class LoginFragment extends BaseFragment {
             return true;
         }
     }
+
     //保存用户信息到本地
     private void saveUserInfo(UserInfo userInfo) {
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.ACCOUNT, userInfo.getNickname());
@@ -171,10 +268,10 @@ public class LoginFragment extends BaseFragment {
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME, userInfo.getName());
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.SEX, userInfo.getSex());
         PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.PHONE, phoneEt.getText().toString());
-        PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAST_STATE,userInfo.getMast_state());
-        PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.UID,userInfo.getId());
-        if(!CommonUtils.isEmpty(userInfo.getMas_id())){
-            PreferenceUtils.putString(getActivity().getApplicationContext(),PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.MAST_STATE, userInfo.getMast_state());
+        PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.UID, userInfo.getId());
+        if (!CommonUtils.isEmpty(userInfo.getMas_id())) {
+            PreferenceUtils.putString(getActivity().getApplicationContext(), PreferenceUtils.Key.MAS_ID, userInfo.getMas_id());
         }
     }
 
@@ -202,21 +299,21 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void initDatas() {
-       forgetPwdTv.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Bundle b=new Bundle();
-               b.putInt(Constant.COME_SOURCE.SOURCE,Constant.COME_SOURCE.MODIFY_PWD);
+        forgetPwdTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putInt(Constant.COME_SOURCE.SOURCE, Constant.COME_SOURCE.MODIFY_PWD);
 //               b.putInt(Constant.COME_SOURCE.SOURCE,-1);
-               readyGoForResult(VerifyByPhoneAct.class,REQUEST_MODIFY_PWD,b);
-           }
-       });
+                readyGoForResult(VerifyByPhoneAct.class, REQUEST_MODIFY_PWD, b);
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REQUEST_MODIFY_PWD&&resultCode==getActivity().RESULT_OK){
-            AlertDialog dialog=new AlertDialog.Builder(getActivity())
+        if (requestCode == REQUEST_MODIFY_PWD && resultCode == getActivity().RESULT_OK) {
+            AlertDialog dialog = new AlertDialog.Builder(getActivity())
                     .setTitle("提示")
                     .setMessage("密码修改成功,请使用新密码来登录")
                     .setPositiveButton("好的", new DialogInterface.OnClickListener() {

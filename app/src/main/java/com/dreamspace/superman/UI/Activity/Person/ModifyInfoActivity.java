@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
@@ -22,14 +21,12 @@ import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Activity.Register.VerifyByPhoneAct;
 import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.event.AvaterChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.EmptyBody;
-import com.dreamspace.superman.model.api.QnRes;
-import com.dreamspace.superman.model.api.RegisterReq;
+import com.dreamspace.superman.model.api.SingleQnRes;
 import com.dreamspace.superman.model.api.UpdateReq;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -46,6 +43,7 @@ import butterknife.Bind;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.entity.Photo;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -280,11 +278,11 @@ public class ModifyInfoActivity extends AbsActivity {
         if (NetUtils.isNetworkConnected(ModifyInfoActivity.this)) {
             EmptyBody body = new EmptyBody();
             body.setInfo(Constant.FEMALE);
-            ApiManager.getService(getApplicationContext()).createQiNiuToken(body, new Callback<QnRes>() {
+            ApiManager.getService(getApplicationContext()).createQiNiuToken(body, new Callback<SingleQnRes>() {
                 @Override
-                public void success(QnRes qnRes, Response response) {
-                    if (qnRes != null) {
-                        uploadPhoto(qnRes);
+                public void success(SingleQnRes singleQnRes, Response response) {
+                    if (singleQnRes != null) {
+                        uploadPhoto(singleQnRes);
                     }
                 }
 
@@ -308,7 +306,7 @@ public class ModifyInfoActivity extends AbsActivity {
     }
 
     //上传用户的头像到七牛服务器
-    private void uploadPhoto(QnRes res) {
+    private void uploadPhoto(SingleQnRes res) {
         UploadManager manager = UpLoadUtils.getInstance();
         manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
@@ -451,10 +449,10 @@ public class ModifyInfoActivity extends AbsActivity {
                 case REQUEST_PHOTO:
 //                case Crop.REQUEST_PICK:
                     if (data != null) {
-                        ArrayList<String> photos =
-                                data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                        ArrayList<Photo> photos =
+                                data.getParcelableArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
                         Log.i("PHOTO-INFO", "PHOTO:" + photos.get(0));
-                        photoPath = photos.get(0);
+                        photoPath = photos.get(0).getPath();
                         beginCrop(Uri.fromFile(new File(photoPath)));
                     }
 //                    Log.i("PHOTO-INFO", "PHOTO:" + data.getData());

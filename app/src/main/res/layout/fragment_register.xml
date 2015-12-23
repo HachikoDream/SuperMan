@@ -2,17 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.dreamspace.superman.UI.Fragment.LoginFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.dreamspace.superman.UI.Fragment.LoginFragment">
 
     <LinearLayout
         android:layout_width="316dp"
         android:layout_height="111dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="56dp"
-        android:padding="3dp"
         android:background="@drawable/edit_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="3dp">
 
 
         <RelativeLayout
@@ -27,8 +27,9 @@
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
                 android:hint="请输入您的手机号"
-                android:singleLine="true"
+                android:inputType="number"
                 android:paddingLeft="50dp"
+                android:singleLine="true"
                 android:textSize="13sp" />
 
             <ImageView
@@ -38,24 +39,26 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/login_cell" />
+
             <Button
                 android:id="@+id/send_vercode_btn"
-                android:textSize="13sp"
-                android:layout_alignRight="@id/phonenum_ev"
-                android:layout_marginRight="10dp"
-                android:textColor="@color/navi_color"
                 android:layout_width="74dp"
                 android:layout_height="21dp"
+                android:layout_alignRight="@id/phonenum_ev"
                 android:layout_centerVertical="true"
-                android:gravity="center"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/red_circle_button_bg"
-                android:text="发送验证码"/>
+                android:gravity="center"
+                android:text="发送验证码"
+                android:textColor="@color/navi_color"
+                android:textSize="13sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/grey_line"></View>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -68,8 +71,8 @@
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
                 android:hint="请输入验证码"
-                android:singleLine="true"
                 android:paddingLeft="50dp"
+                android:singleLine="true"
                 android:textSize="13sp" />
 
             <ImageView

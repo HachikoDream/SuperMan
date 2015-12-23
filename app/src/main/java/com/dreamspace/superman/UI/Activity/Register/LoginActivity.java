@@ -45,6 +45,7 @@ public class LoginActivity extends AbsActivity {
         mRadioGroup = (RadioGroup) findViewById(R.id.radiogroup);
         loginButton = (RadioButton) findViewById(R.id.login_btn);
         registerButton = (RadioButton) findViewById(R.id.rgt_btn);
+        addAll();
         onRadioClickListener();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,17 +71,30 @@ public class LoginActivity extends AbsActivity {
         switch (mRadioGroup.getCheckedRadioButtonId()) {
             case R.id.login_btn:
                 getSupportActionBar().setTitle(getString(R.string.title_activity_login));
-                mFragmentManager.beginTransaction().replace(R.id.fragment_container, loginFragment).commit();
+                mFragmentManager.beginTransaction().hide(registerFragment).show(loginFragment).commit();
+//                mFragmentManager.beginTransaction().replace(R.id.fragment_container, loginFragment).commit();
                 break;
             case R.id.rgt_btn:
                 getSupportActionBar().setTitle(getString(R.string.title_fragment_register));
-                mFragmentManager.beginTransaction().replace(R.id.fragment_container, registerFragment).commit();
+                mFragmentManager.beginTransaction().hide(loginFragment).show(registerFragment).commit();
+//                mFragmentManager.beginTransaction().replace(R.id.fragment_container, registerFragment).commit();
                 break;
         }
+    }
+
+    private void addAll() {
+        mFragmentManager.beginTransaction().add(R.id.fragment_container, loginFragment).add(R.id.fragment_container, registerFragment).commit();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void swipeToLogin(String phoneNum) {
+        loginButton.performClick();
+        if (phoneNum != null && loginFragment != null) {
+            ((LoginFragment) loginFragment).fillPhoneEditText(phoneNum);
+        }
     }
 }

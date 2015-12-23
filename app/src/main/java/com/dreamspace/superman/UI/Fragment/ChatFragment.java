@@ -51,7 +51,7 @@ import retrofit.client.Response;
  * 将聊天相关的封装到此 Fragment 里边，只需要通过 setConversation 传入 Conversation 即可
  */
 //// TODO: 2015/11/20   发布之前清空消息记录
-public class ChatFragment extends Fragment implements Handler.Callback{
+public class ChatFragment extends Fragment implements Handler.Callback {
     protected AVIMConversation imConversation;
 
     protected MultipleItemAdapter itemAdapter;
@@ -63,7 +63,7 @@ public class ChatFragment extends Fragment implements Handler.Callback{
     private String lastContent = null;//两个人的最后聊天内容,用于写入数据库
     private ProgressDialog pd;
     private Handler mHandler;
-    private static final int STORE_INTO_DB=233;
+    private static final int STORE_INTO_DB = 233;
 
     @Nullable
     @Override
@@ -78,31 +78,38 @@ public class ChatFragment extends Fragment implements Handler.Callback{
         recyclerView.setLayoutManager(layoutManager);
         itemAdapter = new MultipleItemAdapter();
         recyclerView.setAdapter(itemAdapter);
-        mHandler=new Handler(this);
+        mHandler = new Handler(this);
         EventBus.getDefault().register(this);
         return view;
     }
-    private void showPd(String msg){
-        if(CommonUtils.isEmpty(msg)){
-            msg="正在加载数据,请稍后";
+
+    private void showPd(String msg) {
+        if (CommonUtils.isEmpty(msg)) {
+            msg = "正在加载数据,请稍后";
         }
-        if(pd==null){
-            pd=ProgressDialog.show(getActivity(),"",msg,true,false);
-        }else{
+        if (pd == null) {
+            pd = ProgressDialog.show(getActivity(), "", msg, true, false);
+        } else {
             pd.show();
         }
     }
-    private void dismissPd(){
-        if(pd!=null&&pd.isShowing()){
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 AVIMMessage message = itemAdapter.getFirstMessage();
+                if (message == null) {
+                    refreshLayout.setRefreshing(false);
+                    return;
+                }
                 imConversation.queryMessages(message.getMessageId(), message.getTimestamp(), 20, new AVIMMessagesQueryCallback() {
                     @Override
                     public void done(List<AVIMMessage> list, AVIMException e) {
@@ -117,6 +124,8 @@ public class ChatFragment extends Fragment implements Handler.Callback{
                         }
                     }
                 });
+
+
             }
         });
     }
@@ -142,7 +151,7 @@ public class ChatFragment extends Fragment implements Handler.Callback{
 
     }
 
-    public void setConversation(AVIMConversation conversation, int memberId,String memberName) {
+    public void setConversation(AVIMConversation conversation, int memberId, String memberName) {
         itemAdapter.setMemberName(memberName);
         this.memberId = memberId;
         imConversation = conversation;
@@ -175,7 +184,7 @@ public class ChatFragment extends Fragment implements Handler.Callback{
                     recyclerView.setAdapter(itemAdapter);
                     itemAdapter.notifyDataSetChanged();
                     scrollToBottom();
-                }else{
+                } else {
                     dismissPd();
                 }
             }
@@ -187,7 +196,7 @@ public class ChatFragment extends Fragment implements Handler.Callback{
      * 因为不排除某些特殊情况会受到其他页面过来的无效消息，所以此处加了 tag 判断
      */
     public void onEvent(final InputBottomBarTextEvent textEvent) {
-        Log.i("ONEVENT","INPUT TEXTEVENT IN");
+        Log.i("ONEVENT", "INPUT TEXTEVENT IN");
         if (null != imConversation && null != textEvent) {
             if (!TextUtils.isEmpty(textEvent.sendContent) && imConversation.getConversationId().equals(textEvent.tag)) {
                 AVIMTextMessage message = new AVIMTextMessage();
@@ -198,13 +207,13 @@ public class ChatFragment extends Fragment implements Handler.Callback{
                 imConversation.sendMessage(message, new AVIMConversationCallback() {
                     @Override
                     public void done(AVIMException e) {
-                        Log.i("ONEVENT","done in");
-                        if(filterException(e)){
+                        Log.i("ONEVENT", "done in");
+                        if (filterException(e)) {
                             itemAdapter.notifyDataSetChanged();
                             lastContent = textEvent.sendContent;
-                            Message message=Message.obtain();
-                            message.what=STORE_INTO_DB;
-                            message.arg1=memberId;
+                            Message message = Message.obtain();
+                            message.what = STORE_INTO_DB;
+                            message.arg1 = memberId;
                             mHandler.sendMessage(message);
                         }
 
@@ -219,7 +228,7 @@ public class ChatFragment extends Fragment implements Handler.Callback{
         if (previous == null) {
             //达人通过通知进入或者用户第一次进入对话界面
             final Conversation conversation = new Conversation();
-            conversation.setMemberId((long)memberId);
+            conversation.setMemberId((long) memberId);
             conversation.setChatTime(new Date());
             conversation.setIsRead(true);
             if (!CommonUtils.isEmpty(lastContent)) {
@@ -242,15 +251,15 @@ public class ChatFragment extends Fragment implements Handler.Callback{
                     EventBus.getDefault().post(new DbChangeEvent());
                 }
             });
-        }else{
-            if(previous.getMemberAvater().equals(Constant.FAIL_AVATER)){
+        } else {
+            if (previous.getMemberAvater().equals(Constant.FAIL_AVATER)) {
                 getUserInfo(memberId, new InfoLoadingListener() {
                     @Override
                     public void onSuccess(SimpleInfo info) {
                         previous.setMemberName(info.getNickname());
                         previous.setMemberAvater(info.getImage());
                         previous.setChatTime(new Date());
-                        if(CommonUtils.isEmpty(lastContent)){
+                        if (CommonUtils.isEmpty(lastContent)) {
                             previous.setLastContent(lastContent);
                         }
                         DbRelated.updateCon(getActivity(), previous);
@@ -260,16 +269,16 @@ public class ChatFragment extends Fragment implements Handler.Callback{
                     @Override
                     public void onFail() {
                         previous.setChatTime(new Date());
-                        if(CommonUtils.isEmpty(lastContent)){
+                        if (CommonUtils.isEmpty(lastContent)) {
                             previous.setLastContent(lastContent);
                         }
                         DbRelated.updateCon(getActivity(), previous);
                         EventBus.getDefault().post(new DbChangeEvent());
                     }
                 });
-            }else{
+            } else {
                 previous.setChatTime(new Date());
-                if(!CommonUtils.isEmpty(lastContent)){
+                if (!CommonUtils.isEmpty(lastContent)) {
                     previous.setLastContent(lastContent);
                 }
                 DbRelated.updateCon(getActivity(), previous);
@@ -362,7 +371,7 @@ public class ChatFragment extends Fragment implements Handler.Callback{
 
     @Override
     public boolean handleMessage(Message msg) {
-        if (msg.what==STORE_INTO_DB){
+        if (msg.what == STORE_INTO_DB) {
             storeConIntoDb(msg.arg1);
         }
         return true;

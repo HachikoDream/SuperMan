@@ -25,53 +25,53 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/login_pho_mistake" />
 
-            <RadioGroup
-                android:id="@+id/radiogroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+            <!--<RadioGroup-->
+            <!--android:id="@+id/radiogroup"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:orientation="horizontal">-->
 
-                <RadioButton
-                    android:id="@+id/gender_man"
-                    android:layout_width="62dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/gender_man_bg"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="男"
-                    android:textColor="@color/color_genderbutton" />
+            <!--<RadioButton-->
+            <!--android:id="@+id/gender_man"-->
+            <!--android:layout_width="62dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:background="@drawable/gender_man_bg"-->
+            <!--android:button="@null"-->
+            <!--android:checked="true"-->
+            <!--android:gravity="center"-->
+            <!--android:text="男"-->
+            <!--android:textColor="@color/color_genderbutton" />-->
 
-                <RadioButton
-                    android:id="@+id/gender_woman"
-                    android:layout_width="62dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/gender_woman_bg"
-                    android:button="@null"
-                    android:checked="false"
-                    android:gravity="center"
-                    android:text="女"
-                    android:textColor="@color/color_genderbutton" />
-            </RadioGroup>
+            <!--<RadioButton-->
+            <!--android:id="@+id/gender_woman"-->
+            <!--android:layout_width="62dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:background="@drawable/gender_woman_bg"-->
+            <!--android:button="@null"-->
+            <!--android:checked="false"-->
+            <!--android:gravity="center"-->
+            <!--android:text="女"-->
+            <!--android:textColor="@color/color_genderbutton" />-->
+            <!--</RadioGroup>-->
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/realname_ev"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/realname_ev"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/apptheme_edit_text_holo_light"
-                    android:hint="真实姓名"
-                    android:singleLine="true"
-                    android:textSize="14sp" />
-            </android.support.design.widget.TextInputLayout>
+            <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:background="@drawable/apptheme_edit_text_holo_light"-->
+            <!--android:hint="真实姓名"-->
+            <!--android:singleLine="true"-->
+            <!--android:textSize="14sp" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/skils_ev"
@@ -152,13 +152,18 @@
                 android:text="请上传技能相关的获奖证书或作品照片"
                 android:textSize="12sp" />
 
-            <ImageView
-                android:id="@+id/glory_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/page_add" />
+               <!--<ImageView-->
+                   <!--android:id="@+id/glory_image"-->
+                   <!--android:layout_width="70dp"-->
+                   <!--android:layout_height="70dp"-->
+                   <!--android:layout_marginLeft="20dp"-->
+                   <!--android:layout_marginTop="15dp"-->
+                   <!--android:src="@drawable/page_add" />-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/multi_image_show"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:scrollbars="none"/>
 
             <Button
                 android:id="@+id/mybtn"

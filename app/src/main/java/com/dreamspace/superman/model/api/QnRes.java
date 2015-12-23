@@ -1,25 +1,27 @@
 package com.dreamspace.superman.model.api;
 
+import java.util.List;
+
 /**
- * Created by Administrator on 2015/8/26 0026.
+ * Created by Wells on 2015/12/21.
  */
 public class QnRes {
-    private String token;
-    private String key;
+    private List<SingleQnRes> tokens;
+    private int quantity;
 
-    public String getKey() {
-        return key;
+    public List<SingleQnRes> getTokens() {
+        return tokens;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setTokens(List<SingleQnRes> tokens) {
+        this.tokens = tokens;
     }
 
-    public String getToken() {
-        return token;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

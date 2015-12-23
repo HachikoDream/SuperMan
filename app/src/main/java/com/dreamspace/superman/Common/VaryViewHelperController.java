@@ -40,7 +40,7 @@ public class VaryViewHelperController {
         textView.setText(helper.getContext().getResources().getString(R.string.common_no_network_msg));
 
         ImageView imageView = (ImageView) layout.findViewById(R.id.message_icon);
-        imageView.setImageResource(R.drawable.ic_exception);
+        imageView.setImageResource(R.drawable.loading_failed);
 
         if (null != onClickListener) {
             layout.setOnClickListener(onClickListener);
@@ -59,7 +59,7 @@ public class VaryViewHelperController {
         }
 
         ImageView imageView = (ImageView) layout.findViewById(R.id.message_icon);
-        imageView.setImageResource(R.drawable.ic_error);
+        imageView.setImageResource(R.drawable.loading_failed);
 
         if (null != onClickListener) {
             layout.setOnClickListener(onClickListener);
@@ -78,7 +78,7 @@ public class VaryViewHelperController {
         }
 
         ImageView imageView = (ImageView) layout.findViewById(R.id.message_icon);
-        imageView.setImageResource(R.drawable.ic_exception);
+        imageView.setImageResource(R.drawable.loading_failed);
 
         if (null != onClickListener) {
             layout.setOnClickListener(onClickListener);

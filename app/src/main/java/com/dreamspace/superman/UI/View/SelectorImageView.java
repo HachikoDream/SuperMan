@@ -64,8 +64,8 @@ public class SelectorImageView extends ImageView implements View.OnClickListener
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int sourceh = getMeasuredHeight();
         int sourcew = getMeasuredWidth();
-        Log.i(INFO, "w: " + sourcew + " h:" + sourceh);
-        Log.i(INFO, "rcw: " + width + " rch:" + height);
+//        Log.i(INFO, "w: " + sourcew + " h:" + sourceh);
+//        Log.i(INFO, "rcw: " + width + " rch:" + height);
         mRect = new Rect(sourcew - width - 20, sourceh - height - 20, sourcew - 20, sourceh - 20);
 
     }
@@ -84,11 +84,9 @@ public class SelectorImageView extends ImageView implements View.OnClickListener
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i(INFO, "ondraw in");
         super.onDraw(canvas);
         setAlpha(1.0f);
         if (isSelected) {
-            Log.i(INFO, "on draw is selected in");
             setAlpha(alpha);
             canvas.drawBitmap(selectedBitmap, null, mRect, null);
         }

@@ -119,6 +119,9 @@ public class StudentCommentListFragment extends BaseLazyCommentFragment<Comment>
         loadingDataByPage(++current_page, new OnRefreshListener<Comment>() {
             @Override
             public void onFinish(List<Comment> mEntities) {
+                if(mEntities.size()==0){
+                    current_page--;
+                }
                 refreshDate(mEntities, BaseLazyCommentFragment.ADD);
                 onPullUpFinished();
             }

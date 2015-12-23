@@ -28,6 +28,7 @@
                 android:layout_centerVertical="true"
                 android:background="@color/near_white"
                 android:singleLine="true"
+                android:inputType="number"
                 android:hint="请输入您的手机号"
                 android:paddingLeft="50dp"
                 android:textSize="13sp" />

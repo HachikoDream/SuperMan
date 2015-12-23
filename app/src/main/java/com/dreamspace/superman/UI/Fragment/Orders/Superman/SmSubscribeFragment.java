@@ -47,6 +47,7 @@ public class SmSubscribeFragment extends BaseLazyOrderFragment<Order> {
             public void onFinish(List<Order> mEntities) {
                 onPullUpFinished();
                 if (mEntities.isEmpty()) {
+                    page--;
                     showToast("没有更多的数据");
                 } else {
                     refreshDate(mEntities, BaseListAct.ADD);

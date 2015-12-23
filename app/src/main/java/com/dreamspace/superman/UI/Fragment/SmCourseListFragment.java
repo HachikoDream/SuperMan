@@ -42,6 +42,7 @@ public class SmCourseListFragment extends BaseLazyCourseFragment<LessonInfo> {
             @Override
             public void onFinish(List<LessonInfo> mEntities) {
                 if (mEntities.size() == 0) {
+                    page--;
                     showToast(getString(R.string.common_nomore_data));
                 } else {
                     refreshDate(mEntities, BaseListAct.ADD);

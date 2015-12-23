@@ -1,51 +1,33 @@
 package com.dreamspace.superman.UI.Activity.Register;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.bumptech.glide.Glide;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.API.SupermanService;
 import com.dreamspace.superman.Common.AVImClientManager;
 import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.Constant;
-import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
-import com.dreamspace.superman.Common.UpLoadUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.event.AvaterChangeEvent;
 import com.dreamspace.superman.model.UserInfo;
-import com.dreamspace.superman.model.api.EmptyBody;
-import com.dreamspace.superman.model.api.ErrorRes;
 import com.dreamspace.superman.model.api.LoginRes;
-import com.dreamspace.superman.model.api.QnRes;
 import com.dreamspace.superman.model.api.RegisterReq;
-import com.dreamspace.superman.model.api.RegisterRes;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
 import com.soundcloud.android.crop.Crop;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,6 +38,7 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.entity.Photo;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -196,9 +179,9 @@ public class RegisterInfoActivity extends AbsActivity {
 //        if (NetUtils.isNetworkConnected(RegisterInfoActivity.this)) {
 //            EmptyBody body=new EmptyBody();
 //            body.setInfo(Constant.FEMALE);
-//            mService.createQiNiuToken(body,new Callback<QnRes>() {
+//            mService.createQiNiuToken(body,new Callback<SingleQnRes>() {
 //                @Override
-//                public void success(QnRes qnRes, Response response) {
+//                public void success(SingleQnRes qnRes, Response response) {
 //                    if (qnRes != null) {
 //                        uploadPhoto(qnRes);
 //                    }
@@ -218,7 +201,7 @@ public class RegisterInfoActivity extends AbsActivity {
 //    }
 
 //    //上传用户的头像到七牛服务器
-//    private void uploadPhoto(final QnRes res) {
+//    private void uploadPhoto(final SingleQnRes res) {
 //        UploadManager manager = UpLoadUtils.getInstance();
 //        manager.put(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
 //            @Override
@@ -363,9 +346,9 @@ public class RegisterInfoActivity extends AbsActivity {
         super.onActivityResult(requestCode, resultCode, result);
         if (requestCode == REQUEST_PICK && resultCode == RESULT_OK) {
             if (result != null) {
-                ArrayList<String> photos =
-                        result.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                photoPath = photos.get(0);
+                ArrayList<Photo> photos =
+                        result.getParcelableArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                photoPath = photos.get(0).getPath();
                 beginCrop(Uri.fromFile(new File(photoPath)));
             }
         } else if (requestCode == Crop.REQUEST_CROP) {

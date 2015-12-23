@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,12 +47,10 @@ import com.dreamspace.superman.event.LessonListRefreshEvent;
 import com.dreamspace.superman.event.MoneyRefreshEvent;
 import com.dreamspace.superman.event.OrderChangeEvent;
 import com.dreamspace.superman.model.api.EmptyBody;
-import com.dreamspace.superman.model.api.QnRes;
-import com.dreamspace.superman.model.api.RegisterReq;
+import com.dreamspace.superman.model.api.SingleQnRes;
 import com.dreamspace.superman.model.api.UpdateReq;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
 
 import org.json.JSONObject;
 
@@ -64,7 +61,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener, FeedbackFragment.FeedbackComplete {
+public class
+MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener, FeedbackFragment.FeedbackComplete {
 
     @Bind(R.id.dl_left)
     DrawerLayout mDrawerLayout;
@@ -386,11 +384,11 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
         if (NetUtils.isNetworkConnected(MainActivity.this)) {
             EmptyBody body = new EmptyBody();
             body.setInfo(Constant.FEMALE);
-            ApiManager.getService(getApplicationContext()).createQiNiuToken(body, new Callback<QnRes>() {
+            ApiManager.getService(getApplicationContext()).createQiNiuToken(body, new Callback<SingleQnRes>() {
                 @Override
-                public void success(QnRes qnRes, Response response) {
-                    if (qnRes != null) {
-                        uploadPhoto(photoPath, qnRes);
+                public void success(SingleQnRes singleQnRes, Response response) {
+                    if (singleQnRes != null) {
+                        uploadPhoto(photoPath, singleQnRes);
                     }
                 }
 
@@ -412,7 +410,7 @@ public class MainActivity extends AbsActivity implements NavigationView.OnNaviga
     }
 
     //上传用户的头像到七牛服务器
-    private void uploadPhoto(final String photoPath, final QnRes res) {
+    private void uploadPhoto(final String photoPath, final SingleQnRes res) {
         UpLoadUtils.upLoadImage(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {

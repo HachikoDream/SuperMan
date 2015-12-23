@@ -33,8 +33,8 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ConListAdapter mAdapter;
     private static final int LOADER_ID = 1;
-    private boolean isVisible=false;
-    private boolean shouldRefresh=false;
+    private boolean isVisible = false;
+    private boolean shouldRefresh = false;
 
     @Override
     protected void setSelfContentView() {
@@ -100,10 +100,10 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int memberId = mAdapter.getItem(position).getMemberId().intValue();
-                String memberName=mAdapter.getItem(position).getMemberName();
+                String memberName = mAdapter.getItem(position).getMemberName();
                 Bundle b = new Bundle();
                 b.putString(Constant.MEMBER_ID, String.valueOf(memberId));
-                b.putString(Constant.MEMBER_NAME,memberName);
+                b.putString(Constant.MEMBER_NAME, memberName);
                 readyGo(ChatActivity.class, b);
 
             }
@@ -127,8 +127,8 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<List<Conversation>> loader, List<Conversation> data) {
-        if (data == null && data.isEmpty()) {
-            toggleShowEmpty(true, "暂无联系人", null);
+        if (data != null && data.isEmpty()) {
+            toggleShowEmpty(true, "暂无相关会话", null);
         } else {
             toggleShowEmpty(false, null, null);
             mAdapter.refreshDate(data);
@@ -143,28 +143,28 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
     }
 
     public void onEvent(DbChangeEvent event) {
-        Log.i("EVENTBUS","Msg come");
-       if(isVisible){
-           getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
-       }else{
-           shouldRefresh=true;
-       }
+        Log.i("EVENTBUS", "Msg come");
+        if (isVisible) {
+            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+        } else {
+            shouldRefresh = true;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        isVisible=true;
-        if(shouldRefresh){
-            shouldRefresh=false;
-            getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
+        isVisible = true;
+        if (shouldRefresh) {
+            shouldRefresh = false;
+            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        isVisible=false;
+        isVisible = false;
 
     }
 

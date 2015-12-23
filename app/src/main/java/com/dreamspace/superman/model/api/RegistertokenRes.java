@@ -5,6 +5,15 @@ package com.dreamspace.superman.model.api;
  */
 public class RegistertokenRes {
     private String register_token;
+    private boolean registered;
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
 
     public String getRegister_token() {
         return register_token;
