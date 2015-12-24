@@ -78,4 +78,6 @@
     <string name="title_activity_qrreader">扫码</string>
     <string name="unspport_message_type">暂不支持此消息类型</string>
     <string name="title_activity_paychannel">收银台</string>
+    <string name="title_activity_edit_info">编辑资料</string>
+    <string name="title_activity_edit_detail_info">编辑具体信息</string>
 </resources>

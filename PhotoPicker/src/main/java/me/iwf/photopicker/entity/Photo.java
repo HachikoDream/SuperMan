@@ -10,10 +10,19 @@ public class Photo implements Parcelable {
 
     private int id;
     private String path;
+    private boolean local = true;
 
     public Photo(int id, String path) {
         this.id = id;
         this.path = path;
+    }
+
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+
+    public boolean isLocal() {
+        return local;
     }
 
     public Photo() {

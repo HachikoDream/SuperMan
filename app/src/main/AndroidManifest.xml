@@ -66,9 +66,6 @@
             android:name=".UI.Activity.Register.VerifyByPhoneAct"
             android:label="@string/title_activity_register_by_phone" />
         <activity
-            android:name=".UI.Activity.Register.ResetPwdActivity"
-            android:label="@string/title_activity_reset_pwd" />
-        <activity
             android:name=".UI.Activity.Main.LessonDetailInfoActivity"
             android:label="@string/title_activity_course_detail_info" />
         <activity
@@ -92,9 +89,9 @@
         <activity
             android:name=".UI.Activity.Superman.AddCourseActivity"
             android:label="@string/title_activity_add_course" />
-        <activity
-            android:name=".UI.Activity.Superman.EditCourseActivity"
-            android:label="@string/title_activity_edit_course" />
+        <!-- <activity -->
+        <!-- android:name=".UI.Activity.Superman.EditCourseActivity" -->
+        <!-- android:label="@string/title_activity_edit_course" /> -->
         <activity
             android:name=".UI.Activity.Register.ChooseClassifyActivity"
             android:label="@string/title_activity_choose_classify" />
@@ -143,11 +140,13 @@
         <activity
             android:name=".UI.Activity.Main.StartPageActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- 友盟内含的Act和Service -->
@@ -214,7 +213,20 @@
         <activity android:name=".UI.Activity.Main.AboutusActivity" />
         <activity
             android:name=".UI.Activity.Main.AboutSupermanActivity"
-            android:label="达人申请说明">
+            android:label="达人申请说明" />
+        <activity
+            android:name=".UI.Activity.Superman.EditInfoActivity"
+            android:label="@string/title_activity_edit_info">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".UI.Activity.Superman.EditDetailInfoActivity"
+            android:label="@string/title_activity_edit_detail_info">
         </activity>
     </application>
 
