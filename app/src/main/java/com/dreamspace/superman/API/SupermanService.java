@@ -11,6 +11,7 @@ import com.dreamspace.superman.model.api.CommentReq;
 import com.dreamspace.superman.model.api.CommentRes;
 import com.dreamspace.superman.model.api.EmptyBody;
 import com.dreamspace.superman.model.api.FeedbackReq;
+import com.dreamspace.superman.model.api.LatestMasterInfo;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.ModifyLessonReq;
 import com.dreamspace.superman.model.api.ModifyReq;
@@ -28,6 +29,7 @@ import com.dreamspace.superman.model.api.SingleQnRes;
 import com.dreamspace.superman.model.api.SmIdRes;
 import com.dreamspace.superman.model.api.SmInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
+import com.dreamspace.superman.model.api.SmModifyReq;
 import com.dreamspace.superman.model.api.SubscribeReq;
 import com.dreamspace.superman.model.api.SubscribeRes;
 import com.dreamspace.superman.model.api.UpdateReq;
@@ -40,6 +42,7 @@ import com.dreamspace.superman.model.api.RegistertokenRes;
 import com.dreamspace.superman.model.api.SendVerifyReq;
 import com.dreamspace.superman.model.api.ToBeSmReq;
 import com.dreamspace.superman.model.api.payAccountRes;
+import com.squareup.okhttp.Call;
 
 import retrofit.Callback;
 import retrofit.client.Response;
@@ -223,4 +226,10 @@ public interface SupermanService {
 
     @POST("/v1.1/static/token")
     void createMultiQiNiuToken(@Body MultiQnReq req, Callback<QnRes> cb);
+
+    @GET("/v1.0/master/update")
+    void getLatestMasterInfo(Callback<LatestMasterInfo> cb);
+
+    @POST("/v1.0/master/update")
+    void ApplyModifyInfoBySm(@Body SmModifyReq req, Callback<Response> cb);
 }

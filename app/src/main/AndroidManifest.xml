@@ -141,12 +141,12 @@
             android:name=".UI.Activity.Main.StartPageActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 友盟内含的Act和Service -->
@@ -217,12 +217,6 @@
         <activity
             android:name=".UI.Activity.Superman.EditInfoActivity"
             android:label="@string/title_activity_edit_info">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".UI.Activity.Superman.EditDetailInfoActivity"

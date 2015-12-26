@@ -20,6 +20,15 @@ public class SmInfo {
     private String resume;
     //个人标签
     private String tags;
+    private String[] certificates;
+
+    public String[] getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(String[] certificates) {
+        this.certificates = certificates;
+    }
 
     public String getImage() {
         return image;

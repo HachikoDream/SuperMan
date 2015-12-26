@@ -37,7 +37,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
      */
     @Override
     public boolean isSelected(Photo photo) {
-        return getSelectedPhotos().contains(photo);
+        return photo.isLocal()&&getSelectedPhotos().contains(photo);
     }
 
 

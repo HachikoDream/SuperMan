@@ -1,22 +1,30 @@
 package com.dreamspace.superman.UI.Fragment;
 
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
-import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
+import com.dreamspace.superman.UI.Adapters.MultiShowIvAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLessonFragment;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.iwf.photopicker.entity.Photo;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -31,9 +39,13 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
     TextView glory_tv;
     private final static String TAG = "达人简介";
     String mas_id;
-    private boolean onFirst=false;
-    private boolean getLesson=false;
+    @Bind(R.id.glory_rv)
+    RecyclerView gloryRv;
+    private boolean onFirst = false;
+    private boolean getLesson = false;
+    private MultiShowIvAdapter adapter;
 
+    //// TODO: 2015/12/26  加入荣誉照片点击事件 判断暂无情况
     public SupermanIntroductionFragment() {
         // Required empty public constructor
         setTAG(TAG);
@@ -42,12 +54,12 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
 
     @Override
     protected void onFirstUserVisible() {
-        onFirst=true;
-        if(getLesson){
-            if(mas_id!=null){
+        onFirst = true;
+        if (getLesson) {
+            if (mas_id != null) {
                 getSmInfo();
-            }else {
-                toggleNetworkError(true,null);
+            } else {
+                toggleNetworkError(true, null);
             }
         }
     }
@@ -59,9 +71,10 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
                 @Override
                 public void success(SmInfo smInfo, Response response) {
                     toggleShowLoading(false, null);
-                    if(smInfo!=null){
+                    if (smInfo != null) {
                         introduction_tv.setText(smInfo.getResume());
                         glory_tv.setText(smInfo.getGlory());
+                        loadIntoGridViewByUrls(smInfo.getCertificates());
                     }
                 }
 
@@ -91,6 +104,20 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
 
     }
 
+    private void loadIntoGridViewByUrls(String[] urls) {
+        if (urls == null || urls.length == 0) {
+            return;
+        }
+        List<Photo> mPhotos = new ArrayList<>();
+        for (String url : urls) {
+            Photo photo = new Photo();
+            photo.setLocal(false);
+            photo.setPath(url);
+            mPhotos.add(photo);
+        }
+        adapter.setmPhotos(mPhotos);
+    }
+
     @Override
     protected void onUserInvisible() {
 
@@ -103,8 +130,12 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
 
     @Override
     protected void initViewsAndEvents() {
-//        LessonDetailInfoActivity mother = (LessonDetailInfoActivity) getActivity();
-//        mas_id = mother.getmLessonInfo().getMast_id();
+        adapter = new MultiShowIvAdapter(getActivity());
+        adapter.setShow_delete_icon(false);
+        adapter.setShow_add_icon(false);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        gloryRv.setLayoutManager(manager);
+        gloryRv.setAdapter(adapter);
     }
 
     @Override
@@ -115,21 +146,35 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
 
     @Override
     public void getLessonInfo(LessonInfo mLessonInfo) {
-        getLesson=true;
-        if(onFirst){
-            if(mLessonInfo!=null){
-                mas_id=mLessonInfo.getMast_id();
+        getLesson = true;
+        if (onFirst) {
+            if (mLessonInfo != null) {
+                mas_id = mLessonInfo.getMast_id();
                 getSmInfo();
-            }else{
-                toggleNetworkError(true,null);
+            } else {
+                toggleNetworkError(true, null);
             }
-        }else {
-            if (mLessonInfo!=null){
-                mas_id=mLessonInfo.getMast_id();
-            }else{
-                mas_id=null;
+        } else {
+            if (mLessonInfo != null) {
+                mas_id = mLessonInfo.getMast_id();
+            } else {
+                mas_id = null;
             }
         }
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

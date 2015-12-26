@@ -20,7 +20,17 @@ public class CommonUtils {
     }
 
     public static ErrorRes getErrorInfo(RetrofitError error) {
-        return (ErrorRes) error.getBodyAs(ErrorRes.class);
+        ErrorRes errorRes = null;
+        try {
+            errorRes = (ErrorRes) error.getBodyAs(ErrorRes.class);
+        } catch (RuntimeException e) {
+            errorRes = new ErrorRes();
+            errorRes.setReason("暂时无法获取信息,请稍后再试");
+        } finally {
+            return errorRes;
+        }
+
+
     }
 
     public static int getPriceFromString(String price_content) {

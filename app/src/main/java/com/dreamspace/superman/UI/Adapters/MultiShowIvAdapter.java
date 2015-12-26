@@ -15,6 +15,7 @@ import com.dreamspace.superman.R;
 import com.jauker.widget.BadgeView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.iwf.photopicker.entity.Photo;
@@ -32,6 +33,8 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
     public final static int ITEM_TYPE_PHOTO = 101;
     private onPhotoClickListener photoClickListener = null;
     private final int imageSize;
+    private boolean show_delete_icon = true;
+    private boolean show_add_icon = true;
 
     public MultiShowIvAdapter(List<Photo> mPhotos, Context mContext) {
         this.mPhotos = mPhotos;
@@ -45,6 +48,34 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
         imageSize = widthPixels / 3;
     }
 
+    public MultiShowIvAdapter(Context mContext) {
+        this.mPhotos = new ArrayList<>();
+        this.mContext = mContext;
+        inflater = LayoutInflater.from(mContext);
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int widthPixels = metrics.widthPixels;
+
+        imageSize = widthPixels / 3;
+    }
+
+    public void setShow_delete_icon(boolean show_delete_icon) {
+        this.show_delete_icon = show_delete_icon;
+    }
+
+    public void setShow_add_icon(boolean show_add_icon) {
+        this.show_add_icon = show_add_icon;
+    }
+
+    public boolean isShow_add_icon() {
+        return show_add_icon;
+    }
+
+    public boolean isShow_delete_icon() {
+        return show_delete_icon;
+    }
+
     public void setPhotoClickListener(onPhotoClickListener photoClickListener) {
         this.photoClickListener = photoClickListener;
     }
@@ -53,7 +84,7 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
     public MultiShowviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = inflater.inflate(R.layout.recycleview_item, parent, false);
         MultiShowviewHolder holder = new MultiShowviewHolder(itemView, mContext);
-        if (viewType == ITEM_TYPE_ADD) {
+        if (viewType == ITEM_TYPE_ADD || !show_delete_icon) {
             holder.ivDelete.setVisibility(View.GONE);
         }
         return holder;
@@ -63,15 +94,29 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
     public void onBindViewHolder(final MultiShowviewHolder holder, final int position) {
         if (getItemViewType(position) == ITEM_TYPE_PHOTO) {
             Photo photo = mPhotos.get(position);
-            Glide.with(mContext)
-                    .load(new File(photo.getPath()))
-                    .centerCrop()
-                    .dontAnimate()
-                    .thumbnail(0.5f)
+            if (photo.isLocal()) {
+                Glide.with(mContext)
+                        .load(new File(photo.getPath()))
+                        .centerCrop()
+                        .dontAnimate()
+                        .thumbnail(0.5f)
 //                    .override(imageSize, imageSize)
-                    .placeholder(me.iwf.photopicker.R.drawable.ic_photo_black_48dp)
-                    .error(me.iwf.photopicker.R.drawable.ic_broken_image_black_48dp)
-                    .into(holder.ivPhoto);
+                        .placeholder(me.iwf.photopicker.R.drawable.ic_photo_black_48dp)
+                        .error(me.iwf.photopicker.R.drawable.ic_broken_image_black_48dp)
+                        .into(holder.ivPhoto);
+
+            } else {
+                Glide.with(mContext)
+                        .load(photo.getPath())
+                        .centerCrop()
+                        .dontAnimate()
+                        .thumbnail(0.5f)
+//                    .override(imageSize, imageSize)
+                        .placeholder(me.iwf.photopicker.R.drawable.ic_photo_black_48dp)
+                        .error(me.iwf.photopicker.R.drawable.ic_broken_image_black_48dp)
+                        .into(holder.ivPhoto);
+
+            }
         } else if (getItemViewType(position) == ITEM_TYPE_ADD) {
             Glide.with(mContext)
                     .load(R.drawable.page_add)
@@ -113,7 +158,7 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
 
     @Override
     public int getItemCount() {
-        return mPhotos.size() + 1;
+        return show_add_icon ? mPhotos.size() + 1 : mPhotos.size();
     }
 
     public static class MultiShowviewHolder extends RecyclerView.ViewHolder {
@@ -122,7 +167,6 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
 
         public MultiShowviewHolder(View itemView, Context context) {
             super(itemView);
-//            ivDelete = (ImageView) itemView.findViewById(R.id.close_btn);
             ivPhoto = (ImageView) itemView.findViewById(R.id.content_imageview);
             ivDelete = new BadgeView(context);
             ivDelete.setTargetView(ivPhoto);
@@ -130,6 +174,7 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
             ivDelete.setBadgeGravity(Gravity.TOP | Gravity.RIGHT);
             ivDelete.setBackgroundColor(context.getResources().getColor(R.color.navi_color));
         }
+
     }
 
     public interface onPhotoClickListener {

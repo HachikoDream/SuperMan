@@ -13,6 +13,29 @@
         <include layout="@layout/custom_toolbar" />
 
         <LinearLayout
+            android:id="@+id/state_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/warning_color"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/ic_warn" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="您提交的信息仍处于审核期，通过后可对外展示.在此期间您仍可以继续修改信息提交审核。"
+                android:textColor="@color/select_tab_color" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -49,7 +72,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/sm_tag"
                     android:maxWidth="200dp"
-                    android:text="IOS开发入门，苹果产品相关"
+                    android:text="loading"
                     android:textColor="@color/near_black"
                     android:textSize="14sp" />
 
@@ -91,7 +114,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/sm_glory"
                     android:maxWidth="200dp"
-                    android:text="大学生计算机设计二等奖，软件大二实训一等奖，微软中国"
+                    android:text="loading"
                     android:textColor="@color/near_black"
                     android:textSize="14sp" />
 
@@ -133,7 +156,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/sm_intro"
                     android:maxWidth="200dp"
-                    android:text="我是你爸爸，东南大学的大爸爸，窗门空间顿时觉得还是觉得很沮丧"
+                    android:text="loading"
                     android:textColor="@color/near_black"
                     android:textSize="14sp" />
 
@@ -162,7 +185,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
                     android:text="我的作品/证书"
                     android:textColor="@color/select_tab_color"
                     android:textSize="18sp" />
@@ -171,8 +193,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/page_goright" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/glory_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_below="@id/sm_certificate"
+                    android:layout_margin="5dp" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

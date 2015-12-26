@@ -39,6 +39,7 @@ public class EditDetailInfoActivity extends AbsActivity {
         if (!CommonUtils.isEmpty(old_info)) {
             detailInfoEt.setText(old_info);
             detailInfoEt.setSelection(old_info.length());
+            textnumberTv.setText(String.valueOf(old_info.length()));
         }
     }
 

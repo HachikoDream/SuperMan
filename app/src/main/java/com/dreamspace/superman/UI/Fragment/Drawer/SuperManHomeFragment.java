@@ -12,6 +12,7 @@ import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.dreamspace.superman.UI.Activity.Superman.EditInfoActivity;
 import com.dreamspace.superman.UI.Activity.Superman.MyAccountActivity;
 import com.dreamspace.superman.UI.Activity.Superman.MyCourseListActivity;
 import com.dreamspace.superman.UI.Activity.Superman.OrderListActivity;
@@ -34,17 +35,17 @@ public class SuperManHomeFragment extends BaseLazyFragment {
     CircleImageView userIv;
     @Bind(R.id.username_tv)
     TextView userNameTv;
-    private String[] mTitles={"我的课程","我的订单","我的账户"};
-    private int[] mIds={R.drawable.daren_course,R.drawable.daren_order,R.drawable.daren_account};
-    List<Map<String,Object>> mapList=new ArrayList<>();
-    private String[] itemName={"title","img"};
+    private String[] mTitles = {"我的课程", "我的订单", "我的账户", "达人资料"};
+    private int[] mIds = {R.drawable.daren_course, R.drawable.daren_order, R.drawable.daren_account, R.drawable.daren_info};
+    List<Map<String, Object>> mapList = new ArrayList<>();
+    private String[] itemName = {"title", "img"};
 
 
     protected void prepareDatas() {
-        for (int i=0;i<mTitles.length;i++){
-            Map<String,Object> mMap=new HashMap<>();
-            mMap.put("title",mTitles[i]);
-            mMap.put("img",mIds[i]);
+        for (int i = 0; i < mTitles.length; i++) {
+            Map<String, Object> mMap = new HashMap<>();
+            mMap.put("title", mTitles[i]);
+            mMap.put("img", mIds[i]);
             mapList.add(mMap);
         }
     }
@@ -52,17 +53,17 @@ public class SuperManHomeFragment extends BaseLazyFragment {
 
     @Override
     protected void onFirstUserVisible() {
-        String avater_url=PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR);
-        String user_name=PreferenceUtils.getString(getActivity().getApplicationContext(),PreferenceUtils.Key.REALNAME);
-        Tools.showImageWithGlide(getActivity(),userIv, avater_url);
+        String avater_url = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR);
+        String user_name = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME);
+        Tools.showImageWithGlide(getActivity(), userIv, avater_url);
         userNameTv.setText(user_name);
     }
 
     @Override
     protected void onUserVisible() {
-        String avater_url=PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR);
-        String user_name=PreferenceUtils.getString(getActivity().getApplicationContext(),PreferenceUtils.Key.REALNAME);
-        Tools.showImageWithGlide(getActivity(),userIv, avater_url);
+        String avater_url = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.AVATAR);
+        String user_name = PreferenceUtils.getString(getActivity().getApplicationContext(), PreferenceUtils.Key.REALNAME);
+        Tools.showImageWithGlide(getActivity(), userIv, avater_url);
         userNameTv.setText(user_name);
     }
 
@@ -79,12 +80,12 @@ public class SuperManHomeFragment extends BaseLazyFragment {
     @Override
     protected void initViewsAndEvents() {
         prepareDatas();
-        SimpleAdapter mAdapter=new SimpleAdapter(getActivity(),mapList,R.layout.list_item_in_superman_homepage,itemName,new int[]{R.id.textview,R.id.imageview});
+        SimpleAdapter mAdapter = new SimpleAdapter(getActivity(), mapList, R.layout.list_item_in_superman_homepage, itemName, new int[]{R.id.textview, R.id.imageview});
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
                         readyGo(MyCourseListActivity.class);
                         break;
@@ -93,6 +94,9 @@ public class SuperManHomeFragment extends BaseLazyFragment {
                         break;
                     case 2:
                         readyGo(MyAccountActivity.class);
+                        break;
+                    case 3:
+                        readyGo(EditInfoActivity.class);
                         break;
                 }
             }
