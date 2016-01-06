@@ -36,7 +36,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="18dp">
 
@@ -44,11 +45,12 @@
             android:id="@+id/course_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
+            android:layout_marginTop="10dp"
             android:maxLines="2"
+            android:paddingBottom="4dp"
             android:text="加载中..."
             android:textColor="@color/near_black"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/username_tv"
-                android:singleLine="true"
                 android:padding="4dp"
+                android:singleLine="true"
                 android:textColor="@color/navi_color" />
 
         </RelativeLayout>

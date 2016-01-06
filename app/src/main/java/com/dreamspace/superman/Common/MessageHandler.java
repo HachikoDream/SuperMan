@@ -46,12 +46,12 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
                         getInfoFromServer(Integer.parseInt(message.getFrom()), new InfoLoadingListener() {
                             @Override
                             public void onSuccess(SimpleInfo info) {
-                                sendNotification(message, conversation,info.getNickname());
+                                sendNotification(message, conversation, info.getNickname());
                             }
 
                             @Override
                             public void onFail() {
-                                sendNotification(message, conversation,"学员");
+                                sendNotification(message, conversation, "学员");
                             }
                         });
                     }
@@ -81,35 +81,37 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
         }
         dbCon.setLastContent(content);
         dbCon.setMemberId((long) memberId);
-        storeIntoDb(dbCon,message,conversation);
+        storeIntoDb(dbCon, message, conversation);
 
     }
-    private void sendMsgByBus(AVIMTypedMessage message, AVIMConversation conversation){
+
+    private void sendMsgByBus(AVIMTypedMessage message, AVIMConversation conversation) {
         ImTypeMessageEvent event = new ImTypeMessageEvent();
         event.message = message;
         event.conversation = conversation;
-        DbChangeEvent changeEvent=new DbChangeEvent();
+        DbChangeEvent changeEvent = new DbChangeEvent();
         EventBus.getDefault().post(event);
         EventBus.getDefault().post(changeEvent);
     }
+
     private void storeIntoDb(final Conversation dbCon, final AVIMTypedMessage message, final AVIMConversation conversation) {
         final Conversation previous = DbRelated.findConById(context, dbCon.getMemberId());
         if (previous != null) {
-                getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
-                    @Override
-                    public void onSuccess(SimpleInfo info) {
-                        dbCon.setMemberName(info.getNickname());
-                        dbCon.setMemberAvater(info.getImage());
-                        DbRelated.updateCon(context, dbCon);
-                        sendMsgByBus(message,conversation);
-                    }
+            getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
+                @Override
+                public void onSuccess(SimpleInfo info) {
+                    dbCon.setMemberName(info.getNickname());
+                    dbCon.setMemberAvater(info.getImage());
+                    DbRelated.updateCon(context, dbCon);
+                    sendMsgByBus(message, conversation);
+                }
 
-                    @Override
-                    public void onFail() {
-                        DbRelated.updateCon(context, dbCon);
-                        sendMsgByBus(message, conversation);
-                    }
-                });
+                @Override
+                public void onFail() {
+                    DbRelated.updateCon(context, dbCon);
+                    sendMsgByBus(message, conversation);
+                }
+            });
         } else {
             getInfoFromServer(dbCon.getMemberId().intValue(), new InfoLoadingListener() {
                 @Override
@@ -124,8 +126,8 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
                 public void onFail() {
                     dbCon.setMemberAvater(Constant.FAIL_AVATER);
                     dbCon.setMemberName(Constant.FAIL_MEMBER_NAME);
-                    DbRelated.insertCon(context,dbCon);
-                    sendMsgByBus(message,conversation);
+                    DbRelated.insertCon(context, dbCon);
+                    sendMsgByBus(message, conversation);
                 }
             });
         }
@@ -159,8 +161,8 @@ public class MessageHandler extends AVIMTypedMessageHandler<AVIMTypedMessage> {
         Intent intent = new Intent(context, NotificationBroadcastReceiver.class);
         intent.putExtra(Constant.CONVERSATION_ID, conversation.getConversationId());
         intent.putExtra(Constant.MEMBER_ID, message.getFrom());
-        intent.putExtra(Constant.MEMBER_NAME,nickname);
-        NotificationUtils.showNotification(context, "", notificationContent, null, intent);
+        intent.putExtra(Constant.MEMBER_NAME, nickname);
+        NotificationUtils.showNotification(context, "您收到了" + nickname + "的私信", notificationContent, null, intent);
     }
 
     private interface InfoLoadingListener {

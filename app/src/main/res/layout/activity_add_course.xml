@@ -31,9 +31,9 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
                     android:background="@drawable/apptheme_edit_text_holo_light"
                     android:hint="课程名称"
+                    android:singleLine="true"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
@@ -45,10 +45,10 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
                     android:background="@drawable/apptheme_edit_text_holo_light"
                     android:hint="课程时长(单位：小时)"
                     android:inputType="numberDecimal"
+                    android:singleLine="true"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
@@ -60,10 +60,10 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:singleLine="true"
                     android:background="@drawable/apptheme_edit_text_holo_light"
                     android:hint="课程价格(单位：元/次)"
                     android:inputType="numberDecimal"
+                    android:singleLine="true"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
 
@@ -73,11 +73,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:background="@color/near_white"
-                android:gravity="center_vertical"
+                android:gravity="left|top"
                 android:hint="简要介绍下课程内容\n(例:本课程主要针对吉他刚入门的同学，授课内容为基础的吉他上手知识和简单的音阶练习。本课程人数大致为2-3人，地点初定在大活琴房，学习课程需自备吉他。
 达人只有每周五晚有时间哦，欢迎有时间的同学来预约，具体时间会在预约时商讨～)"
-                android:minHeight="190dp"
-                android:padding="4dp"
+                android:minHeight="90dp"
+                android:padding="10dp"
                 android:textSize="12sp" />
 
             <Button

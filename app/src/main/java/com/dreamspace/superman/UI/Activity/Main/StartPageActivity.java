@@ -41,7 +41,6 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
         setContentView(R.layout.activity_start_page);
         prepareDatas();
         UmengUpdateAgent.setUpdateOnlyWifi(false);
-        UmengUpdateAgent.update(this);
     }
 
     protected void prepareDatas() {
@@ -63,7 +62,6 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
 
             } else {
                 //第一次打开软件时 设置已经打开过，增加初始化分类
-                Log.i("INFO", "first");
                 PreferenceUtils.putBoolean(getApplicationContext(), KEY, true);
                 PreferenceUtils.writeClassifyIntoSpForFirst(getApplicationContext());
                 gotoMainWithInfo(MainActivity.FIRST_IN);
@@ -126,7 +124,7 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
         AVImClientManager.getInstance().open(clientId, new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
-                filterException(e);
+//                filterException(e);
                 if(PreferenceUtils.hasKey(getApplicationContext(),PreferenceUtils.Key.AVATER_AVAILABLE)&&!PreferenceUtils.getBoolean(getApplicationContext(),PreferenceUtils.Key.AVATER_AVAILABLE)){
                     String cachedPath=PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.AVATER_CACHE_PATH);
                     gotoMainWithAvaterTask(cachedPath);

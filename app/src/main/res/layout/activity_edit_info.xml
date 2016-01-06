@@ -189,16 +189,10 @@
                     android:textColor="@color/select_tab_color"
                     android:textSize="18sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/page_goright" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/glory_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="110dp"
                     android:layout_below="@id/sm_certificate"
                     android:layout_margin="5dp" />
             </RelativeLayout>

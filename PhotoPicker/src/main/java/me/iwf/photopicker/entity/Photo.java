@@ -31,6 +31,7 @@ public class Photo implements Parcelable {
     protected Photo(Parcel in) {
         id = in.readInt();
         path = in.readString();
+        local = in.readByte() != 0;
     }
 
     public static final Creator<Photo> CREATOR = new Creator<Photo>() {
@@ -85,5 +86,7 @@ public class Photo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(path);
+        dest.writeByte((byte) (local ? 1 : 0));
+
     }
 }

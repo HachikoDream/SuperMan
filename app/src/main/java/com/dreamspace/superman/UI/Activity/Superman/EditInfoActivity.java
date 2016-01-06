@@ -88,6 +88,7 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
     private String new_tag;
     private String new_intro;
     private String new_glory;
+    private MenuItem finishMbtn;
 
     @Override
     protected void setSelfContentView() {
@@ -115,6 +116,7 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_edit_info, menu);
+        finishMbtn = menu.findItem(R.id.menu_finish);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -135,7 +137,8 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
                         if (positive) {
                             localPhotos = getLocalPhotoCount();
                             if (adapter.getPhotos().size() == 0 || localPhotos == 0) {
-                                applyModifyInfo(null);
+                                List<String> paths = adapter.getCurrentPhotoPaths();
+                                applyModifyInfo(paths.toArray(new String[paths.size()]));
                             } else {
                                 showPd(null);
                                 getUploadToken();
@@ -165,6 +168,8 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
         for (Photo photo : adapter.getPhotos()) {
             if (photo.isLocal()) {
                 paths.add(photo.getPath());
+            } else {
+                keys.add(photo.getPath());
             }
         }
         return paths.toArray(new String[paths.size()]);
@@ -235,16 +240,17 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
     private synchronized void finishFromSingleThread(boolean result, String key) {
         if (result && key != null) {
             keys.add(key);
-            showPd("正在上传您的第" + (keys.size() + 1) + "张证书,请稍等..");
-            if (keys.size() == localPhotos) {
-                if (localPhotos != adapter.getPhotos().size()) {
-                    for (Photo photo : adapter.getPhotos()) {
-                        if (!photo.isLocal()) {
-                            keys.add(photo.getPath());
-                        }
-                    }
-                }
+            if (keys.size() == adapter.getPhotos().size()) {
+//                if (localPhotos != adapter.getPhotos().size()) {
+//                    for (Photo photo : adapter.getPhotos()) {
+//                        if (!photo.isLocal()) {
+//                            keys.add(photo.getPath());
+//                        }
+//                    }
+//                }
                 applyModifyInfo(keys.toArray(new String[keys.size()]));
+            } else {
+                showPd("正在上传您的第" + (keys.size() + 1) + "张证书,请稍等..");
             }
         } else {
             dismissPd();
@@ -319,10 +325,16 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
 
                 @Override
                 public void failure(RetrofitError error) {
+                    if (finishMbtn != null) {
+                        finishMbtn.setEnabled(false);
+                    }
                     showInnerError(error);
                 }
             });
         } else {
+            if (finishMbtn != null) {
+                finishMbtn.setEnabled(false);
+            }
             showNetWorkError();
         }
     }
@@ -343,6 +355,7 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
             ApiManager.getService(getApplicationContext()).ApplyModifyInfoBySm(req, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
+                    dismissPd();
                     if (response != null) {
                         showInfoByDialog(apply_success_msg, "确定", null, new DialogClickListener() {
                             @Override
@@ -355,10 +368,12 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
 
                 @Override
                 public void failure(RetrofitError error) {
+                    dismissPd();
                     showInnerError(error);
                 }
             });
         } else {
+            dismissPd();
             showNetWorkError();
         }
     }
@@ -415,20 +430,30 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
         adapter.setmPhotos(mPhotos);
         adapter.setPhotoClickListener(new MultiShowIvAdapter.onPhotoClickListener() {
             @Override
-            public void onPhotoClick() {
-                int maxFromLocal = getMaxPhotoCountFromLocal();
-                if (maxFromLocal == 0) {
-                    showToast("您最多只能选择4张证书照片");
-                    return;
-                }
-                PhotoPickerIntent intent = new PhotoPickerIntent(EditInfoActivity.this);
-                intent.setPhotoCount(maxFromLocal);
-                intent.setShowCamera(true);
-                intent.setSeletedPhotos(adapter.getPhotos());
-                startActivityForResult(intent, MODIFY_CERTIFATE);
-
+            public void onPhotoClick(View v, int pos) {
+                gotoSelectedPage();
             }
         });
+        supermanCertificateLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoSelectedPage();
+            }
+        });
+
+    }
+
+    private void gotoSelectedPage() {
+        int maxFromLocal = getMaxPhotoCountFromLocal();
+        if (maxFromLocal == 0) {
+            showToast("您最多只能选择4张证书照片");
+            return;
+        }
+        PhotoPickerIntent intent = new PhotoPickerIntent(EditInfoActivity.this);
+        intent.setPhotoCount(maxFromLocal);
+        intent.setShowCamera(true);
+        intent.setSeletedPhotos(adapter.getPhotos());
+        startActivityForResult(intent, MODIFY_CERTIFATE);
 
     }
 
@@ -470,10 +495,7 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
                 mPhotos =
                         data.getParcelableArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
                 adapter.setmPhotos(mPhotos);
-//                adapter.notifyDataSetChanged();
-//                Log.i("INFO", "PHOTO:" + photos.get(0));
-//                photoPath = photos.get(0).getPath();
-//                beginCrop(Uri.fromFile(new File(photoPath)));
+
             }
 
         }

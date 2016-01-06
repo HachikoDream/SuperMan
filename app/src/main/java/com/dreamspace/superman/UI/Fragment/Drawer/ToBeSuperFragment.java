@@ -155,7 +155,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         adapter = new MultiShowIvAdapter(selectedPhotos, getActivity());
         adapter.setPhotoClickListener(new MultiShowIvAdapter.onPhotoClickListener() {
             @Override
-            public void onPhotoClick() {
+            public void onPhotoClick(View v, int pos) {
                 PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
                 intent.setPhotoCount(4);
                 intent.setShowCamera(true);
@@ -208,7 +208,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
                                 }
                             });
 
-                        } else if (state.equals(Constant.USER_APPLY_STATE.NOT_APPLY)) {
+                        } else if (state.equals(Constant.USER_APPLY_STATE.NOT_APPLY) || state.equalsIgnoreCase(Constant.USER_APPLY_STATE.REFUSE)) {
                             loadFromLocal();
 //                            realnameEv.getEditText().setText(realName);
                             Tools.showImageWithGlide(getActivity(), userIv, avater_url);
@@ -276,7 +276,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     }
 
     //上传用户的证书图片到七牛服务器
-    private void uploadSinglePhoto(SingleQnRes res,String photoPath) {
+    private void uploadSinglePhoto(SingleQnRes res, String photoPath) {
         UpLoadUtils.upLoadImage(photoPath, res.getKey(), res.getToken(), new UpCompletionHandler() {
             @Override
             public void complete(String key, ResponseInfo info, JSONObject response) {
@@ -302,7 +302,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
         if (selectedPhotos.isEmpty()) {
             toBeSm(null);
         } else {
-           getUploadToken();
+            getUploadToken();
         }
 
 //        if (choose_glory_iv) {
@@ -462,9 +462,10 @@ public class ToBeSuperFragment extends BaseLazyFragment {
     private synchronized void finishFromSingleThread(boolean result, String key) {
         if (result && key != null) {
             keys.add(key);
-            showPd("正在上传您的第" + (keys.size() + 1) + "张证书,请稍等..");
             if (keys.size() == selectedPhotos.size()) {
                 toBeSm(keys.toArray(new String[selectedPhotos.size()]));
+            } else {
+                showPd("正在上传您的第" + (keys.size() + 1) + "张证书,请稍等..");
             }
         } else {
             dismissPd();
@@ -476,7 +477,7 @@ public class ToBeSuperFragment extends BaseLazyFragment {
 
     private void upLoadPhotos(List<SingleQnRes> res) {
         for (int i = 0; i < res.size(); i++) {
-            uploadSinglePhoto(res.get(i),selectedPhotos.get(i).getPath());
+            uploadSinglePhoto(res.get(i), selectedPhotos.get(i).getPath());
         }
     }
 

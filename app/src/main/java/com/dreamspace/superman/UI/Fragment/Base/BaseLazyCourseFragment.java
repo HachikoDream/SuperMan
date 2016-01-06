@@ -26,8 +26,8 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLessonFragment {
     private BasisAdapter mAdapter;
     @Bind(R.id.swiperefresh_id)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    public final static int LOAD=233;
-    public final static int ADD=234;
+    public final static int LOAD = 233;
+    public final static int ADD = 234;
 
     @Override
     protected void onFirstUserVisible() {
@@ -51,7 +51,7 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLessonFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        mSwipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+        mSwipeRefreshLayout.setColorScheme(R.color.navi_color,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -68,8 +68,9 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLessonFragment {
         });
         initDatas();
     }
+
     public void initDatas() {
-        mAdapter=new IndexAdapter(getActivity());
+        mAdapter = new IndexAdapter(getActivity());
         moreListView.setAdapter(mAdapter);
         moreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,14 +94,17 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLessonFragment {
     protected int getContentViewLayoutID() {
         return R.layout.base_list_fragment;
     }
-    public void onPullUpFinished(){
+
+    public void onPullUpFinished() {
         moreListView.setLoading(false);
     }
-    public void onPullDownFinished(){
+
+    public void onPullDownFinished() {
         mSwipeRefreshLayout.setRefreshing(false);
     }
-    public void refreshDate(List<T> mEntities,int type) {
-        switch (type){
+
+    public void refreshDate(List<T> mEntities, int type) {
+        switch (type) {
             case LOAD:
                 mAdapter.setmEntities(mEntities);
                 break;
@@ -110,8 +114,9 @@ public abstract class BaseLazyCourseFragment<T> extends BaseLessonFragment {
         }
         mAdapter.notifyDataSetChanged();
     }
-   public boolean isRefreshing(){
-       return mSwipeRefreshLayout.isRefreshing();
-   }
-    
+
+    public boolean isRefreshing() {
+        return mSwipeRefreshLayout.isRefreshing();
+    }
+
 }

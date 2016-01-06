@@ -132,7 +132,7 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
 
                     if (onItemCheckListener != null) {
                         isEnable = onItemCheckListener.OnItemCheck(position, photo, isChecked,
-                                getSelectedPhotos().size());
+                                getLocalPhotoCount());
                     }
                     if (isEnable) {
                         toggleSelection(photo);
@@ -205,4 +205,12 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
         return (hasCamera && currentDirectoryIndex == MediaStoreHelper.INDEX_ALL_PHOTOS);
     }
 
+    private int getLocalPhotoCount() {
+        int count = getSelectedPhotos().size();
+        for (Photo photo : getSelectedPhotos()) {
+            if (!photo.isLocal())
+                count--;
+        }
+        return count;
+    }
 }

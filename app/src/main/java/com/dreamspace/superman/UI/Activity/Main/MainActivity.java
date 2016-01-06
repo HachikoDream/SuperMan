@@ -51,6 +51,7 @@ import com.dreamspace.superman.model.api.SingleQnRes;
 import com.dreamspace.superman.model.api.UpdateReq;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
+import com.umeng.update.UmengUpdateAgent;
 
 import org.json.JSONObject;
 
@@ -164,6 +165,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
         if (avater_task_val != -1) {
             getUploadToken(photoPath);
         }
+        UmengUpdateAgent.update(this);
     }
 
     @Override
@@ -173,6 +175,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
 
     //检测用户是否属于达人用户
     private void checkIsSuperMan(String type) {
+        master_available = true;
         String mast_state = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAST_STATE);
         MenuItem shItem = slideMenu.findItem(R.id.nav_superhome);
         MenuItem tobeItem = slideMenu.findItem(R.id.nav_tobesuperman);
@@ -347,7 +350,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
     }
 
     public void onEvent(AccountChangeEvent event) {
-        if(mViewPager.getCurrentItem()==5){
+        if (mViewPager.getCurrentItem() == 5) {
             gotoIndex();
         }
         checkLoginState(event.type);

@@ -100,8 +100,9 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
 
     public void sendVerifyCode() {
-
         if (isPhoneValid()) {
+            sendVerifyBtn.setText("提交请求中");
+            sendVerifyBtn.setEnabled(false);
             if (NetUtils.isNetworkConnected(getActivity())) {
                 SendVerifyReq req = new SendVerifyReq();
                 req.setPhone(phoneNum);
@@ -114,10 +115,14 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
 
                     @Override
                     public void failure(RetrofitError error) {
+                        sendVerifyBtn.setEnabled(true);
+                        sendVerifyBtn.setText("发送验证码");
                         showInnerError(error);
                     }
                 });
             } else {
+                sendVerifyBtn.setEnabled(true);
+                sendVerifyBtn.setText("发送验证码");
                 showNetWorkError();
             }
 
@@ -150,7 +155,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
                                         showDialogWithEt("请输入6个以上字符作为新密码", "修改密码", new DialogButtonClicked() {
                                             @Override
                                             public void onPositiveClicked(String content, DialogInterface dialog) {
-                                                ModifyReq mreq=new ModifyReq();
+                                                ModifyReq mreq = new ModifyReq();
                                                 mreq.setPassword(content);
                                                 mreq.setRegister_token(register_token);
                                                 doModify(mreq);
@@ -197,6 +202,9 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
         phoneNum = phoneNumEt.getText().toString();
         if (phoneNum.isEmpty()) {
             showToast("请先输入您的手机号");
+            return false;
+        } else if (phoneNum.length() != 11) {
+            showToast("您的手机号码格式有误");
             return false;
         }
         return true;
@@ -270,7 +278,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
                 public void success(Response response, Response response2) {
                     dismissPd();
                     if (response != null) {
-                        showInfoWithDialog("密码修改成功，您现在可以用新密码来登录您的账号",false, new DialogButtonClicked() {
+                        showInfoWithDialog("密码修改成功，您现在可以用新密码来登录您的账号", false, new DialogButtonClicked() {
                             @Override
                             public void onPositiveClicked(String content, DialogInterface dialog) {
                                 LoginActivity parent = (LoginActivity) getActivity();
@@ -284,7 +292,7 @@ public class RegisterFragment extends BaseFragment implements Handler.Callback {
                         });
 
                     } else {
-                        showInfoWithDialog(response.getReason(),false, null);
+                        showInfoWithDialog(response.getReason(), false, null);
                     }
                 }
 

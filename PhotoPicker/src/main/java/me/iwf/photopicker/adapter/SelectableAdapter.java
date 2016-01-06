@@ -13,7 +13,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> implements Selectable {
 
     private static final String TAG = SelectableAdapter.class.getSimpleName();
-    protected boolean choose_by_human=false;
+    protected boolean choose_by_human = false;
     protected List<PhotoDirectory> photoDirectories;
     protected List<Photo> selectedPhotos;
     public int currentDirectoryIndex = 0;
@@ -37,7 +37,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
      */
     @Override
     public boolean isSelected(Photo photo) {
-        return photo.isLocal()&&getSelectedPhotos().contains(photo);
+        return photo.isLocal() && getSelectedPhotos().contains(photo);
     }
 
 
@@ -48,7 +48,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
      */
     @Override
     public void toggleSelection(Photo photo) {
-        choose_by_human=true;
+        choose_by_human = true;
         if (selectedPhotos.contains(photo)) {
             selectedPhotos.remove(photo);
         } else {
@@ -96,9 +96,9 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
 
-    @Override
     public List<Photo> getSelectedPhotos() {
         return selectedPhotos;
     }
+
 
 }

@@ -8,209 +8,225 @@
 
     <include layout="@layout/custom_toolbar"></include>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/content_view"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:orientation="horizontal"
-        android:paddingLeft="28dp"
-        android:paddingTop="15dp">
-
-        <RelativeLayout
-            android:layout_width="136dp"
-            android:layout_height="match_parent">
-
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/user_avater_iv"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/login_pho_mistake" />
-
-            <TextView
-                android:id="@+id/username_tv"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/user_avater_iv"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="@color/grey_line"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="0.1dp"
-                android:layout_height="90dp"
-                android:layout_marginLeft="25dp"
-                android:layout_toRightOf="@id/user_avater_iv"
-                android:background="@color/grey_line"></View>
-        </RelativeLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingRight="8dp"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/course_name_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:paddingBottom="2dp"
-                android:singleLine="false"
-                android:text="@string/common_loading_message"
-                android:textColor="@color/near_black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/sm_tag_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="@color/select_tab_color" />
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:paddingTop="5dp">
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal"
+                android:paddingLeft="28dp"
+                android:paddingTop="15dp">
+
+                <RelativeLayout
+                    android:layout_width="125dp"
+                    android:layout_height="match_parent">
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/user_avater_iv"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/login_pho_mistake" />
+
+                    <TextView
+                        android:id="@+id/username_tv"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_avater_iv"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_line"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="0.1dp"
+                        android:layout_height="90dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toRightOf="@id/user_avater_iv"
+                        android:background="@color/grey_line"></View>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingRight="8dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/course_name_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:paddingBottom="2dp"
+                        android:singleLine="false"
+                        android:text="@string/common_loading_message"
+                        android:textColor="@color/near_black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/sm_tag_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/select_tab_color" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingTop="5dp">
 
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/homepage_favor" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/homepage_favor" />
 
-                <TextView
-                    android:id="@+id/want_meet_num_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:textColor="@color/navi_color"
-                    android:textSize="10sp" />
+                        <TextView
+                            android:id="@+id/want_meet_num_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:textColor="@color/navi_color"
+                            android:textSize="10sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:text="人想见"
-                    android:textColor="@color/navi_color"
-                    android:textSize="10sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="2dp"
+                            android:text="人想见"
+                            android:textColor="@color/navi_color"
+                            android:textSize="10sp" />
 
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp">
+
+                        <ImageView
+                            android:id="@+id/imageview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/homepage_deal" />
+
+                        <LinearLayout
+                            android:id="@+id/success_meet_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/imageview"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/success_meet_num_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:padding="2dp"
+                                android:textColor="@color/navi_color"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:padding="2dp"
+                                android:text="人已成功约见"
+                                android:textColor="@color/navi_color"
+                                android:textSize="10sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true">
+
+                            <TextView
+                                android:id="@+id/price_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:textColor="@color/navi_color" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text="元/次"
+                                android:textColor="@color/navi_color" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                </LinearLayout>
             </LinearLayout>
 
-            <RelativeLayout
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/grey_line"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.dreamspace.superman.UI.View.SlidingTabLayout
+                    android:id="@+id/sliding_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_bg">
+
+                </com.dreamspace.superman.UI.View.SlidingTabLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/main_bg" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp">
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/imageview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/homepage_deal" />
+                <Button
+                    android:id="@+id/talk_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_redside_nocorner_bg"
+                    android:text="咨询"
+                    android:textColor="@color/navi_color" />
 
-                <LinearLayout
-                    android:id="@+id/success_meet_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/imageview"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/success_meet_num_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:padding="2dp"
-                        android:textColor="@color/navi_color"
-                        android:textSize="10sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:padding="2dp"
-                        android:text="人已成功约见"
-                        android:textColor="@color/navi_color"
-                        android:textSize="10sp" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true">
-                    <TextView
-                        android:id="@+id/price_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:textColor="@color/navi_color" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="元/次"
-                        android:textColor="@color/navi_color" />
-
-                </LinearLayout>
-            </RelativeLayout>
-
-
+                <Button
+                    android:id="@+id/order_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/button_withno_corner_bg"
+                    android:text="预约"
+                    android:textColor="@color/near_white" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:layout_marginTop="0dp"
-        android:background="@color/grey_line"></View>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <com.dreamspace.superman.UI.View.SlidingTabLayout
-            android:id="@+id/sliding_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/main_bg">
-
-        </com.dreamspace.superman.UI.View.SlidingTabLayout>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/main_bg" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/talk_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/button_redside_nocorner_bg"
-            android:text="咨询"
-            android:textColor="@color/navi_color" />
-
-        <Button
-            android:id="@+id/order_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
-            android:background="@drawable/button_withno_corner_bg"
-            android:text="预约"
-            android:textColor="@color/near_white" />
-    </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

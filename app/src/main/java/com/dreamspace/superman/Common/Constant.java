@@ -29,11 +29,11 @@ public class Constant {
     }
 
     public static final class USER_APPLY_STATE {
-        //todo 需要检测一下每一个的正确性
         public static final String NOT_APPLY = "no apply";
         public static final String NORMAL = "normal";
         public static final String PENDING = "pending";
         public static final String STOP = "Stop";
+        public static final String REFUSE = "reject";//拒绝过后可以再次申请
     }
 
     public static final class LESSON_STATE {
@@ -66,13 +66,15 @@ public class Constant {
         public static final int FINISH = 4;
         public static final int CANCEL = 0;
         public static final int BACK_COST = -1;
-        public static int tranverse(int state){
-            if(state==-1){
+
+        public static int tranverse(int state) {
+            if (state == -1) {
                 return 0;
-            }else{
+            } else {
                 return state;
             }
         }
+
         public static final class SM_OPERATION {
             public static final String CONFIRM = "confirmed";
             public static final String REFUSE = "rejected";

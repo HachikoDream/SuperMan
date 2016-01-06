@@ -166,6 +166,9 @@ public class LessonInfo implements Parcelable {
     }
 
     public void setCollection_count(int collection_count) {
+        if (collection_count < 0) {
+            collection_count = 0;
+        }
         this.collection_count = collection_count;
     }
 

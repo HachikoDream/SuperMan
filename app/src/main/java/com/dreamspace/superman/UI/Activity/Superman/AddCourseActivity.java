@@ -70,55 +70,55 @@ public class AddCourseActivity extends AbsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(source==FROM_MODIFY){
+        if (source == FROM_MODIFY) {
             getLessonDetailInfo(lesson_id);
         }
     }
 
     @Override
     protected void prepareDatas() {
-        source = getIntent().getIntExtra(COME_SOURCE,-1);
-        if (source==FROM_ADD) {
+        source = getIntent().getIntExtra(COME_SOURCE, -1);
+        if (source == FROM_ADD) {
             mybtn.setVisibility(View.VISIBLE);
             modifyLayout.setVisibility(View.GONE);
 
-        } else if (source==FROM_MODIFY) {
+        } else if (source == FROM_MODIFY) {
             mybtn.setVisibility(View.GONE);
             modifyLayout.setVisibility(View.VISIBLE);
-            lesson_id = getIntent().getIntExtra(COME_INFO,-1);
+            lesson_id = getIntent().getIntExtra(COME_INFO, -1);
         }
     }
 
     private void getLessonDetailInfo(final int lesson_id) {
-       toggleShowLoading(true,null);
-        if(NetUtils.isNetworkConnected(this)){
-           ApiManager.getService(getApplicationContext()).getLessonDetail(lesson_id, new Callback<LessonInfo>() {
-               @Override
-               public void success(LessonInfo lessonInfo, Response response) {
-                   if(lessonInfo!=null){
-                       toggleShowLoading(false,null);
-                       showExistLessonInfo(lessonInfo);
-                   }else {
-                       toggleShowError(true, getString(R.string.common_error_msg), new View.OnClickListener() {
-                           @Override
-                           public void onClick(View v) {
-                               getLessonDetailInfo(lesson_id);
-                           }
-                       });
-                   }
-               }
+        toggleShowLoading(true, null);
+        if (NetUtils.isNetworkConnected(this)) {
+            ApiManager.getService(getApplicationContext()).getLessonDetail(lesson_id, new Callback<LessonInfo>() {
+                @Override
+                public void success(LessonInfo lessonInfo, Response response) {
+                    if (lessonInfo != null) {
+                        toggleShowLoading(false, null);
+                        showExistLessonInfo(lessonInfo);
+                    } else {
+                        toggleShowError(true, getString(R.string.common_error_msg), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getLessonDetailInfo(lesson_id);
+                            }
+                        });
+                    }
+                }
 
-               @Override
-               public void failure(RetrofitError error) {
-                     toggleShowError(true, getInnerErrorInfo(error), new View.OnClickListener() {
-                         @Override
-                         public void onClick(View v) {
-                             getLessonDetailInfo(lesson_id);
-                         }
-                     });
-               }
-           });
-        }else {
+                @Override
+                public void failure(RetrofitError error) {
+                    toggleShowError(true, getInnerErrorInfo(error), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getLessonDetailInfo(lesson_id);
+                        }
+                    });
+                }
+            });
+        } else {
             toggleNetworkError(true, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -136,7 +136,7 @@ public class AddCourseActivity extends AbsActivity {
         priceEv.getEditText().setText(CommonUtils.getStringFromPrice(lessonInfo.getPrice()));
         descEv.setText(lessonInfo.getDescription());
         coursenameEv.requestFocus();
-        if(lessonInfo.getState().equals(Constant.LESSON_STATE.ON)){
+        if (lessonInfo.getState().equals(Constant.LESSON_STATE.ON)) {
             pauseBtn.setText("下架课程");
             pauseBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,7 +152,7 @@ public class AddCourseActivity extends AbsActivity {
                 }
             });
 
-        }else{
+        } else {
             pauseBtn.setText("上架课程");
             pauseBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -189,7 +189,7 @@ public class AddCourseActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-        contentView= (LinearLayout) findViewById(R.id.content_view);
+        contentView = (LinearLayout) findViewById(R.id.content_view);
         mybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,7 +237,7 @@ public class AddCourseActivity extends AbsActivity {
     private void ModifyLessonInfoById(int lesson_id, ModifyLessonReq req) {
 
         showPd();
-        if (NetUtils.isNetworkConnected(this)){
+        if (NetUtils.isNetworkConnected(this)) {
             ApiManager.getService(getApplicationContext()).modifyLessonInfo(lesson_id, req, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
@@ -258,7 +258,7 @@ public class AddCourseActivity extends AbsActivity {
                     showInfoDialog(getInnerErrorInfo(error), null);
                 }
             });
-        }else {
+        } else {
             showNetWorkError();
         }
     }
@@ -271,7 +271,7 @@ public class AddCourseActivity extends AbsActivity {
                 public void success(Response response, Response response2) {
                     if (response != null) {
                         dismissPd();
-                        showInfoDialog("您已成功删除该课程",new OnFinishListener(){
+                        showInfoDialog("您已成功删除该课程", new OnFinishListener() {
 
                             @Override
                             public void onFinish() {
@@ -284,7 +284,7 @@ public class AddCourseActivity extends AbsActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
-                  showInnerError(error);
+                    showInnerError(error);
                 }
             });
         } else {
@@ -293,7 +293,7 @@ public class AddCourseActivity extends AbsActivity {
     }
 
     private void showInfoDialog(String s, final OnFinishListener onFinishListener) {
-        AlertDialog dialog=new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("")
                 .setMessage(s)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -309,7 +309,7 @@ public class AddCourseActivity extends AbsActivity {
                 .show();
     }
 
-    private void showWarningDialog(String info,final OnFinishListener onFinishListener) {
+    private void showWarningDialog(String info, final OnFinishListener onFinishListener) {
         AlertDialog builder = new AlertDialog.Builder(this)
                 .setTitle("提示")
                 .setMessage(info)
@@ -393,6 +393,9 @@ public class AddCourseActivity extends AbsActivity {
             priceEv.setError("请填写正确的价格");
             showToast("请填写正确的价格");
             return false;
+        } else if (price < 1) {
+            priceEv.setErrorEnabled(true);
+            priceEv.setError("价格不能低于1元");
         } else if (CommonUtils.isEmpty(description)) {
             showToast("请简要描述课程内容");
             descEv.setSelected(true);

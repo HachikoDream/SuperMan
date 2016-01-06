@@ -41,6 +41,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.iwf.photopicker.fragment.ImagePagerFragment;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -79,6 +80,7 @@ public class LessonDetailInfoActivity extends AbsActivity {
     private ProgressDialog pd;
     private boolean isFirstIn = true;
     public static final String LESSON_INFO = "LESSON_INFO";
+    private ImagePagerFragment imagePagerFragment;
 
     public LessonInfo getmLessonInfo() {
         return mLessonInfo;
@@ -148,9 +150,13 @@ public class LessonDetailInfoActivity extends AbsActivity {
             public void onClick(View v) {
                 if (mLessonInfo != null) {
                     if (!CommonUtils.isEmpty(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.ACCOUNT))) {
-                        Bundle b = new Bundle();
-                        b.putParcelable(LESSON_INFO, mLessonInfo);
-                        readyGo(SubscribeActivity.class, b);
+                        if (String.valueOf(mLessonInfo.getMast_user_id()).equals(PreferenceUtils.getString(LessonDetailInfoActivity.this.getApplicationContext(), PreferenceUtils.Key.UID))) {
+                            showToast("您不能预约自己的课程哦~");
+                        } else {
+                            Bundle b = new Bundle();
+                            b.putParcelable(LESSON_INFO, mLessonInfo);
+                            readyGo(SubscribeActivity.class, b);
+                        }
                     } else {
                         readyGo(LoginActivity.class);
                     }
@@ -316,6 +322,9 @@ public class LessonDetailInfoActivity extends AbsActivity {
                     dimissPd();
                     showToast(getString(R.string.collect_quit_success));
                     item.setIcon(R.drawable.details_favor_n);
+                    int current = mLessonInfo.getCollection_count();
+                    mLessonInfo.setCollection_count(current - 1);
+                    meet_num_tv.setText(String.valueOf(mLessonInfo.getCollection_count()));
                     mLessonInfo.setIs_collected(!mLessonInfo.is_collected());
                 }
 
@@ -342,6 +351,9 @@ public class LessonDetailInfoActivity extends AbsActivity {
                     dimissPd();
                     showToast(getString(R.string.collect_success));
                     item.setIcon(R.drawable.details_favor_h);
+                    int current = mLessonInfo.getCollection_count();
+                    mLessonInfo.setCollection_count(current + 1);
+                    meet_num_tv.setText(String.valueOf(mLessonInfo.getCollection_count()));
                     mLessonInfo.setIs_collected(!mLessonInfo.is_collected());
                 }
 
@@ -383,6 +395,31 @@ public class LessonDetailInfoActivity extends AbsActivity {
             showNetWorkError();
             mLessonInfo = null;
         }
+    }
+
+    public void addImagePagerFragment(ImagePagerFragment imagePagerFragment) {
+        this.imagePagerFragment = imagePagerFragment;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_view, this.imagePagerFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (imagePagerFragment != null && imagePagerFragment.isVisible()) {
+            imagePagerFragment.runExitAnimation(new Runnable() {
+                public void run() {
+                    if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                        getSupportFragmentManager().popBackStack();
+                    }
+                }
+            });
+        } else {
+            super.onBackPressed();
+        }
+
     }
 
     public void onEvent(AccountChangeEvent event) {

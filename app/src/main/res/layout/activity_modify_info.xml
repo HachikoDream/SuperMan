@@ -21,7 +21,7 @@
             android:layout_height="90dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@android:color/white">
+            android:background="@drawable/layout_item_bg">
          <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -54,7 +54,8 @@
             android:layout_height="40dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@android:color/white">
+            android:layout_marginTop="5dp"
+            android:background="@drawable/layout_item_bg">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +89,8 @@
             android:layout_height="40dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@android:color/white">
+            android:layout_marginTop="5dp"
+            android:background="@drawable/layout_item_bg">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -118,7 +120,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:layout_marginTop="20dp"
-            android:background="@android:color/white">
+            android:background="@drawable/layout_item_bg">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,7 +153,8 @@
             android:layout_height="40dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@android:color/white">
+            android:layout_marginTop="5dp"
+            android:background="@drawable/layout_item_bg">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,7 +188,8 @@
             android:layout_height="40dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@android:color/white">
+            android:layout_marginTop="5dp"
+            android:background="@drawable/layout_item_bg">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

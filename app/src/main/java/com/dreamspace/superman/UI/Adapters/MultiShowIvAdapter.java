@@ -129,7 +129,7 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
             public void onClick(View v) {
 
                 if (photoClickListener != null) {
-                    photoClickListener.onPhotoClick();
+                    photoClickListener.onPhotoClick(v, position);
                 }
             }
         });
@@ -178,6 +178,18 @@ public class MultiShowIvAdapter extends RecyclerView.Adapter<MultiShowIvAdapter.
     }
 
     public interface onPhotoClickListener {
-        void onPhotoClick();
+        void onPhotoClick(View v, int position);
     }
+
+    public List<String> getCurrentPhotoPaths() {
+        List<String> photoPaths = new ArrayList<>();
+        if (mPhotos == null) {
+            return photoPaths;
+        }
+        for (Photo photo : mPhotos) {
+            photoPaths.add(photo.getPath());
+        }
+        return photoPaths;
+    }
+
 }

@@ -12,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dreamspace.superman.API.ApiManager;
+import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
+import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
+import com.dreamspace.superman.UI.Activity.Superman.EditInfoActivity;
 import com.dreamspace.superman.UI.Adapters.MultiShowIvAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLessonFragment;
 import com.dreamspace.superman.model.api.LessonInfo;
@@ -24,7 +27,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.entity.Photo;
+import me.iwf.photopicker.fragment.ImagePagerFragment;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -37,6 +42,8 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
     TextView introduction_tv;
     @Bind(R.id.glory_content)
     TextView glory_tv;
+    @Bind(R.id.sm_certificate_title)
+    TextView certificate_tv;
     private final static String TAG = "达人简介";
     String mas_id;
     @Bind(R.id.glory_rv)
@@ -45,7 +52,6 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
     private boolean getLesson = false;
     private MultiShowIvAdapter adapter;
 
-    //// TODO: 2015/12/26  加入荣誉照片点击事件 判断暂无情况
     public SupermanIntroductionFragment() {
         // Required empty public constructor
         setTAG(TAG);
@@ -72,9 +78,23 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
                 public void success(SmInfo smInfo, Response response) {
                     toggleShowLoading(false, null);
                     if (smInfo != null) {
-                        introduction_tv.setText(smInfo.getResume());
-                        glory_tv.setText(smInfo.getGlory());
-                        loadIntoGridViewByUrls(smInfo.getCertificates());
+                        String resume = smInfo.getResume();
+                        if (CommonUtils.isEmpty(resume)) {
+                            resume = "暂无相关信息";
+                        }
+                        introduction_tv.setText(resume);
+                        String glory = smInfo.getGlory();
+                        if (CommonUtils.isEmpty(glory)) {
+                            glory = "暂无相关信息";
+                        }
+                        glory_tv.setText(glory);
+                        if (smInfo.getCertificates().length != 0) {
+                            loadIntoGridViewByUrls(smInfo.getCertificates());
+                        } else {
+                            certificate_tv.setVisibility(View.GONE);
+                            gloryRv.setVisibility(View.GONE);
+                        }
+
                     }
                 }
 
@@ -116,6 +136,20 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
             mPhotos.add(photo);
         }
         adapter.setmPhotos(mPhotos);
+        adapter.setPhotoClickListener(new MultiShowIvAdapter.onPhotoClickListener() {
+            @Override
+            public void onPhotoClick(View v, int pos) {
+                List<String> photos = adapter.getCurrentPhotoPaths();
+
+                int[] screenLocation = new int[2];
+                v.getLocationOnScreen(screenLocation);
+                ImagePagerFragment imagePagerFragment =
+                        ImagePagerFragment.newInstance(photos, pos, screenLocation, v.getWidth(),
+                                v.getHeight());
+
+                ((LessonDetailInfoActivity) getActivity()).addImagePagerFragment(imagePagerFragment);
+            }
+        });
     }
 
     @Override
@@ -133,7 +167,8 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
         adapter = new MultiShowIvAdapter(getActivity());
         adapter.setShow_delete_icon(false);
         adapter.setShow_add_icon(false);
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+//        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         gloryRv.setLayoutManager(manager);
         gloryRv.setAdapter(adapter);
     }
@@ -164,13 +199,6 @@ public class SupermanIntroductionFragment extends BaseLessonFragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
-    }
 
     @Override
     public void onDestroyView() {
