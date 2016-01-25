@@ -14,6 +14,7 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.BindReq;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import retrofit.Callback;
@@ -31,6 +32,7 @@ public class BindWithBankActivity extends AbsActivity {
     Button mybtn;
     private String bank_count;
     private ProgressDialog pd;
+
     @Override
     protected void setSelfContentView() {
         setContentView(R.layout.activity_bind_with_bank);
@@ -43,63 +45,66 @@ public class BindWithBankActivity extends AbsActivity {
 
     @Override
     protected void initViews() {
-       mybtn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(isValid()){
-                BindWithBankAccount(bank_count);
-               }
-           }
-       });
+        mybtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isValid()) {
+                    BindWithBankAccount(bank_count);
+                }
+            }
+        });
     }
-    private void showPd(){
-       if(pd==null){
-           pd=ProgressDialog.show(this,"","正在提交数据",true,false);
-       }else{
-           if(!pd.isShowing()){
-               pd.show();
-           }
-       }
+
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(this, "", "正在提交数据", true, false);
+        } else {
+            if (!pd.isShowing()) {
+                pd.show();
+            }
+        }
     }
-    private void dismissPd(){
-        if(pd!=null&&pd.isShowing()){
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     private void BindWithBankAccount(String bank_count) {
         showPd();
-        if(NetUtils.isNetworkConnected(this)){
-            BindReq req=new BindReq();
+        if (NetUtils.isNetworkConnected(this)) {
+            BindReq req = new BindReq();
             req.setPayaccount(bank_count);
             ApiManager.getService(getApplicationContext()).bindWithBankAccount(req, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
-                    if(response!=null){
+                    if (response != null) {
                         dismissPd();
-                       showInfoByDialog("支付宝账号绑定成功，您之后可用该账号进行交易", new OnFinishListener() {
-                           @Override
-                           public void OnFinish() {
-                               setResult(RESULT_OK);
-                               finish();
-                           }
-                       });
+                        showInfoByDialog("支付宝账号绑定成功，您之后可用该账号进行交易", new OnFinishListener() {
+                            @Override
+                            public void OnFinish() {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        });
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
                     dismissPd();
-                    showInfoByDialog(getInnerErrorInfo(error),null);
+                    showInfoByDialog(getInnerErrorInfo(error), null);
                 }
             });
-        }else {
+        } else {
             dismissPd();
             showNetWorkError();
         }
     }
 
-    private void showInfoByDialog(String info, final OnFinishListener finishListener ) {
-        AlertDialog dialog=new AlertDialog.Builder(this)
+    private void showInfoByDialog(String info, final OnFinishListener finishListener) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("提示")
                 .setMessage(info)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -116,31 +121,45 @@ public class BindWithBankActivity extends AbsActivity {
                 .show();
     }
 
-    private boolean isValid(){
+    private boolean isValid() {
         bankaccountEv.setErrorEnabled(false);
         repeatBankaccountEv.setErrorEnabled(false);
-        String account=bankaccountEv.getEditText().getText().toString();
-        String repeatAccount=repeatBankaccountEv.getEditText().getText().toString();
-        if(CommonUtils.isEmpty(account)){
+        String account = bankaccountEv.getEditText().getText().toString();
+        String repeatAccount = repeatBankaccountEv.getEditText().getText().toString();
+        if (CommonUtils.isEmpty(account)) {
             bankaccountEv.setErrorEnabled(true);
             bankaccountEv.setError("请先输入您的账号信息");
             return false;
-        }else if(CommonUtils.isEmpty(repeatAccount)){
+        } else if (CommonUtils.isEmpty(repeatAccount)) {
             repeatBankaccountEv.setErrorEnabled(true);
             repeatBankaccountEv.setError("请再次输入您的账号");
             return false;
-        }else if(!repeatAccount.equals(account)){
+        } else if (!repeatAccount.equals(account)) {
             showToast("两次输入不一致");
             return false;
         }
-        bank_count=account;
+        bank_count = account;
         return true;
     }
+
     @Override
     protected View getLoadingTargetView() {
         return inputContent;
     }
-    private interface OnFinishListener{
+
+    private interface OnFinishListener {
         void OnFinish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

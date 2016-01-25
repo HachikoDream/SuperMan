@@ -24,6 +24,7 @@ import com.dreamspace.superman.UI.Activity.Person.OrderDetailActivity;
 import com.dreamspace.superman.event.OrderChangeEvent;
 import com.dreamspace.superman.model.api.PayRes;
 import com.pingplusplus.android.PaymentActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,15 +57,16 @@ public class PayChannelActivity extends AbsActivity {
     Button payRightnow;
     private ProgressDialog pd;
     private static final int REQUEST_CODE_PAYMENT = 827;
-    private int order_id=-1;
+    private int order_id = -1;
     private String channel;
-    private final static String ALI_PAY="alipay";
-    private final static String WX_PAY="wx";
+    private final static String ALI_PAY = "alipay";
+    private final static String WX_PAY = "wx";
     private String course_price;
     private String image;
     private String keeptime;
     private String mast_name;
     private String less_name;
+
     @Override
     protected void setSelfContentView() {
         setContentView(R.layout.activity_pay_channel);
@@ -85,22 +87,22 @@ public class PayChannelActivity extends AbsActivity {
     @Override
     protected void initViews() {
         showViewbyData();
-         zfbLayout.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if(CommonUtils.isEmpty(channel)||channel.equals(WX_PAY)){
-                     select(checkZfb);
-                 }else{
-                         reset();
-                 }
-             }
-         });
+        zfbLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CommonUtils.isEmpty(channel) || channel.equals(WX_PAY)) {
+                    select(checkZfb);
+                } else {
+                    reset();
+                }
+            }
+        });
         wechatLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CommonUtils.isEmpty(channel)||channel.equals(ALI_PAY)){
+                if (CommonUtils.isEmpty(channel) || channel.equals(ALI_PAY)) {
                     select(checkWechat);
-                }else{
+                } else {
                     reset();
                 }
             }
@@ -108,34 +110,37 @@ public class PayChannelActivity extends AbsActivity {
         payRightnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(order_id!=-1){
-                    if(CommonUtils.isEmpty(channel)){
+                if (order_id != -1) {
+                    if (CommonUtils.isEmpty(channel)) {
                         showToast("请先选择一个支付方式");
-                    }else{
+                    } else {
                         payOrder();
                     }
-                }else{
+                } else {
                     showToast("暂时无法完成支付请求,请稍后再试");
                 }
 
             }
         });
     }
-    private void reset(){
-        channel=null;
+
+    private void reset() {
+        channel = null;
         checkWechat.setImageResource(R.drawable.icon_comment_n);
         checkZfb.setImageResource(R.drawable.icon_comment_n);
     }
-    private void select(ImageView imageView){
+
+    private void select(ImageView imageView) {
         reset();
         imageView.setImageResource(R.drawable.icon_comment_h);
-        if(imageView.getId()==R.id.check_wechat){
-            channel=WX_PAY;
-        }else{
-            channel=ALI_PAY;
+        if (imageView.getId() == R.id.check_wechat) {
+            channel = WX_PAY;
+        } else {
+            channel = ALI_PAY;
         }
 
     }
+
     @Override
     protected View getLoadingTargetView() {
         return null;
@@ -172,6 +177,7 @@ public class PayChannelActivity extends AbsActivity {
             showAlertDialog("请检查您的网络连接", "确定", null, null);
         }
     }
+
     private void showAlertDialog(String msg, String positiveMsg, String negativeMsg, final OnFinish finish) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("提示")
@@ -199,6 +205,7 @@ public class PayChannelActivity extends AbsActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
     private void showViewbyData() {
         Tools.showImageWithGlide(this, profileImage, image);
         courseNameTv.setText(less_name);
@@ -206,10 +213,12 @@ public class PayChannelActivity extends AbsActivity {
         coursePrice.setText(course_price);
 
     }
+
     interface OnFinish {
         void finish(boolean isOk);
 
     }
+
     private void showPd(String msg) {
         if (CommonUtils.isEmpty(msg)) {
             msg = "正在提交您的请求,请稍后";
@@ -222,11 +231,13 @@ public class PayChannelActivity extends AbsActivity {
             pd = ProgressDialog.show(this, "", msg, true, false);
         }
     }
+
     private void dismissPd() {
         if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     /**
      * 调用ping++
      */
@@ -238,9 +249,11 @@ public class PayChannelActivity extends AbsActivity {
         intent.putExtra(PaymentActivity.EXTRA_CHARGE, charge);
         startActivityForResult(intent, REQUEST_CODE_PAYMENT);
     }
-    private void killSelf(){
+
+    private void killSelf() {
         finish();
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //支付页面返回处理
         if (requestCode == REQUEST_CODE_PAYMENT) {
@@ -252,7 +265,7 @@ public class PayChannelActivity extends AbsActivity {
              * "cancel"  - user canceld
              * "invalid" - payment plugin not installed
              */
-                if (result.equals("success")){
+                if (result.equals("success")) {
                     showAlertDialog("支付成功!", "确定", null, new OnFinish() {
                         @Override
                         public void finish(boolean isOk) {
@@ -260,9 +273,9 @@ public class PayChannelActivity extends AbsActivity {
                             killSelf();
                         }
                     });
-                }else if(result.equals("invalid")){
-                    showAlertDialog("您尚未安装相关组件","确定",null,null);
-                }else if (result.equals("fail")){
+                } else if (result.equals("invalid")) {
+                    showAlertDialog("您尚未安装相关组件", "确定", null, null);
+                } else if (result.equals("fail")) {
                     String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
                     String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
                     showToast(result);
@@ -274,5 +287,16 @@ public class PayChannelActivity extends AbsActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 
 }

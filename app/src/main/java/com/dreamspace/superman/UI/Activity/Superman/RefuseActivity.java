@@ -17,6 +17,7 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.OperatorReq;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import retrofit.Callback;
@@ -178,5 +179,17 @@ public class RefuseActivity extends AbsActivity {
 
     private void killAct() {
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

@@ -19,6 +19,7 @@ import com.dreamspace.superman.UI.Adapters.IndexAdapter;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -29,30 +30,34 @@ import retrofit.client.Response;
 public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     private String query_content;
-    private final int INIT_PAGE=1;
+    private final int INIT_PAGE = 1;
     private ProgressDialog pd;
     private int page;
+
     public SearchResultActivity() {
         super(IndexAdapter.class);
     }
-    private void showPd(){
-        if(pd==null){
-            pd=ProgressDialog.show(this,"","正在获取数据，请稍后",true,false);
-        }else {
+
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(this, "", "正在获取数据，请稍后", true, false);
+        } else {
             pd.show();
         }
 
     }
-    private void dismissPd(){
-        if(pd!=null){
+
+    private void dismissPd() {
+        if (pd != null) {
             pd.dismiss();
         }
     }
+
     @Override
     protected void prepareDatas() {
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query_content= intent.getStringExtra(SearchManager.QUERY);
+            query_content = intent.getStringExtra(SearchManager.QUERY);
         }
     }
 
@@ -63,32 +68,32 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void onPullUp() {
-      loadSearchResultByPage(++page, new OnRefreshListener<LessonInfo>() {
-          @Override
-          public void onFinish(List<LessonInfo> mEntities) {
-              onPullUpFinished();
-              if(mEntities.size()==0){
-                  --page;
-                  showToast("没有更多数据");
-              }else{
-                  refreshDate(mEntities,BaseListAct.ADD);
-              }
-          }
+        loadSearchResultByPage(++page, new OnRefreshListener<LessonInfo>() {
+            @Override
+            public void onFinish(List<LessonInfo> mEntities) {
+                onPullUpFinished();
+                if (mEntities.size() == 0) {
+                    --page;
+                    showToast("没有更多数据");
+                } else {
+                    refreshDate(mEntities, BaseListAct.ADD);
+                }
+            }
 
-          @Override
-          public void onError() {
-            onPullUpFinished();
-          }
-      });
+            @Override
+            public void onError() {
+                onPullUpFinished();
+            }
+        });
     }
 
     @Override
     public void onPullDown() {
-       page=1;
+        page = 1;
         loadSearchResultByPage(page, new OnRefreshListener<LessonInfo>() {
             @Override
             public void onFinish(List<LessonInfo> mEntities) {
-                refreshDate(mEntities,BaseListAct.LOAD);
+                refreshDate(mEntities, BaseListAct.LOAD);
                 onPullDownFinished();
             }
 
@@ -101,21 +106,21 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void getInitData() {
-        toggleShowLoading(true,null);
+        toggleShowLoading(true, null);
         loadSearchResultByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
             @Override
             public void onFinish(List<LessonInfo> mEntities) {
-                if(mEntities.size()==0){
-                    toggleShowEmpty(true,"暂无相关课程",null);
-                }else {
-                    toggleShowLoading(false,null);
-                    refreshDate(mEntities,BaseListAct.LOAD);
+                if (mEntities.size() == 0) {
+                    toggleShowEmpty(true, "暂无相关课程", null);
+                } else {
+                    toggleShowLoading(false, null);
+                    refreshDate(mEntities, BaseListAct.LOAD);
                 }
             }
 
             @Override
             public void onError() {
-                 toggleShowError(true,getString(R.string.common_error_msg),null);
+                toggleShowError(true, getString(R.string.common_error_msg), null);
             }
         });
     }
@@ -125,12 +130,12 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
      */
     private void loadSearchResultByPage(int page, final OnRefreshListener<LessonInfo> listener) {
 
-        if(NetUtils.isNetworkConnected(this)){
-            ApiManager.getService(getApplicationContext()).searchLessons(query_content,INIT_PAGE,new Callback<SmLessonList>() {
+        if (NetUtils.isNetworkConnected(this)) {
+            ApiManager.getService(getApplicationContext()).searchLessons(query_content, INIT_PAGE, new Callback<SmLessonList>() {
                 @Override
                 public void success(SmLessonList smLessonList, Response response) {
-                    if(smLessonList!=null){
-                          listener.onFinish(smLessonList.getLessons());
+                    if (smLessonList != null) {
+                        listener.onFinish(smLessonList.getLessons());
                     }
                 }
 
@@ -141,7 +146,7 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
                 }
 
             });
-        }else {
+        } else {
             showNetWorkError();
             listener.onError();
         }
@@ -149,8 +154,20 @@ public class SearchResultActivity extends BaseListAct<LessonInfo> {
 
     @Override
     public void onItemPicked(LessonInfo mEntity, int position) {
-        Bundle b=new Bundle();
-        b.putInt("LESSON_INFO",mEntity.getId());
-        readyGo(LessonDetailInfoActivity.class,b);
+        Bundle b = new Bundle();
+        b.putInt("LESSON_INFO", mEntity.getId());
+        readyGo(LessonDetailInfoActivity.class, b);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

@@ -20,6 +20,7 @@ import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +170,7 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
                 @Override
                 public void onFinish(List<LessonInfo> mEntities) {
                     dismissPd();
-                    if(mEntities.size()==0){
+                    if (mEntities.size() == 0) {
                         toggleShowEmpty(true, "您还没有发布过课程,点击图标开启发布之旅~", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -179,8 +180,8 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
                             }
                         });
 
-                    }else{
-                        toggleShowEmpty(false,null,null);
+                    } else {
+                        toggleShowEmpty(false, null, null);
                         refreshDate(mEntities, BaseListAct.LOAD);
                     }
 
@@ -199,21 +200,21 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
         if (NetUtils.isNetworkConnected(this)) {
             String mas_id = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.MAS_ID);
             if (!CommonUtils.isEmpty(mas_id)) {
-                getCourseInfo(mas_id,listener);
+                getCourseInfo(mas_id, listener);
             } else {
-                  ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
-                      @Override
-                      public void success(UserInfo userInfo, Response response) {
-                          PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAS_ID,userInfo.getMas_id());
-                          getCourseInfo(userInfo.getMas_id(),listener);
-                      }
+                ApiManager.getService(getApplicationContext()).getUserInfo(new Callback<UserInfo>() {
+                    @Override
+                    public void success(UserInfo userInfo, Response response) {
+                        PreferenceUtils.putString(getApplicationContext(), PreferenceUtils.Key.MAS_ID, userInfo.getMas_id());
+                        getCourseInfo(userInfo.getMas_id(), listener);
+                    }
 
-                      @Override
-                      public void failure(RetrofitError error) {
-                          showInnerError(error);
-                          listener.onError();
-                      }
-                  });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        showInnerError(error);
+                        listener.onError();
+                    }
+                });
 //                listener.onError();
 //                showToast("暂时查询不到您的课程信息");
             }
@@ -223,7 +224,8 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
             listener.onError();
         }
     }
-    private void getCourseInfo(String mas_id,final OnRefreshListener<LessonInfo> listener){
+
+    private void getCourseInfo(String mas_id, final OnRefreshListener<LessonInfo> listener) {
         ApiManager.getService(getApplicationContext()).getLessonsbyMid(mas_id, page, "all", new Callback<SmLessonList>() {
             @Override
             public void success(SmLessonList smLessonList, Response response) {
@@ -241,5 +243,17 @@ public class MyCourseListActivity extends BaseListAct<LessonInfo> {
             }
         });
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

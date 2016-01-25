@@ -17,6 +17,7 @@ import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Fragment.ChatFragment;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -107,6 +108,18 @@ public class ChatActivity extends AbsActivity {
     @Override
     protected View getLoadingTargetView() {
         return null;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 
 

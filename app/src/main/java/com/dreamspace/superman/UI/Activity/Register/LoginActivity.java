@@ -15,6 +15,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Fragment.LoginFragment;
 import com.dreamspace.superman.UI.Fragment.RegisterFragment;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class LoginActivity extends AbsActivity {
 
@@ -96,5 +97,17 @@ public class LoginActivity extends AbsActivity {
         if (phoneNum != null && loginFragment != null) {
             ((LoginFragment) loginFragment).fillPhoneEditText(phoneNum);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

@@ -49,6 +49,7 @@ dependencies {
     compile 'de.greenrobot:greendao:2.0.0'
     compile 'com.dlazaro66.qrcodereaderview:qrcodereaderview:1.0.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':DatePicker')
     compile project(':PhotoPicker')
 //    compile files('libs/badgeview.jar')

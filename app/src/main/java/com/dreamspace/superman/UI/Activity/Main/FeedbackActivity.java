@@ -16,6 +16,7 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Fragment.Drawer.FeedbackFragment;
 import com.dreamspace.superman.model.api.FeedbackReq;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,5 +51,17 @@ public class FeedbackActivity extends AbsActivity implements FeedbackFragment.Fe
     @Override
     public void complete() {
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

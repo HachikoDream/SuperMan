@@ -15,6 +15,7 @@ import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.payAccountRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -78,20 +79,22 @@ public class MyAccountActivity extends AbsActivity {
             }
         });
     }
-    private void RadioClickEvent(){
-        if (radioGroup.getCheckedRadioButtonId() == R.id.not_in_account_rbtn&&!CommonUtils.isEmpty(not_arrived)) {
-            accountShowTv.setText("￥"+not_arrived);
-        }else if(radioGroup.getCheckedRadioButtonId()==R.id.already_in_account_rbtn&&!CommonUtils.isEmpty(arrived)){
-            accountShowTv.setText("￥"+arrived);
+
+    private void RadioClickEvent() {
+        if (radioGroup.getCheckedRadioButtonId() == R.id.not_in_account_rbtn && !CommonUtils.isEmpty(not_arrived)) {
+            accountShowTv.setText("￥" + not_arrived);
+        } else if (radioGroup.getCheckedRadioButtonId() == R.id.already_in_account_rbtn && !CommonUtils.isEmpty(arrived)) {
+            accountShowTv.setText("￥" + arrived);
         }
     }
+
     private void getAccountinfo() {
         if (NetUtils.isNetworkConnected(this)) {
-            toggleShowLoading(true,null);
+            toggleShowLoading(true, null);
             ApiManager.getService(getApplicationContext()).getPayAccount(new Callback<payAccountRes>() {
                 @Override
                 public void success(payAccountRes payAccountRes, Response response) {
-                    toggleShowLoading(false,null);
+                    toggleShowLoading(false, null);
                     if (payAccountRes != null) {
                         String account = payAccountRes.getPayaccount();
                         arrived = CommonUtils.getStringFromPrice(payAccountRes.getArrived_balance());
@@ -138,5 +141,17 @@ public class MyAccountActivity extends AbsActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             getAccountinfo();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

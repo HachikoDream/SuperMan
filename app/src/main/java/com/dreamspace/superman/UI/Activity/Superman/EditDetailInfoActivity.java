@@ -12,6 +12,7 @@ import com.dreamspace.superman.Common.CommonUtils;
 import com.dreamspace.superman.Common.InputUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -78,4 +79,15 @@ public class EditDetailInfoActivity extends AbsActivity {
         return null;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 }

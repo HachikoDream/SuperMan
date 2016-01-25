@@ -23,6 +23,7 @@ import com.dreamspace.superman.UI.Fragment.SupermanIntroductionFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
 import com.dreamspace.superman.model.api.LessonInfo;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,17 +49,17 @@ public class SmIntroduceActivity extends AbsActivity {
     @Override
     protected void prepareDatas() {
         color = getResources().getColor(R.color.navi_color);
-        normalColor=getResources().getColor(R.color.select_tab_color);
+        normalColor = getResources().getColor(R.color.select_tab_color);
         mFragments.add(new SmCourseListFragment());
         mFragments.add(new SupermanIntroductionFragment());
-        mLessonInfo=this.getIntent().getParcelableExtra(LessonDetailInfoActivity.LESSON_INFO);
+        mLessonInfo = this.getIntent().getParcelableExtra(LessonDetailInfoActivity.LESSON_INFO);
     }
 
     @Override
     protected void initViews() {
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_layout);
-        userIv= (CircleImageView) findViewById(R.id.user_avater_iv);
-        userNameTv= (TextView) findViewById(R.id.username_tv);
+        userIv = (CircleImageView) findViewById(R.id.user_avater_iv);
+        userNameTv = (TextView) findViewById(R.id.username_tv);
         mAdapter = new CommonFragmentAdapter(getSupportFragmentManager(), mFragments);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mAdapter);
@@ -70,6 +71,7 @@ public class SmIntroduceActivity extends AbsActivity {
             public int getIndicatorColor(int position) {
                 return color;
             }
+
             //覆盖滑动到指定Tab处的文字颜色
             @Override
             public int getSelectedTitleColor(int position) {
@@ -82,7 +84,7 @@ public class SmIntroduceActivity extends AbsActivity {
             }
         };
         mSlidingTabLayout.setCustomTabColorizer(colorizer);
-        if(mLessonInfo!=null){
+        if (mLessonInfo != null) {
             showSmInfo();
             passLessonInfoToChild();
         }
@@ -90,7 +92,7 @@ public class SmIntroduceActivity extends AbsActivity {
     }
 
     private void showSmInfo() {
-        Tools.showImageWithGlide(this,userIv,mLessonInfo.getImage());
+        Tools.showImageWithGlide(this, userIv, mLessonInfo.getImage());
         userNameTv.setText(mLessonInfo.getName());
     }
 
@@ -103,5 +105,17 @@ public class SmIntroduceActivity extends AbsActivity {
     @Override
     protected View getLoadingTargetView() {
         return null;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

@@ -20,6 +20,7 @@ import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.model.UserInfo;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 import retrofit.Callback;
@@ -28,7 +29,7 @@ import retrofit.client.Response;
 
 
 public class StartPageActivity extends Activity implements android.os.Handler.Callback {
-//// TODO: 2015/11/18 达人状态改变的相关提示
+    //// TODO: 2015/11/18 达人状态改变的相关提示
     private Handler mHandler;
     private static final int check_is_login = 233;
     private static final String KEY = "IS_FIRST";
@@ -78,11 +79,12 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
         startActivity(intent);
         finish();
     }
-    private void gotoMainWithAvaterTask(String cachedPath){
+
+    private void gotoMainWithAvaterTask(String cachedPath) {
         Bundle b = new Bundle();
         b.putString(MainActivity.COME_SOURCE, MainActivity.NOT_FIRST_IN);
-        b.putInt(MainActivity.AVATER_TASK,MainActivity.AVATER_LOAD_TASK);
-        b.putString(MainActivity.CACHED_PHOTO_PATH,cachedPath);
+        b.putInt(MainActivity.AVATER_TASK, MainActivity.AVATER_LOAD_TASK);
+        b.putString(MainActivity.CACHED_PHOTO_PATH, cachedPath);
         Intent intent = new Intent(StartPageActivity.this, MainActivity.class);
         intent.putExtras(b);
         startActivity(intent);
@@ -125,10 +127,10 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
 //                filterException(e);
-                if(PreferenceUtils.hasKey(getApplicationContext(),PreferenceUtils.Key.AVATER_AVAILABLE)&&!PreferenceUtils.getBoolean(getApplicationContext(),PreferenceUtils.Key.AVATER_AVAILABLE)){
-                    String cachedPath=PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.AVATER_CACHE_PATH);
+                if (PreferenceUtils.hasKey(getApplicationContext(), PreferenceUtils.Key.AVATER_AVAILABLE) && !PreferenceUtils.getBoolean(getApplicationContext(), PreferenceUtils.Key.AVATER_AVAILABLE)) {
+                    String cachedPath = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.AVATER_CACHE_PATH);
                     gotoMainWithAvaterTask(cachedPath);
-                }else{
+                } else {
                     gotoMainWithInfo(MainActivity.NOT_FIRST_IN);
                 }
 
@@ -166,5 +168,15 @@ public class StartPageActivity extends Activity implements android.os.Handler.Ca
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 }

@@ -22,6 +22,7 @@ import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.ModifyLessonReq;
 import com.dreamspace.superman.model.api.PublishReq;
 import com.dreamspace.superman.model.api.PublishRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import retrofit.Callback;
@@ -415,5 +416,17 @@ public class AddCourseActivity extends AbsActivity {
         public void onFinish();
 //        public void cancel();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

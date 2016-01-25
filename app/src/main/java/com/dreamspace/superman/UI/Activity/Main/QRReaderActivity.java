@@ -17,6 +17,7 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Superman.OnFinish;
 import com.dreamspace.superman.event.OrderChangeEvent;
 import com.dreamspace.superman.model.api.QRRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
     @Override
     protected void prepareDatas() {
         ord_id = this.getIntent().getIntExtra(ORD_ID, -1);
-        comesource=this.getIntent().getIntExtra(COME_SOURCE,-1);
+        comesource = this.getIntent().getIntExtra(COME_SOURCE, -1);
     }
 
     @Override
@@ -89,9 +90,9 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
                         showAlertInfo("您已成功完成本次课程", "确定", new OnFinish() {
                             @Override
                             public void finish(boolean isOk) {
-                                if(comesource==COME_FROM_LIST){
+                                if (comesource == COME_FROM_LIST) {
                                     EventBus.getDefault().post(new OrderChangeEvent());
-                                }else{
+                                } else {
                                     setResult(RESULT_OK);
                                 }
 
@@ -131,12 +132,14 @@ public class QRReaderActivity extends AbsActivity implements QRCodeReaderView.On
     protected void onResume() {
         super.onResume();
         qrdecoderview.getCameraManager().startPreview();
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         qrdecoderview.getCameraManager().stopPreview();
+        MobclickAgent.onPause(this);
     }
 
     private void showAlertInfo(String info, String positiveMsg, final OnFinish finishListener) {

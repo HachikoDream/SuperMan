@@ -31,6 +31,7 @@ import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCancellationSignal;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadOptions;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -502,4 +503,15 @@ public class EditInfoActivity extends AbsActivity implements View.OnClickListene
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 }

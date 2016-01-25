@@ -32,6 +32,7 @@ import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.soundcloud.android.crop.Crop;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
@@ -493,5 +494,17 @@ public class ModifyInfoActivity extends AbsActivity {
         void onPositiveClicked(String content, DialogInterface dialog);
 
         void onNegativeClicked(DialogInterface dialog);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

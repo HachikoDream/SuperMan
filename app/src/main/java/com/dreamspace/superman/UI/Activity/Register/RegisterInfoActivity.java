@@ -28,6 +28,7 @@ import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.LoginRes;
 import com.dreamspace.superman.model.api.RegisterReq;
 import com.soundcloud.android.crop.Crop;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -365,5 +366,17 @@ public class RegisterInfoActivity extends AbsActivity {
 //                choose_avater = true;
 //            }
 //        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

@@ -11,6 +11,7 @@ import com.dreamspace.superman.UI.Fragment.Orders.Superman.SmSubscribeFragment;
 import com.dreamspace.superman.UI.View.SlidingTabLayout;
 import com.dreamspace.superman.UI.View.SlidingTabStrip;
 import com.dreamspace.superman.model.OrderClassify;
+import com.umeng.analytics.MobclickAgent;
 
 import de.greenrobot.event.EventBus;
 
@@ -32,9 +33,9 @@ public class OrderListActivity extends AbsActivity {
     @Override
     protected void initViews() {
         final OrderClassify[] mEntities = Constant.ORDER_RELATED.orderClassifys;
-        mSlidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_layout);
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mAdapter = new SmOrderContainerPagerAdapter(getSupportFragmentManager(),mEntities);
+        mAdapter = new SmOrderContainerPagerAdapter(getSupportFragmentManager(), mEntities);
         mViewPager.setAdapter(mAdapter);
         final int color = getResources().getColor(R.color.navi_color);
         final int normalcolor = getResources().getColor(R.color.near_black);
@@ -85,5 +86,16 @@ public class OrderListActivity extends AbsActivity {
         return null;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 
 }

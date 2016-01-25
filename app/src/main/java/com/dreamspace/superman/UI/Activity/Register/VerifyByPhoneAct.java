@@ -24,6 +24,7 @@ import com.dreamspace.superman.model.api.RegistertokenReq;
 import com.dreamspace.superman.model.api.RegistertokenRes;
 import com.dreamspace.superman.model.api.SendVerifyReq;
 import com.dreamspace.superman.model.api.UpdateReq;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -73,7 +74,7 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
         mHandler = new Handler(this);
         source = this.getIntent().getIntExtra(Constant.COME_SOURCE.SOURCE, -1);
         //test
-        if(source==-1){
+        if (source == -1) {
             setResult(RESULT_OK);
             finish();
         }
@@ -83,8 +84,8 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
     private void setViewBySource(int source) {
         setMyBtnText(source);
         if (source == Constant.COME_SOURCE.MODIFY_PWD) {
-            phoneNum=PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.PHONE);
-            if (!CommonUtils.isEmpty(phoneNum)){ //用户已登录
+            phoneNum = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.PHONE);
+            if (!CommonUtils.isEmpty(phoneNum)) { //用户已登录
                 phoneNumEt.setText(fuzzyString(phoneNum));
                 phoneNumEt.setEnabled(false);
                 special = true;
@@ -176,7 +177,7 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
 
     private void modifyPwd() {
         showDialog();
-        if (isCodeValid()&&isPhoneValid()) {
+        if (isCodeValid() && isPhoneValid()) {
             if (NetUtils.isNetworkConnected(this)) {
                 RegistertokenReq req = new RegistertokenReq();
                 req.setCode(code);
@@ -186,11 +187,11 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
                     public void success(RegistertokenRes registertokenRes, Response response) {
                         dismissDialog();
                         if (registertokenRes != null) {
-                            final String rt=registertokenRes.getRegister_token();
+                            final String rt = registertokenRes.getRegister_token();
                             showDialogWithEt("请输入6个以上字符作为新密码", "修改密码", new DialogButtonClicked() {
                                 @Override
                                 public void onPositiveClicked(String content, DialogInterface dialog) {
-                                    ModifyReq mreq=new ModifyReq();
+                                    ModifyReq mreq = new ModifyReq();
                                     mreq.setPassword(content);
                                     mreq.setRegister_token(rt);
                                     dialog.dismiss();
@@ -199,10 +200,10 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
 
                                 @Override
                                 public void onNegativeClicked(DialogInterface dialog) {
-                                       dialog.dismiss();
+                                    dialog.dismiss();
                                 }
                             });
-                        }else {
+                        } else {
                             showToast(response.getReason());
                         }
                     }
@@ -223,15 +224,15 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
 
     private void doModify(ModifyReq mreq) {
         showDialog();
-        if(NetUtils.isNetworkConnected(this)){
+        if (NetUtils.isNetworkConnected(this)) {
             ApiManager.getService(getApplicationContext()).modifyPwd(mreq, new Callback<Response>() {
                 @Override
                 public void success(Response response, Response response2) {
                     dismissDialog();
-                    if(response!=null){
+                    if (response != null) {
                         setResult(RESULT_OK);
                         finish();
-                    }else{
+                    } else {
                         showToast(response.getReason());
                     }
                 }
@@ -243,10 +244,10 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
                 }
             });
 
-        }else{
-              showNetWorkError();
+        } else {
+            showNetWorkError();
         }
-     }
+    }
 
 
     /*
@@ -408,5 +409,17 @@ public class VerifyByPhoneAct extends AbsActivity implements Handler.Callback {
         void onPositiveClicked(String content, DialogInterface dialog);
 
         void onNegativeClicked(DialogInterface dialog);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

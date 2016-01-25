@@ -25,6 +25,7 @@ import com.dreamspace.superman.UI.Activity.Main.QRCodeShowActivity;
 import com.dreamspace.superman.event.SmOrderChangeEvent;
 import com.dreamspace.superman.model.api.OperatorReq;
 import com.dreamspace.superman.model.api.OrderDetailRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -190,8 +191,8 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
         connectStudentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int memberId =orderDetailRes.getUser_id();
-                String memberName=orderDetailRes.getName();
+                int memberId = orderDetailRes.getUser_id();
+                String memberName = orderDetailRes.getName();
                 Bundle b = new Bundle();
                 b.putString(Constant.MEMBER_ID, String.valueOf(memberId));
                 b.putString(Constant.MEMBER_NAME, memberName);
@@ -552,5 +553,17 @@ public class SmOrderDetailActivity extends AbsActivity implements View.OnClickLi
             EventBus.getDefault().post(new SmOrderChangeEvent());
             finish();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

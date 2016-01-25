@@ -27,6 +27,7 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SubscribeReq;
 import com.dreamspace.superman.model.api.SubscribeRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import cn.aigestudio.datepicker.cons.DPMode;
@@ -61,7 +62,7 @@ public class SubscribeActivity extends AbsActivity {
     TextInputLayout anotherInfoEv;
     @Bind(R.id.suscribe_btn)
     Button suscribeBtn;
-    private LessonInfo mLessonInfo=null;
+    private LessonInfo mLessonInfo = null;
     private String realName;
     private String phoneNum;
     private String meetTime;
@@ -77,12 +78,12 @@ public class SubscribeActivity extends AbsActivity {
 
     @Override
     protected void prepareDatas() {
-       mLessonInfo=this.getIntent().getParcelableExtra(LessonDetailInfoActivity.LESSON_INFO);
+        mLessonInfo = this.getIntent().getParcelableExtra(LessonDetailInfoActivity.LESSON_INFO);
     }
 
     @Override
     protected void initViews() {
-        if(mLessonInfo!=null){
+        if (mLessonInfo != null) {
             showBaseInfo();
         }
         suscribeBtn.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +105,7 @@ public class SubscribeActivity extends AbsActivity {
         timeEv.getEditText().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     showDataPickerDialog();
                 }
                 return true;
@@ -112,48 +113,51 @@ public class SubscribeActivity extends AbsActivity {
         });
 
     }
-    private void showPd(){
-        if(pd==null){
-            pd=ProgressDialog.show(this,"","正在提交请求",true,false);
-        }else{
-            if(!pd.isShowing()){
+
+    private void showPd() {
+        if (pd == null) {
+            pd = ProgressDialog.show(this, "", "正在提交请求", true, false);
+        } else {
+            if (!pd.isShowing()) {
                 pd.show();
             }
         }
     }
-    private void dismissPd(){
-        if(pd!=null&&pd.isShowing()){
+
+    private void dismissPd() {
+        if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
-    private void suscribeLesson(SubscribeReq req) {
-         showPd();
-         if(NetUtils.isNetworkConnected(this)){
-             ApiManager.getService(this).subscribeOrder(req, new Callback<SubscribeRes>() {
-                 @Override
-                 public void success(SubscribeRes subscribeRes, Response response) {
-                     dismissPd();
-                     if(subscribeRes!=null){
-                        showSuccessDialog();
-                     }else{
-                         showToast("暂时不能响应您的请求,请稍后再试");
-                     }
-                 }
 
-                 @Override
-                 public void failure(RetrofitError error) {
-                     dismissPd();
-                     showInnerError(error);
-                 }
-             });
-         }else{
-             dismissPd();
-             showNetWorkError();
-         }
+    private void suscribeLesson(SubscribeReq req) {
+        showPd();
+        if (NetUtils.isNetworkConnected(this)) {
+            ApiManager.getService(this).subscribeOrder(req, new Callback<SubscribeRes>() {
+                @Override
+                public void success(SubscribeRes subscribeRes, Response response) {
+                    dismissPd();
+                    if (subscribeRes != null) {
+                        showSuccessDialog();
+                    } else {
+                        showToast("暂时不能响应您的请求,请稍后再试");
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    dismissPd();
+                    showInnerError(error);
+                }
+            });
+        } else {
+            dismissPd();
+            showNetWorkError();
+        }
     }
 
     private void showSuccessDialog() {
-        AlertDialog dialog=new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("提示")
                 .setMessage("恭喜您预约成功,您可以在我的订单中看到本订单的详细信息和进展")
                 .setPositiveButton("好的", new DialogInterface.OnClickListener() {
@@ -171,41 +175,42 @@ public class SubscribeActivity extends AbsActivity {
         courseNameTv.setText(mLessonInfo.getLess_name());
         priceTv.setText(CommonUtils.getPriceWithInfo(mLessonInfo.getPrice()));
         Tools.showImageWithGlide(this, profileImage, mLessonInfo.getImage());
-        timeTv.setText(mLessonInfo.getKeeptime()+"小时");
-        String realName=PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.REALNAME);
-        String phoneNum=PreferenceUtils.getString(getApplicationContext(),PreferenceUtils.Key.PHONE);
-        if(!CommonUtils.isEmpty(realName)){
-          realNameEv.getEditText().setText(realName);
+        timeTv.setText(mLessonInfo.getKeeptime() + "小时");
+        String realName = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.REALNAME);
+        String phoneNum = PreferenceUtils.getString(getApplicationContext(), PreferenceUtils.Key.PHONE);
+        if (!CommonUtils.isEmpty(realName)) {
+            realNameEv.getEditText().setText(realName);
         }
-        if(!CommonUtils.isEmpty(phoneNum)){
-          connectEv.getEditText().setText(phoneNum);
+        if (!CommonUtils.isEmpty(phoneNum)) {
+            connectEv.getEditText().setText(phoneNum);
         }
     }
-    private boolean isValid(){
+
+    private boolean isValid() {
         setTextInputDefault();
-      if(CommonUtils.isEmpty(realNameEv.getEditText().getText().toString())){
-          realNameEv.setErrorEnabled(true);
-          realNameEv.setError("请先填写您的姓名");
-          return false;
-      }else if(CommonUtils.isEmpty(connectEv.getEditText().getText().toString())||connectEv.getEditText().getText().toString().length()!=11){
-          connectEv.setErrorEnabled(true);
-          connectEv.setError("请输入您正确的联系方式");
-          return false;
-      }else if(CommonUtils.isEmpty(timeEv.getEditText().getText().toString())){
-          timeEv.setErrorEnabled(true);
-          timeEv.setError("请输入您的预约时间");
-          return false;
-      }else if(CommonUtils.isEmpty(addressEv.getEditText().getText().toString())){
-          addressEv.setErrorEnabled(true);
-          addressEv.setError("请输入见面地点");
-          return false;
-      }else{
-          realName=realNameEv.getEditText().getText().toString();
-          phoneNum=connectEv.getEditText().getText().toString();
-          meetTime=timeEv.getEditText().getText().toString();
-          meetAddress=addressEv.getEditText().getText().toString();
-          anotherInfo=anotherInfoEv.getEditText().getText().toString();
-      }
+        if (CommonUtils.isEmpty(realNameEv.getEditText().getText().toString())) {
+            realNameEv.setErrorEnabled(true);
+            realNameEv.setError("请先填写您的姓名");
+            return false;
+        } else if (CommonUtils.isEmpty(connectEv.getEditText().getText().toString()) || connectEv.getEditText().getText().toString().length() != 11) {
+            connectEv.setErrorEnabled(true);
+            connectEv.setError("请输入您正确的联系方式");
+            return false;
+        } else if (CommonUtils.isEmpty(timeEv.getEditText().getText().toString())) {
+            timeEv.setErrorEnabled(true);
+            timeEv.setError("请输入您的预约时间");
+            return false;
+        } else if (CommonUtils.isEmpty(addressEv.getEditText().getText().toString())) {
+            addressEv.setErrorEnabled(true);
+            addressEv.setError("请输入见面地点");
+            return false;
+        } else {
+            realName = realNameEv.getEditText().getText().toString();
+            phoneNum = connectEv.getEditText().getText().toString();
+            meetTime = timeEv.getEditText().getText().toString();
+            meetAddress = addressEv.getEditText().getText().toString();
+            anotherInfo = anotherInfoEv.getEditText().getText().toString();
+        }
         return true;
     }
 
@@ -222,7 +227,7 @@ public class SubscribeActivity extends AbsActivity {
         return null;
     }
 
-    private void showDataPickerDialog(){
+    private void showDataPickerDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(SubscribeActivity.this).create();
         dialog.show();
         DatePicker picker = new DatePicker(SubscribeActivity.this);
@@ -244,8 +249,20 @@ public class SubscribeActivity extends AbsActivity {
 
 
     public void onDatePickedFromDialog(String date) {
-       if(!CommonUtils.isEmpty(date)){
-           timeEv.getEditText().setText(date);
-       }
+        if (!CommonUtils.isEmpty(date)) {
+            timeEv.getEditText().setText(date);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

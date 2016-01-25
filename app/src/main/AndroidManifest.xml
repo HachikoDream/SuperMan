@@ -38,7 +38,7 @@
             android:name="UMENG_APPKEY"
             android:value="56375e7667e58e8810001067" />
         <meta-data
-            android:name="UMENG_CHANNEL"
+            android:name="all"
             android:value="Channel ID" />
 
         <activity

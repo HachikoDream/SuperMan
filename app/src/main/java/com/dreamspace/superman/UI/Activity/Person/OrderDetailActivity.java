@@ -27,6 +27,7 @@ import com.dreamspace.superman.UI.Activity.Main.PayChannelActivity;
 import com.dreamspace.superman.UI.Activity.Main.QRReaderActivity;
 import com.dreamspace.superman.event.OrderChangeEvent;
 import com.dreamspace.superman.model.api.OrderDetailRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -335,7 +336,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             commentBtn.performClick();
         } else if (COME_SOURCE == COME_FROM_PAY) {
             payBtnInConfirm.performClick();
-        }else if(COME_SOURCE==COME_FROM_QR){
+        } else if (COME_SOURCE == COME_FROM_QR) {
             confirmBtn.performClick();
         }
 
@@ -598,7 +599,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             if (resultCode == Activity.RESULT_OK) {
                 EventBus.getDefault().post(new OrderChangeEvent());
                 killSelf();
-            }else if(COME_SOURCE!=-1){
+            } else if (COME_SOURCE != -1) {
                 killSelf();
             }
         }
@@ -608,7 +609,7 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
                 setResult(RESULT_OK);
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
-            }else if(COME_SOURCE!=-1){
+            } else if (COME_SOURCE != -1) {
                 killSelf();
             }
         }
@@ -617,9 +618,21 @@ public class OrderDetailActivity extends AbsActivity implements View.OnClickList
             if (resultCode == RESULT_OK) {
                 EventBus.getDefault().post(new OrderChangeEvent());
                 finish();
-            }else if(COME_SOURCE!=-1){
+            } else if (COME_SOURCE != -1) {
                 killSelf();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

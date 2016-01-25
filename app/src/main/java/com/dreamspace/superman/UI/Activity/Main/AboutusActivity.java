@@ -11,6 +11,7 @@ import com.dreamspace.superman.Common.Tools;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.model.api.PlatPhoneRes;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 import retrofit.Callback;
@@ -61,5 +62,16 @@ public class AboutusActivity extends AbsActivity {
     @Override
     protected View getLoadingTargetView() {
         return null;
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

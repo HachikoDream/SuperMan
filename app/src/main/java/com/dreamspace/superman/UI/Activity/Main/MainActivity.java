@@ -51,6 +51,7 @@ import com.dreamspace.superman.model.api.SingleQnRes;
 import com.dreamspace.superman.model.api.UpdateReq;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 import org.json.JSONObject;
@@ -469,4 +470,15 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
         void onError();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 }

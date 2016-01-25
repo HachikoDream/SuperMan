@@ -34,6 +34,7 @@ import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.model.Lesson;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.LessonInfo;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -426,4 +427,15 @@ public class LessonDetailInfoActivity extends AbsActivity {
         refreshLessonInfo();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 }

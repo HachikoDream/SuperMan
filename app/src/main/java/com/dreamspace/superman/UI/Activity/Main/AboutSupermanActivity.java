@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.Bind;
 
@@ -58,5 +59,17 @@ public class AboutSupermanActivity extends AbsActivity {
         width = displayMetrics.widthPixels;
         height = displayMetrics.heightPixels;
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 }

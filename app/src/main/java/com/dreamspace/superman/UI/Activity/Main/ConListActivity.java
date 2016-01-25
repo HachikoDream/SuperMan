@@ -21,6 +21,7 @@ import com.dreamspace.superman.UI.Adapters.ConListAdapter;
 import com.dreamspace.superman.UI.View.MenuLoadMoreListView;
 import com.dreamspace.superman.event.DbChangeEvent;
 import com.ds.greendao.Conversation;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,13 +160,14 @@ public class ConListActivity extends AbsActivity implements LoaderManager.Loader
             shouldRefresh = false;
             getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
         }
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         isVisible = false;
-
+        MobclickAgent.onPause(this);
     }
 
     @Override
