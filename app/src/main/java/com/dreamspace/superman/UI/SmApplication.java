@@ -6,6 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.sdk.android.AlibabaSDK;
+import com.alibaba.sdk.android.callback.InitResultCallback;
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
@@ -32,11 +36,39 @@ public class SmApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("device-info", getDeviceInfo(this));
-        MobclickAgent.setDebugMode(true);
+        MobclickAgent.setDebugMode(true);//todo check whether is in debug mode
+        initPushService(this);
         AVOSCloud.initialize(this, Constant.APP_ID, Constant.APP_KEY);
         AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
         setupDatabase();
+    }
+
+    private void initPushService(final Context context) {
+        AlibabaSDK.asyncInit(context, new InitResultCallback() {
+            @Override
+            public void onSuccess() {
+                Log.i("info", "alibaba-sdk init success");
+                CloudPushService pushService = AlibabaSDK.getService(CloudPushService.class);
+                if (pushService != null) {
+                    pushService.register(context, new CommonCallback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.i("info", "push service connect success");
+                        }
+
+                        @Override
+                        public void onFailed(String errorcode, String message) {
+                            Log.i("info", "push service connect failed,the errorcode is " + errorcode + ",the message is " + message);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.i("info", "alibaba-sdk init failed," + s);
+            }
+        });
     }
 
     private void setupDatabase() {

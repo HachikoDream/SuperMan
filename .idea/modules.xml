@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DatePicker/DatePicker.iml" filepath="$PROJECT_DIR$/DatePicker/DatePicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OneSDK/OneSDK.iml" filepath="$PROJECT_DIR$/OneSDK/OneSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/PhotoPicker/PhotoPicker.iml" filepath="$PROJECT_DIR$/PhotoPicker/PhotoPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/SuperMan.iml" filepath="$PROJECT_DIR$/SuperMan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

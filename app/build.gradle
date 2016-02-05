@@ -52,5 +52,6 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':DatePicker')
     compile project(':PhotoPicker')
+    compile project(':OneSDK')
 //    compile files('libs/badgeview.jar')
 }
