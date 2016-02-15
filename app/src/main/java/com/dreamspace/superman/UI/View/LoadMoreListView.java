@@ -15,7 +15,7 @@ import com.dreamspace.superman.R;
 
 public class LoadMoreListView extends ListView implements OnScrollListener {
 
-    private static final String TAG =com.dreamspace.superman.UI.View.LoadMoreListView.class
+    private static final String TAG = com.dreamspace.superman.UI.View.LoadMoreListView.class
             .getSimpleName();
 
     private OnScrollListener mOnScrollListener;
@@ -148,6 +148,13 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 
     public void onLoadMoreComplete() {
         setLoading(false);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+                MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, expandSpec);
     }
 
     public interface OnLoadMoreListener {

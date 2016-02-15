@@ -17,10 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets{
-        main{
-            jniLibs.srcDirs=['libs']
-            java.srcDirs=['src/main/java','src/main/java-gen']
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
         }
     }
     packagingOptions {
@@ -53,5 +53,6 @@ dependencies {
     compile project(':DatePicker')
     compile project(':PhotoPicker')
     compile project(':OneSDK')
+    compile project(':cycle-view-pager')
 //    compile files('libs/badgeview.jar')
 }

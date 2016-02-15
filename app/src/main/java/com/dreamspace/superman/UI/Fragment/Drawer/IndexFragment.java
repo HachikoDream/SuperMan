@@ -3,28 +3,30 @@ package com.dreamspace.superman.UI.Fragment.Drawer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.dreamspace.superman.Common.PreferenceUtils;
+import com.dreamspace.superman.Common.ViewFactory;
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Activity.Main.MainActivity;
-import com.dreamspace.superman.UI.Activity.Register.ChooseClassifyActivity;
+import com.dreamspace.superman.UI.Adapters.CatalogAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
 import com.dreamspace.superman.UI.View.smartlayout.SmartTabLayout;
+import com.dreamspace.superman.event.RefreshEvent;
 import com.dreamspace.superman.model.Catalog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
+import me.codeboy.android.cycleviewpager.CycleViewPager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,11 +37,11 @@ public class IndexFragment extends BaseLazyFragment {
     ViewPager mViewPager;
     @Bind(R.id.sliding_layout)
     SmartTabLayout mSlidingTabLayout;
-    @Bind(R.id.choose_classify)
-    ImageView mImageView;
+    @Bind(R.id.catalog_rv)
+    RecyclerView catalogRv;
+    @Bind(R.id.index_swiperefresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private IndexContainerPagerAdapter mAdapter;
-    private static final int REQUEST_CHOOSE_CLASSIFY = 233;
-    private int tabHeight;
     private List<Catalog> items;
 
     public IndexFragment() {
@@ -70,6 +72,7 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
+        EventBus.getDefault().register(this);
         setItems(PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()));
         mAdapter = new IndexContainerPagerAdapter(getChildFragmentManager(), items);
         mViewPager.setAdapter(mAdapter);
@@ -92,18 +95,60 @@ public class IndexFragment extends BaseLazyFragment {
 
             }
         });
-        mImageView.setOnClickListener(new View.OnClickListener() {
+        List<View> views = new ArrayList<View>();
+
+        // 将最后一个view添加进来
+        views.add(ViewFactory.getImageView(getActivity(), "Hello 3", "title3"));
+        for (int i = 0; i < 4; i++) {
+            views.add(ViewFactory.getImageView(getActivity(), "Hello " + i, "title" + i));
+        }
+        // 将第一个view添加进来
+        views.add(ViewFactory.getImageView(getActivity(), "Hello 0", "title0"));
+
+        final CycleViewPager cycleViewPager = (CycleViewPager) getChildFragmentManager()
+                .findFragmentById(R.id.cycleViewPager);
+
+        // 设置循环，在调用setData方法前调用
+        cycleViewPager.setCycle(true);
+
+        // 在加载数据前设置是否循环
+        cycleViewPager.setData(views);
+
+        // 设置轮播
+        cycleViewPager.setWheel(true);
+
+        // 设置初始高度为屏幕的一半高度
+        cycleViewPager.getView().getLayoutParams().height = getResources()
+                .getDisplayMetrics().heightPixels / 3;
+
+        cycleViewPager.setIndicatorCenter();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4);
+        List<Catalog> catalogs = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            Catalog catalog = new Catalog();
+            catalog.setIcon("http://www.baidu.com/img/bd_logo1.png");
+            catalog.setName("test" + i);
+            catalogs.add(catalog);
+        }
+        CatalogAdapter cataAdapter = new CatalogAdapter(catalogs, getActivity());
+        catalogRv.setLayoutManager(gridLayoutManager);
+        catalogRv.setAdapter(cataAdapter);
+        mSwipeRefreshLayout.setColorScheme(R.color.navi_color,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putString("SOURCE", "INDEX");
-                readyGoForResult(ChooseClassifyActivity.class, REQUEST_CHOOSE_CLASSIFY, b);
+            public void onRefresh() {
+                onPullDown();
             }
         });
-        MainActivity parent = (MainActivity) getActivity();
-        if (parent.getComeSource() != null && parent.getComeSource().equals(MainActivity.FIRST_IN)||PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()).size()==1) {
-            mImageView.performClick();
-        }
+
+    }
+
+    private void onPullDown() {
+        int current = mViewPager.getCurrentItem();
+        RefreshListener listener = (RefreshListener) mViewPager.getAdapter().instantiateItem(mViewPager, current);
+        listener.onPullDown();
     }
 
     public void setItems(List<Catalog> items) {
@@ -120,7 +165,7 @@ public class IndexFragment extends BaseLazyFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         List<Catalog> mCatalogs = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
 
-        if(mCatalogs.size()==1){
+        if (mCatalogs.size() == 1) {
             getActivity().finish();
             return;
         }
@@ -132,5 +177,13 @@ public class IndexFragment extends BaseLazyFragment {
             HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
             fragment.onPageSelected(0, items.get(0));
         }
+    }
+
+    public void onEvent(RefreshEvent refreshEvent) {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    public interface RefreshListener {
+        void onPullDown();
     }
 }

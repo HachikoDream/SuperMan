@@ -10,9 +10,12 @@ import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
+import com.dreamspace.superman.UI.Fragment.Base.BaseIndexFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyCourseFragment;
+import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.event.LessonListRefreshEvent;
+import com.dreamspace.superman.event.RefreshEvent;
 import com.dreamspace.superman.model.Catalog;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
@@ -28,7 +31,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
+public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements IndexFragment.RefreshListener {
     public Catalog selfCatalog;
     public int page = 1;
     public final int INIT_PAGE = 1;
@@ -70,6 +73,7 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
                 onPullDownFinished();
             }
 
+
             @Override
             public void onError() {
                 page = 1;
@@ -78,6 +82,9 @@ public class HandpickFragment extends BaseLazyCourseFragment<LessonInfo> {
         });
     }
 
+    private void onPullDownFinished() {
+        EventBus.getDefault().post(RefreshEvent.newInstance());
+    }
 
     @Override
     public void getInitData() {
