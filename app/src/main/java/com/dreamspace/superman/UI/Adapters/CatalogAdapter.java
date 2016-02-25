@@ -2,7 +2,6 @@ package com.dreamspace.superman.UI.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.catalogV
     @Override
     public void onBindViewHolder(catalogViewHolder holder, final int position) {
         final Catalog catalog = mCatalogs.get(position);
-        Tools.showImageWithGlide(mContext, holder.catalogIv, catalog.getIcon());
+        Tools.showImageWithGlide(mContext, holder.catalogIv, catalog.getImage());
         holder.catalogTv.setText(catalog.getName());
         if (listener != null) {
             holder.catalogIv.setOnClickListener(new View.OnClickListener() {

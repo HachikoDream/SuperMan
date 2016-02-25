@@ -21,7 +21,7 @@ import retrofit.RetrofitError;
  */
 public class Tools {
     //使用Glide加载网络图片
-    public static void showImageWithGlide(Context context, final CircleImageView imageView,String url){
+    public static void showImageWithGlide(Context context, final CircleImageView imageView, String url) {
         Glide.with(context)
                 .load(url)
                 .placeholder(R.drawable.login_pho)
@@ -32,8 +32,21 @@ public class Tools {
                     }
                 });
     }
+
+    public static void showImageWithGlide(Context context, final CircleImageView imageView, final int placeholder, String url) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(placeholder)
+                .into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        imageView.setImageDrawable(resource);
+                    }
+                });
+    }
+
     //使用Glide加载网络图片
-    public static void showImageWithGlide(Context context, final ImageView imageView,String url){
+    public static void showImageWithGlide(Context context, final ImageView imageView, String url) {
         Glide.with(context)
                 .load(url)
                 .placeholder(R.drawable.login_pho)
@@ -44,18 +57,20 @@ public class Tools {
                     }
                 });
     }
+
     //按照协议解析服务器返回的错误原因
-    public static String getInnerErrorInfo(RetrofitError error){
-        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
-        if(res!=null){
-            return  res.getReason();
-        }else {
+    public static String getInnerErrorInfo(RetrofitError error) {
+        ErrorRes res = (ErrorRes) error.getBodyAs(ErrorRes.class);
+        if (res != null) {
+            return res.getReason();
+        } else {
             return "暂时不能提交您的请求,请稍后再试";
         }
 
     }
+
     //把电话号码传递到拨号界面
-    public static void callSb(Context context,String phone){
+    public static void callSb(Context context, String phone) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

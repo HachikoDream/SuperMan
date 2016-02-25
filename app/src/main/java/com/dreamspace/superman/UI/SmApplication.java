@@ -15,13 +15,9 @@ import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.dreamspace.superman.Common.Constant;
 import com.dreamspace.superman.Common.MessageHandler;
-import com.dreamspace.superman.Common.PreferenceUtils;
 import com.ds.greendao.DaoMaster;
 import com.ds.greendao.DaoSession;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2015/8/25 0025.
@@ -37,7 +33,7 @@ public class SmApplication extends Application {
     public void onCreate() {
         super.onCreate();
         MobclickAgent.setDebugMode(true);//todo check whether is in debug mode
-        initPushService(this);
+//        initPushService(this);
         AVOSCloud.initialize(this, Constant.APP_ID, Constant.APP_KEY);
         AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
         setupDatabase();

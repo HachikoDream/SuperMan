@@ -7,6 +7,7 @@ import com.dreamspace.superman.Common.PreferenceUtils;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.Response;
 
 /**
  * Created by Administrator on 2015/8/24 0024.
@@ -14,8 +15,11 @@ import retrofit.RestAdapter;
 public final class ApiManager {
     //    public static String BASE_URL = "http://api2.hloli.me:9777/v1.0";
     public static String BASE_URL = "https://api.idarenhui.com/";
+    public static String TEST_URL = "http://testapi.idarenhui.com";
     private static SupermanService mService;
+    private static SupermanService testService;
     static volatile RestAdapter restAdapter = null;
+    static volatile RestAdapter testAdapter = null;
 
     private ApiManager() {
     }
@@ -38,6 +42,24 @@ public final class ApiManager {
         return restAdapter;
     }
 
+    public static RestAdapter getTestAdapter(final Context mContext) {
+        if (testAdapter == null) {
+            synchronized (ApiManager.class) {
+                if (testAdapter == null) {
+                    RequestInterceptor requestInterceptor = new RequestInterceptor() {
+                        @Override
+                        public void intercept(RequestFacade request) {
+                            request.addHeader(PreferenceUtils.Key.ACCESS, PreferenceUtils.getString(mContext, "access_token"));
+                        }
+                    };
+                    testAdapter = new RestAdapter.Builder().setEndpoint(TEST_URL).setLogLevel(RestAdapter.LogLevel.FULL).setRequestInterceptor(requestInterceptor)
+                            .build();
+                }
+            }
+        }
+        return testAdapter;
+    }
+
     public static void initRegionApi(Context mContext) {
         if (mService == null) {
             synchronized (ApiManager.class) {
@@ -48,9 +70,24 @@ public final class ApiManager {
         }
     }
 
+    public static void initTestApi(Context mContext) {
+        if (testService == null) {
+            synchronized (ApiManager.class) {
+                if (testService == null) {
+                    testService = getTestAdapter(mContext).create(SupermanService.class);
+                }
+            }
+        }
+    }
+
     public static SupermanService getService(Context mContext) {
         initRegionApi(mContext);
         return mService;
+    }
+
+    public static SupermanService getTestService(Context mContext) {
+        initTestApi(mContext);
+        return testService;
     }
 
     public static void clear() {

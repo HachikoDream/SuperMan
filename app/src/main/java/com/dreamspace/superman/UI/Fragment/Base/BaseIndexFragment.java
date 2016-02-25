@@ -1,7 +1,5 @@
 package com.dreamspace.superman.UI.Fragment.Base;
 
-import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,10 +7,9 @@ import android.widget.AdapterView;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Adapters.BasisAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexAdapter;
+import com.dreamspace.superman.UI.Fragment.Index.IndexFragment;
 import com.dreamspace.superman.UI.View.LoadMoreListView;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import butterknife.Bind;
@@ -55,6 +52,7 @@ public abstract class BaseIndexFragment<T> extends BaseLessonFragment {
                 onPullUp();
             }
         });
+        moreListView.setIn(true);
         initDatas();
     }
 
@@ -66,6 +64,13 @@ public abstract class BaseIndexFragment<T> extends BaseLessonFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onItemPicked((T) mAdapter.getItem(position), position);
                 Log.i("INFO", "position:  " + position);
+            }
+        });
+        moreListView.setScrollToTopListener(new LoadMoreListView.OnScrollToTopListener() {
+            @Override
+            public void onScrollToTop() {
+                IndexFragment indexFragment = (IndexFragment) getParentFragment();
+                indexFragment.getScrollView().setEnableScroll(true);
             }
         });
 
@@ -99,5 +104,7 @@ public abstract class BaseIndexFragment<T> extends BaseLessonFragment {
         mAdapter.notifyDataSetChanged();
     }
 
-
+    public LoadMoreListView getMoreListView() {
+        return moreListView;
+    }
 }

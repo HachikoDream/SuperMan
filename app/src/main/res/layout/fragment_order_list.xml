@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment">
+    tools:context=".UI.Fragment.Index.IndexFragment">
     <com.dreamspace.superman.UI.View.SlidingTabLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"

@@ -137,8 +137,8 @@ public class PreferenceUtils {
     public static void writeClassifyIntoSp(Context context, List<Catalog> items) {
         Gson gson = new Gson();
         Catalog catalog=new Catalog();
-        catalog.setId(-1);
-        catalog.setIcon("TEST");
+        catalog.setId("-1");
+        catalog.setImage("TEST");
         catalog.setName("精选");
         items.add(0, catalog);
         String content = gson.toJson(items);
@@ -147,8 +147,8 @@ public class PreferenceUtils {
     public static void writeClassifyIntoSpForFirst(Context context) {
         Gson gson = new Gson();
         Catalog catalog=new Catalog();
-        catalog.setId(-1);
-        catalog.setIcon("TEST");
+        catalog.setId("-1");
+        catalog.setImage("TEST");
         catalog.setName("精选");
         List<Catalog> mCata=new ArrayList<>();
         mCata.add(catalog);

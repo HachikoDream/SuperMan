@@ -34,12 +34,13 @@ import com.dreamspace.superman.UI.Adapters.VPFragmentAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.CollectionFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.FeedbackFragment;
-import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.MyWalletFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.OrderListFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.SuperManHomeFragment;
 import com.dreamspace.superman.UI.Fragment.Drawer.ToBeSuperFragment;
-import com.dreamspace.superman.UI.View.XViewPager;
+import com.dreamspace.superman.UI.Fragment.Index.IndexFragment;
+import com.dreamspace.superman.UI.Fragment.Index.SupermanFragment;
+import com.dreamspace.superman.UI.View.ChangeColorTabWithText;
 import com.dreamspace.superman.event.AccountChangeEvent;
 import com.dreamspace.superman.event.AvaterChangeEvent;
 import com.dreamspace.superman.event.CollectionChangeEvent;
@@ -57,23 +58,42 @@ import com.umeng.update.UmengUpdateAgent;
 import org.json.JSONObject;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.codeboy.android.cycleviewpager.BaseViewPager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class
-MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener, FeedbackFragment.FeedbackComplete {
+MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelectedListener, FeedbackFragment.FeedbackComplete, View.OnClickListener {
 
     @Bind(R.id.dl_left)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.id_navigation)
     NavigationView mNavigationView;
+    @Bind(R.id.id_tab1)
+    ChangeColorTabWithText idTab1;
+    @Bind(R.id.id_tab2)
+    ChangeColorTabWithText idTab2;
+    @Bind(R.id.id_tab3)
+    ChangeColorTabWithText idTab3;
+    @Bind(R.id.id_tab4)
+    ChangeColorTabWithText idTab4;
     private ActionBarDrawerToggle mDrawerToggle;
     @Bind(R.id.header_layout)
     RelativeLayout headerLayout;
-    BaseLazyFragment fragments[] = {new IndexFragment(), new MyWalletFragment(), new OrderListFragment(), new CollectionFragment(), new ToBeSuperFragment(), new SuperManHomeFragment(), new FeedbackFragment()};
+    BaseLazyFragment fragments[] =
+            {
+                    new IndexFragment(),
+                    new MyWalletFragment(),
+                    new OrderListFragment(),
+                    new CollectionFragment(),
+                    new ToBeSuperFragment(),
+                    new SuperManHomeFragment(),
+                    new FeedbackFragment(),
+            };
     @Bind(R.id.footer_item_settings)
     TextView mSettings;
     @Bind(R.id.footer_item_aboutus)
@@ -81,7 +101,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
     private static final int TITLE = R.string.app_name;
     private int currentPage;
     @Bind(R.id.fragment_container)
-    XViewPager mViewPager;
+    BaseViewPager mViewPager;
     @Bind(R.id.nav_header_useravater)
     CircleImageView mUserAvater;
     @Bind(R.id.username_tv)
@@ -159,7 +179,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         if (null != fragments) {
-            mViewPager.setEnableScroll(false);
+            mViewPager.setScrollable(false);
             mViewPager.setOffscreenPageLimit(fragments.length);
             mViewPager.setAdapter(new VPFragmentAdapter(getSupportFragmentManager(), fragments));
         }
@@ -167,6 +187,10 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
             getUploadToken(photoPath);
         }
         UmengUpdateAgent.update(this);
+        idTab1.setOnClickListener(this);
+        idTab2.setOnClickListener(this);
+        idTab3.setOnClickListener(this);
+        idTab4.setOnClickListener(this);
     }
 
     @Override
@@ -199,6 +223,10 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+    public BaseViewPager getmViewPager() {
+        return mViewPager;
     }
 
     @Override
@@ -462,6 +490,36 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
         } else {
             finishUpdate.onError();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        resetTabColor();
+        switch (v.getId()) {
+            case R.id.id_tab1:
+                idTab1.setIconAlpha(1.0f);
+                mViewPager.setCurrentItem(0, false);
+                break;
+            case R.id.id_tab2:
+                idTab2.setIconAlpha(1.0f);
+                mViewPager.setCurrentItem(1, false);
+                break;
+            case R.id.id_tab3:
+                idTab3.setIconAlpha(1.0f);
+//                mViewPager.setCurrentItem(2, false);
+                break;
+            case R.id.id_tab4:
+                idTab4.setIconAlpha(1.0f);
+//                mViewPager.setCurrentItem(7);
+        }
+
+    }
+
+    private void resetTabColor() {
+        idTab1.setIconAlpha(0.0f);
+        idTab2.setIconAlpha(0.0f);
+        idTab3.setIconAlpha(0.0f);
+        idTab4.setIconAlpha(0.0f);
     }
 
     private interface FinishUpdate {

@@ -4,15 +4,15 @@ package com.dreamspace.superman.model;
  * Created by Wells on 2015/9/15.
  */
 public class Catalog {
-    private int id;
+    private String id;
     private String name;
-    private String icon;
+    private String image;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -24,12 +24,12 @@ public class Catalog {
         this.name = name;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getImage() {
+        return image;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -41,15 +41,12 @@ public class Catalog {
 
         if (id != catalog.id) return false;
         if (!name.equals(catalog.name)) return false;
-        return icon.equals(catalog.icon);
+        return image.equals(catalog.image);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + icon.hashCode();
-        return result;
+        return super.hashCode();
     }
 }

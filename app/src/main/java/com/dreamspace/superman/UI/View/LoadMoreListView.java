@@ -4,12 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.dreamspace.superman.R;
 
@@ -23,11 +25,15 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 
     private View mFooterView;
     private View mLoadMoreStatusView;
-
     private OnLoadMoreListener mOnLoadMoreListener;
 
     private boolean mIsLoadingMore = false;
     private int mCurrentScrollState;
+    private boolean isIn = false;
+    private boolean mIsScrollToUp = true;
+    private int previousFirstItem = 0;
+    private int mScreenY = 0;
+    private OnScrollToTopListener scrollToTopListener;
 
     public LoadMoreListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -51,12 +57,20 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
         super.setAdapter(adapter);
     }
 
+    public void setIn(boolean in) {
+        isIn = in;
+    }
+
     private void init(Context context) {
 
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         super.setOnScrollListener(this);
+    }
+
+    public void setScrollToTopListener(OnScrollToTopListener scrollToTopListener) {
+        this.scrollToTopListener = scrollToTopListener;
     }
 
     public void setLoadMoreStatusView(View v, int statusViewId) {
@@ -99,7 +113,34 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 
     public void onScroll(AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
+        if (firstVisibleItem == 0 && isIn && view.getChildAt(0) != null && view.getChildAt(0).getTop() >= 0 && !mIsScrollToUp) {
+            Log.i("isIn", "is In");
+            if (scrollToTopListener != null) {
+                scrollToTopListener.onScrollToTop();
+                mIsScrollToUp = true;
+            }
+        }
 
+        Log.i("onScroll", "firstVisibleItem: " + firstVisibleItem + ", visibleItemCount: " + visibleItemCount + ",totalItemCount:" + totalItemCount);
+        View childAt = view.getChildAt(firstVisibleItem);
+//        int[] location = new int[2];
+//        childAt.getLocationOnScreen(location);
+        if (firstVisibleItem != previousFirstItem) {
+            if (firstVisibleItem > previousFirstItem) {
+                mIsScrollToUp = true;
+            } else {
+                mIsScrollToUp = false;
+            }
+
+        } else {
+//            if (mScreenY > location[1]) {
+//                mIsScrollToUp = true;
+//            } else if (mScreenY < location[1]) {
+//                mIsScrollToUp = false;
+//            }
+        }
+        previousFirstItem = firstVisibleItem;
+//        mScreenY = location[1];
         if (mOnScrollListener != null) {
             mOnScrollListener.onScroll(view, firstVisibleItem, visibleItemCount,
                     totalItemCount);
@@ -125,8 +166,16 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
     }
 
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        mCurrentScrollState = scrollState;
 
+        Log.i("ListviewonScroll", "scrollState: " + scrollState + ",mIsScrollToUp: " + mIsScrollToUp);
+        mCurrentScrollState = scrollState;
+//        if (getFirstVisiblePosition() == 0 && isIn && scrollState == SCROLL_STATE_TOUCH_SCROLL && view.getChildAt(0).getTop() >= 0 && !mIsScrollToUp) {
+//            Log.i("isIn", "is In");
+//            if (scrollToTopListener != null) {
+//                scrollToTopListener.onScrollToTop();
+//                mIsScrollToUp = true;
+//            }
+//        }
         if (mOnScrollListener != null) {
             mOnScrollListener.onScrollStateChanged(view, scrollState);
         }
@@ -146,19 +195,18 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
         }
     }
 
+
     public void onLoadMoreComplete() {
         setLoading(false);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                MeasureSpec.AT_MOST);
-        super.onMeasure(widthMeasureSpec, expandSpec);
-    }
 
     public interface OnLoadMoreListener {
         public void onLoadMore();
+    }
+
+    public interface OnScrollToTopListener {
+        void onScrollToTop();
     }
 
 }

@@ -1,0 +1,49 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/superman_swiperefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.Fragment.Index.SupermanFragment">
+
+    <com.dreamspace.superman.UI.View.DispatchChildScrollView
+        android:id="@+id/superman_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/activity_cycleViewPager"
+                android:name="me.codeboy.android.cycleviewpager.CycleViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"/>
+
+            <com.dreamspace.superman.UI.View.smartlayout.SmartTabLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/sliding_layout"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@color/near_white"
+                app:stl_defaultTabTextColor="@color/select_tab_color"
+                app:stl_defaultTabTextHorizontalPadding="20dp"
+                app:stl_defaultTabTextSize="14sp"
+                app:stl_dividerColor="@android:color/transparent"
+                app:stl_dividerThickness="0dp"
+                app:stl_indicatorColor="@color/navi_color"
+                app:stl_indicatorCornerRadius="2dp"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorThickness="3dp"
+                app:stl_underlineColor="@android:color/transparent" />
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/main_bg" />
+        </LinearLayout>
+    </com.dreamspace.superman.UI.View.DispatchChildScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

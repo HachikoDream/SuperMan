@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <include layout="@layout/custom_toolbar"/>
-    <com.dreamspace.superman.UI.View.XViewPager
+    xmlns:wdd="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/custom_toolbar" />
+
+    <me.codeboy.android.cycleviewpager.BaseViewPager
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.dreamspace.superman.UI.View.XViewPager>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bottom_bg">
+        <com.dreamspace.superman.UI.View.ChangeColorTabWithText
+            android:id="@+id/id_tab1"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"
+            wdd:drawable="@drawable/ic_menu_edit"
+            wdd:maincolor="@color/navi_color"
+            wdd:textsize="12sp"
+            wdd:text="@string/bottom_tab_one"/>
+        <com.dreamspace.superman.UI.View.ChangeColorTabWithText
+            android:id="@+id/id_tab2"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            wdd:drawable="@drawable/ic_menu_edit"
+            wdd:maincolor="@color/navi_color"
+            wdd:textsize="12sp"
+            wdd:text="@string/bottom_tab_two"/>
+        <com.dreamspace.superman.UI.View.ChangeColorTabWithText
+            android:id="@+id/id_tab3"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"
+            wdd:drawable="@drawable/ic_menu_edit"
+            wdd:maincolor="@color/navi_color"
+            wdd:textsize="12sp"
+            wdd:text="@string/bottom_tab_three"/>
+        <com.dreamspace.superman.UI.View.ChangeColorTabWithText
+            android:id="@+id/id_tab4"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"
+            wdd:drawable="@drawable/ic_menu_edit"
+            wdd:maincolor="@color/navi_color"
+            wdd:textsize="12sp"
+            wdd:text="@string/bottom_tab_four"/>
+
+    </LinearLayout>
+
 </LinearLayout>

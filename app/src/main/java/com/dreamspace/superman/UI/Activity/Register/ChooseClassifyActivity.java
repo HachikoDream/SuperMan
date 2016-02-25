@@ -1,6 +1,5 @@
 package com.dreamspace.superman.UI.Activity.Register;
 
-import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -8,8 +7,6 @@ import android.widget.Button;
 import com.dreamspace.superman.Common.PreferenceUtils;
 import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.AbsActivity;
-import com.dreamspace.superman.UI.Activity.Main.MainActivity;
-import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.View.SelectorImageView;
 import com.dreamspace.superman.model.Catalog;
 import com.umeng.analytics.MobclickAgent;
@@ -43,8 +40,8 @@ public class ChooseClassifyActivity extends AbsActivity {
         Catalog catalog;
         for (int i = 1; i <= mFragmentNames.length; i++) {
             catalog = new Catalog();
-            catalog.setIcon("TEST");
-            catalog.setId(i);
+            catalog.setImage("TEST");
+            catalog.setId("i");
             catalog.setName(mFragmentNames[i - 1]);
             mCatalogs.add(catalog);
         }

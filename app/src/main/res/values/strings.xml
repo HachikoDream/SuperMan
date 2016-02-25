@@ -80,4 +80,8 @@
     <string name="title_activity_paychannel">收银台</string>
     <string name="title_activity_edit_info">编辑资料</string>
     <string name="title_activity_edit_detail_info">编辑具体信息</string>
+    <string name="bottom_tab_one">主页</string>
+    <string name="bottom_tab_two">达人</string>
+    <string name="bottom_tab_three">发现</string>
+    <string name="bottom_tab_four">我</string>
 </resources>

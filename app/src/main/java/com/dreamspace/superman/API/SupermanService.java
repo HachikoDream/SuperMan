@@ -5,6 +5,7 @@ import com.dreamspace.superman.model.UserInfo;
 import com.dreamspace.superman.model.api.ApplyInfoRes;
 import com.dreamspace.superman.model.api.BalanceRes;
 import com.dreamspace.superman.model.api.BindReq;
+import com.dreamspace.superman.model.api.CatalogRes;
 import com.dreamspace.superman.model.api.CollectReq;
 import com.dreamspace.superman.model.api.CommentList;
 import com.dreamspace.superman.model.api.CommentReq;
@@ -99,7 +100,7 @@ public interface SupermanService {
 
     //获取指定分类下的课程
     @GET("/v1.0/catalog/{cata_id}/lessons")
-    void getCoursesByCatalog(@Path("cata_id") int cataId, @Query("page") int page, Callback<SmLessonList> cb);
+    void getCoursesByCatalog(@Path("cata_id") String cataId, @Query("page") int page, Callback<SmLessonList> cb);
 
     //用户收藏课程
     @POST("/v1.0/user/collection")
@@ -232,4 +233,7 @@ public interface SupermanService {
 
     @POST("/v1.0/master/update")
     void ApplyModifyInfoBySm(@Body SmModifyReq req, Callback<Response> cb);
+
+    @GET("/v2.0/catalogs")
+    void getAllCatalogs(@Query("page") int page, @Query("pagination") int pagination, Callback<CatalogRes> cb);
 }

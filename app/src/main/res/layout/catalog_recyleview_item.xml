@@ -9,9 +9,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/catalog_iv"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
     <TextView
         android:id="@+id/catalog_tv"
@@ -19,5 +18,6 @@
         android:layout_height="wrap_content"
         android:padding="2dp"
         android:singleLine="true"
-        android:text="catalog_name" />
+        android:text="loading"
+        android:textSize="12sp" />
 </LinearLayout>

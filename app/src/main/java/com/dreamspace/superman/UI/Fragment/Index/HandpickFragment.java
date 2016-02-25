@@ -12,14 +12,12 @@ import com.dreamspace.superman.R;
 import com.dreamspace.superman.UI.Activity.Main.LessonDetailInfoActivity;
 import com.dreamspace.superman.UI.Fragment.Base.BaseIndexFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyCourseFragment;
-import com.dreamspace.superman.UI.Fragment.Drawer.IndexFragment;
 import com.dreamspace.superman.UI.Fragment.OnRefreshListener;
 import com.dreamspace.superman.event.LessonListRefreshEvent;
 import com.dreamspace.superman.event.RefreshEvent;
 import com.dreamspace.superman.model.Catalog;
 import com.dreamspace.superman.model.api.LessonInfo;
 import com.dreamspace.superman.model.api.SmLessonList;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -36,6 +34,7 @@ public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements I
     public int page = 1;
     public final int INIT_PAGE = 1;
     private boolean onFirst = false;
+    private boolean firstLoad = true;
 
     public HandpickFragment() {
 
@@ -83,7 +82,9 @@ public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements I
     }
 
     private void onPullDownFinished() {
-        EventBus.getDefault().post(RefreshEvent.newInstance());
+        RefreshEvent event = RefreshEvent.newInstance();
+        event.type = RefreshEvent.INDEX;
+        EventBus.getDefault().post(event);
     }
 
     @Override
@@ -139,7 +140,7 @@ public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements I
     public void loadingDataByPage(int page, final OnRefreshListener onRefreshListener) {
 
         if (NetUtils.isNetworkConnected(getActivity().getApplicationContext())) {
-            if (selfCatalog.getId() == -1) {
+            if (selfCatalog.getId().equals("-1")) {
                 ApiManager.getService(getActivity().getApplicationContext()).getRecommentLessons(page, new Callback<SmLessonList>() {
                     @Override
                     public void success(SmLessonList smLessonList, Response response) {
@@ -186,9 +187,12 @@ public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements I
 
     public void onPageSelected(int position, Catalog catalog) {
         Log.i("HP", "On PageSelected  " + this.toString());
-        selfCatalog = catalog;
-        if (onFirst) {
-            loadingDataWhenInit();
+        if (firstLoad) {
+            firstLoad = false;
+            selfCatalog = catalog;
+            if (onFirst) {
+                loadingDataWhenInit();
+            }
         }
     }
 

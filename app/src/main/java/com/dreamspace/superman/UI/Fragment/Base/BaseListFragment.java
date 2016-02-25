@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * unused
  * Created by Administrator on 2015/8/8 0008.
  */
 public abstract class BaseListFragment<T> extends BaseFragment {

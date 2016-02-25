@@ -25,6 +25,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,9 @@ public abstract class BaseLazyFragment extends Fragment {
         super.onCreate(savedInstanceState);
         TAG_LOG = this.getClass().getSimpleName();
     }
-    private String TAG="SUPER";
+
+    private String TAG = "SUPER";
+
     public void setTAG(String TAG) {
         this.TAG = TAG;
     }
@@ -92,6 +95,7 @@ public abstract class BaseLazyFragment extends Fragment {
 
         return TAG;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getContentViewLayoutID() != 0) {
@@ -105,7 +109,6 @@ public abstract class BaseLazyFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
         if (null != getLoadingTargetView()) {
             mVaryViewHelperController = new VaryViewHelperController(getLoadingTargetView());
         }
@@ -149,6 +152,7 @@ public abstract class BaseLazyFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.i("LIFE-CYCLE", "FRAGMENT-ONACTIVITYCREATED");
         super.onActivityCreated(savedInstanceState);
         initPrepare();
     }
@@ -241,7 +245,6 @@ public abstract class BaseLazyFragment extends Fragment {
     protected abstract int getContentViewLayoutID();
 
 
-
     /**
      * get the support fragment manager
      *
@@ -311,28 +314,30 @@ public abstract class BaseLazyFragment extends Fragment {
             Snackbar.make(((Activity) mContext).getWindow().getDecorView(), msg, Snackbar.LENGTH_SHORT).show();
         }
     }
+
     protected void showNetWorkError() {
         showToast(getResources().getString(R.string.network_error_tips));
     }
 
     protected void showInnerError(RetrofitError error) {
         try {
-            ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
-            if(res!=null){
+            ErrorRes res = (ErrorRes) error.getBodyAs(ErrorRes.class);
+            if (res != null) {
                 showToast(res.getReason());
-            }else{
+            } else {
                 showToast("网络环境过差,请稍后再试");
             }
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             showToast("网络环境过差,请稍后再试");
         }
 
     }
-    protected String getInnerErrorInfo(RetrofitError error){
-        ErrorRes res= (ErrorRes) error.getBodyAs(ErrorRes.class);
-        if(res!=null){
-            return  res.getReason();
-        }else {
+
+    protected String getInnerErrorInfo(RetrofitError error) {
+        ErrorRes res = (ErrorRes) error.getBodyAs(ErrorRes.class);
+        if (res != null) {
+            return res.getReason();
+        } else {
             return getString(R.string.common_error_msg);
         }
 

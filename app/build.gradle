@@ -52,7 +52,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':DatePicker')
     compile project(':PhotoPicker')
-    compile project(':OneSDK')
     compile project(':cycle-view-pager')
-//    compile files('libs/badgeview.jar')
+    //    compile files('libs/badgeview.jar')
+    compile project(':OneSDK')
 }

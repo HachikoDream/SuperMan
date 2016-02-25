@@ -5,7 +5,10 @@ package com.dreamspace.superman.event;
  */
 public class RefreshEvent {
 
-    public static RefreshEvent newInstance(){
+    public static final int INDEX = 0;
+    public static final int SUPERMAN = 1;
+    public int type;
+    public static RefreshEvent newInstance() {
         return new RefreshEvent();
     }
 }

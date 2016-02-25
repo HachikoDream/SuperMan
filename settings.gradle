@@ -1,1 +1,1 @@
-include ':app', ':daogenerator', ':DatePicker', ':PhotoPicker', ':OneSDK', ':cycle-view-pager'
+include ':app', ':daogenerator', ':DatePicker', ':PhotoPicker', ':cycle-view-pager', ':OneSDK'

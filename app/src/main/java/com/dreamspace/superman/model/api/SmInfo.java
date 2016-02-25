@@ -2,15 +2,9 @@ package com.dreamspace.superman.model.api;
 
 /**
  * Created by Wells on 2015/9/3.
- * {"resume": "jianjie",
- * "id": 2,
- * "image": "http://7xl53f.com1.z0.glb.clouddn.com/5607bc8090c49013abc2234b?imageView2/1/w/138/h/138/q/100",
- * "user_id": 7,
- * "tags": "tag1,tag2,tag3,tag4,tag5",
- * "glory": "rongyu",
- * "name": "duzhixia"}
  */
 public class SmInfo {
+    private String id;
     private String image;
     private String sex;
     private String name;
@@ -21,6 +15,45 @@ public class SmInfo {
     //个人标签
     private String tags;
     private String[] certificates;
+    //达人收藏数
+    private int collection_count;
+    //日期
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getCollection_count() {
+        return collection_count;
+    }
+
+    public void setCollection_count(int collection_count) {
+        this.collection_count = collection_count;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getHeat() {
+        return heat;
+    }
+
+    public void setHeat(int heat) {
+        this.heat = heat;
+    }
+
+    private String date;
+    //达人热度
+    private int heat;
 
     public String[] getCertificates() {
         return certificates;

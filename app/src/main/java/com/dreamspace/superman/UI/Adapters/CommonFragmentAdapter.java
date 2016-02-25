@@ -5,11 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
-import com.dreamspace.superman.UI.Fragment.Base.BaseFragment;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
-import com.dreamspace.superman.UI.Fragment.Base.BaseListFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
