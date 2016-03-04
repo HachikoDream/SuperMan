@@ -66,13 +66,13 @@ public abstract class BaseIndexFragment<T> extends BaseLessonFragment {
                 Log.i("INFO", "position:  " + position);
             }
         });
-        moreListView.setScrollToTopListener(new LoadMoreListView.OnScrollToTopListener() {
-            @Override
-            public void onScrollToTop() {
-                IndexFragment indexFragment = (IndexFragment) getParentFragment();
-                indexFragment.getScrollView().setEnableScroll(true);
-            }
-        });
+//        moreListView.setScrollToTopListener(new LoadMoreListView.OnScrollToTopListener() {
+//            @Override
+//            public void onScrollToTop() {
+//                IndexFragment indexFragment = (IndexFragment) getParentFragment();
+////                indexFragment.getScrollView().setEnableScroll(true);
+//            }
+//        });
 
     }
 

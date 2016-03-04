@@ -33,7 +33,7 @@ public class SmApplication extends Application {
     public void onCreate() {
         super.onCreate();
         MobclickAgent.setDebugMode(true);//todo check whether is in debug mode
-//        initPushService(this);
+        initPushService(this);
         AVOSCloud.initialize(this, Constant.APP_ID, Constant.APP_KEY);
         AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(this));
         setupDatabase();

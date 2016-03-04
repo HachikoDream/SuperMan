@@ -1,11 +1,13 @@
 package me.codeboy.android.cycleviewpager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,7 +29,7 @@ import me.codeboy.android.cycleviewpager.base.CycleViewPagerIdleListener;
  *
  * @author Yuedong Li
  */
-public class CycleViewPager extends Fragment implements OnPageChangeListener, View.OnTouchListener {
+public class CycleViewPager extends FrameLayout implements OnPageChangeListener, View.OnTouchListener {
     private List<View> views = new ArrayList<View>();
     private TextView[] indicators;
     private FrameLayout viewPagerFragmentLayout;
@@ -44,21 +46,36 @@ public class CycleViewPager extends Fragment implements OnPageChangeListener, Vi
     private boolean isWheel = false; // 是否轮播
     private int WHEEL_SIGNAL = 100; // 转动信号
     private CycleViewPagerIdleListener listener; // 回调接口
+    private Context context;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout
-                .cycleviewpager_viewpager_fragment, null);
+    public CycleViewPager(Context context) {
+        this(context, null);
+    }
 
-        viewPager = (BaseViewPager) view.findViewById(R.id
+    public CycleViewPager(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public CycleViewPager(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.context = context;
+        createView();
+    }
+
+
+    public void createView() {
+        LayoutInflater.from(context).inflate(R.layout
+                .cycleviewpager_viewpager_fragment, this, true);
+
+        viewPager = (BaseViewPager) findViewById(R.id
                 .viewPager);
         viewPager.setOnTouchListener(this);
-        indicatorLayout = (LinearLayout) view.findViewById(R.id.viewpagerIndicatorLayout);
+        indicatorLayout = (LinearLayout) findViewById(R.id.viewpagerIndicatorLayout);
 
-        viewPagerFragmentLayout = (FrameLayout) view.findViewById(R.id.viewPagerFragmentLayout);
-        viewPagerDefaultBg = (LinearLayout) view.findViewById(R.id.viewPagerDefaultBg);
+        viewPagerFragmentLayout = (FrameLayout) findViewById(R.id.viewPagerFragmentLayout);
+        viewPagerDefaultBg = (LinearLayout) findViewById(R.id.viewPagerDefaultBg);
 
-        handler = new CycleViewPageHandler.UnleakHandler(getActivity()) {
+        handler = new CycleViewPageHandler.UnleakHandler(context) {
 
             @Override
             public void handleMessage(Message msg) {
@@ -78,7 +95,7 @@ public class CycleViewPager extends Fragment implements OnPageChangeListener, Vi
             }
         };
 
-        return view;
+
     }
 
     /**
@@ -117,7 +134,7 @@ public class CycleViewPager extends Fragment implements OnPageChangeListener, Vi
         }
         indicatorLayout.removeAllViews();
         for (int i = 0; i < indicators.length; i++) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout
+            View view = LayoutInflater.from(context).inflate(R.layout
                     .cycleviewpager_indicator, null);
             indicators[i] = (TextView) view.findViewById(R.id.indicator);
             indicatorLayout.addView(view);
@@ -195,7 +212,7 @@ public class CycleViewPager extends Fragment implements OnPageChangeListener, Vi
 
         @Override
         public void run() {
-            if (getActivity() != null && !getActivity().isFinishing() && isWheel) {
+            if (context != null && isWheel) {
                 // viewpager依旧静止的话开始滑动
                 if (!isScrollingOrPressed) {
                     handler.sendEmptyMessage(WHEEL_SIGNAL);
@@ -210,7 +227,7 @@ public class CycleViewPager extends Fragment implements OnPageChangeListener, Vi
      * 释放指示器高度，可能由于之前指示器被限制了高度，此处释放
      */
     public void releaseHeight() {
-        getView().getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+        getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
         refreshData();
     }
 

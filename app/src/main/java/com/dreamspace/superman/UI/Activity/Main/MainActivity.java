@@ -87,6 +87,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
     BaseLazyFragment fragments[] =
             {
                     new IndexFragment(),
+                    new SupermanFragment(),
                     new MyWalletFragment(),
                     new OrderListFragment(),
                     new CollectionFragment(),
@@ -191,6 +192,7 @@ MainActivity extends AbsActivity implements NavigationView.OnNavigationItemSelec
         idTab2.setOnClickListener(this);
         idTab3.setOnClickListener(this);
         idTab4.setOnClickListener(this);
+        idTab1.setIconAlpha(1.0f);
     }
 
     @Override

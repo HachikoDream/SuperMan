@@ -55,4 +55,6 @@ dependencies {
     compile project(':cycle-view-pager')
     //    compile files('libs/badgeview.jar')
     compile project(':OneSDK')
+    compile 'com.culiu.android:mhvp-core:2.1.2@aar'
+    compile 'com.culiu.android:mhvp-integrated-ptr:2.1.2@aar'
 }

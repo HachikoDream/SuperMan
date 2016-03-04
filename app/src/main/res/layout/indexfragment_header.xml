@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <me.codeboy.android.cycleviewpager.CycleViewPager
+        android:id="@+id/act_cycleViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <me.codeboy.android.cycleviewpager.CycleViewPager
+        android:id="@+id/catalog_cycleViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/catalog_failed_tv"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="分类信息获取失败，点击重试"
+        android:visibility="gone" />
+
+</LinearLayout>

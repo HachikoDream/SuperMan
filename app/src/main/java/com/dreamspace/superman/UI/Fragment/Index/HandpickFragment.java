@@ -29,7 +29,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements IndexFragment.RefreshListener {
+public class HandpickFragment extends BaseIndexFragment<LessonInfo>  {
     public Catalog selfCatalog;
     public int page = 1;
     public final int INIT_PAGE = 1;
@@ -62,7 +62,6 @@ public class HandpickFragment extends BaseIndexFragment<LessonInfo> implements I
         });
     }
 
-    @Override
     public void onPullDown() {
         loadingDataByPage(INIT_PAGE, new OnRefreshListener<LessonInfo>() {
             @Override

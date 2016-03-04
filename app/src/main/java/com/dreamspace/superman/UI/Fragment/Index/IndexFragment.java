@@ -3,6 +3,7 @@ package com.dreamspace.superman.UI.Fragment.Index;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,8 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.culiu.mhvp.core.MagicHeaderUtils;
+import com.culiu.mhvp.core.MagicHeaderViewPager;
+import com.culiu.mhvp.core.tabs.com.astuetz.PagerSlidingTabStrip;
 import com.dreamspace.superman.API.ApiManager;
 import com.dreamspace.superman.Common.NetUtils;
 import com.dreamspace.superman.Common.PreferenceUtils;
@@ -25,6 +30,8 @@ import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Activity.Main.MainActivity;
 import com.dreamspace.superman.UI.Adapters.CatalogAdapter;
 import com.dreamspace.superman.UI.Adapters.IndexContainerPagerAdapter;
+import com.dreamspace.superman.UI.Adapters.LessonListContainerPagerAdapter;
+import com.dreamspace.superman.UI.Adapters.SmContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
 import com.dreamspace.superman.UI.Fragment.Index.HandpickFragment;
 import com.dreamspace.superman.UI.View.DispatchChildScrollView;
@@ -48,24 +55,17 @@ import retrofit.client.Response;
  */
 public class IndexFragment extends BaseLazyFragment {
 
-    @Bind(R.id.viewpager)
-    ViewPager mViewPager;
-    @Bind(R.id.sliding_layout)
-    SmartTabLayout mSlidingTabLayout;
-    @Bind(R.id.index_swiperefresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.index_scrollview)
-    DispatchChildScrollView scrollView;
-    @Bind(R.id.catalog_failed_tv)
-    TextView cataLoadFailedTv;
-    private IndexContainerPagerAdapter mAdapter;
-    private List<Catalog> items;
+    @Bind(R.id.magic_vp_container)
+    LinearLayout magicVpContainer;
+    private LessonListContainerPagerAdapter mAdapter;
+    private MagicHeaderViewPager mMagicHeaderViewPager;
     private static final int SINGLE_PAGE_CATA_NUM = 8;//每页分类的数量
     private static final int SINGLE_PAGE_COL_NUM = 4;//每页分类的列数
     private static final int ALL_CATALOG_PAGE = 1;
     private static final int ALL_CATALOG_PAGINATION = 100;//保证获取到所有的分类信息
     private CycleViewPager actCycleViewPager;
     private CycleViewPager cataCycleViewPager;
+    private TextView cataLoadFailedTv;
 
     public IndexFragment() {
         // Required empty public constructor
@@ -74,9 +74,7 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void onFirstUserVisible() {
-        fetchCatalogs();
-        HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
-        fragment.onPageSelected(0, items.get(0));
+
     }
 
     @Override
@@ -96,75 +94,34 @@ public class IndexFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        EventBus.getDefault().register(this);
-        cataCycleViewPager = (CycleViewPager) getChildFragmentManager()
-                .findFragmentById(R.id.catalog_cycleViewPager);
-        actCycleViewPager = (CycleViewPager) getChildFragmentManager()
-                .findFragmentById(R.id.cycleViewPager);
-        setItems(PreferenceUtils.getClassifyItems(getActivity().getApplicationContext()));
-        mAdapter = new IndexContainerPagerAdapter(getChildFragmentManager(), items);
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(items.size());
-        mSlidingTabLayout.setViewPager(mViewPager);
-        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mMagicHeaderViewPager = new MagicHeaderViewPager(getActivity()) {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            protected void initTabsArea(LinearLayout container) {
+                ViewGroup tabsArea = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MagicHeaderUtils.dp2px(getActivity(), 48));
+                container.addView(tabsArea, lp);
+                PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) tabsArea.findViewById(R.id.tabs);
+                pagerSlidingTabStrip.setTextColor(Color.BLACK);
+                pagerSlidingTabStrip.setBackgroundColor(Color.WHITE);
+                setTabsArea(tabsArea);
+                setPagerSlidingTabStrip(pagerSlidingTabStrip);
             }
-
-            @Override
-            public void onPageSelected(int position) {
-                HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, position);
-                fragment.onPageSelected(position, items.get(position));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        mSwipeRefreshLayout.setColorScheme(R.color.navi_color,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                onPullDown();
-            }
-        });
-
-
+        };
+        mAdapter = new LessonListContainerPagerAdapter(getChildFragmentManager());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        magicVpContainer.addView(mMagicHeaderViewPager, lp);
+        mMagicHeaderViewPager.setPagerAdapter(mAdapter);
+        addHeader();
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                int tabHeight = DensityUtil.dp2px(getActivity(), 40);
-                int bottom_height = DensityUtil.dp2px(getActivity(), 60);
-                AbsActivity activity = (AbsActivity) getActivity();
-                int toobar_height = activity.getSupportActionBar().getHeight();
-                int statusbar_height = getStatusBarHeight();
-                int screenHeight = getResources()
-                        .getDisplayMetrics().heightPixels;
-                int listview_height = screenHeight - tabHeight - toobar_height - statusbar_height - bottom_height;
-                ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
-                params.height = listview_height;
-                mViewPager.setLayoutParams(params);
-            }
-        });
+    private void addHeader() {
+        View container = LayoutInflater.from(getActivity()).inflate(R.layout.indexfragment_header, null);
+        actCycleViewPager = (CycleViewPager) container.findViewById(R.id.act_cycleViewPager);
+        cataCycleViewPager = (CycleViewPager) container.findViewById(R.id.catalog_cycleViewPager);
+        cataLoadFailedTv = (TextView) container.findViewById(R.id.catalog_failed_tv);
         setActViewPager();
-    }
-
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
+        mMagicHeaderViewPager.addHeaderView(container);
+        mMagicHeaderViewPager.setHeaderTallerThanScreen(true);
     }
 
     private void setCatalogViewPager(List<Catalog> catalogs) {
@@ -219,6 +176,12 @@ public class IndexFragment extends BaseLazyFragment {
         }
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        fetchCatalogs();
+    }
+
     /**
      * 设置分类信息是否加载成功，成功则正常显示，失败则显示失败布局。点击布局可以重新加载
      *
@@ -226,9 +189,9 @@ public class IndexFragment extends BaseLazyFragment {
      */
     private void setCatalogState(boolean state) {
         cataLoadFailedTv.setVisibility(View.GONE);
-        cataCycleViewPager.getView().setVisibility(View.GONE);
+//        cataCycleViewPager.getView().setVisibility(View.GONE);
         if (state) {
-            cataCycleViewPager.getView().setVisibility(View.VISIBLE);
+//            cataCycleViewPager.getView().setVisibility(View.VISIBLE);
         } else {
             cataLoadFailedTv.setVisibility(View.VISIBLE);
             cataLoadFailedTv.setOnClickListener(new View.OnClickListener() {
@@ -263,54 +226,14 @@ public class IndexFragment extends BaseLazyFragment {
         // 设置初始高度为屏幕的1/3
         int screenHeight = getResources()
                 .getDisplayMetrics().heightPixels;
-        actCycleViewPager.getView().getLayoutParams().height = screenHeight / 3;
+        actCycleViewPager.getLayoutParams().height = screenHeight / 3;
         actCycleViewPager.setIndicatorCenter();
     }
 
-    private void onPullDown() {
-        int current = mViewPager.getCurrentItem();
-        RefreshListener listener = (RefreshListener) mViewPager.getAdapter().instantiateItem(mViewPager, current);
-        listener.onPullDown();
-    }
-
-    public void setItems(List<Catalog> items) {
-        this.items = items;
-    }
 
     @Override
     protected int getContentViewLayoutID() {
         return R.layout.fragment_index;
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        List<Catalog> mCatalogs = PreferenceUtils.getClassifyItems(getActivity().getApplicationContext());
-
-        if (mCatalogs.size() == 1) {
-            getActivity().finish();
-            return;
-        }
-        //从sp获取数据 刷新viewpager项目
-        if (resultCode == Activity.RESULT_OK) {
-            setItems(mCatalogs);
-            mAdapter.setmCategoryList(mCatalogs);
-            mSlidingTabLayout.setViewPager(mViewPager);
-            HandpickFragment fragment = (HandpickFragment) mViewPager.getAdapter().instantiateItem(mViewPager, 0);
-            fragment.onPageSelected(0, items.get(0));
-        }
-    }
-
-    public void onEvent(RefreshEvent refreshEvent) {
-        if (refreshEvent.type == RefreshEvent.INDEX)
-            mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    public interface RefreshListener {
-        void onPullDown();
-    }
-
-    public DispatchChildScrollView getScrollView() {
-        return scrollView;
-    }
 }

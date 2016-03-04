@@ -1,44 +1,37 @@
 package com.dreamspace.superman.UI.Fragment.Index;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.dreamspace.superman.Common.QRCode.DensityUtil;
+import com.culiu.mhvp.core.MagicHeaderUtils;
+import com.culiu.mhvp.core.MagicHeaderViewPager;
+import com.culiu.mhvp.core.tabs.com.astuetz.PagerSlidingTabStrip;
 import com.dreamspace.superman.Common.ViewFactory;
 import com.dreamspace.superman.R;
-import com.dreamspace.superman.UI.Activity.AbsActivity;
 import com.dreamspace.superman.UI.Adapters.SmContainerPagerAdapter;
 import com.dreamspace.superman.UI.Fragment.Base.BaseLazyFragment;
-import com.dreamspace.superman.UI.View.DispatchChildScrollView;
-import com.dreamspace.superman.UI.View.smartlayout.SmartTabLayout;
-import com.dreamspace.superman.event.RefreshEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 import me.codeboy.android.cycleviewpager.CycleViewPager;
 
 /**
  * Created by Wells on 2016/2/23.
  */
 public class SupermanFragment extends BaseLazyFragment {
-    @Bind(R.id.sliding_layout)
-    SmartTabLayout slidingLayout;
-    @Bind(R.id.viewpager)
-    ViewPager viewpager;
-    @Bind(R.id.superman_scrollview)
-    DispatchChildScrollView supermanScrollview;
-    @Bind(R.id.superman_swiperefresh)
-    SwipeRefreshLayout supermanSwiperefresh;
-    private CycleViewPager actCycleViewPager;
+
+    @Bind(R.id.magic_vp_container)
+    LinearLayout magicVpContainer;
     private SmContainerPagerAdapter mAdapter;
+    private MagicHeaderViewPager mMagicHeaderViewPager;
+    private CycleViewPager actCycleViewPager;
 
     @Override
     protected void onFirstUserVisible() {
@@ -62,75 +55,31 @@ public class SupermanFragment extends BaseLazyFragment {
 
     @Override
     protected void initViewsAndEvents() {
-        EventBus.getDefault().register(this);
-        actCycleViewPager = (CycleViewPager) getChildFragmentManager()
-                .findFragmentById(R.id.activity_cycleViewPager);
+        mMagicHeaderViewPager = new MagicHeaderViewPager(getActivity()) {
+            @Override
+            protected void initTabsArea(LinearLayout container) {
+                ViewGroup tabsArea = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab_layout, null);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, MagicHeaderUtils.dp2px(getActivity(), 48));
+                container.addView(tabsArea, lp);
+                PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) tabsArea.findViewById(R.id.tabs);
+                pagerSlidingTabStrip.setTextColor(Color.BLACK);
+                pagerSlidingTabStrip.setBackgroundColor(Color.WHITE);
+                setTabsArea(tabsArea);
+                setPagerSlidingTabStrip(pagerSlidingTabStrip);
+            }
+        };
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        magicVpContainer.addView(mMagicHeaderViewPager, lp);
         mAdapter = new SmContainerPagerAdapter(getChildFragmentManager());
-        viewpager.setAdapter(mAdapter);
-        viewpager.setOffscreenPageLimit(2);
-        slidingLayout.setViewPager(viewpager);
-        slidingLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        mMagicHeaderViewPager.setPagerAdapter(mAdapter);
+        addHeader();
+    }
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                SmListFragment fragment = (SmListFragment) viewpager.getAdapter().instantiateItem(viewpager, position);
-                fragment.onPageSelected(position, SmContainerPagerAdapter.SORT_TYPE[position]);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+    private void addHeader() {
+        View container = LayoutInflater.from(getActivity()).inflate(R.layout.smfragment_header, null);
+        actCycleViewPager = (CycleViewPager) container.findViewById(R.id.act_cyclevp);
         setActViewPager();
-        supermanSwiperefresh.setColorScheme(R.color.navi_color,
-                android.R.color.holo_green_light, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        supermanSwiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                onPullDown();
-            }
-        });
-    }
-
-    private void onPullDown() {
-
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        supermanScrollview.post(new Runnable() {
-            @Override
-            public void run() {
-                int tabHeight = DensityUtil.dp2px(getActivity(), 40);
-                int bottom_height = DensityUtil.dp2px(getActivity(), 60);
-                AbsActivity activity = (AbsActivity) getActivity();
-                int toobar_height = activity.getSupportActionBar().getHeight();
-                int statusbar_height = getStatusBarHeight();
-                int screenHeight = getResources()
-                        .getDisplayMetrics().heightPixels;
-                int listview_height = screenHeight - tabHeight - toobar_height - statusbar_height - bottom_height;
-                ViewGroup.LayoutParams params = viewpager.getLayoutParams();
-                params.height = listview_height;
-                viewpager.setLayoutParams(params);
-            }
-        });
-
-    }
-
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
+        mMagicHeaderViewPager.addHeaderView(container);
     }
 
     private void setActViewPager() {
@@ -156,9 +105,15 @@ public class SupermanFragment extends BaseLazyFragment {
         // 设置初始高度为屏幕的1/3
         int screenHeight = getResources()
                 .getDisplayMetrics().heightPixels;
-        actCycleViewPager.getView().getLayoutParams().height = screenHeight / 3;
+        actCycleViewPager.getLayoutParams().height = screenHeight / 3;
         actCycleViewPager.setIndicatorCenter();
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
 
     @Override
     protected int getContentViewLayoutID() {
@@ -166,12 +121,9 @@ public class SupermanFragment extends BaseLazyFragment {
     }
 
 
-    public void onEvent(RefreshEvent event) {
-
-    }
-
-
-    public DispatchChildScrollView getScrollView() {
-        return supermanScrollview;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }
